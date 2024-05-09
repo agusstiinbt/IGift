@@ -1,4 +1,4 @@
-namespace IGift.Shared
+namespace IGift.Shared.Models
 {
     public class WeatherForecast
     {

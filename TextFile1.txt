@@ -1,0 +1,10 @@
+AspNetRoleClaims: Almacena los claims asociados a cada rol en tu aplicación. Los claims son afirmaciones sobre el usuario, como permisos o roles.
+AspNetRoles: Almacena los roles de usuario en tu aplicación. Los roles agrupan usuarios que comparten permisos o responsabilidades comunes.
+AspNetUserClaims: Almacena los claims asociados a cada usuario en tu aplicación. Estos claims pueden contener información adicional sobre el usuario, como su nombre, correo electrónico, etc.
+AspNetUserLogins: Utilizada para almacenar información sobre los proveedores de inicio de sesión externos asociados a cada usuario. Por ejemplo, si un usuario inicia sesión mediante Google, se almacenaría aquí la información relacionada con esa autenticación externa.
+AspNetUserRoles: Tabla de relación muchos a muchos que relaciona usuarios con roles. Indica qué roles tiene asignados cada usuario.
+AspNetUsers: Almacena información básica sobre los usuarios de tu aplicación, como su nombre de usuario, correo electrónico, contraseña (o referencia a un proveedor externo), etc.
+AspNetUserTokens: Utilizada para almacenar tokens de autenticación para cada usuario. Por ejemplo, tokens de restablecimiento de contraseña, tokens de autenticación de dos factores, etc.
+AspNetDeviceCodes: Utilizada en OAuth 2.0 para almacenar códigos de dispositivo para el flujo de autorización del dispositivo.
+Keys: Utilizada para almacenar claves de seguridad, como claves de autenticación de dos factores.
+PersistedGrants: Utilizada para almacenar tokens OAuth 2.0 y datos relacionados con la autorización persistente.

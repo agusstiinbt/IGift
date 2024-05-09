@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.18" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.18" />
+		<PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.17" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\IGift.Application\IGift.Application.csproj" />
+	  <ProjectReference Include="..\IGift.Domain\IGift.Domain.csproj" />
+	  <ProjectReference Include="..\IGift\Shared\IGift.Shared.csproj" />
+	</ItemGroup>
+</Project>
