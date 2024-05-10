@@ -9,9 +9,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using IGift.Application.Interfaces;
+using IGift.Application.Interfaces.Identity;
 
-namespace IGift.Infrastructure.Services
+namespace IGift.Infrastructure.Services.Identity
 {
     public class TokenService : ITokenService
     {
@@ -24,7 +24,7 @@ namespace IGift.Infrastructure.Services
             _configuration = configuration;
         }
 
-        public async Task<Result<TokenResponse>> GetRefreshToken(LoginModel model)
+        public async Task<Result<TokenResponse>> GetRefreshToken(LoginModel model)//TODO investigar para qué usa un refreshToken
         {
             throw new NotImplementedException();
         }

@@ -2,7 +2,7 @@
 using IGift.Shared.Wrapper;
 using IGift.Application.Responses;
 using IGift.Shared.Operations.Login;
-using ITokenService = IGift.Application.Interfaces.ITokenService;
+using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
 
 namespace IGift.Server.Controllers
 {

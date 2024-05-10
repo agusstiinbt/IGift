@@ -6,11 +6,9 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using IGift.Shared.Operations.Register;
-using IGift.Shared.Models;
 using IGift.Shared.Operations.Login;
 using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
-using Client.Infrastructure.Extensions;
 
 namespace Client.Infrastructure.Services.Authentication
 {

@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
 using IGift.Shared.Operations.Login;
-namespace IGift.Application.Interfaces
+namespace IGift.Application.Interfaces.Identity
 {
     public interface ITokenService
     {

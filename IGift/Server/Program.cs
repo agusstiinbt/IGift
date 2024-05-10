@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using IGift.Application.Interfaces;
-using IGift.Infrastructure.Services;
+using IGift.Application.Interfaces.Identity;
+using IGift.Infrastructure.Services.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
