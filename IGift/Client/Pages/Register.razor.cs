@@ -1,4 +1,4 @@
-﻿using Client.Infrastructure.Services.Authentication;
+﻿using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Shared.Operations.Register;
 using Microsoft.AspNetCore.Components;
 

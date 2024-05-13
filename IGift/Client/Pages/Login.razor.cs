@@ -1,4 +1,4 @@
-﻿using Client.Infrastructure.Services.Authentication;
+﻿using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Shared.Operations.Login;
 using Microsoft.AspNetCore.Components;
 
@@ -20,7 +20,7 @@ namespace IGift.Client.Pages
 
             if (result.Succeeded)
             {
-                NavigationManager.NavigateTo($"/fetchdata/{result.Messages.First()}");
+                NavigationManager.NavigateTo("/fetchdata");
             }
             else
             {

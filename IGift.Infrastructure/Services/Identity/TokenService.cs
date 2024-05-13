@@ -17,11 +17,12 @@ namespace IGift.Infrastructure.Services.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-
-        public TokenService(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        private readonly RoleManager<ApplicationUserRole> _roleManager;
+        public TokenService(UserManager<ApplicationUser> userManager, IConfiguration configuration, RoleManager<ApplicationUserRole> roleManager)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
 
         public async Task<Result<TokenResponse>> GetRefreshToken(LoginModel model)//TODO investigar para qué usa un refreshToken

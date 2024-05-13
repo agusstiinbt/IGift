@@ -22,5 +22,7 @@ namespace IGift.Server.Controllers
         {
             return Ok(await _tokenService.LoginAsync(m));
         }
+
+        //TODO implementar el LogOUT
     }
 }

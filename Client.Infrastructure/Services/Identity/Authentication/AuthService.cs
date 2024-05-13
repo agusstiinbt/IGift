@@ -10,7 +10,7 @@ using IGift.Shared.Operations.Login;
 using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
 
-namespace Client.Infrastructure.Services.Authentication
+namespace Client.Infrastructure.Services.Identity.Authentication
 {
     public class AuthService : IAuthService
     {
@@ -41,7 +41,7 @@ namespace Client.Infrastructure.Services.Authentication
             var response = await _httpClient.PostAsync("api/Login/Login", content);
             var result = await response.Content.ReadFromJsonAsync<Result<TokenResponse>>();
 
-            if (response.IsSuccessStatusCode)
+            if (result!.Succeeded)
             {
                 var token = result!.Data.Token;
                 await _localStorage.SetItemAsync("authToken", token);

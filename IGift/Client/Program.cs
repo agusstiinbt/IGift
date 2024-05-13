@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Client.Infrastructure.Authentication;
-using Client.Infrastructure.Services.Authentication;
+using Client.Infrastructure.Services.Identity.Authentication;
+using Client.Infrastructure.Services.Identity.Users;
 using IGift.Client;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -48,6 +49,7 @@ void ConfigureServices(IServiceCollection services)
     // Supply HttpClient instances that include access tokens when making requests to the server project
     builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("IGift.ServerAPI"));
     builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<IUserManager, UserManager>();
     builder.Services.AddScoped<IGiftAuthenticationStateProvider>();
     builder.Services.AddScoped<AuthenticationStateProvider, IGiftAuthenticationStateProvider>();
     builder.Services.AddBlazoredLocalStorage();

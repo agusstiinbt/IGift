@@ -1,7 +1,4 @@
-﻿using IGift.Server.Areas.Identity.Pages.Account;
-using IGift.Infrastructure.Models;
-using IGift.Shared.Models;
-using Microsoft.AspNetCore.Http;
+﻿using IGift.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RegisterModel = IGift.Shared.Operations.Register.RegisterModel;
@@ -9,6 +6,7 @@ using IGift.Shared.Operations.Register;
 
 namespace IGift.Server.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class AccountsController : ControllerBase

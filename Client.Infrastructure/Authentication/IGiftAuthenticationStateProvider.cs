@@ -41,7 +41,7 @@ namespace Client.Infrastructure.Authentication
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", savedToken);
 
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(GetClaimsFromJwt(savedToken), "jwt")));
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(GetClaimsFromToken(savedToken), "token")));
         }
 
         public void MarkUserAsLoggedOut()
@@ -53,15 +53,15 @@ namespace Client.Infrastructure.Authentication
 
         public void MarkUserAsLoggin(string token)
         {
-            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(GetClaimsFromJwt(token), "jwt"));
+            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(GetClaimsFromToken(token), "token"));
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
         }
 
-        private IEnumerable<Claim> GetClaimsFromJwt(string jwt)
+        private IEnumerable<Claim> GetClaimsFromToken(string token)
         {
             var claims = new List<Claim>();
-            var payload = jwt.Split('.')[1];
+            var payload = token.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
             var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
 

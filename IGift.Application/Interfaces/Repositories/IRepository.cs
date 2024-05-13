@@ -1,4 +1,4 @@
-﻿using IGift.Domain.Entities;
+﻿using IGift.Domain.Contracts;
 
 namespace IGift.Application.Interfaces.Repositories
 {

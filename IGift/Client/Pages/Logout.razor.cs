@@ -1,4 +1,4 @@
-﻿using Client.Infrastructure.Services.Authentication;
+﻿using Client.Infrastructure.Services.Identity.Authentication;
 using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Pages
