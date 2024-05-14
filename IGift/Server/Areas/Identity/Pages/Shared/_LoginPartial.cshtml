@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using IGift.Infrastructure.Models
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<IGiftUser> SignInManager
+@inject UserManager<IGiftUser> UserManager
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{

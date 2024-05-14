@@ -15,13 +15,13 @@ namespace IGift.Server.Areas.Identity.Pages.Account
 {
     public class LoginWithRecoveryCodeModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<Infrastructure.Models.IGiftUser> _signInManager;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
         public LoginWithRecoveryCodeModel(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            SignInManager<Infrastructure.Models.IGiftUser> signInManager,
+            UserManager<Infrastructure.Models.IGiftUser> userManager,
             ILogger<LoginWithRecoveryCodeModel> logger)
         {
             _signInManager = signInManager;

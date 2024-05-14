@@ -18,13 +18,13 @@ namespace IGift.Server.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
+        private readonly SignInManager<Infrastructure.Models.IGiftUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<Infrastructure.Models.IGiftUser> userManager,
+            SignInManager<Infrastructure.Models.IGiftUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -74,7 +74,7 @@ namespace IGift.Server.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(ApplicationUser user)
+        private async Task LoadAsync(Infrastructure.Models.IGiftUser user)
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;

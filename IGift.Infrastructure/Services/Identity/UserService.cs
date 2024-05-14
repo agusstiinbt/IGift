@@ -11,21 +11,21 @@ namespace IGift.Infrastructure.Services.Identity
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationUserRole> _roleManager;
+        private readonly UserManager<Models.IGiftUser> _userManager;
+        private readonly RoleManager<IGiftRole> _roleManager;
         //private readonly IMailService _mailService;
         //private readonly IExcelService _excelService;
         private readonly IMapper _mapper;
       
 
-        public UserService(UserManager<ApplicationUser> userManager/*, RoleManager<ApplicationUserRole> roleManager/*, IMapper mapper*/)
+        public UserService(UserManager<Models.IGiftUser> userManager/*, RoleManager<IGiftRole> roleManager/*, IMapper mapper*/)
         {
             _userManager = userManager;
             //_roleManager = roleManager;
             //_mapper = mapper;
         }
 
-        //public UserService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationUserRole> roleManager,IMapper mapper)
+        //public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager,IMapper mapper)
         //{
         //    _userManager = userManager;
         //    _roleManager = roleManager;

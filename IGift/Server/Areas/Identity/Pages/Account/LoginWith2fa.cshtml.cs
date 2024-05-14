@@ -17,13 +17,13 @@ namespace IGift.Server.Areas.Identity.Pages.Account
 {
     public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<Infrastructure.Models.IGiftUser> _signInManager;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
         private readonly ILogger<LoginWith2faModel> _logger;
 
         public LoginWith2faModel(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            SignInManager<Infrastructure.Models.IGiftUser> signInManager,
+            UserManager<Infrastructure.Models.IGiftUser> userManager,
             ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;

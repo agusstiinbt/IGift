@@ -15,13 +15,13 @@ namespace IGift.Server.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
+        private readonly SignInManager<Infrastructure.Models.IGiftUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<Infrastructure.Models.IGiftUser> userManager,
+            SignInManager<Infrastructure.Models.IGiftUser> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;

@@ -15,10 +15,10 @@ namespace IGift.Infrastructure.Services.Identity
 {
     public class TokenService : ITokenService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Models.IGiftUser> _userManager;
         private readonly IConfiguration _configuration;
-        private readonly RoleManager<ApplicationUserRole> _roleManager;
-        public TokenService(UserManager<ApplicationUser> userManager, IConfiguration configuration, RoleManager<ApplicationUserRole> roleManager)
+        private readonly RoleManager<IGiftRole> _roleManager;
+        public TokenService(UserManager<Models.IGiftUser> userManager, IConfiguration configuration, RoleManager<IGiftRole> roleManager)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -77,7 +77,7 @@ namespace IGift.Infrastructure.Services.Identity
             return Convert.ToBase64String(randomNumber);
         }
 
-        private async Task<string> GenerateJwtAsync(ApplicationUser user)
+        private async Task<string> GenerateJwtAsync(Models.IGiftUser user)
         {
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
             return token;
@@ -101,7 +101,7 @@ namespace IGift.Infrastructure.Services.Identity
             return new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<IEnumerable<Claim>> GetClaimsAsync(ApplicationUser user)
+        private async Task<IEnumerable<Claim>> GetClaimsAsync(Models.IGiftUser user)
         {
             //TODO si vamos a cargar los claims y los usuarios que corresponden entonces usar esto de abajo
             //var userClaims = await _userManager.GetClaimsAsync(user);

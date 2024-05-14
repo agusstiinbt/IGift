@@ -1,17 +1,15 @@
-﻿using Duende.IdentityServer.EntityFramework.Options;
-using IGift.Domain.Entities;
+﻿using IGift.Domain.Entities;
 using IGift.Infrastructure.Models;
 using IGift.Shared;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 namespace IGift.Server.Data
 {
     //TODO hacer que esta clase se encuentre en Infrastructure. Dejar un readme para saber cómo hacer las migraciones para que la carpeta migrations siempre esté dentro de la aplicación Infrastructure. Dedicar tiempo a esto y hacer commits para separa cuándo funcionó y cuándo no.
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<IGiftUser, IGiftRole, string, IdentityUserClaim<string>, IGiftUserRole, IdentityUserLogin<string>, IGiftRoleClaim, IdentityUserToken<string>>
     {
-        public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
@@ -23,8 +21,73 @@ namespace IGift.Server.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-        }
+            foreach (var property in builder.Model.GetEntityTypes()
+            .SelectMany(t => t.GetProperties())
+            .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
+            {
+                property.SetColumnType("decimal(18,2)");
+            }
 
+            foreach (var property in builder.Model.GetEntityTypes()
+            .SelectMany(t => t.GetProperties())
+            .Where(p => p.Name is "LastModifiedBy" or "CreatedBy"))
+            {
+                property.SetColumnType("nvarchar(128)");
+            }
+
+            //
+            base.OnModelCreating(builder);
+
+            builder.Entity<IGiftUser>(entity =>
+            {
+                entity.ToTable(name: "Users", "Identity");
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                
+
+                entity.HasMany(e=>e.UsuariosRoles)
+                .WithOne(e=>e.Usuario)
+                .HasForeignKey(ur=>ur.UserId)
+                .IsRequired();
+            });
+
+            builder.Entity<IGiftRole>(entity =>
+            {
+                entity.ToTable(name: "Roles", "Identity");
+
+                entity.HasMany(e => e.UsuariosRoles)
+               .WithOne(e => e.Roles)
+               .HasForeignKey(ur => ur.RoleId)
+               .IsRequired();
+            });
+
+            builder.Entity<IGiftUserRole>(entity =>
+            {
+                entity.ToTable("UserRoles", "Identity");
+            });
+
+            builder.Entity<IdentityUserClaim<string>>(entity =>
+            {
+                entity.ToTable("UserClaims", "Identity");
+            });
+
+            builder.Entity<IdentityUserLogin<string>>(entity =>
+            {
+                entity.ToTable("UserLogins", "Identity");
+            });
+
+            builder.Entity<IGiftRoleClaim>(entity =>
+            {
+                entity.ToTable(name: "RoleClaims", "Identity");
+
+                //entity.HasOne(d => d.Role)
+                //   .WithMany(p => p.RoleClaims)
+                //   .HasForeignKey(d => d.RoleId);
+            });
+
+            builder.Entity<IdentityUserToken<string>>(entity =>
+            {
+                entity.ToTable("UserTokens", "Identity");
+            });
+        }
     }
 }

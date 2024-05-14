@@ -17,14 +17,14 @@ namespace IGift.Server.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
+        private readonly SignInManager<Infrastructure.Models.IGiftUser> _signInManager;
+        private readonly IUserStore<Infrastructure.Models.IGiftUser> _userStore;
 
         public ExternalLoginsModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IUserStore<ApplicationUser> userStore)
+            UserManager<Infrastructure.Models.IGiftUser> userManager,
+            SignInManager<Infrastructure.Models.IGiftUser> signInManager,
+            IUserStore<Infrastructure.Models.IGiftUser> userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -70,7 +70,7 @@ namespace IGift.Server.Areas.Identity.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
-            if (_userStore is IUserPasswordStore<ApplicationUser> userPasswordStore)
+            if (_userStore is IUserPasswordStore<Infrastructure.Models.IGiftUser> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
             }

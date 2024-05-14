@@ -17,9 +17,9 @@ namespace IGift.Server.Areas.Identity.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
 
-        public ResetPasswordModel(UserManager<ApplicationUser> userManager)
+        public ResetPasswordModel(UserManager<Infrastructure.Models.IGiftUser> userManager)
         {
             _userManager = userManager;
         }

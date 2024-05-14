@@ -1,5 +1,5 @@
 ﻿@using IGift.Infrastructure.Models;
-@inject SignInManager<ApplicationUser> SignInManager
+@inject SignInManager<IGiftUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

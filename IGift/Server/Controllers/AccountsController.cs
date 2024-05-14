@@ -11,9 +11,9 @@ namespace IGift.Server.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
 
-        public AccountsController(UserManager<ApplicationUser> userManager)
+        public AccountsController(UserManager<Infrastructure.Models.IGiftUser> userManager)
         {
             _userManager = userManager;
         }
@@ -21,7 +21,7 @@ namespace IGift.Server.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAccount([FromBody] RegisterModel model)
         {
-            var newUser = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var newUser = new Infrastructure.Models.IGiftUser { UserName = model.Email, Email = model.Email };
 
             var result = await _userManager.CreateAsync(newUser, model.Password!);
 

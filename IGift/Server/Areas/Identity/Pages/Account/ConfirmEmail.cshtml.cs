@@ -17,9 +17,9 @@ namespace IGift.Server.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Infrastructure.Models.IGiftUser> _userManager;
 
-        public ConfirmEmailModel(UserManager<ApplicationUser> userManager)
+        public ConfirmEmailModel(UserManager<Infrastructure.Models.IGiftUser> userManager)
         {
             _userManager = userManager;
         }
