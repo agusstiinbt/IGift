@@ -16,7 +16,7 @@ namespace Client.Infrastructure.Services.Identity.Users
 
         public async Task<IResult<List<ApplicationUserResponse>>> GetUsersAsync()
         {
-            var response = await _http.GetAsync(UsersEndpoints.GetAll);
+            var response = await _http.GetAsync(Endpoints.Users.GetAll);
             var result = await response.Content.ReadFromJsonAsync<Result<List<ApplicationUserResponse>>>();
             return result!;
         }

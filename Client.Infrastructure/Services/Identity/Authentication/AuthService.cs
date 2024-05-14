@@ -9,6 +9,7 @@ using IGift.Shared.Operations.Register;
 using IGift.Shared.Operations.Login;
 using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
+using Client.Infrastructure.Routes;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -38,7 +39,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Login(LoginModel loginModel)
         {
             using var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("api/Login/Login", content);
+            var response = await _httpClient.PostAsync(Endpoints.Login.LogIn, content);
             var result = await response.Content.ReadFromJsonAsync<Result<TokenResponse>>();
 
             if (result!.Succeeded)
