@@ -39,7 +39,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Login(LoginModel loginModel)
         {
             using var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(Endpoints.Login.LogIn, content);
+            var response = await _httpClient.PostAsync(Endpoints.Users.LogIn, content);
             var result = await response.Content.ReadFromJsonAsync<Result<TokenResponse>>();
 
             if (result!.Succeeded)

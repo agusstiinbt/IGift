@@ -1,26 +1,35 @@
-﻿using IGift.Application.Interfaces.Identity;
+﻿using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IGift.Application.Responses;
+using IGift.Shared.Operations.Login;
+using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
 
 namespace IGift.Server.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public UsersController(IUserService userService)
+        public UsersController(ITokenService tokenService)
         {
-            _userService = userService;
+            _tokenService = tokenService;
         }
 
+        [Authorize]
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll()
         {
             var users = await _userService.GetAllAsync();
             return Ok(users);
+        }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<Result<TokenResponse>>> Login(LoginModel m)
+        {
+            return Ok(await _tokenService.LoginAsync(m));
         }
     }
 }
