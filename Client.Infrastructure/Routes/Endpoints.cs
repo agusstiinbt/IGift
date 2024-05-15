@@ -6,7 +6,7 @@
         {
             private static string route = "api/Users/";
 
-            public string GetAll = route + "GetAll";
+            public static string GetAll = route + "GetAll";
             public static string LogIn = route + "Login";
 
         }

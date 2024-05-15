@@ -3,6 +3,7 @@ using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
 using IGift.Application.Responses;
 using IGift.Infrastructure.Models;
+using IGift.Shared.Operations.Register;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +12,14 @@ namespace IGift.Infrastructure.Services.Identity
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<Models.IGiftUser> _userManager;
+        private readonly UserManager<IGiftUser> _userManager;
         private readonly RoleManager<IGiftRole> _roleManager;
         //private readonly IMailService _mailService;
         //private readonly IExcelService _excelService;
         private readonly IMapper _mapper;
-      
 
-        public UserService(UserManager<Models.IGiftUser> userManager/*, RoleManager<IGiftRole> roleManager/*, IMapper mapper*/)
+
+        public UserService(UserManager<IGiftUser> userManager/*, RoleManager<IGiftRole> roleManager/*, IMapper mapper*/)
         {
             _userManager = userManager;
             //_roleManager = roleManager;
@@ -51,6 +52,7 @@ namespace IGift.Infrastructure.Services.Identity
         {
             throw new NotImplementedException();
         }
+        s
 
         public async Task<Result<List<ApplicationUserResponse>>> GetAllAsync()
         {
@@ -74,9 +76,30 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RegisterAsync()
+        public async Task<IResult> RegisterAsync(ApplicationUserRequest model)
         {
-            throw new NotImplementedException();
+            //var newUser = new IGiftUser { UserName = model.UserName, Email = model.Email, CreatedOn=DateTime.Now };
+            var verification = await VerifyRegistrationUser(model);
+            if (!verification.Succeeded)
+            {
+                return verification;
+            }
+
+            var user = new IGiftUser
+            {
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.UserName,
+                PhoneNumber = model.PhoneNumber,
+            };
+
+            var result = await _userManager.CreateAsync(user,model.Password);
+            if(result.Succeeded)
+            {
+                //await _userManager.AddToRoleAsync(user,);
+            }
+            return null;
         }
 
         public Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
@@ -87,6 +110,32 @@ namespace IGift.Infrastructure.Services.Identity
         public Task<IResult> UpdateRolesAsync(string UserId, IList<UserRoleModel> UserRoles)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<IResult> VerifyRegistrationUser(ApplicationUserRequest model)
+        {
+            var existsUserName = await _userManager.FindByNameAsync(model.UserName);
+            if (existsUserName != null)
+            {
+                return await Result.FailAsync($"El nombre de usuario{model.UserName} ya esta registrado. Por favor intente con otro");
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.PhoneNumber))
+            {
+                var existsPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
+                if (existsPhoneNumber != null)
+                {
+                    return await Result.FailAsync($"El número de teléfono ya se encuentra registrado. Por favor intente con otro");
+                }
+            }
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
+            if (userWithSameEmail != null)
+            {
+                return await Result.FailAsync("Ya existe una cuenta con el mismo email.Intente loguearse o recuperar la contraseña");
+            }
+
+            return await Result.SuccessAsync();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using IGift.Application.Requests.Identity;
 using IGift.Application.Responses;
+using IGift.Shared.Operations.Register;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Identity
@@ -10,7 +11,7 @@ namespace IGift.Application.Interfaces.Identity
         Task<int> HowMany();
 
         Task<IResult<ApplicationUserResponse>> GetByIdAsync(int id);//fijarse si está bien poner un int Id
-        Task<IResult> RegisterAsync();//TODO Implementar
+        Task<IResult> RegisterAsync(ApplicationUserRequest model);
 
         Task<IResult> ChangeUserStatus(bool Active, string UserId);
 

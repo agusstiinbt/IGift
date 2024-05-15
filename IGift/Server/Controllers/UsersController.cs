@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using IGift.Application.Responses;
 using IGift.Shared.Operations.Login;
 using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
+using IGift.Application.Interfaces.Identity;
 
 namespace IGift.Server.Controllers
 {
@@ -12,10 +13,12 @@ namespace IGift.Server.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ITokenService _tokenService;
+        private readonly IUserService _userService;
 
-        public UsersController(ITokenService tokenService)
+        public UsersController(ITokenService tokenService, IUserService userService)
         {
             _tokenService = tokenService;
+            _userService = userService;
         }
 
         [Authorize]
