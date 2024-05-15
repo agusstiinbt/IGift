@@ -52,7 +52,6 @@ namespace IGift.Infrastructure.Services.Identity
         {
             throw new NotImplementedException();
         }
-        s
 
         public async Task<Result<List<ApplicationUserResponse>>> GetAllAsync()
         {
@@ -78,27 +77,27 @@ namespace IGift.Infrastructure.Services.Identity
 
         public async Task<IResult> RegisterAsync(ApplicationUserRequest model)
         {
-            //var newUser = new IGiftUser { UserName = model.UserName, Email = model.Email, CreatedOn=DateTime.Now };
-            var verification = await VerifyRegistrationUser(model);
-            if (!verification.Succeeded)
-            {
-                return verification;
-            }
+            //    //var newUser = new IGiftUser { UserName = model.UserName, Email = model.Email, CreatedOn=DateTime.Now };
+            //    var verification = await VerifyRegistrationUser(model);
+            //    if (!verification.Succeeded)
+            //    {
+            //        return verification;
+            //    }
 
-            var user = new IGiftUser
-            {
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.UserName,
-                PhoneNumber = model.PhoneNumber,
-            };
+            //    var user = new IGiftUser
+            //    {
+            //        Email = model.Email,
+            //        FirstName = model.FirstName,
+            //        LastName = model.LastName,
+            //        UserName = model.UserName,
+            //        PhoneNumber = model.PhoneNumber,
+            //    };
 
-            var result = await _userManager.CreateAsync(user,model.Password);
-            if(result.Succeeded)
-            {
-                //await _userManager.AddToRoleAsync(user,);
-            }
+            //    var result = await _userManager.CreateAsync(user,model.Password);
+            //    if(result.Succeeded)
+            //    {
+            //        await _usermana
+            //    }
             return null;
         }
 
