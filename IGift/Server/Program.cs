@@ -31,11 +31,7 @@ builder.Services.AddIdentity<IGiftUser, IGiftRole>(options =>
     options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-//builder.Services.AddIdentityServer()
-//    .AddApiAuthorization<IGiftUser, ApplicationDbContext>();
 
-//builder.Services.AddAuthentication()
-//    .AddIdentityServerJwt();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
