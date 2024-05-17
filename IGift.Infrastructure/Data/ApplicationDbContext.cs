@@ -4,10 +4,10 @@ using IGift.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-namespace IGift.Server.Data
+namespace IGift.Infrastructure.Data
 {
     //TODO hacer que esta clase se encuentre en Infrastructure. Dejar un readme para saber cómo hacer las migraciones para que la carpeta migrations siempre esté dentro de la aplicación Infrastructure. Dedicar tiempo a esto y hacer commits para separa cuándo funcionó y cuándo no.
-    public class ApplicationDbContext : IdentityDbContext<IGiftUser, IGiftRole, string, IdentityUserClaim<string>, IGiftUserRole, IdentityUserLogin<string>, IGiftRoleClaim, IdentityUserToken<string>>
+    public class ApplicationDbContext : IdentityDbContext<IGiftUser, IGiftRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IGiftRoleClaim, IdentityUserToken<string>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -17,7 +17,6 @@ namespace IGift.Server.Data
         public DbSet<GiftCard> GiftCards { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<LocalAdherido> LocalesAdheridos { get; set; }
-        public DbSet<InfoLocalesAdheridos> InfoLocalesAdheridos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,27 +41,11 @@ namespace IGift.Server.Data
             {
                 entity.ToTable(name: "Users", "Identity");
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
-                
-
-                entity.HasMany(e=>e.UsuariosRoles)
-                .WithOne(e=>e.Usuario)
-                .HasForeignKey(ur=>ur.UserId)
-                .IsRequired();
             });
 
             builder.Entity<IGiftRole>(entity =>
             {
                 entity.ToTable(name: "Roles", "Identity");
-
-                entity.HasMany(e => e.UsuariosRoles)
-               .WithOne(e => e.Roles)
-               .HasForeignKey(ur => ur.RoleId)
-               .IsRequired();
-            });
-
-            builder.Entity<IGiftUserRole>(entity =>
-            {
-                entity.ToTable("UserRoles", "Identity");
             });
 
             builder.Entity<IdentityUserClaim<string>>(entity =>

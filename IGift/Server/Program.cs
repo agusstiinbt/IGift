@@ -1,4 +1,4 @@
-using IGift.Server.Data;
+using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using IGift.Application.Interfaces.Identity;
 using IGift.Infrastructure.Services.Identity;
+using IGift.Application.Interfaces;
+using IGift.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +53,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+//transients
+builder.Services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var seeder = services.GetRequiredService<IDatabaseSeeder>();
+    seeder.Initialize();
+}
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
