@@ -1,5 +1,4 @@
-﻿
-using IGift.Domain.Contracts;
+﻿using IGift.Domain.Contracts;
 
 namespace IGift.Domain.Entities
 {
