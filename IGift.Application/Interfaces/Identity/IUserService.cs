@@ -1,6 +1,5 @@
 ﻿using IGift.Application.Requests.Identity;
 using IGift.Application.Responses;
-using IGift.Shared.Operations.Register;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Identity

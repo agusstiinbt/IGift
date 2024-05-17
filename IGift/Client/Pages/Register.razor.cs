@@ -1,5 +1,5 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
-using IGift.Shared.Operations.Register;
+using IGift.Application.Requests.Identity;
 using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Pages
@@ -8,7 +8,7 @@ namespace IGift.Client.Pages
     {
         [Inject] private IAuthService _authService { get; set; }
         [Inject] private NavigationManager _nav { get; set; }
-        private RegisterModel RegisterModel = new RegisterModel();
+        private ApplicationUserRequest RegisterModel = new ApplicationUserRequest();
         private bool ShowErrors;
         private IEnumerable<string>? Errors;
 
@@ -18,13 +18,13 @@ namespace IGift.Client.Pages
 
             var result = await _authService.Register(RegisterModel);
 
-            if (result.Successful)
+            if (result.Succeeded)
             {
                 _nav.NavigateTo("/login");
             }
             else
             {
-                Errors = result.Errors;
+                Errors = result.Messages;
                 ShowErrors = true;
             }
         }

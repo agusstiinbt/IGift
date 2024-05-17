@@ -1,22 +1,23 @@
-﻿namespace IGift.Application.Requests.Identity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IGift.Application.Requests.Identity
 {
     public class ApplicationUserRequest
     {
-        public required string FirstName { get; set; }
-        public required string LastName { get; set; }
-        public required string UserName { get; set; }
-        public required string Password { get; set; }
-        public required string Email {  get; set; }
-        public required string PhoneNumber { get; set;}
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string UserName { get; set; }
 
-        public ApplicationUserRequest(string userName, string password, string email, string phoneNumber, string firstName, string lastName)
-        {
-            UserName = userName;
-            Password = password;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            FirstName = firstName;
-            LastName = lastName;
-        }
+        [StringLength(100, ErrorMessage = "The {0} must be at leat {2} and at max {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+
     }
 }
+

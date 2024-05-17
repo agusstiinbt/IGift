@@ -5,6 +5,7 @@ using IGift.Application.Responses;
 using IGift.Shared.Operations.Login;
 using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
 using IGift.Application.Interfaces.Identity;
+using IGift.Application.Requests.Identity;
 
 namespace IGift.Server.Controllers
 {
@@ -32,7 +33,14 @@ namespace IGift.Server.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<Result<TokenResponse>>> Login(LoginModel m)
         {
-            return Ok(await _tokenService.LoginAsync(m));
+            throw new Exception();
+        //    return Ok(await _tokenService.LoginAsync(m));
+        }
+
+        [HttpPost("Register")]
+        public async Task<ActionResult<Result>> Register(ApplicationUserRequest m)
+        {
+            return Ok(_userService.RegisterAsync(m));
         }
     }
 }

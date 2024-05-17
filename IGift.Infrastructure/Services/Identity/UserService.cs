@@ -3,7 +3,7 @@ using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
 using IGift.Application.Responses;
 using IGift.Infrastructure.Models;
-using IGift.Shared.Operations.Register;
+using IGift.Shared.Role;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -75,29 +75,30 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> RegisterAsync(ApplicationUserRequest model)
+        public async Task<IResult> RegisterAsync(ApplicationUserRequest model)//TODO este método debería de implementar las configuraciones para verificar Email y talvez la verificación en 2 pasos
         {
-            //    //var newUser = new IGiftUser { UserName = model.UserName, Email = model.Email, CreatedOn=DateTime.Now };
-            //    var verification = await VerifyRegistrationUser(model);
-            //    if (!verification.Succeeded)
-            //    {
-            //        return verification;
-            //    }
+            //var newUser = new IGiftUser { UserName = model.UserName, Email = model.Email, CreatedOn=DateTime.Now };
+            var verification = await VerifyRegistrationUser(model);
+            if (!verification.Succeeded)
+            {
+                return verification;
+            }
 
-            //    var user = new IGiftUser
-            //    {
-            //        Email = model.Email,
-            //        FirstName = model.FirstName,
-            //        LastName = model.LastName,
-            //        UserName = model.UserName,
-            //        PhoneNumber = model.PhoneNumber,
-            //    };
+            var user = new IGiftUser
+            {
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.UserName,
+                PhoneNumber = model.PhoneNumber,
+            };
 
-            //    var result = await _userManager.CreateAsync(user,model.Password);
-            //    if(result.Succeeded)
-            //    {
-            //        await _usermana
-            //    }
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                user = await _userManager.FindByEmailAsync(user.Email);
+                await _userManager.AddToRoleAsync(user, RoleConstants.BasicRole);
+            }
             return null;
         }
 

@@ -2,7 +2,7 @@
 
 namespace IGift.Shared.Operations.Login
 {
-    public class LoginModel
+    public class LoginModel//TODO reemplazar por la clase del Application
     {
         [Required]
         public string? Email { get; set; }

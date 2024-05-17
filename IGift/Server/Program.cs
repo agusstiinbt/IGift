@@ -9,6 +9,7 @@ using IGift.Application.Interfaces.Identity;
 using IGift.Infrastructure.Services.Identity;
 using IGift.Application.Interfaces;
 using IGift.Infrastructure;
+using IGift.Server.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 //transients
 builder.Services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
+//builder.Services.AddTransient<MyMiddleware>();
 
 var app = builder.Build();
 
@@ -97,6 +99,10 @@ app.UseAuthorization();
 
 
 app.MapRazorPages();
+
+app.UseMiddleware<MyMiddleware>();
+
+
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 

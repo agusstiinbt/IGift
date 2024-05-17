@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
-using IGift.Shared.Operations.Register;
 using IGift.Shared.Operations.Login;
 using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
 using Client.Infrastructure.Routes;
+using IGift.Application.Requests.Identity;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -28,12 +28,11 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             _localStorage = localStorage;
         }
 
-        public async Task<RegisterResult> Register(RegisterModel registerModel)
+        public async Task<IResult> Register(ApplicationUserRequest registerModel)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/accounts", registerModel);
-            if (!result.IsSuccessStatusCode)
-                return new RegisterResult { Successful = true, Errors = null };
-            return new RegisterResult { Successful = false, Errors = new List<string> { "Error occured" } };
+            var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
+            var result = await response.Content.ReadFromJsonAsync<IResult>();
+            return result!;
         }
 
         public async Task<IResult> Login(LoginModel loginModel)
