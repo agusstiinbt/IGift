@@ -20,7 +20,7 @@ namespace IGift.Client.Pages
 
             if (result.Succeeded)
             {
-                _nav.NavigateTo("/login");
+                _nav.NavigateTo("/");
             }
             else
             {

@@ -14,24 +14,17 @@ namespace IGift.Infrastructure.Services.Identity
     {
         private readonly UserManager<IGiftUser> _userManager;
         private readonly RoleManager<IGiftRole> _roleManager;
+        private readonly IMapper _mapper;
         //private readonly IMailService _mailService;
         //private readonly IExcelService _excelService;
-        private readonly IMapper _mapper;
 
-
-        public UserService(UserManager<IGiftUser> userManager/*, RoleManager<IGiftRole> roleManager/*, IMapper mapper*/)
+        public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager/*, IMapper mapper*/)
         {
             _userManager = userManager;
-            //_roleManager = roleManager;
+            _roleManager = roleManager;
             //_mapper = mapper;
         }
 
-        //public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager,IMapper mapper)
-        //{
-        //    _userManager = userManager;
-        //    _roleManager = roleManager;
-        //    _mapper = mapper;
-        //}
 
         public Task<IResult> ChangeUserStatus(bool Active, string UserId)
         {
@@ -78,28 +71,38 @@ namespace IGift.Infrastructure.Services.Identity
         public async Task<IResult> RegisterAsync(ApplicationUserRequest model)//TODO este método debería de implementar las configuraciones para verificar Email y talvez la verificación en 2 pasos
         {
             //var newUser = new IGiftUser { UserName = model.UserName, Email = model.Email, CreatedOn=DateTime.Now };
-            var verification = await VerifyRegistrationUser(model);
-            if (!verification.Succeeded)
+            //  var verification = await VerifyRegistrationUser(model);
+            try
             {
-                return verification;
+                //    if (!verification.Succeeded)
+                //    {
+                //        return verification;
+                //    }
+
+                var user = new IGiftUser
+                {
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
+                    PhoneNumber = model.PhoneNumber,
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    user = await _userManager.FindByEmailAsync(user.Email);
+                    await _userManager.AddToRoleAsync(user!, RoleConstants.BasicRole);
+                    return await Result.SuccessAsync("Registro de usuario exitoso");
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
 
-            var user = new IGiftUser
-            {
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                UserName = model.UserName,
-                PhoneNumber = model.PhoneNumber,
-            };
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                user = await _userManager.FindByEmailAsync(user.Email);
-                await _userManager.AddToRoleAsync(user, RoleConstants.BasicRole);
-            }
-            return null;
+            return await Result.FailAsync("Error al registrar usuario");
         }
 
         public Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
@@ -112,6 +115,11 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Verifica si los datos del usuario ya existen
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Succeeded true si no existe, sino un wrapper con el mensaje correspondiente</returns>
         private async Task<IResult> VerifyRegistrationUser(ApplicationUserRequest model)
         {
             var existsUserName = await _userManager.FindByNameAsync(model.UserName);
@@ -122,11 +130,20 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (!string.IsNullOrWhiteSpace(model.PhoneNumber))
             {
-                var existsPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
-                if (existsPhoneNumber != null)
+                try
                 {
-                    return await Result.FailAsync($"El número de teléfono ya se encuentra registrado. Por favor intente con otro");
+                    var existsPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
+                    if (existsPhoneNumber != null)
+                    {
+                        return await Result.FailAsync($"El número de teléfono ya se encuentra registrado. Por favor intente con otro");
+                    }
                 }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+
             }
 
             var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
@@ -137,5 +154,6 @@ namespace IGift.Infrastructure.Services.Identity
 
             return await Result.SuccessAsync();
         }
+
     }
 }

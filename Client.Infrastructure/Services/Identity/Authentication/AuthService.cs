@@ -30,6 +30,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Register(ApplicationUserRequest registerModel)
         {
+            using var content = new StringContent(JsonConvert.SerializeObject(registerModel), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
             var result = await response.Content.ReadFromJsonAsync<IResult>();
             return result!;
@@ -50,7 +51,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 return await Result.SuccessAsync("Autenticación correcta");
             }
 
-            return await Result.FailAsync("Error en la autenticación.");
+            return result;
         }
 
         public async Task Logout()

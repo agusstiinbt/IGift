@@ -33,8 +33,7 @@ namespace IGift.Server.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<Result<TokenResponse>>> Login(LoginModel m)
         {
-            throw new Exception();
-        //    return Ok(await _tokenService.LoginAsync(m));
+            return Ok(await _tokenService.LoginAsync(m));
         }
 
         [HttpPost("Register")]

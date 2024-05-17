@@ -55,17 +55,17 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 //transients
-builder.Services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
+//builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 //builder.Services.AddTransient<MyMiddleware>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var seeder = services.GetRequiredService<IDatabaseSeeder>();
-    seeder.Initialize();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    //var seeder = services.GetRequiredService<IDatabaseSeeder>();
+//    //seeder.Initialize();
+//}
 
 
 // Configure the HTTP request pipeline.
@@ -100,7 +100,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-app.UseMiddleware<MyMiddleware>();
+//app.UseMiddleware<MyMiddleware>();
 
 
 app.MapControllers();
