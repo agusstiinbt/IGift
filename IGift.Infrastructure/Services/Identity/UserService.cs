@@ -18,6 +18,7 @@ namespace IGift.Infrastructure.Services.Identity
         //private readonly IMailService _mailService;
         //private readonly IExcelService _excelService;
 
+        //TODO implementar el mapper
         public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager/*, IMapper mapper*/)
         {
             _userManager = userManager;
@@ -94,7 +95,7 @@ namespace IGift.Infrastructure.Services.Identity
             if (result.Succeeded)
             {
                 newUser = await _userManager.FindByEmailAsync(model.Email);
-                await _userManager.AddToRoleAsync(newUser!, RoleConstants.BasicRole);
+                await _userManager.AddToRoleAsync(newUser!, AppConstants.BasicRole);
                 return await Result.SuccessAsync("Registro de usuario exitoso");
             }
             return await Result.FailAsync("Error al registrar usuario");

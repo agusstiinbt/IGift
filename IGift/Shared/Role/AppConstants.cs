@@ -1,6 +1,6 @@
 ﻿namespace IGift.Shared.Role
 {
-    public class RoleConstants
+    public class AppConstants
     {
         public const string AdministratorRole = "Administrator";
         public const string BasicRole = "Basic";
