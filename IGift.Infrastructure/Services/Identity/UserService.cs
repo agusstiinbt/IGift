@@ -70,38 +70,33 @@ namespace IGift.Infrastructure.Services.Identity
 
         public async Task<IResult> RegisterAsync(ApplicationUserRequest model)//TODO este método debería de implementar las configuraciones para verificar Email y talvez la verificación en 2 pasos
         {
-            //var newUser = new IGiftUser { UserName = model.UserName, Email = model.Email, CreatedOn=DateTime.Now };
-            //  var verification = await VerifyRegistrationUser(model);
-            try
+            var verification = await VerifyRegistrationUser(model);
+
+            if (!verification.Succeeded)
             {
-                //    if (!verification.Succeeded)
-                //    {
-                //        return verification;
-                //    }
-
-                var user = new IGiftUser
-                {
-                    Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    UserName = model.UserName,
-                    PhoneNumber = model.PhoneNumber,
-                };
-
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    user = await _userManager.FindByEmailAsync(user.Email);
-                    await _userManager.AddToRoleAsync(user!, RoleConstants.BasicRole);
-                    return await Result.SuccessAsync("Registro de usuario exitoso");
-                }
-            }
-            catch (Exception e)
-            {
-
-                throw;
+                return verification;
             }
 
+            var newUser = new IGiftUser
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                UserName = model.UserName,
+                EmailConfirmed = false,
+                PhoneNumber = model.PhoneNumber,
+                PhoneNumberConfirmed = false,
+                CreatedOn = DateTime.Now
+            };
+
+            var result = await _userManager.CreateAsync(newUser, model.Password);
+
+            if (result.Succeeded)
+            {
+                newUser = await _userManager.FindByEmailAsync(model.Email);
+                await _userManager.AddToRoleAsync(newUser!, RoleConstants.BasicRole);
+                return await Result.SuccessAsync("Registro de usuario exitoso");
+            }
             return await Result.FailAsync("Error al registrar usuario");
         }
 

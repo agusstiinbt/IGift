@@ -39,7 +39,7 @@ namespace IGift.Server.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<Result>> Register(ApplicationUserRequest m)
         {
-            return Ok(_userService.RegisterAsync(m));
+            return Ok(await _userService.RegisterAsync(m));
         }
     }
 }

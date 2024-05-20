@@ -1,6 +1,7 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Application.Requests.Identity;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace IGift.Client.Pages
 {
@@ -8,14 +9,11 @@ namespace IGift.Client.Pages
     {
         [Inject] private IAuthService _authService { get; set; }
         [Inject] private NavigationManager _nav { get; set; }
+        [Inject] private ISnackbar _snackBar { get; set; }
         private ApplicationUserRequest RegisterModel = new ApplicationUserRequest();
-        private bool ShowErrors;
-        private IEnumerable<string>? Errors;
 
         private async Task HandleRegistration()
         {
-            ShowErrors = false;
-
             var result = await _authService.Register(RegisterModel);
 
             if (result.Succeeded)
@@ -24,8 +22,7 @@ namespace IGift.Client.Pages
             }
             else
             {
-                Errors = result.Messages;
-                ShowErrors = true;
+                _snackBar.Add(result.Messages.First());
             }
         }
     }

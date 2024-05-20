@@ -10,6 +10,7 @@ using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
 using Client.Infrastructure.Routes;
 using IGift.Application.Requests.Identity;
+using Client.Infrastructure.Extensions;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -30,10 +31,12 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Register(ApplicationUserRequest registerModel)
         {
-            using var content = new StringContent(JsonConvert.SerializeObject(registerModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
-            var result = await response.Content.ReadFromJsonAsync<IResult>();
-            return result!;
+            //using var content = new StringContent(JsonConvert.SerializeObject(registerModel), Encoding.UTF8, "application/json");
+            //var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
+            //var result = await response.Content.ReadFromJsonAsync<IResult>();
+            //return result!;
+            var response= await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
+            return await response.ToResult();
         }
 
         public async Task<IResult> Login(LoginModel loginModel)
