@@ -27,22 +27,22 @@ namespace IGift.Infrastructure.Services.Identity
         }
 
 
-        public Task<IResult> ChangeUserStatus(bool Active, string UserId)
+        public async Task<IResult> ChangeUserStatus(bool Active, string UserId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult<string>> ConfirmEmailAsync(string userId, string code)
+        public async Task<IResult<string>> ConfirmEmailAsync(string userId, string code)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> ExportToExcelAsync(string searchString = "")
+        public async Task<string> ExportToExcelAsync(string searchString = "")
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> ForgotPasswordAsync(string Email, string origin)
+        public async Task<IResult> ForgotPasswordAsync(string Email, string origin)
         {
             throw new NotImplementedException();
         }
@@ -54,17 +54,17 @@ namespace IGift.Infrastructure.Services.Identity
             return await Result<List<ApplicationUserResponse>>.SuccessAsync(result);
         }
 
-        public Task<IResult<ApplicationUserResponse>> GetByIdAsync(int id)
+        public async Task<IResult<ApplicationUserResponse>> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult<UserRolesResponse>> GetRolesAsync(string id)
+        public async Task<IResult<UserRolesResponse>> GetRolesAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> HowMany()
+        public async Task<int> HowMany()
         {
             throw new NotImplementedException();
         }
@@ -101,12 +101,12 @@ namespace IGift.Infrastructure.Services.Identity
             return await Result.FailAsync("Error al registrar usuario");
         }
 
-        public Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
+        public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> UpdateRolesAsync(string UserId, IList<UserRoleModel> UserRoles)
+        public async Task<IResult> UpdateRolesAsync(string UserId, IList<UserRoleModel> UserRoles)
         {
             throw new NotImplementedException();
         }

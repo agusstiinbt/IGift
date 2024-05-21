@@ -33,6 +33,7 @@ namespace IGift.Infrastructure.Services.Identity
         public async Task<Result<TokenResponse>> LoginAsync(LoginModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email!);
+
             if (user == null)
             {
                 return await Result<TokenResponse>.FailAsync("Email no encontrado.");

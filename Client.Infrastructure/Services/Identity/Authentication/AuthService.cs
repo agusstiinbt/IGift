@@ -11,6 +11,7 @@ using IGift.Shared.Wrapper;
 using Client.Infrastructure.Routes;
 using IGift.Application.Requests.Identity;
 using Client.Infrastructure.Extensions;
+using Client.Infrastructure.Constants;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -35,7 +36,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             //var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
             //var result = await response.Content.ReadFromJsonAsync<IResult>();
             //return result!;
-            var response= await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
+            var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
             return await response.ToResult();
         }
 
@@ -57,12 +58,15 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             return result;
         }
 
-        public async Task Logout()
+        public async Task<IResult> Logout()
         {
-            await _localStorage.RemoveItemAsync("authToken");
+            await _localStorage.RemoveItemAsync(StorageConstants.Local.AuthToken);
+            await _localStorage.RemoveItemAsync(StorageConstants.Local.RefreshToken);
+            await _localStorage.RemoveItemAsync(StorageConstants.Local.UserImageURL);
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
             ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;
+            return await Result.SuccessAsync();
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Client.Infrastructure.Services.Identity.Authentication
     {
         Task<IResult> Register(ApplicationUserRequest model);
         Task<IResult> Login(LoginModel loginModel);
-        Task Logout();
+        Task<IResult> Logout();
     }
 }
