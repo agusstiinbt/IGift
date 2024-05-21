@@ -42,11 +42,10 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Login(LoginModel loginModel)
         {
-            using var content = new StringContent(JsonConvert.SerializeObject(loginModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(Endpoints.Users.LogIn, content);
-            var result = await response.Content.ReadFromJsonAsync<Result<TokenResponse>>();
+            var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.LogIn, loginModel);
+            var result = await response.ToResult<TokenResponse>();
 
-            if (result!.Succeeded)
+            if (result.Succeeded)
             {
                 var token = result!.Data.Token;
                 await _localStorage.SetItemAsync("authToken", token);
