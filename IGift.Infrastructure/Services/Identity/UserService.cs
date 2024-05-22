@@ -95,7 +95,7 @@ namespace IGift.Infrastructure.Services.Identity
             if (result.Succeeded)
             {
                 newUser = await _userManager.FindByEmailAsync(model.Email);
-                await _userManager.AddToRoleAsync(newUser!, AppConstants.BasicRole);
+                await _userManager.AddToRoleAsync(newUser!, AppConstants.Role.BasicRole);
                 return await Result.SuccessAsync("Registro de usuario exitoso");
             }
             return await Result.FailAsync("Error al registrar usuario");

@@ -10,6 +10,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using IGift.Application.Interfaces.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace IGift.Infrastructure.Services.Identity
 {
@@ -104,24 +106,24 @@ namespace IGift.Infrastructure.Services.Identity
 
         private async Task<IEnumerable<Claim>> GetClaimsAsync(Models.IGiftUser user)
         {
-            //TODO si vamos a cargar los claims y los usuarios que corresponden entonces usar esto de abajo
+            //TODO si vamos a hacer uso de los 'Permissions' fijarse el código de blazorHero
             //var userClaims = await _userManager.GetClaimsAsync(user);
-            //var roles = await _userManager.GetRolesAsync(user);
-            //var roleClaims = new List<Claim>();
-            //var permissionClaims = new List<Claim>();
-            //foreach (var role in roles)
-            //{
-            //    roleClaims.Add(new Claim(ClaimTypes.Role, role));
-            //    var thisRole = await _roleManager.FindByNameAsync(role);
-            //    var allPermissionsForThisRoles = await _roleManager.GetClaimsAsync(thisRole);
-            //    permissionClaims.AddRange(allPermissionsForThisRoles);
-            //}
-
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleClaims = new List<Claim>();
+            // var permissionClaims = new List<Claim>();
+            foreach (var role in roles)
+            {
+                roleClaims.Add(new Claim(ClaimTypes.Role, role));
+                //var thisRole = await _roleManager.FindByNameAsync(role);
+                // var allPermissionsForThisRoles = await _roleManager.GetClaimsAsync(thisRole);
+                //  permissionClaims.AddRange(allPermissionsForThisRoles);
+            }
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, user.Id),
-                new(ClaimTypes.Email, user.Email),
-            };//TODO podemos tener claims específicos según el tipo de usuario. Lo mismo que hacían en OliAuto
+                new(ClaimTypes.Email, user.Email)
+            }.Union(roleClaims);
+            //TODO podemos tener claims específicos según el tipo de usuario. Lo mismo que hacían en OliAuto
 
             return claims;
         }

@@ -6,6 +6,7 @@ using IGift.Shared.Operations.Login;
 using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
+using IGift.Shared.Role;
 
 namespace IGift.Server.Controllers
 {
@@ -22,8 +23,9 @@ namespace IGift.Server.Controllers
             _userService = userService;
         }
 
-        [Authorize]
+
         [HttpGet("GetAll")]
+        [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
         public async Task<ActionResult> GetAll()
         {
             var users = await _userService.GetAllAsync();

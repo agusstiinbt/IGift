@@ -51,7 +51,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 await _localStorage.SetItemAsync("authToken", token);
                 ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggin(token);
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.Token);
-                return await Result.SuccessAsync("Autenticación correcta");
+                return await Result.SuccessAsync();
             }
 
             return result;

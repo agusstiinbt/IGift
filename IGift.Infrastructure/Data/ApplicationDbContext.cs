@@ -13,7 +13,6 @@ namespace IGift.Infrastructure.Data
         {
         }
 
-        public DbSet<SuperHeroe> SuperHeroes { get; set; }
         public DbSet<GiftCard> GiftCards { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<LocalAdherido> LocalesAdheridos { get; set; }
@@ -62,9 +61,6 @@ namespace IGift.Infrastructure.Data
             {
                 entity.ToTable(name: "RoleClaims", "Identity");
 
-                //entity.HasOne(d => d.Role)
-                //   .WithMany(p => p.RoleClaims)
-                //   .HasForeignKey(d => d.RoleId);
             });
 
             builder.Entity<IdentityUserToken<string>>(entity =>

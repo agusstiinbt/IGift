@@ -37,9 +37,10 @@ namespace IGift.Infrastructure
         {
             Task.Run(async () =>
               {
-                  var admin = AppConstants.AdministratorRole;
+                  var admin = AppConstants.Role.AdministratorRole;
 
-                  var adminRole = new IGiftRole(AppConstants.AdministratorRole, "Rol de administrador con todos los permisos");
+                  var adminRole = new IGiftRole(AppConstants.Role.AdministratorRole, "Rol de administrador con todos los permisos");
+                  
                   var adminRoleInDb = await _roleManager.FindByNameAsync(admin);
                   if (adminRoleInDb == null)
                   {
@@ -61,7 +62,7 @@ namespace IGift.Infrastructure
                   var superUserInDb = await _userManager.FindByEmailAsync(superUser.Email);
                   if (superUserInDb == null)
                   {
-                      await _userManager.CreateAsync(superUser, AppConstants.DefaultPassword);
+                      await _userManager.CreateAsync(superUser, AppConstants.Role.DefaultPassword);
                       var UserCreatedWithId = await _userManager.FindByEmailAsync(superUser.Email);
 
                       await _userManager.AddToRoleAsync(UserCreatedWithId, admin);
@@ -79,8 +80,8 @@ namespace IGift.Infrastructure
         {
             Task.Run(async () =>
             {
-                var basicRole = new IGiftRole(AppConstants.BasicRole, "Rol con permisos básicos");
-                var basicRoleInDb = await _roleManager.FindByNameAsync(AppConstants.BasicRole);
+                var basicRole = new IGiftRole(AppConstants.Role.BasicRole, "Rol con permisos básicos");
+                var basicRoleInDb = await _roleManager.FindByNameAsync(AppConstants.Role.BasicRole);
 
                 if (basicRoleInDb == null)
                 {
@@ -102,9 +103,9 @@ namespace IGift.Infrastructure
                 var basicUserInDb = await _userManager.FindByEmailAsync(basicUser.Email);
                 if (basicUserInDb == null)
                 {
-                    await _userManager.CreateAsync(basicUser, AppConstants.DefaultPassword);
+                    await _userManager.CreateAsync(basicUser, AppConstants.Role.DefaultPassword);
                     var UserCreatedWithId = await _userManager.FindByEmailAsync(basicUser.Email);
-                    await _userManager.AddToRoleAsync(UserCreatedWithId, AppConstants.BasicRole);
+                    await _userManager.AddToRoleAsync(UserCreatedWithId, AppConstants.Role.BasicRole);
                 }
 
             }).GetAwaiter().GetResult();
