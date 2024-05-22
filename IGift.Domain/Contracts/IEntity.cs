@@ -1,6 +1,6 @@
 ﻿namespace IGift.Domain.Contracts
 {
-    public interface IEntity<TId> : IEntity//TODO implementar las clases de Domain con esto
+    public interface IEntity<TId> : IEntity
     {
         public TId Id { get; set; }
     }
