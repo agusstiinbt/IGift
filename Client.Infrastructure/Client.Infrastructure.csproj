@@ -17,4 +17,8 @@
 		<ProjectReference Include="..\IGift\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Constants\" />
+	</ItemGroup>
+
 </Project>

@@ -6,7 +6,7 @@ using IGift.Shared.Operations.Login;
 using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
-using IGift.Shared.Role;
+using IGift.Shared;
 
 namespace IGift.Server.Controllers
 {

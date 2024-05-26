@@ -3,7 +3,7 @@ using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
 using IGift.Application.Responses;
 using IGift.Infrastructure.Models;
-using IGift.Shared.Role;
+using IGift.Shared;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

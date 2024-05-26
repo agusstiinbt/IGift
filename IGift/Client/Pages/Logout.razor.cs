@@ -1,4 +1,5 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
+using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Pages
@@ -11,7 +12,7 @@ namespace IGift.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             await AuthService.Logout();
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo(AppConstants.Routes.Login);
         }
     }
 }

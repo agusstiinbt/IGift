@@ -1,17 +1,15 @@
 ﻿using Blazored.LocalStorage;
 using Client.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
-using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using IGift.Shared.Operations.Login;
 using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
-using Client.Infrastructure.Routes;
 using IGift.Application.Requests.Identity;
 using Client.Infrastructure.Extensions;
-using Client.Infrastructure.Constants;
+using IGift.Shared;
+using Microsoft.JSInterop;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -20,14 +18,17 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         private readonly HttpClient _httpClient;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ILocalStorageService _localStorage;
+        private readonly IJSRuntime _js;
 
         public AuthService(HttpClient httpClient,
                            AuthenticationStateProvider authenticationStateProvider,
-                           ILocalStorageService localStorage)
+                           ILocalStorageService localStorage,
+                           IJSRuntime js)
         {
             _httpClient = httpClient;
             _authenticationStateProvider = authenticationStateProvider;
             _localStorage = localStorage;
+            _js = js;
         }
 
         public async Task<IResult> Register(ApplicationUserRequest registerModel)
@@ -36,13 +37,13 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             //var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
             //var result = await response.Content.ReadFromJsonAsync<IResult>();
             //return result!;
-            var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Users.Register, registerModel);
             return await response.ToResult();
         }
 
         public async Task<IResult> Login(LoginModel loginModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.LogIn, loginModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Users.LogIn, loginModel);
             var result = await response.ToResult<TokenResponse>();
 
             if (result.Succeeded)
@@ -59,13 +60,21 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Logout()
         {
-            await _localStorage.RemoveItemAsync(StorageConstants.Local.AuthToken);
-            await _localStorage.RemoveItemAsync(StorageConstants.Local.RefreshToken);
-            await _localStorage.RemoveItemAsync(StorageConstants.Local.UserImageURL);
+            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.AuthToken);
+            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.RefreshToken);
+            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.UserImageURL);
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
             ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;
             return await Result.SuccessAsync();
         }
+
+        public async Task<IResult> Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class
+        {
+            await _js.InitializeInactivityTimer<T>(dotNetObjectReference);
+            return null;
+        }
+
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Interfaces;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
-using IGift.Shared.Role;
+using IGift.Shared;
 using Microsoft.AspNetCore.Identity;
 
 namespace IGift.Infrastructure
@@ -40,7 +40,7 @@ namespace IGift.Infrastructure
                   var admin = AppConstants.Role.AdministratorRole;
 
                   var adminRole = new IGiftRole(AppConstants.Role.AdministratorRole, "Rol de administrador con todos los permisos");
-                  
+
                   var adminRoleInDb = await _roleManager.FindByNameAsync(admin);
                   if (adminRoleInDb == null)
                   {
