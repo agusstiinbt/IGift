@@ -10,6 +10,12 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         Task<IResult> Register(ApplicationUserRequest model);
         Task<IResult> Login(LoginModel loginModel);
         Task<IResult> Logout();
-        Task<IResult> Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class;
+        /// <summary>
+        /// Este método se usa para activar una función en nuestro archivo scripts que se encarga de desloguer al usuario si se mantiene inactivo por un tiempo específico
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dotNetObjectReference"></param>
+        /// <returns></returns>
+        Task Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class;
     }
 }

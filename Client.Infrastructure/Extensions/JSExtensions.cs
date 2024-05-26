@@ -6,15 +6,7 @@ namespace Client.Infrastructure.Extensions
     {
         public static async ValueTask InitializeInactivityTimer<T>(this IJSRuntime js, DotNetObjectReference<T> dotNetObjectReference) where T : class
         {
-            try
-            {
-                await js.InvokeAsync<object>("InitializeInactivityTimer", dotNetObjectReference);
-
-            }
-            catch (Exception e) 
-            {
-                string a = e.Message;
-            }
+            await js.InvokeAsync<object>("InitializeInactivityTimer", dotNetObjectReference);
         }
 
         public static ValueTask<object> GuardarEnLocalStorage(this IJSRuntime js,

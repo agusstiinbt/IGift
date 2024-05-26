@@ -60,21 +60,19 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Logout()
         {
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.AuthToken);
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.RefreshToken);
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.UserImageURL);
+            await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.AuthToken);
+            await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.RefreshToken);
+            await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.UserImageURL);
+            
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
             ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;
             return await Result.SuccessAsync();
         }
 
-        public async Task<IResult> Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class
+        public async Task Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class
         {
             await _js.InitializeInactivityTimer<T>(dotNetObjectReference);
-            return null;
         }
-
-
     }
 }

@@ -10,12 +10,12 @@ namespace IGift.Client.Shared
     {
         [CascadingParameter]
         public Task<AuthenticationState> AuthenticationState { get; set; }
-        
+
         [Inject] private IAuthService AuthService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var respones = await AuthService.Disconnect(DotNetObjectReference.Create(this));
+            await AuthService.Disconnect(DotNetObjectReference.Create(this));
         }
 
         [JSInvokable]

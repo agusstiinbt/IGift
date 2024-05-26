@@ -8,6 +8,7 @@ namespace Client.Infrastructure.Authentication
 {
     public class IGiftAuthenticationStateProvider : AuthenticationStateProvider
     {
+        //TODO revisar estos métodos y fijarse si hace falta algo y cómo usar correctamente el StateChangedAsync()
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
 
