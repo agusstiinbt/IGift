@@ -25,7 +25,7 @@ namespace IGift.Infrastructure.Services.Identity
             _roleManager = roleManager;
         }
 
-        public async Task<Result<ApplicationUserResponse>> GetRefreshToken(UserLoginRequest model)//TODO investigar para qué usa un refreshToken
+        public async Task<Result<ApplicationUserResponse>> GetRefreshToken(UserLoginRequest model)
         {
             throw new NotImplementedException();
         }
