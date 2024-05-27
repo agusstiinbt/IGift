@@ -1,5 +1,4 @@
 ﻿using IGift.Application.Requests.Identity;
-using IGift.Shared.Operations.Login;
 using IGift.Shared.Wrapper;
 using Microsoft.JSInterop;
 

@@ -32,7 +32,15 @@ namespace IGift.Infrastructure
               {
                   var admin = AppConstants.Role.AdministratorRole;
 
-                  var adminRole = new IGiftRole(AppConstants.Role.AdministratorRole, "Rol de administrador con todos los permisos");
+                  var adminRole = new IGiftRole
+                  {
+                      Name = AppConstants.Role.AdministratorRole,
+                      Description = "Rol de administrador con todos los permisos",
+                      CreatedBy = admin,
+                      CreatedOn = DateTime.Today,
+                      LastModifiedBy = admin,
+                      LastModifiedOn = DateTime.Today,
+                  };
 
                   var adminRoleInDb = await _roleManager.FindByNameAsync(admin);
                   if (adminRoleInDb == null)
@@ -73,8 +81,20 @@ namespace IGift.Infrastructure
         {
             Task.Run(async () =>
             {
-                var basicRole = new IGiftRole(AppConstants.Role.BasicRole, "Rol con permisos básicos");
-                var basicRoleInDb = await _roleManager.FindByNameAsync(AppConstants.Role.BasicRole);
+                var admin = AppConstants.Role.AdministratorRole;
+                var basic = AppConstants.Role.BasicRole;
+
+                var basicRole = new IGiftRole
+                {
+                    Name = AppConstants.Role.BasicRole,
+                    Description = "Rol con permisos básicos",
+                    CreatedBy = admin,
+                    LastModifiedBy = admin,
+                    LastModifiedOn = DateTime.Now,
+                    CreatedOn=DateTime.Now
+                };
+
+                var basicRoleInDb = await _roleManager.FindByNameAsync(basic);
 
                 if (basicRoleInDb == null)
                 {

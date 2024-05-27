@@ -9,14 +9,18 @@
             public const string DefaultPassword = "Zx2555@@";
         }
 
-        public static class Users
+        public static class Endpoints
         {
-            private static string route = "api/Users/";
+            public static class Users
+            {
+                private static string route = "api/Users/";
 
-            public static string GetAll = route + "GetAll";
-            public static string LogIn = route + "Login";
-            public static string Register = route + "Register";
+                public static string GetAll = route + "GetAll";
+                public static string LogIn = route + "Login";
+                public static string Register = route + "Register";
+            }
         }
+      
         public static class Routes
         {
             public static string Home = "/";

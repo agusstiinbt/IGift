@@ -36,7 +36,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             //var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
             //var result = await response.Content.ReadFromJsonAsync<IResult>();
             //return result!;
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Users.Register, registerModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.Users.Register, registerModel);
             return await response.ToResult();
         }
 
@@ -47,7 +47,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         /// <returns>El resultado de la operación</returns>
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Users.LogIn, loginModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.Users.LogIn, loginModel);
             var result = await response.ToResult<ApplicationUserResponse>();
 
             if (result.Succeeded)
