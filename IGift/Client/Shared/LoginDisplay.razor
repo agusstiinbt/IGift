@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization
+﻿@using IGift.Shared
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
 
@@ -8,8 +9,8 @@
         <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/register">Register</a>
-        <a href="authentication/login">Log in</a>
+        <a href=@AppConstants.Routes.Register>Register</a>
+        <a href=@AppConstants.Routes.Login>Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 

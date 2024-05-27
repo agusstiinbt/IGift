@@ -72,7 +72,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class
         {
-            await _js.InitializeInactivityTimer<T>(dotNetObjectReference);
+            await _js.InitializeInactivityTimer(dotNetObjectReference);
         }
     }
 }

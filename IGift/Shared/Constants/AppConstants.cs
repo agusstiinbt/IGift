@@ -19,6 +19,7 @@
         }
         public static class Routes
         {
+            public static string Home = "/";
             public static string Register = "/Register";
             public static string Logout = "/Logout";
             public static string Login = "/Login";
