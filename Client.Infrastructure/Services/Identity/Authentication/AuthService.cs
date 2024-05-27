@@ -41,6 +41,11 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             return await response.ToResult();
         }
 
+        /// <summary>
+        /// Genera un inicio de sesión en el servidor y si es exitoso guarda las credenciales del usuario en el cliente
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns>El resultado de la operación</returns>
         public async Task<IResult> Login(LoginModel loginModel)
         {
             var response = await _httpClient.PostAsJsonAsync(AppConstants.Users.LogIn, loginModel);
@@ -48,22 +53,35 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
             if (result.Succeeded)
             {
+                //separamos las propiedades
                 var token = result!.Data.Token;
+                var refreshToken = result!.Data.RefreshToken;
+                var userPicture = result!.Data.UserImageURL;
+
+                //gurdamos cada propiedad en el cliente
                 await _localStorage.SetItemAsync("authToken", token);
+                await _localStorage.SetItemAsync("refreshToken", refreshToken);
+                await _localStorage.SetItemAsync("userImage", userPicture);
+
+                //preparamos los headers con el token correcto
                 ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggin(token);
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Data.Token);
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
                 return await Result.SuccessAsync();
             }
 
-            return result;
+            return await Result.FailAsync("Error al iniciar sesión");
         }
 
+        /// <summary>
+        /// Removemos del cliente las credenciales obtenidas a través del token y se cierra la sesión del usuario
+        /// </summary>
+        /// <returns>Resultado de la operacion</returns>
         public async Task<IResult> Logout()
         {
             await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.AuthToken);
             await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.RefreshToken);
             await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.UserImageURL);
-            
+
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
             ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;

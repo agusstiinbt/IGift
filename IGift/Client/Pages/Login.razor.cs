@@ -2,21 +2,19 @@
 using IGift.Shared;
 using IGift.Shared.Operations.Login;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace IGift.Client.Pages
 {
     public partial class Login
     {
         [Inject] private IAuthService AuthService { get; set; }
+        [Inject] private ISnackbar _snackBar { get; set; }
 
         private LoginModel loginModel = new LoginModel();
-        private bool ShowErrors;
-        private string Error = "";
 
         private async Task HandleLogin()
         {
-            ShowErrors = false;
-
             var result = await AuthService.Login(loginModel);
 
             if (result.Succeeded)
@@ -25,8 +23,7 @@ namespace IGift.Client.Pages
             }
             else
             {
-                Error = result.Messages.First();
-                ShowErrors = true;
+                _snackBar.Add(result.Messages.FirstOrDefault(),Severity.Error);
             }
         }
     }
