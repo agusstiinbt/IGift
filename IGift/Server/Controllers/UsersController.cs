@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IGift.Application.Responses;
-using IGift.Shared.Operations.Login;
 using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
@@ -33,13 +32,13 @@ namespace IGift.Server.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<Result<TokenResponse>>> Login(LoginModel m)
+        public async Task<ActionResult<Result<TokenResponse>>> Login(UserLoginRequest m)
         {
             return Ok(await _tokenService.LoginAsync(m));
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<Result>> Register(ApplicationUserRequest m)
+        public async Task<ActionResult<Result>> Register(UserCreateRequest m)
         {
             return Ok(await _userService.RegisterAsync(m));
         }

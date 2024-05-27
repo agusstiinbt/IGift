@@ -10,7 +10,7 @@ namespace IGift.Client.Pages
         [Inject] private IAuthService _authService { get; set; }
         [Inject] private NavigationManager _nav { get; set; }
         [Inject] private ISnackbar _snackBar { get; set; }
-        private ApplicationUserRequest RegisterModel = new ApplicationUserRequest();
+        private UserCreateRequest RegisterModel = new UserCreateRequest();
 
         private async Task HandleRegistration()
         {

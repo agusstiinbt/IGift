@@ -3,7 +3,6 @@ using Client.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using IGift.Shared.Operations.Login;
 using IGift.Application.Responses;
 using IGift.Shared.Wrapper;
 using IGift.Application.Requests.Identity;
@@ -31,7 +30,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             _js = js;
         }
 
-        public async Task<IResult> Register(ApplicationUserRequest registerModel)
+        public async Task<IResult> Register(UserCreateRequest registerModel)
         {
             //using var content = new StringContent(JsonConvert.SerializeObject(registerModel), Encoding.UTF8, "application/json");
             //var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
@@ -46,7 +45,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         /// </summary>
         /// <param name="loginModel"></param>
         /// <returns>El resultado de la operación</returns>
-        public async Task<IResult> Login(LoginModel loginModel)
+        public async Task<IResult> Login(UserLoginRequest loginModel)
         {
             var response = await _httpClient.PostAsJsonAsync(AppConstants.Users.LogIn, loginModel);
             var result = await response.ToResult<TokenResponse>();

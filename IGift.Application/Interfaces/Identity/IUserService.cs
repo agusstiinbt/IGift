@@ -10,7 +10,7 @@ namespace IGift.Application.Interfaces.Identity
         Task<int> HowMany();
 
         Task<IResult<ApplicationUserResponse>> GetByIdAsync(int id);//fijarse si está bien poner un int Id
-        Task<IResult> RegisterAsync(ApplicationUserRequest model);
+        Task<IResult> RegisterAsync(UserCreateRequest model);
 
         Task<IResult> ChangeUserStatus(bool Active, string UserId);
 

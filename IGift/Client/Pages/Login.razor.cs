@@ -1,6 +1,6 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
+using IGift.Application.Requests.Identity;
 using IGift.Shared;
-using IGift.Shared.Operations.Login;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -11,7 +11,7 @@ namespace IGift.Client.Pages
         [Inject] private IAuthService AuthService { get; set; }
         [Inject] private ISnackbar _snackBar { get; set; }
 
-        private LoginModel loginModel = new LoginModel();
+        private UserLoginRequest loginModel = new UserLoginRequest();
 
         private async Task HandleLogin()
         {

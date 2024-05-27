@@ -2,7 +2,7 @@
 
 namespace IGift.Application.Requests.Identity
 {
-    public class ApplicationUserRequest
+    public class UserCreateRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -12,6 +12,7 @@ namespace IGift.Application.Requests.Identity
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+        //TODO hacer un confirmpassword estaba en el blazorhero
 
         [EmailAddress]
         [Display(Name = "Email")]

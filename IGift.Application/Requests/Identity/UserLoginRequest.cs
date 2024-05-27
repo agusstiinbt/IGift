@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IGift.Shared.Operations.Login
+namespace IGift.Application.Requests.Identity
 {
-    public class LoginModel//TODO reemplazar por la clase del Application
+    public class UserLoginRequest
     {
+        [EmailAddress]
         [Required]
         public string? Email { get; set; }
+
         [Required]
+        [DataType(DataType.Password)]
         public string? Password { get; set; }
     }
 }

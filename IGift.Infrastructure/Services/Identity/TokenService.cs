@@ -1,6 +1,5 @@
 ﻿using IGift.Application.Responses;
 using IGift.Infrastructure.Models;
-using IGift.Shared.Operations.Login;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -10,29 +9,28 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using IGift.Application.Interfaces.Identity;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using IGift.Application.Requests.Identity;
 
 namespace IGift.Infrastructure.Services.Identity
 {
     public class TokenService : ITokenService
     {
-        private readonly UserManager<Models.IGiftUser> _userManager;
+        private readonly UserManager<IGiftUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IGiftRole> _roleManager;
-        public TokenService(UserManager<Models.IGiftUser> userManager, IConfiguration configuration, RoleManager<IGiftRole> roleManager)
+        public TokenService(UserManager<IGiftUser> userManager, IConfiguration configuration, RoleManager<IGiftRole> roleManager)
         {
             _userManager = userManager;
             _configuration = configuration;
             _roleManager = roleManager;
         }
 
-        public async Task<Result<TokenResponse>> GetRefreshToken(LoginModel model)//TODO investigar para qué usa un refreshToken
+        public async Task<Result<TokenResponse>> GetRefreshToken(UserLoginRequest model)//TODO investigar para qué usa un refreshToken
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Result<TokenResponse>> LoginAsync(LoginModel model)
+        public async Task<Result<TokenResponse>> LoginAsync(UserLoginRequest model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email!);
 
@@ -80,7 +78,7 @@ namespace IGift.Infrastructure.Services.Identity
             return Convert.ToBase64String(randomNumber);
         }
 
-        private async Task<string> GenerateJwtAsync(Models.IGiftUser user)
+        private async Task<string> GenerateJwtAsync(IGiftUser user)
         {
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
             return token;
@@ -104,7 +102,7 @@ namespace IGift.Infrastructure.Services.Identity
             return new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<IEnumerable<Claim>> GetClaimsAsync(Models.IGiftUser user)
+        private async Task<IEnumerable<Claim>> GetClaimsAsync(IGiftUser user)
         {
             //TODO si vamos a hacer uso de los 'Permissions' fijarse el código de blazorHero
             //var userClaims = await _userManager.GetClaimsAsync(user);
@@ -127,6 +125,5 @@ namespace IGift.Infrastructure.Services.Identity
 
             return claims;
         }
-
     }
 }

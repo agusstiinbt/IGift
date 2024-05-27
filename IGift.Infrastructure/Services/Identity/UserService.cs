@@ -69,7 +69,7 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> RegisterAsync(ApplicationUserRequest model)//TODO este método debería de implementar las configuraciones para verificar Email y talvez la verificación en 2 pasos
+        public async Task<IResult> RegisterAsync(UserCreateRequest model)//TODO este método debería de implementar las configuraciones para verificar Email y talvez la verificación en 2 pasos
         {
             var verification = await VerifyRegistrationUser(model);
 
@@ -116,7 +116,7 @@ namespace IGift.Infrastructure.Services.Identity
         /// </summary>
         /// <param name="model"></param>
         /// <returns>Succeeded true si no existe, sino un wrapper con el mensaje correspondiente</returns>
-        private async Task<IResult> VerifyRegistrationUser(ApplicationUserRequest model)
+        private async Task<IResult> VerifyRegistrationUser(UserCreateRequest model)
         {
             var existsUserName = await _userManager.FindByNameAsync(model.UserName);
             if (existsUserName != null)

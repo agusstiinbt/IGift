@@ -7,8 +7,8 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 {
     public interface IAuthService
     {
-        Task<IResult> Register(ApplicationUserRequest model);
-        Task<IResult> Login(LoginModel loginModel);
+        Task<IResult> Register(UserCreateRequest model);
+        Task<IResult> Login(UserLoginRequest loginModel);
         Task<IResult> Logout();
         /// <summary>
         /// Este método se usa para activar una función en nuestro archivo scripts que se encarga de desloguer al usuario si se mantiene inactivo por un tiempo específico
