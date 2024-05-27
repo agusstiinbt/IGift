@@ -25,49 +25,49 @@ namespace IGift.Infrastructure.Services.Identity
             _roleManager = roleManager;
         }
 
-        public async Task<Result<TokenResponse>> GetRefreshToken(UserLoginRequest model)//TODO investigar para qué usa un refreshToken
+        public async Task<Result<ApplicationUserResponse>> GetRefreshToken(UserLoginRequest model)//TODO investigar para qué usa un refreshToken
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Result<TokenResponse>> LoginAsync(UserLoginRequest model)
+        public async Task<Result<ApplicationUserResponse>> LoginAsync(UserLoginRequest model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email!);
 
             if (user == null)
             {
-                return await Result<TokenResponse>.FailAsync("Email no encontrado.");
+                return await Result<ApplicationUserResponse>.FailAsync("Email no encontrado.");
             }
 
             //TODO: Dejar esto para decidir más adelante si lo usamos o no
             //if (!user.IsActive) 
             //{
-            //    return await Result<TokenResponse>.FailAsync("User no activo.Contacte al administrador.");
+            //    return await Result<ApplicationUserResponse>.FailAsync("User no activo.Contacte al administrador.");
             //}
 
             if (!user.EmailConfirmed)
             {
-                return await Result<TokenResponse>.FailAsync("E-Mail aún no confirmado.");
+                return await Result<ApplicationUserResponse>.FailAsync("E-Mail aún no confirmado.");
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password!);
             if (!passwordValid)
             {
-                return await Result<TokenResponse>.FailAsync("Contraseña inválida.");
+                return await Result<ApplicationUserResponse>.FailAsync("Contraseña inválida.");
             }
 
             user.RefreshToken = GenerateRefreshToken();
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
             await _userManager.UpdateAsync(user);
 
-            var response = new TokenResponse
+            var response = new ApplicationUserResponse
             {
                 Token = await GenerateJwtAsync(user),
                 RefreshToken = user.RefreshToken,
                 UserImageURL = user.ProfilePictureDataUrl
             };
 
-            return await Result<TokenResponse>.SuccessAsync(response);
+            return await Result<ApplicationUserResponse>.SuccessAsync(response);
         }
 
         private string GenerateRefreshToken()
@@ -121,7 +121,7 @@ namespace IGift.Infrastructure.Services.Identity
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(ClaimTypes.Email, user.Email)
             }.Union(roleClaims);
-            //TODO podemos tener claims específicos según el tipo de usuario. Lo mismo que hacían en OliAuto
+            // podemos tener claims específicos según el tipo de usuario. Lo mismo que hacían en OliAuto
 
             return claims;
         }

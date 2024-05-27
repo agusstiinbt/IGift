@@ -32,7 +32,7 @@ namespace IGift.Server.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<Result<TokenResponse>>> Login(UserLoginRequest m)
+        public async Task<ActionResult<Result<ApplicationUserResponse>>> Login(UserLoginRequest m)
         {
             return Ok(await _tokenService.LoginAsync(m));
         }

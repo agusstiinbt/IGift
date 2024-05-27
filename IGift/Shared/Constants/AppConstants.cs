@@ -36,7 +36,7 @@
                 public static string UserImageURL = "userImageURL";
             }
 
-            //TODO si vamos a tener constantes que utilicemos también en el servidor entonces además de Local, debemos tener una clase Server. Entonces todo esto debería de mudarse al proyecto Shared.
+            //podemos tener constantes que utilicemos también en el servidor entonces además de Local y para eso debemos tener una clase Server. 
         }
     }
 }

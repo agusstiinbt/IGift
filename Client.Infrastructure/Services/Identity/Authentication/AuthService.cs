@@ -48,7 +48,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
             var response = await _httpClient.PostAsJsonAsync(AppConstants.Users.LogIn, loginModel);
-            var result = await response.ToResult<TokenResponse>();
+            var result = await response.ToResult<ApplicationUserResponse>();
 
             if (result.Succeeded)
             {
@@ -56,11 +56,13 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 var token = result!.Data.Token;
                 var refreshToken = result!.Data.RefreshToken;
                 var userPicture = result!.Data.UserImageURL;
+                var time = result!.Data.RefreshTokenExpiryTime;
 
                 //gurdamos cada propiedad en el cliente
                 await _localStorage.SetItemAsync("authToken", token);
                 await _localStorage.SetItemAsync("refreshToken", refreshToken);
                 await _localStorage.SetItemAsync("userImage", userPicture);
+                await _localStorage.SetItemAsync("expiryTime", time);
 
                 //preparamos los headers con el token correcto
                 ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggin(token);
