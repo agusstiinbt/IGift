@@ -21,16 +21,9 @@ namespace IGift.Infrastructure
 
         public async void Initialize()
         {
-            try
-            {
-                AddAdministrator();
-                AddBasicUser();
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception();
-            }
+            AddAdministrator();
+            AddBasicUser();
+            await _context.SaveChangesAsync();
         }
 
         private void AddAdministrator()
