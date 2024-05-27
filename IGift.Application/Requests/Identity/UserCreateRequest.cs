@@ -8,11 +8,13 @@ namespace IGift.Application.Requests.Identity
         public string LastName { get; set; }
         public string UserName { get; set; }
 
-        [StringLength(100, ErrorMessage = "The {0} must be at leat {2} and at max {1} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Required]
+        [MinLength(6)]
         public string Password { get; set; }
-        //TODO hacer un confirmpassword estaba en el blazorhero
+
+        [Required]
+        [Compare(nameof(Password))]
+        public string ConfirmPassword { get; set; }
 
         [EmailAddress]
         [Display(Name = "Email")]

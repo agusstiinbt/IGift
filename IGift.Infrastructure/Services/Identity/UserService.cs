@@ -87,7 +87,7 @@ namespace IGift.Infrastructure.Services.Identity
                 EmailConfirmed = false,
                 PhoneNumber = model.PhoneNumber,
                 PhoneNumberConfirmed = false,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.Now,
             };
 
             var result = await _userManager.CreateAsync(newUser, model.Password);

@@ -1,12 +1,10 @@
 ﻿using IGift.Domain.Entities;
 using IGift.Infrastructure.Models;
-using IGift.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace IGift.Infrastructure.Data
 {
-    //TODO hacer que esta clase se encuentre en Infrastructure. Dejar un readme para saber cómo hacer las migraciones para que la carpeta migrations siempre esté dentro de la aplicación Infrastructure. Dedicar tiempo a esto y hacer commits para separa cuándo funcionó y cuándo no.
     public class ApplicationDbContext : IdentityDbContext<IGiftUser, IGiftRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IGiftRoleClaim, IdentityUserToken<string>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
