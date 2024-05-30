@@ -6,7 +6,6 @@ using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Services.Identity.Authentication;
 using Client.Infrastructure.Services.Identity.Users;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Client.Infrastructure.Services.Interceptor;
 using Blazored.LocalStorage;

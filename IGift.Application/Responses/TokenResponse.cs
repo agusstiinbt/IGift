@@ -1,5 +1,4 @@
 ﻿using IGift.Domain.Entities;
-using System.Text.Json.Serialization;
 
 namespace IGift.Application.Responses
 {

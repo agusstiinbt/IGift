@@ -10,7 +10,6 @@ using Client.Infrastructure.Extensions;
 using IGift.Shared;
 using Microsoft.JSInterop;
 using static IGift.Shared.AppConstants.Endpoints;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
