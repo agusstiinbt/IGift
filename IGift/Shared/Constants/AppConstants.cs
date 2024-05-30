@@ -16,11 +16,17 @@
                 private static string route = "api/Users/";
 
                 public static string GetAll = route + "GetAll";
-                public static string LogIn = route + "Login";
                 public static string Register = route + "Register";
             }
+
+            public static class Token
+            {
+                private static string route = "api/Token/";
+                public static string GetToken = route + "Login";
+                public static string RefreshToken = route + "RefreshToken";
+            }
         }
-      
+
         public static class Routes
         {
             public static string Home = "/";
@@ -38,6 +44,7 @@
                 public static string AuthToken = "authToken";
                 public static string RefreshToken = "refreshToken";
                 public static string UserImageURL = "userImageURL";
+                public static string ExpiryTime = "expiryTime";
             }
 
             //podemos tener constantes que utilicemos también en el servidor entonces además de Local y para eso debemos tener una clase Server. 

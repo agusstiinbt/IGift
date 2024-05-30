@@ -6,10 +6,10 @@ namespace IGift.Application.Interfaces.Identity
 {
     public interface IUserService
     {
-        Task<Result<List<ApplicationUserResponse>>> GetAllAsync();
+        Task<Result<List<TokenResponse>>> GetAllAsync();
         Task<int> HowMany();
 
-        Task<IResult<ApplicationUserResponse>> GetByIdAsync(int id);//fijarse si está bien poner un int Id
+        Task<IResult<TokenResponse>> GetByIdAsync(int id);//fijarse si está bien poner un int Id
         Task<IResult> RegisterAsync(UserCreateRequest model);
 
         Task<IResult> ChangeUserStatus(bool Active, string UserId);

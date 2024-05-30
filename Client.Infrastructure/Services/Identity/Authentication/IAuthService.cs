@@ -16,5 +16,12 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         /// <param name="dotNetObjectReference"></param>
         /// <returns></returns>
         Task Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class;
+
+        Task<string> RefreshToken();
+
+        Task<string> TryRefreshToken();
+
+        Task<string> TryForceRefreshToken();    
+
     }
 }

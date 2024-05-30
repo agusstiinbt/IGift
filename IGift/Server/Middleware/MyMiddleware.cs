@@ -27,7 +27,7 @@ namespace IGift.Server.Middleware
 
                 switch (error)
                 {
-                    //TODO agregar más excepciones
+
                     case KeyNotFoundException e:
                         // not found error
                         response.StatusCode = (int)HttpStatusCode.NotFound;

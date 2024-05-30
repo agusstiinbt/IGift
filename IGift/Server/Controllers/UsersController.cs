@@ -1,8 +1,6 @@
 ﻿using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using IGift.Application.Responses;
-using ITokenService = IGift.Application.Interfaces.Identity.ITokenService;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
 using IGift.Shared;
@@ -13,15 +11,12 @@ namespace IGift.Server.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ITokenService _tokenService;
         private readonly IUserService _userService;
 
-        public UsersController(ITokenService tokenService, IUserService userService)
+        public UsersController(IUserService userService)
         {
-            _tokenService = tokenService;
             _userService = userService;
         }
-
 
         [HttpGet("GetAll")]
         [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
@@ -31,16 +26,11 @@ namespace IGift.Server.Controllers
             return Ok(users);
         }
 
-        [HttpPost("Login")]
-        public async Task<ActionResult<Result<ApplicationUserResponse>>> Login(UserLoginRequest m)
-        {
-            return Ok(await _tokenService.LoginAsync(m));
-        }
-
         [HttpPost("Register")]
         public async Task<ActionResult<Result>> Register(UserCreateRequest m)
         {
             return Ok(await _userService.RegisterAsync(m));
         }
+      
     }
 }

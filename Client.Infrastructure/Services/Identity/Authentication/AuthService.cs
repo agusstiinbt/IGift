@@ -9,6 +9,8 @@ using IGift.Application.Requests.Identity;
 using Client.Infrastructure.Extensions;
 using IGift.Shared;
 using Microsoft.JSInterop;
+using static IGift.Shared.AppConstants.Endpoints;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -19,10 +21,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _js;
 
-        public AuthService(HttpClient httpClient,
-                           AuthenticationStateProvider authenticationStateProvider,
-                           ILocalStorageService localStorage,
-                           IJSRuntime js)
+        public AuthService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorage, IJSRuntime js)
         {
             _httpClient = httpClient;
             _authenticationStateProvider = authenticationStateProvider;
@@ -47,8 +46,8 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         /// <returns>El resultado de la operación</returns>
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.Users.LogIn, loginModel);
-            var result = await response.ToResult<ApplicationUserResponse>();
+            var response = await _httpClient.PostAsJsonAsync(Token.GetToken, loginModel);
+            var result = await response.ToResult<TokenResponse>();
 
             if (result.Succeeded)
             {
@@ -59,14 +58,17 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 var time = result!.Data.RefreshTokenExpiryTime;
 
                 //gurdamos cada propiedad en el cliente
-                await _localStorage.SetItemAsync("authToken", token);
-                await _localStorage.SetItemAsync("refreshToken", refreshToken);
-                await _localStorage.SetItemAsync("userImage", userPicture);
-                await _localStorage.SetItemAsync("expiryTime", time);
+                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.AuthToken, token);
+                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.RefreshToken, refreshToken);
+                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.UserImageURL, userPicture);
+                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.ExpiryTime, time.ToString());
+
 
                 //preparamos los headers con el token correcto
-                ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggin(token);
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+                await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
+
+                // _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+
                 return await Result.SuccessAsync();
             }
 
@@ -79,9 +81,9 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         /// <returns>Resultado de la operacion</returns>
         public async Task<IResult> Logout()
         {
-            await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.AuthToken);
-            await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.RefreshToken);
-            await _js.RemoverDelLocalStorage(AppConstants.StorageConstants.Local.UserImageURL);
+            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.AuthToken);
+            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.RefreshToken);
+            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.UserImageURL);
 
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
             ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
@@ -92,6 +94,65 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class
         {
             await _js.InitializeInactivityTimer(dotNetObjectReference);
+        }
+
+        //public async Task<string> RefreshToken()
+        //{
+        //    var token = await _js.ObtenerDeLocalStorage<string>(AppConstants.StorageConstants.Local.AuthToken);
+        //    var refreshToken = await _js.ObtenerDeLocalStorage<string>(AppConstants.StorageConstants.Local.RefreshToken);
+
+        //    return null;
+        //}
+
+        public async Task<string> TryRefreshToken()
+        {
+            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
+            if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
+
+            //var authState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync(); es lo mismo
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            var expiration = user.FindFirst(c => c.Type.Equals("exp"))?.Value;
+            var expirationTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(expiration));
+            var timeUTC = DateTime.UtcNow;
+
+            var diff = expirationTime - timeUTC;
+            if (diff.TotalMinutes <= 1)
+            {
+                return await RefreshToken();
+            }
+
+            return string.Empty;
+        }
+
+        public async Task<string> TryForceRefreshToken() => await RefreshToken();
+
+        public async Task<string> RefreshToken()
+        {
+            var token = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.AuthToken);
+            var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
+
+            //TODO fijarse si usar postasync o postasjsonasync
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.Token.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
+
+            var result = await response.ToResult<TokenResponse>();
+
+            if (!result.Succeeded)
+            {
+                //corroborar que este exception es capturado o no por alguien en el codigo de blazor Hero
+                throw new Exception("error al refrescar el token");
+            }
+
+            token = result.Data.Token;
+            refreshToken = result.Data.RefreshToken;
+
+            await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.AuthToken, token);
+            await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.RefreshToken, refreshToken);
+            //TODO fijarse si este código de abajo puede ser reemplazado con el StateChangedAsync
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return token;
         }
     }
 }

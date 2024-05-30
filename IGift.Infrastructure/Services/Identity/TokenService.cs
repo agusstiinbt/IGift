@@ -25,49 +25,81 @@ namespace IGift.Infrastructure.Services.Identity
             _roleManager = roleManager;
         }
 
-        public async Task<Result<ApplicationUserResponse>> GetRefreshToken(UserLoginRequest model)
+        public async Task<Result<TokenResponse>> GetRefreshTokenAsync(TokenRequest tRequest)
         {
-            throw new NotImplementedException();
+            string errorMessage = string.Empty;
+            if (tRequest == null) { return await Result<TokenResponse>.FailAsync("Token nulo"); }
+
+            var userPrincipal = GetPrincipalFromExpiredToken(tRequest.Token);
+            var userEmail = userPrincipal.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userEmail!);
+
+            if (user == null)
+            {
+                errorMessage = "Usuario no encontrado";
+            }
+            if (user.RefreshToken != tRequest.RefreshToken)
+            {
+                errorMessage = "token invalido";
+            }
+            if (user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                errorMessage = "El refresh token ya ha expirado";
+            }
+
+            var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
+            user.RefreshToken = GenerateRefreshToken();
+            await _userManager.UpdateAsync(user);
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                return await Result<TokenResponse>.FailAsync(errorMessage);
+            }
+
+            var response = new TokenResponse { Token = token, RefreshToken = user.RefreshToken, RefreshTokenExpiryTime = user.RefreshTokenExpiryTime };
+
+            return await Result<TokenResponse>.SuccessAsync(response);
         }
 
-        public async Task<Result<ApplicationUserResponse>> LoginAsync(UserLoginRequest model)
+        public async Task<Result<TokenResponse>> LoginAsync(UserLoginRequest model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email!);
 
             if (user == null)
             {
-                return await Result<ApplicationUserResponse>.FailAsync("Email no encontrado.");
+                return await Result<TokenResponse>.FailAsync("Email no encontrado.");
             }
 
             //TODO: Dejar esto para decidir más adelante si lo usamos o no
             //if (!user.IsActive) 
             //{
-            //    return await Result<ApplicationUserResponse>.FailAsync("User no activo.Contacte al administrador.");
+            //    return await Result<TokenResponse>.FailAsync("User no activo.Contacte al administrador.");
             //}
 
             if (!user.EmailConfirmed)
             {
-                return await Result<ApplicationUserResponse>.FailAsync("E-Mail aún no confirmado.");
+                return await Result<TokenResponse>.FailAsync("E-Mail aún no confirmado.");
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password!);
             if (!passwordValid)
             {
-                return await Result<ApplicationUserResponse>.FailAsync("Contraseña inválida.");
+                return await Result<TokenResponse>.FailAsync("Contraseña inválida.");
             }
 
             user.RefreshToken = GenerateRefreshToken();
-            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(3);
             await _userManager.UpdateAsync(user);
 
-            var response = new ApplicationUserResponse
+            var response = new TokenResponse
             {
                 Token = await GenerateJwtAsync(user),
                 RefreshToken = user.RefreshToken,
+                RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
                 UserImageURL = user.ProfilePictureDataUrl
             };
 
-            return await Result<ApplicationUserResponse>.SuccessAsync(response);
+            return await Result<TokenResponse>.SuccessAsync(response);
         }
 
         private string GenerateRefreshToken()
@@ -88,7 +120,8 @@ namespace IGift.Infrastructure.Services.Identity
         {
             var token = new JwtSecurityToken(
                claims: claims,
-               expires: DateTime.UtcNow.AddDays(2),
+               //expires: DateTime.UtcNow.AddDays(2),
+               expires: DateTime.Now.AddMinutes(1),
                signingCredentials: signingCredentials);
             var tokenHandler = new JwtSecurityTokenHandler();
             var encryptedToken = tokenHandler.WriteToken(token);
@@ -124,6 +157,31 @@ namespace IGift.Infrastructure.Services.Identity
             // podemos tener claims específicos según el tipo de usuario. Lo mismo que hacían en OliAuto
 
             return claims;
+        }
+
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var Key = Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]!);
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new Exception("token invalido");
+            }
+
+            return principal;
+
         }
     }
 }

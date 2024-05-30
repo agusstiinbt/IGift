@@ -5,6 +5,6 @@ namespace Client.Infrastructure.Services.Identity.Users
 {
     public interface IUserManager
     {
-        Task<IResult<List<ApplicationUserResponse>>> GetUsersAsync();
+        Task<IResult> GetUsersAsync();
     }
 }

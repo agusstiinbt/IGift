@@ -17,12 +17,24 @@ namespace Client.Infrastructure.Services.Identity.Users
             _js = js;
         }
 
-        public async Task<IResult<List<ApplicationUserResponse>>> GetUsersAsync()
+        public async Task<IResult> GetUsersAsync()
         {
             //TODO el applicationUSerResponse debe cargar la lista de giftcards ordenadas primero por activas y fecha de creación
-            var response = await _http.GetAsync(AppConstants.Endpoints.Users.GetAll);
-            var result = await response.Content.ReadFromJsonAsync<Result<List<ApplicationUserResponse>>>();
-            return result!;
+            try
+            {
+                var response = await _http.GetAsync(AppConstants.Endpoints.Users.GetAll);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<Result<List<TokenResponse>>>();
+                }
+                return await Result.FailAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return null; 
         }
     }
 }

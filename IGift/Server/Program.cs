@@ -57,6 +57,7 @@ builder.Services
         ValidateLifetime = true,
         ValidIssuer = builder.Configuration["JwtIssuer"],
         ValidAudience = builder.Configuration["JwtAudience"],
+        ClockSkew = TimeSpan.Zero//Para más información sobre esto leer el README
     };
 });
 
@@ -106,7 +107,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-//app.UseMiddleware<MyMiddleware>();
+app.UseMiddleware<MyMiddleware>();
 
 
 app.MapControllers();

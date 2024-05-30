@@ -7,8 +7,8 @@
     function resetTimer() {
         clearTimeout(timer);
         clearTimeout(timerMessage);
-        timer = setTimeout(Logout, 90000);
-        timerMessage = setTimeout(ShowMessage, 75000);
+        timer = setTimeout(Logout, 180000);
+        timerMessage = setTimeout(ShowMessage,160000);
     }
 
     function Logout() {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
+using Client.Infrastructure.Services.Interceptor;
 
 namespace IGift.Client.Shared
 {
@@ -14,10 +15,12 @@ namespace IGift.Client.Shared
 
         [Inject] private IAuthService AuthService { get; set; }
         [Inject] private ISnackbar _snack { get; set; }
+        [Inject] private IHttpInterceptorManager _interceptor { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await AuthService.Disconnect(DotNetObjectReference.Create(this));
+            _interceptor.RegisterEvent();
         }
 
         [JSInvokable]

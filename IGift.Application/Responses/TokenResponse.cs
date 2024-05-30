@@ -1,13 +1,15 @@
 ﻿using IGift.Domain.Entities;
+using System.Text.Json.Serialization;
 
 namespace IGift.Application.Responses
 {
-    public class ApplicationUserResponse
+    public class TokenResponse
     {
         public string Token { get; set; }
         public string RefreshToken { get; set; }
         public string UserImageURL { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
+        //TODO [JsonIgnore]?
         public ICollection<GiftCard>? GiftCards { get; set; }
     }
 }
