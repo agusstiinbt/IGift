@@ -1,6 +1,7 @@
-﻿using IGift.Application.Responses;
-using IGift.Shared.Wrapper;
-using IGift.Application.Requests.Identity;
+﻿using IGift.Shared.Wrapper;
+using IGift.Application.Responses.Token;
+using IGift.Application.Requests.Token;
+using IGift.Application.Requests.Users;
 namespace IGift.Application.Interfaces.Identity
 {
     public interface ITokenService

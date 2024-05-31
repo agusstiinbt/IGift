@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Requests.Identity
+﻿namespace IGift.Application.Requests.Identity.Token
 {
     public class TokenRequest
     {

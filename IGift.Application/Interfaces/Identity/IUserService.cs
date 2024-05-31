@@ -1,5 +1,7 @@
 ﻿using IGift.Application.Requests.Identity;
-using IGift.Application.Responses;
+using IGift.Application.Requests.Users;
+using IGift.Application.Responses.Token;
+using IGift.Application.Responses.Users;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Identity

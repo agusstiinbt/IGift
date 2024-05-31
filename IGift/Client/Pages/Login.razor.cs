@@ -1,5 +1,5 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
-using IGift.Application.Requests.Identity;
+using IGift.Application.Requests.Identity.Users;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;

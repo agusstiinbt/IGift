@@ -1,6 +1,7 @@
 ﻿using IGift.Application.Interfaces.Identity;
-using IGift.Application.Requests.Identity;
-using IGift.Application.Responses;
+using IGift.Application.Requests.Token;
+using IGift.Application.Requests.Users;
+using IGift.Application.Responses.Token;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,4 @@
-﻿using IGift.Application.Responses;
-using IGift.Infrastructure.Models;
+﻿using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +8,9 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using IGift.Application.Interfaces.Identity;
-using IGift.Application.Requests.Identity;
+using IGift.Application.Responses.Token;
+using IGift.Application.Requests.Token;
+using IGift.Application.Requests.Users;
 
 namespace IGift.Infrastructure.Services.Identity
 {

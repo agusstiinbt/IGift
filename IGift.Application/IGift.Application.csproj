@@ -11,4 +11,9 @@
     <ProjectReference Include="..\IGift\Shared\IGift.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Requests\Chat\" />
+    <Folder Include="Responses\Chat\" />
+  </ItemGroup>
+
 </Project>

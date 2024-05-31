@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
-using IGift.Application.Responses;
+using IGift.Application.Requests.Users;
+using IGift.Application.Responses.Token;
+using IGift.Application.Responses.Users;
 using IGift.Infrastructure.Models;
 using IGift.Shared;
 using IGift.Shared.Wrapper;

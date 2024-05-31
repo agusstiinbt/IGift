@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IGift.Application.Requests.Identity
+namespace IGift.Application.Requests.Identity.Users
 {
     public class UserLoginRequest
     {

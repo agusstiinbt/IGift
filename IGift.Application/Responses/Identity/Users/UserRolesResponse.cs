@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Responses
+﻿namespace IGift.Application.Responses.Users
 {
     public class UserRolesResponse
     {
