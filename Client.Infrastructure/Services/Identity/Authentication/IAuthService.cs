@@ -21,7 +21,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         Task<string> TryRefreshToken();
 
-        Task<string> TryForceRefreshToken();    
+        Task<string> TryForceRefreshToken();
 
     }
 }

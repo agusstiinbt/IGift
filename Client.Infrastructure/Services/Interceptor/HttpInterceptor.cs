@@ -40,6 +40,7 @@ namespace Client.Infrastructure.Services.Interceptor
                 {
                     Console.WriteLine(ex.Message);
                     _snackBar.Add("Sesión terminada", Severity.Error);
+                    await Task.Delay(4000);
                     await _authService.Logout();
                     _navigationManager.NavigateTo(AppConstants.Routes.Home);
                 }

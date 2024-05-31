@@ -47,14 +47,14 @@ namespace IGift.Infrastructure.Services.Identity
                 errorMessage = "El refresh token ya ha expirado";
             }
 
-            var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
-            user.RefreshToken = GenerateRefreshToken();
-            await _userManager.UpdateAsync(user);
-
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 return await Result<TokenResponse>.FailAsync(errorMessage);
             }
+
+            var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
+            user.RefreshToken = GenerateRefreshToken();
+            await _userManager.UpdateAsync(user);
 
             var response = new TokenResponse { Token = token, RefreshToken = user.RefreshToken, RefreshTokenExpiryTime = user.RefreshTokenExpiryTime };
 
@@ -88,7 +88,7 @@ namespace IGift.Infrastructure.Services.Identity
             }
 
             user.RefreshToken = GenerateRefreshToken();
-            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(3);
+            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5);
             await _userManager.UpdateAsync(user);
 
             var response = new TokenResponse
@@ -120,8 +120,7 @@ namespace IGift.Infrastructure.Services.Identity
         {
             var token = new JwtSecurityToken(
                claims: claims,
-               //expires: DateTime.UtcNow.AddDays(2),
-               expires: DateTime.Now.AddMinutes(1),
+               expires: DateTime.UtcNow.AddMinutes(2),
                signingCredentials: signingCredentials);
             var tokenHandler = new JwtSecurityTokenHandler();
             var encryptedToken = tokenHandler.WriteToken(token);
@@ -169,7 +168,7 @@ namespace IGift.Infrastructure.Services.Identity
                 IssuerSigningKey = new SymmetricSecurityKey(Key),
                 ValidateIssuer = false,
                 ValidateAudience = false,
-                ValidateLifetime = true,
+                ValidateLifetime = false,//Esto se deja en false (por lo menos en este método y no en el program.cs) porque al dejarlo en true si recibimos un token expirado, que es justamente la idea de este método, nos va a arrojar una excepcion de tipo TokenExpiredException
                 ClockSkew = TimeSpan.Zero
             };
 

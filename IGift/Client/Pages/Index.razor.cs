@@ -10,10 +10,6 @@ namespace IGift.Client.Pages
         public async void HandleSubmit()
         {
             var result= await _userManager.GetUsersAsync();
-            if (result.Succeeded)
-            {
-
-            }
         }
     }
 }

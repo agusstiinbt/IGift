@@ -25,7 +25,7 @@ namespace Client.Infrastructure.Services.Identity.Users
                 var response = await _http.GetAsync(AppConstants.Endpoints.Users.GetAll);
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadFromJsonAsync<Result<List<TokenResponse>>>();
+                    //var result = await response.Content.ReadFromJsonAsync<Result<List<TokenResponse>>>();
                 }
                 return await Result.FailAsync();
             }

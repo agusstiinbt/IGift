@@ -22,8 +22,8 @@ namespace IGift.Server.Controllers
         [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
         public async Task<ActionResult> GetAll()
         {
-            var users = await _userService.GetAllAsync();
-            return Ok(users);
+           // var users = await _userService.GetAllAsync();
+            return Ok();
         }
 
         [HttpPost("Register")]

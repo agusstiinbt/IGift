@@ -10,6 +10,7 @@ using Client.Infrastructure.Extensions;
 using IGift.Shared;
 using Microsoft.JSInterop;
 using static IGift.Shared.AppConstants.Endpoints;
+using MudBlazor;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -19,13 +20,15 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _js;
+        private readonly ISnackbar _snackBar;
 
-        public AuthService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorage, IJSRuntime js)
+        public AuthService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorage, IJSRuntime js, ISnackbar snackBar)
         {
             _httpClient = httpClient;
             _authenticationStateProvider = authenticationStateProvider;
             _localStorage = localStorage;
             _js = js;
+            _snackBar = snackBar;
         }
 
         public async Task<IResult> Register(UserCreateRequest registerModel)
@@ -87,6 +90,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
             ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;
+
             return await Result.SuccessAsync();
         }
 
@@ -133,13 +137,11 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
 
             //TODO fijarse si usar postasync o postasjsonasync
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.Token.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
-
+            var response = await _httpClient.PostAsJsonAsync(Token.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
             var result = await response.ToResult<TokenResponse>();
 
             if (!result.Succeeded)
             {
-                //corroborar que este exception es capturado o no por alguien en el codigo de blazor Hero
                 throw new Exception("error al refrescar el token");
             }
 
