@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IGift.Application.Interfaces.Identity;
 using IGift.Shared;
-using IGift.Application.Requests.Users;
+using IGift.Application.Requests.Identity.Users;
 
 namespace IGift.Server.Controllers
 {

@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using IGift.Shared.Wrapper;
-using IGift.Application.Requests.Identity;
 using Client.Infrastructure.Extensions;
 using IGift.Shared;
 using Microsoft.JSInterop;
 using static IGift.Shared.AppConstants.Endpoints;
 using MudBlazor;
-using IGift.Application.Responses.Token;
-using IGift.Application.Requests.Users;
+using IGift.Application.Requests.Identity.Users;
+using IGift.Application.Responses;
+using IGift.Application.Requests.Identity.Token;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {

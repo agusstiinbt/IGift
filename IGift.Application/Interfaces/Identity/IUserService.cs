@@ -1,6 +1,6 @@
 ﻿using IGift.Application.Requests.Identity;
-using IGift.Application.Requests.Users;
-using IGift.Application.Responses.Token;
+using IGift.Application.Requests.Identity.Users;
+using IGift.Application.Responses;
 using IGift.Application.Responses.Users;
 using IGift.Shared.Wrapper;
 
