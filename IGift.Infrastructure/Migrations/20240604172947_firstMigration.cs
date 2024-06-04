@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IGift.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class firstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -100,7 +100,7 @@ namespace IGift.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_UsersController", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,7 +182,7 @@ namespace IGift.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_Users_UserId",
+                        name: "FK_AspNetUserRoles_UsersController_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
                         principalTable: "UsersController",
@@ -205,7 +205,7 @@ namespace IGift.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserClaims_Users_UserId",
+                        name: "FK_UserClaims_UsersController_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
                         principalTable: "UsersController",
@@ -227,7 +227,7 @@ namespace IGift.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_UserLogins_Users_UserId",
+                        name: "FK_UserLogins_UsersController_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
                         principalTable: "UsersController",
@@ -249,7 +249,7 @@ namespace IGift.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_UserTokens_Users_UserId",
+                        name: "FK_UserTokens_UsersController_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
                         principalTable: "UsersController",

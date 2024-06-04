@@ -68,7 +68,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 return await Result.SuccessAsync();
             }
 
-            return await Result.FailAsync("Error al iniciar sesión");
+            return result;
         }
 
         public async Task<IResult> Logout()

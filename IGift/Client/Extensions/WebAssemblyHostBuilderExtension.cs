@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Client.Infrastructure.Services.Interceptor;
 using Blazored.LocalStorage;
+using System.Globalization;
 
 namespace IGift.Client.Extensions
 {
@@ -59,7 +60,7 @@ namespace IGift.Client.Extensions
             .AddHttpClient(ClientName, client =>
             {
                 client.DefaultRequestHeaders.AcceptLanguage.Clear();
-                //client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName)
+                client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
                 client.BaseAddress = new Uri(b.HostEnvironment.BaseAddress);
             });
 

@@ -22,8 +22,10 @@ namespace IGift.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+            var user = state.User;
+           
 
-            if (state != new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())))
+            if (state != null && user.Identity.IsAuthenticated)
             {
                 _navigationManager.NavigateTo("/");
             }
