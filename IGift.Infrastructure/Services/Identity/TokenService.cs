@@ -18,7 +18,7 @@ namespace IGift.Infrastructure.Services.Identity
     {
         private readonly UserManager<IGiftUser> _userManager;
         private readonly IConfiguration _configuration;
-        private readonly RoleManager<IGiftRole> _roleManager;
+        private readonly RoleManager<IGiftRole> _roleManager;//TODO implementar
         public TokenService(UserManager<IGiftUser> userManager, IConfiguration configuration, RoleManager<IGiftRole> roleManager)
         {
             _userManager = userManager;
@@ -26,10 +26,16 @@ namespace IGift.Infrastructure.Services.Identity
             _roleManager = roleManager;
         }
 
-        public async Task<Result<TokenResponse>> GetRefreshTokenAsync(TokenRequest tRequest)
+
+        /// <summary>
+        /// Renueva el tiempo de expiración del token del usuario según el tiempo de expiración del Refresh TokenController. Si este último ya expiró entonces no se podrá renovar el token y el usuario deberá volver a loguearse
+        /// </summary>
+        /// <param name="tRequest"></param>
+        /// <returns></returns>
+        public async Task<Result<LoginResponse>> RefreshUserToken(TokenRequest tRequest)
         {
             string errorMessage = string.Empty;
-            if (tRequest == null) { return await Result<TokenResponse>.FailAsync("Token nulo"); }
+            if (tRequest == null) { return await Result<LoginResponse>.FailAsync("TokenController nulo"); }
 
             var userPrincipal = GetPrincipalFromExpiredToken(tRequest.Token);
             var userEmail = userPrincipal.FindFirstValue(ClaimTypes.Email);
@@ -50,59 +56,71 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                return await Result<TokenResponse>.FailAsync(errorMessage);
+                return await Result<LoginResponse>.FailAsync(errorMessage);
             }
 
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
             user.RefreshToken = GenerateRefreshToken();
             await _userManager.UpdateAsync(user);
+            
+            //TODO implementar la imagen url
+            var response = new LoginResponse { Token = token, RefreshToken = user.RefreshToken, UserImageURL = "" };
 
-            var response = new TokenResponse { Token = token, RefreshToken = user.RefreshToken, RefreshTokenExpiryTime = user.RefreshTokenExpiryTime };
-
-            return await Result<TokenResponse>.SuccessAsync(response);
+            return await Result<LoginResponse>.SuccessAsync(response);
         }
 
-        public async Task<Result<TokenResponse>> LoginAsync(UserLoginRequest model)
+        /// <summary>
+        /// Intenta un login con credenciales de usuario. Si es exitoso genera un LoginResponse con un TokenController y un Refresh TokenController cada uno con un tiempo de expiración distinta y otras propiedades que correspondan al usuario como la foto de perfil y la lista de GiftCards
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<Result<LoginResponse>> LoginAsync(UserLoginRequest model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email!);
 
             if (user == null)
             {
-                return await Result<TokenResponse>.FailAsync("Email no encontrado.");
+                return await Result<LoginResponse>.FailAsync("Email no encontrado.");
             }
 
             //TODO: Dejar esto para decidir más adelante si lo usamos o no
             //if (!user.IsActive) 
             //{
-            //    return await Result<TokenResponse>.FailAsync("User no activo.Contacte al administrador.");
+            //    return await Result<LoginResponse>.FailAsync("User no activo.Contacte al administrador.");
             //}
 
             if (!user.EmailConfirmed)
             {
-                return await Result<TokenResponse>.FailAsync("E-Mail aún no confirmado.");
+                return await Result<LoginResponse>.FailAsync("E-Mail aún no confirmado.");
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password!);
             if (!passwordValid)
             {
-                return await Result<TokenResponse>.FailAsync("Contraseña inválida.");
+                return await Result<LoginResponse>.FailAsync("Contraseña inválida.");
             }
 
             user.RefreshToken = GenerateRefreshToken();
             user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5);
             await _userManager.UpdateAsync(user);
 
-            var response = new TokenResponse
+            var response = new LoginResponse
             {
                 Token = await GenerateJwtAsync(user),
                 RefreshToken = user.RefreshToken,
-                RefreshTokenExpiryTime = user.RefreshTokenExpiryTime,
                 UserImageURL = user.ProfilePictureDataUrl
             };
 
-            return await Result<TokenResponse>.SuccessAsync(response);
+            return await Result<LoginResponse>.SuccessAsync(response);
         }
 
+        #region Private
+
+
+        /// <summary>
+        /// Genera un string aleatorio que funciona como RefreshToken
+        /// </summary>
+        /// <returns></returns>
         private string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
@@ -110,13 +128,22 @@ namespace IGift.Infrastructure.Services.Identity
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
-
+        /// <summary>
+        /// Generación del token en base a un usuario. Este método llama a otros 2 métodos privado
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private async Task<string> GenerateJwtAsync(IGiftUser user)
         {
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
             return token;
         }
-
+        /// <summary>
+        /// Genera un JWT encriptado con los claims personalizados(GetClaimsAsync) y con un tiempo de duración específico
+        /// </summary>
+        /// <param name="signingCredentials"></param>
+        /// <param name="claims"></param>
+        /// <returns></returns>
         private string GenerateEncryptedToken(SigningCredentials signingCredentials, IEnumerable<Claim> claims)
         {
             var token = new JwtSecurityToken(
@@ -128,6 +155,10 @@ namespace IGift.Infrastructure.Services.Identity
             return encryptedToken;
         }
 
+        /// <summary>
+        /// Devuelve las credenciales de seguridad para generar un JWT
+        /// </summary>
+        /// <returns></returns>
         private SigningCredentials GetSigningCredentials()
         {
             var Key = Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]!);
@@ -135,6 +166,11 @@ namespace IGift.Infrastructure.Services.Identity
             return new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256);
         }
 
+        /// <summary>
+        /// Genera una colección de Claims para un token
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private async Task<IEnumerable<Claim>> GetClaimsAsync(IGiftUser user)
         {
             //TODO si vamos a hacer uso de los 'Permissions' fijarse el código de blazorHero
@@ -159,6 +195,12 @@ namespace IGift.Infrastructure.Services.Identity
             return claims;
         }
 
+        /// <summary>
+        /// Cuando debemos de renovar el token este método se encarga de devolver los claims del token recibido como parámetro
+        /// </summary>
+        /// <param name="token">TokenController (no refreshToken) a desencriptar</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Claims del usuario</exception>
         private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var Key = Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]!);
@@ -181,7 +223,8 @@ namespace IGift.Infrastructure.Services.Identity
             }
 
             return principal;
-
         }
+
+        #endregion
     }
 }

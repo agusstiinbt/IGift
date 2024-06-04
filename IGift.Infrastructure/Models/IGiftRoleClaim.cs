@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IGift.Infrastructure.Models
 {
+    //TODO el <int> debería de ser un <string>?
     public class IGiftRoleClaim : IdentityRoleClaim<string>, IAuditableEntity<int>
     {
         public string Description { get; set; }

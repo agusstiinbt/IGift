@@ -32,7 +32,7 @@ namespace Client.Infrastructure.Services.Interceptor
                     var token = await _authService.TryRefreshToken();
                     if (!string.IsNullOrEmpty(token))
                     {
-                        _snackBar.Add("Token refrescado", Severity.Success);
+                        _snackBar.Add("TokenController refrescado", Severity.Success);
                         e.Request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     }
                 }

@@ -49,15 +49,15 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public async Task<Result<List<TokenResponse>>> GetAllAsync()
+        public async Task<Result<List<LoginResponse>>> GetAllAsync()
         {
             //TODO completar
             var users = await _userManager.Users.ToListAsync();
-            var result = _mapper.Map<List<TokenResponse>>(users);
-            return await Result<List<TokenResponse>>.SuccessAsync(result);
+            var result = _mapper.Map<List<LoginResponse>>(users);
+            return await Result<List<LoginResponse>>.SuccessAsync(result);
         }
 
-        public async Task<IResult<TokenResponse>> GetByIdAsync(int id)
+        public async Task<IResult<LoginResponse>> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }

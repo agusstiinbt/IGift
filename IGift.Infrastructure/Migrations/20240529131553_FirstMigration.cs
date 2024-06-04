@@ -69,7 +69,7 @@ namespace IGift.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "UsersController",
                 schema: "Identity",
                 columns: table => new
                 {
@@ -185,7 +185,7 @@ namespace IGift.Infrastructure.Migrations
                         name: "FK_AspNetUserRoles_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
-                        principalTable: "Users",
+                        principalTable: "UsersController",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -208,7 +208,7 @@ namespace IGift.Infrastructure.Migrations
                         name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
-                        principalTable: "Users",
+                        principalTable: "UsersController",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -230,7 +230,7 @@ namespace IGift.Infrastructure.Migrations
                         name: "FK_UserLogins_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
-                        principalTable: "Users",
+                        principalTable: "UsersController",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -252,7 +252,7 @@ namespace IGift.Infrastructure.Migrations
                         name: "FK_UserTokens_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Identity",
-                        principalTable: "Users",
+                        principalTable: "UsersController",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -302,13 +302,13 @@ namespace IGift.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 schema: "Identity",
-                table: "Users",
+                table: "UsersController",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 schema: "Identity",
-                table: "Users",
+                table: "UsersController",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
@@ -350,7 +350,7 @@ namespace IGift.Infrastructure.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "Users",
+                name: "UsersController",
                 schema: "Identity");
         }
     }

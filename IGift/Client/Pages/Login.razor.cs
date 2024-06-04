@@ -1,17 +1,33 @@
-﻿using Client.Infrastructure.Services.Identity.Authentication;
+﻿using Client.Infrastructure.Authentication;
+using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using System.Security.Claims;
 
 namespace IGift.Client.Pages
 {
     public partial class Login
     {
-        [Inject] private IAuthService AuthService { get; set; }
-        [Inject] private ISnackbar _snackBar { get; set; }
+        [Inject] private IAuthService? AuthService { get; set; }
+        [Inject] private ISnackbar? _snackBar { get; set; }
+        [Inject] private NavigationManager _navigationManager { get; set; }
+
+        [Inject] private AuthenticationStateProvider? _authenticationStateProvider { get; set; }
+
 
         private UserLoginRequest loginModel = new UserLoginRequest();
+        protected override async Task OnInitializedAsync()
+        {
+            var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+
+            if (state != new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())))
+            {
+                _navigationManager.NavigateTo("/");
+            }
+        }
 
         private async Task HandleLogin()
         {
@@ -23,7 +39,7 @@ namespace IGift.Client.Pages
             }
             else
             {
-                _snackBar.Add(result.Messages.FirstOrDefault(),Severity.Error);
+                _snackBar.Add(result.Messages.FirstOrDefault(), Severity.Error);
             }
         }
     }

@@ -11,18 +11,18 @@
 
         public static class Endpoints
         {
-            public static class Users
+            public static class UsersController
             {
-                private static string route = "api/Users/";
+                private static string route = "api/UsersController/";
 
                 public static string GetAll = route + "GetAll";
                 public static string Register = route + "Register";
             }
 
-            public static class Token
+            public static class TokenController
             {
-                private static string route = "api/Token/";
-                public static string GetToken = route + "Login";
+                private static string route = "api/TokenController/";
+                public static string LogIn = route + "Login";
                 public static string RefreshToken = route + "RefreshToken";
             }
         }

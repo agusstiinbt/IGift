@@ -35,22 +35,17 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Register(UserCreateRequest registerModel)
         {
             //using var content = new StringContent(JsonConvert.SerializeObject(registerModel), Encoding.UTF8, "application/json");
-            //var response = await _httpClient.PostAsJsonAsync(Endpoints.Users.Register, registerModel);
+            //var response = await _httpClient.PostAsJsonAsync(Endpoints.UsersController.Register, registerModel);
             //var result = await response.Content.ReadFromJsonAsync<IResult>();
             //return result!;
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.Users.Register, registerModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.UsersController.Register, registerModel);
             return await response.ToResult();
         }
 
-        /// <summary>
-        /// Genera un inicio de sesión en el servidor y si es exitoso guarda las credenciales del usuario en el cliente
-        /// </summary>
-        /// <param name="loginModel"></param>
-        /// <returns>El resultado de la operación</returns>
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(Token.GetToken, loginModel);
-            var result = await response.ToResult<TokenResponse>();
+            var response = await _httpClient.PostAsJsonAsync(TokenController.LogIn, loginModel);
+            var result = await response.ToResult<LoginResponse>();
 
             if (result.Succeeded)
             {
@@ -58,13 +53,11 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 var token = result!.Data.Token;
                 var refreshToken = result!.Data.RefreshToken;
                 var userPicture = result!.Data.UserImageURL;
-                var time = result!.Data.RefreshTokenExpiryTime;
 
                 //gurdamos cada propiedad en el cliente
                 await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.AuthToken, token);
                 await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.RefreshToken, refreshToken);
                 await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.UserImageURL, userPicture);
-                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.ExpiryTime, time.ToString());
 
 
                 //preparamos los headers con el token correcto
@@ -78,19 +71,10 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             return await Result.FailAsync("Error al iniciar sesión");
         }
 
-        /// <summary>
-        /// Removemos del cliente las credenciales obtenidas a través del token y se cierra la sesión del usuario
-        /// </summary>
-        /// <returns>Resultado de la operacion</returns>
         public async Task<IResult> Logout()
         {
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.AuthToken);
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.RefreshToken);
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.UserImageURL);
-
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
-            ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+            await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
 
             return await Result.SuccessAsync();
         }
@@ -100,18 +84,10 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             await _js.InitializeInactivityTimer(dotNetObjectReference);
         }
 
-        //public async Task<string> RefreshToken()
-        //{
-        //    var token = await _js.ObtenerDeLocalStorage<string>(AppConstants.StorageConstants.Local.AuthToken);
-        //    var refreshToken = await _js.ObtenerDeLocalStorage<string>(AppConstants.StorageConstants.Local.RefreshToken);
-
-        //    return null;
-        //}
-
         public async Task<string> TryRefreshToken()
         {
-            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
-            if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
+            //var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
+            //if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
 
             //var authState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync(); es lo mismo
             var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
@@ -138,8 +114,8 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
 
             //TODO fijarse si usar postasync o postasjsonasync
-            var response = await _httpClient.PostAsJsonAsync(Token.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
-            var result = await response.ToResult<TokenResponse>();
+            var response = await _httpClient.PostAsJsonAsync(TokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
+            var result = await response.ToResult<LoginResponse>();
 
             if (!result.Succeeded)
             {
@@ -151,8 +127,9 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
             await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.AuthToken, token);
             await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.RefreshToken, refreshToken);
-            //TODO fijarse si este código de abajo puede ser reemplazado con el StateChangedAsync
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+
+            await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
 
             return token;
         }

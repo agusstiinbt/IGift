@@ -1,5 +1,6 @@
 ﻿namespace IGift.Application.Responses.Users
 {
+    //TODO implementar?
     public class UserRolesResponse
     {
         public List<UserRoleModel> UserRoles { get; set; } = new();

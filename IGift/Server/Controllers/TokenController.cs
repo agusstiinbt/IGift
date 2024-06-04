@@ -19,7 +19,7 @@ namespace IGift.Server.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<Result<TokenResponse>>> Login(UserLoginRequest m)
+        public async Task<ActionResult<Result<LoginResponse>>> Login(UserLoginRequest m)
         {
             return Ok(await _tokenService.LoginAsync(m));
         }
@@ -27,7 +27,7 @@ namespace IGift.Server.Controllers
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<Result>> RefreshToken(TokenRequest t)
         {
-            var response = await _tokenService.GetRefreshTokenAsync(t);
+            var response = await _tokenService.RefreshUserToken(t);
             return Ok(response);
         }
     }

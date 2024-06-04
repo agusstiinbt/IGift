@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace IGift.Infrastructure.Data
 {
+    //TODO el string después de IGiftRole debería ser string o int? Fijarse en blazorHero
     public class ApplicationDbContext : IdentityDbContext<IGiftUser, IGiftRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IGiftRoleClaim, IdentityUserToken<string>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -36,7 +37,7 @@ namespace IGift.Infrastructure.Data
 
             builder.Entity<IGiftUser>(entity =>
             {
-                entity.ToTable(name: "Users", "Identity");
+                entity.ToTable(name: "UsersController", "Identity");
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
             });
 
