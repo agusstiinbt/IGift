@@ -10,6 +10,7 @@ using IGift.Infrastructure.Services.Identity;
 using IGift.Application.Interfaces;
 using IGift.Infrastructure;
 using IGift.Server.Middleware;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 //transients
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
+
+//Mapeo
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 
 var app = builder.Build();
 
