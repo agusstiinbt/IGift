@@ -1,6 +1,7 @@
 ﻿using IGift.Application.Requests.Identity;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses;
+using IGift.Application.Responses.Identity.Users;
 using IGift.Application.Responses.Users;
 using IGift.Shared.Wrapper;
 
@@ -8,10 +9,10 @@ namespace IGift.Application.Interfaces.Identity
 {
     public interface IUserService
     {
-        Task<Result<List<LoginResponse>>> GetAllAsync();
+        Task<Result<List<UserResponse>>> GetAllAsync();
         Task<int> HowMany();
 
-        Task<IResult<LoginResponse>> GetByIdAsync(int id);//fijarse si está bien poner un int Id
+        Task<IResult<LoginResponse>> GetByIdAsync(string id);
         Task<IResult> RegisterAsync(UserCreateRequest model);
 
         Task<IResult> ChangeUserStatus(bool Active, string UserId);

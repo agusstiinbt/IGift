@@ -3,6 +3,7 @@ using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses;
+using IGift.Application.Responses.Identity.Users;
 using IGift.Application.Responses.Users;
 using IGift.Infrastructure.Models;
 using IGift.Shared;
@@ -28,7 +29,6 @@ namespace IGift.Infrastructure.Services.Identity
             //_mapper = mapper;
         }
 
-
         public async Task<IResult> ChangeUserStatus(bool Active, string UserId)
         {
             throw new NotImplementedException();
@@ -36,7 +36,8 @@ namespace IGift.Infrastructure.Services.Identity
 
         public async Task<IResult<string>> ConfirmEmailAsync(string userId, string code)
         {
-            throw new NotImplementedException();
+            //TODO para esto hay que leer la documentación de microsoft. NO basarse en el código de blazorHero 
+            return null;
         }
 
         public async Task<string> ExportToExcelAsync(string searchString = "")
@@ -49,17 +50,21 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public async Task<Result<List<LoginResponse>>> GetAllAsync()
+        public async Task<Result<List<UserResponse>>> GetAllAsync()
         {
-            //TODO completar
-            var users = await _userManager.Users.ToListAsync();
-            var result = _mapper.Map<List<LoginResponse>>(users);
-            return await Result<List<LoginResponse>>.SuccessAsync(result);
+            return null;
         }
 
-        public async Task<IResult<LoginResponse>> GetByIdAsync(int id)
+        public async Task<IResult<UserResponse>> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            //var response = await _userManager.FindByIdAsync(id);
+            ////
+            //if (response != null)
+            //{
+            //    return await Result<UserResponse>.SuccessAsync(new UserResponse { });
+            //}
+            return null;
+
         }
 
         public async Task<IResult<UserRolesResponse>> GetRolesAsync(string id)
@@ -110,6 +115,11 @@ namespace IGift.Infrastructure.Services.Identity
         }
 
         public async Task<IResult> UpdateRolesAsync(string UserId, IList<UserRoleModel> UserRoles)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IResult<LoginResponse>> IUserService.GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
