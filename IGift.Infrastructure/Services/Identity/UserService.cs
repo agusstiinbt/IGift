@@ -62,17 +62,8 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (response != null)
             {
-                try
-                {
-                    var result = _mapper.Map<UserResponse>(response);
-                    return await Result<UserResponse>.SuccessAsync(result);
-                }
-                catch (Exception e)
-                {
-
-                    throw;
-                }
-               
+                var result = _mapper.Map<UserResponse>(response);
+                return await Result<UserResponse>.SuccessAsync(result);
             }
             return await Result<UserResponse>.FailAsync();
         }
