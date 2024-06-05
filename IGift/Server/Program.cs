@@ -50,7 +50,7 @@ builder.Services
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        
+
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]!)),
         ValidateIssuer = false,
@@ -70,7 +70,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 
 //Mapeo
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 var app = builder.Build();

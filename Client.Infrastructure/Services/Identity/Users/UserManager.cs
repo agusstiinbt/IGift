@@ -22,7 +22,7 @@ namespace Client.Infrastructure.Services.Identity.Users
             //TODO el applicationUSerResponse debe cargar la lista de giftcards ordenadas primero por activas y fecha de creación
             try
             {
-                var response = await _http.GetAsync(AppConstants.Endpoints.UsersController.GetAll);
+                var response = await _http.GetAsync(AppConstants.Controllers.Users.GetAll);
                 if (response.IsSuccessStatusCode)
                 {
                     //var result = await response.Content.ReadFromJsonAsync<Result<List<LoginResponse>>>();

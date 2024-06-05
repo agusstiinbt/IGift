@@ -12,14 +12,14 @@ namespace IGift.Application.Interfaces.Identity
         Task<Result<List<UserResponse>>> GetAllAsync();
         Task<int> HowMany();
 
-        Task<IResult<LoginResponse>> GetByIdAsync(string id);
+        Task<IResult<UserResponse>> GetByIdAsync(string id);
         Task<IResult> RegisterAsync(UserCreateRequest model);
 
         Task<IResult> ChangeUserStatus(bool Active, string UserId);
 
         Task<IResult<UserRolesResponse>> GetRolesAsync(string id);
 
-        Task<IResult> UpdateRolesAsync(string UserId,IList<UserRoleModel>UserRoles);
+        Task<IResult> UpdateRolesAsync(string UserId, IList<UserRoleModel> UserRoles);
 
         Task<IResult<string>> ConfirmEmailAsync(string userId, string code);
 

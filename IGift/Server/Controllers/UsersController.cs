@@ -22,8 +22,15 @@ namespace IGift.Server.Controllers
         [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
         public async Task<ActionResult> GetAll()
         {
-           // var users = await _userService.GetAllAsync();
+            // var users = await _userService.GetAllAsync();
             return Ok();
+        }
+
+        [HttpGet("GetById")]
+        [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
+        public async Task<ActionResult<Result>> GetById(string id)
+        {
+            return Ok(await _userService.GetByIdAsync(id));
         }
 
         [HttpPost("Register")]
@@ -31,6 +38,6 @@ namespace IGift.Server.Controllers
         {
             return Ok(await _userService.RegisterAsync(m));
         }
-      
+
     }
 }

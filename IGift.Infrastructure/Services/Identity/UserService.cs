@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity;
 using IGift.Application.Requests.Identity.Users;
@@ -22,11 +23,11 @@ namespace IGift.Infrastructure.Services.Identity
         //private readonly IExcelService _excelService;
 
         //TODO implementar el mapper
-        public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager/*, IMapper mapper*/)
+        public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager, IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            //_mapper = mapper;
+            _mapper = mapper;
         }
 
         public async Task<IResult> ChangeUserStatus(bool Active, string UserId)
@@ -57,14 +58,23 @@ namespace IGift.Infrastructure.Services.Identity
 
         public async Task<IResult<UserResponse>> GetByIdAsync(string id)
         {
-            //var response = await _userManager.FindByIdAsync(id);
-            ////
-            //if (response != null)
-            //{
-            //    return await Result<UserResponse>.SuccessAsync(new UserResponse { });
-            //}
-            return null;
+            var response = await _userManager.FindByIdAsync(id);
 
+            if (response != null)
+            {
+                try
+                {
+                    var result = _mapper.Map<UserResponse>(response);
+                    return await Result<UserResponse>.SuccessAsync(result);
+                }
+                catch (Exception e)
+                {
+
+                    throw;
+                }
+               
+            }
+            return await Result<UserResponse>.FailAsync();
         }
 
         public async Task<IResult<UserRolesResponse>> GetRolesAsync(string id)
@@ -119,10 +129,6 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        Task<IResult<LoginResponse>> IUserService.GetByIdAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Verifica si los datos del usuario ya existen

@@ -9,14 +9,15 @@
             public const string DefaultPassword = "Zx2555@@";
         }
 
-        public static class Endpoints
+        public static class Controllers
         {
-            public static class UsersController
+            public static class Users
             {
                 private static string route = "api/Users/";
 
                 public static string GetAll = route + "GetAll";
                 public static string Register = route + "Register";
+                public static string GetById = route + "GetById";
             }
 
             public static class TokenController

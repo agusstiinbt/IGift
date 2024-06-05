@@ -37,7 +37,7 @@ namespace IGift.Infrastructure.Data
 
             builder.Entity<IGiftUser>(entity =>
             {
-                entity.ToTable(name: "UsersController", "Identity");
+                entity.ToTable(name: "Users", "Identity");
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
             });
 

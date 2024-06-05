@@ -7,7 +7,7 @@ using IGift.Shared.Wrapper;
 using Client.Infrastructure.Extensions;
 using IGift.Shared;
 using Microsoft.JSInterop;
-using static IGift.Shared.AppConstants.Endpoints;
+using static IGift.Shared.AppConstants.Controllers;
 using MudBlazor;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses;
@@ -38,7 +38,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             //var response = await _httpClient.PostAsJsonAsync(Endpoints.UsersController.Register, registerModel);
             //var result = await response.Content.ReadFromJsonAsync<IResult>();
             //return result!;
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Endpoints.UsersController.Register, registerModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.Users.Register, registerModel);
             return await response.ToResult();
         }
 

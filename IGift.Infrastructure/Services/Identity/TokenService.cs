@@ -101,7 +101,7 @@ namespace IGift.Infrastructure.Services.Identity
             }
 
             user.RefreshToken = GenerateRefreshToken();
-            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5);
+            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(45);
             await _userManager.UpdateAsync(user);
 
             var response = new LoginResponse
@@ -148,7 +148,7 @@ namespace IGift.Infrastructure.Services.Identity
         {
             var token = new JwtSecurityToken(
                claims: claims,
-               expires: DateTime.UtcNow.AddMinutes(2),
+               expires: DateTime.UtcNow.AddMinutes(15),
                signingCredentials: signingCredentials);
             var tokenHandler = new JwtSecurityTokenHandler();
             var encryptedToken = tokenHandler.WriteToken(token);
