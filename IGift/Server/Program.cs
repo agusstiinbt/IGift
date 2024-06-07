@@ -69,8 +69,6 @@ builder.Services
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMailService, MailService>();
-
-//transients
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 
 //Mapeo
