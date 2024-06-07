@@ -62,29 +62,6 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
-        {
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-            {
-                return await Result.FailAsync("El usuario no existe o no se encuentra confirmado");
-            }
-
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var route = "account/reset-password";
-            var endpointUri = new Uri(string.Concat($"{origin}/", route));
-            var passwordResetURL = QueryHelpers.AddQueryString(endpointUri.ToString(), "Token", code);
-            var emailRequest = new MailRequest
-            {
-                Body = string.Format("Por favor, cambie su contraseña haciendo click <a href='{0}'>AQUÍ</a>.", HtmlEncoder.Default.Encode(passwordResetURL)),
-                Subject = "Reset Password",
-                To = request.Email
-            };
-            BackgroundJob.Enqueue(() => _mailService.SendAsync(emailRequest));
-            return await Result.SuccessAsync("El correo para reestablecer la contraseña ha sido enviado a su correo");
-        }
-
         public async Task<Result<List<UserResponse>>> GetAllAsync() => await Result<List<UserResponse>>.SuccessAsync(await _userManager.Users.ProjectTo<UserResponse>(_mapper.ConfigurationProvider).ToListAsync());
         //Código más completo =>
         //{
@@ -168,6 +145,29 @@ namespace IGift.Infrastructure.Services.Identity
                 return await Result.SuccessAsync("Registro de usuario exitoso");
             }
             return await Result.FailAsync("Error al registrar usuario");
+        }
+
+        public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                return await Result.FailAsync("El usuario no existe o no se encuentra confirmado");
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var route = "account/reset-password";
+            var endpointUri = new Uri(string.Concat($"{origin}/", route));
+            var passwordResetURL = QueryHelpers.AddQueryString(endpointUri.ToString(), "Token", code);
+            var emailRequest = new MailRequest
+            {
+                Body = string.Format("Por favor, cambie su contraseña haciendo click <a href='{0}'>AQUÍ</a>.", HtmlEncoder.Default.Encode(passwordResetURL)),
+                Subject = "Reset Password",
+                To = request.Email
+            };
+            BackgroundJob.Enqueue(() => _mailService.SendAsync(emailRequest));
+            return await Result.SuccessAsync("El correo para reestablecer la contraseña ha sido enviado a su correo");
         }
 
         public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
