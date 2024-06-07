@@ -37,7 +37,7 @@ namespace IGift.Server.Controllers
         }
 
         [HttpGet("GetRolesFromUserId")]
-        //[Authorize(Roles = AppConstants.Role.AdministratorRole)]
+        [Authorize(Roles = AppConstants.Role.AdministratorRole)]
         public async Task<ActionResult> GetAllRoles(string Id)
         {
             return Ok(await _userService.GetRolesAsync(Id));
