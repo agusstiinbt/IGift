@@ -6,7 +6,6 @@ using IGift.Application.Interfaces.IMailService;
 using IGift.Application.Requests.Identity.Email;
 using IGift.Application.Requests.Identity.Password;
 using IGift.Application.Requests.Identity.Users;
-using IGift.Application.Responses;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Application.Responses.Users;
 using IGift.Infrastructure.Models;
