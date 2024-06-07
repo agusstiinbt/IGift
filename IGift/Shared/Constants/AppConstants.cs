@@ -19,6 +19,7 @@
                 public static string GetById = route + "GetById";
                 public static string ChangeUserStatus = route + "ChangeUserStatus";
                 public static string ForgotPassword = route + "ForgotPassword";
+                public static string GetRolesFromUserId = route + "GetRolesFromUserId";
             }
 
             public static class TokenController
@@ -26,6 +27,11 @@
                 private static string route = "api/Token/";
                 public static string LogIn = route + "Login";
                 public static string RefreshToken = route + "RefreshToken";
+            }
+
+            public static class RolesController
+            {
+                private static string route = "api/Roles/";
             }
         }
 

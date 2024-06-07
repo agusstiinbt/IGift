@@ -115,7 +115,6 @@ namespace IGift.Infrastructure.Services.Identity
 
             foreach (var role in roles)
             {
-
                 var userRolesViewModel = new UserRoleModel
                 {
                     RoleName = role.Name,

@@ -22,7 +22,7 @@ namespace IGift.Server.Controllers
         #region Get
 
         [HttpGet("GetAll")]
-        [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
+        [Authorize(Roles = AppConstants.Role.AdministratorRole)]
         public async Task<ActionResult> GetAll()
         {
             var users = await _userService.GetAllAsync();
@@ -30,10 +30,17 @@ namespace IGift.Server.Controllers
         }
 
         [HttpGet("GetById")]
-        [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
+        [Authorize(Roles = AppConstants.Role.AdministratorRole)]
         public async Task<ActionResult<Result>> GetById(string id)
         {
             return Ok(await _userService.GetByIdAsync(id));
+        }
+
+        [HttpGet("GetRolesFromUserId")]
+        //[Authorize(Roles = AppConstants.Role.AdministratorRole)]
+        public async Task<ActionResult> GetAllRoles(string Id)
+        {
+            return Ok(await _userService.GetRolesAsync(Id));
         }
 
 
