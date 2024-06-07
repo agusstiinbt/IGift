@@ -33,13 +33,19 @@ namespace Client.Infrastructure.Extensions
 
         internal static async Task<IResult> ToResult(this HttpResponseMessage response)
         {
-            var responseAsString = await response.Content.ReadAsStringAsync();
-            var responseObject = JsonSerializer.Deserialize<Result>(responseAsString, new JsonSerializerOptions
+            if(response.IsSuccessStatusCode)
             {
-                PropertyNameCaseInsensitive = true,
-                ReferenceHandler = ReferenceHandler.Preserve
-            });
-            return responseObject;
+                try
+                {
+                    return await response.Content.ReadFromJsonAsync<Result>();
+                }
+                catch (Exception e) 
+                {
+
+                    return await Result.FailAsync(e.Message);
+                }
+            }
+            return await Result.FailAsync(HandleMessage(response));
         }
 
         internal static async Task<PaginatedResult<T>> ToPaginatedResult<T>(this HttpResponseMessage response)
