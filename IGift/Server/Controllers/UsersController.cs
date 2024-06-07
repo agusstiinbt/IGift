@@ -66,6 +66,12 @@ namespace IGift.Server.Controllers
             return Ok(await _userService.ChangeUserStatus(request));
         }
 
+        [HttpPost("UpdateRolesFromUser")]
+        public async Task<ActionResult> UpdateRolesFromUser(UpdateUserRolesRequest request)
+        {
+            return Ok(await _userService.UpdateRolesAsync(request));
+        }
+
         #endregion 
     }
 }

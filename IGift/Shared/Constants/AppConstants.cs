@@ -20,6 +20,7 @@
                 public static string ChangeUserStatus = route + "ChangeUserStatus";
                 public static string ForgotPassword = route + "ForgotPassword";
                 public static string GetRolesFromUserId = route + "GetRolesFromUserId";
+                public static string UpdateRolesFromUser = route + "UpdateRolesFromUser";
             }
 
             public static class TokenController

@@ -170,7 +170,6 @@ namespace IGift.Infrastructure.Services.Identity
             return await Result.FailAsync("Error al registrar usuario");
         }
 
-        //TODO este método debería de implementar algún tipo de seguridad que aún no entendemos bien. Para eso vamos a implementar lo que diga la documentación oficial pero para fines prácticos vamos a dejarlo simple
         public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);

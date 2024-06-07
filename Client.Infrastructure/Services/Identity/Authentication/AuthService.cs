@@ -34,10 +34,6 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Register(UserCreateRequest registerModel)
         {
-            //using var content = new StringContent(JsonConvert.SerializeObject(registerModel), Encoding.UTF8, "application/json");
-            //var response = await _httpClient.PostAsJsonAsync(Endpoints.UsersController.Register, registerModel);
-            //var result = await response.Content.ReadFromJsonAsync<IResult>();
-            //return result!;
             var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.Users.Register, registerModel);
             return await response.ToResult();
         }

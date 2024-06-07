@@ -21,7 +21,7 @@ namespace IGift.Application.Interfaces.Identity
         Task<IResult<UserRolesResponse>> GetRolesAsync(string id);
 
         /// <summary>
-        /// La idea de este método es que el usuario actual pueda modificar los roles de un usuario determinado. Esto solo funciona si somos adminitradores
+        /// Este método recibe una lista de roles habiendo especificado si estan seleccionados o no. De aquellos seleccionado en true esos pasarán a ser los nuevos roles del usuario, reemplazando los anteriores si no fueron seleccionados. Esto solo funciona si somos adminitradores
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
