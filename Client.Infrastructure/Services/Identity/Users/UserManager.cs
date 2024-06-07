@@ -1,7 +1,10 @@
-﻿using IGift.Application.Responses;
+﻿using Client.Infrastructure.Extensions;
+using IGift.Application.Responses;
+using IGift.Application.Responses.Identity.Users;
 using IGift.Shared;
 using IGift.Shared.Wrapper;
 using Microsoft.JSInterop;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace Client.Infrastructure.Services.Identity.Users
@@ -20,21 +23,8 @@ namespace Client.Infrastructure.Services.Identity.Users
         public async Task<IResult> GetUsersAsync()
         {
             //TODO el applicationUSerResponse debe cargar la lista de giftcards ordenadas primero por activas y fecha de creación
-            try
-            {
-                var response = await _http.GetAsync(AppConstants.Controllers.Users.GetAll);
-                if (response.IsSuccessStatusCode)
-                {
-                    //var result = await response.Content.ReadFromJsonAsync<Result<List<LoginResponse>>>();
-                }
-                return await Result.FailAsync();
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-            return null; 
+            var response = await _http.GetAsync(AppConstants.Controllers.Users.GetAll);
+            return await response.ToResult<List<UserResponse>>();
         }
     }
 }

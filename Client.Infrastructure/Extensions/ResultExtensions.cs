@@ -1,6 +1,7 @@
 ﻿using IGift.Shared.Wrapper;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace Client.Infrastructure.Extensions
 {
@@ -13,13 +14,13 @@ namespace Client.Infrastructure.Extensions
             {
                 try
                 {
-                    var responseAsString = await response.Content.ReadAsStringAsync();
-                    var responseObject = JsonSerializer.Deserialize<Result<T>>(responseAsString, new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true,
-                        ReferenceHandler = ReferenceHandler.Preserve
-                    });
-                    return responseObject!;
+                  return await response.Content.ReadFromJsonAsync<Result<T>>();
+                    //var responseObject = JsonSerializer.Deserialize<Result<T>>(responseAsString, new JsonSerializerOptions
+                    //{
+                    //    PropertyNameCaseInsensitive = true,
+                    //    ReferenceHandler = ReferenceHandler.Preserve
+                    //});
+                    //return responseObject!;
                 }
                 catch (Exception e)
                 {

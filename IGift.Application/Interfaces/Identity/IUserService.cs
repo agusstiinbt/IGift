@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Requests.Identity;
+using IGift.Application.Requests.Identity.Password;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses;
 using IGift.Application.Responses.Identity.Users;
@@ -15,15 +16,20 @@ namespace IGift.Application.Interfaces.Identity
         Task<IResult<UserResponse>> GetByIdAsync(string id);
         Task<IResult> RegisterAsync(UserCreateRequest model);
 
-        Task<IResult> ChangeUserStatus(bool Active, string UserId);
+        Task<IResult> ChangeUserStatus(ChangeUserRequest request);
 
         Task<IResult<UserRolesResponse>> GetRolesAsync(string id);
 
-        Task<IResult> UpdateRolesAsync(string UserId, IList<UserRoleModel> UserRoles);
+        /// <summary>
+        /// La idea de este método es que el usuario actual pueda modificar los roles de un usuario determinado. Esto solo funciona si somos adminitradores
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<IResult> UpdateRolesAsync(UpdateUserRolesRequest request);
 
         Task<IResult<string>> ConfirmEmailAsync(string userId, string code);
 
-        Task<IResult> ForgotPasswordAsync(string Email, string origin);
+        Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
         Task<IResult> ResetPasswordAsync(ResetPasswordRequest request);
 
         Task<string> ExportToExcelAsync(string searchString = "");

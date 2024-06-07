@@ -27,3 +27,23 @@ Por defecto, el TokenValidationParameters.ClockSkew está configurado con un valo
 en el tiempo entre el emisor del token y el validador. Esto es útil en entornos de producción donde puede haber ligeras diferencias
 en el tiempo de los servidores. Sin embargo, para pruebas locales y ciertos escenarios específicos, es útil establecerlo en TimeSpan.Zero 
 para asegurar que la expiración del token sea exacta.
+
+
+Uso de BackgroundJob.Enqueue
+Propósito: BackgroundJob.Enqueue se utiliza para ejecutar una tarea en segundo plano de forma asíncrona, fuera del hilo principal de la aplicación. Esto es adecuado para tareas que pueden llevar mucho tiempo y no necesitan completarse de inmediato.
+Ejemplo de uso: Enviar correos electrónicos, procesar archivos, realizar cálculos extensivos.
+Persistencia y reintentos: Los trabajos encolados con BackgroundJob.Enqueue se persisten en una base de datos (o algún tipo de almacenamiento) y Hangfire maneja automáticamente los reintentos en caso de fallos.
+No bloquea el hilo principal: Permite que el flujo de la aplicación continúe sin esperar a que la tarea se complete.
+Escalabilidad: Puede distribuir trabajos entre varios servidores y manejar cargas de trabajo altas.
+
+Uso de await
+Propósito: await se utiliza para esperar de forma asíncrona la finalización de una tarea dentro del mismo contexto o hilo. Permite que el hilo se libere mientras espera, pero continúa dentro del mismo flujo de ejecución.
+Ejemplo de uso: Esperar una respuesta de una API, leer archivos, realizar operaciones de base de datos.
+Contexto de ejecución: await mantiene el contexto de sincronización, lo que significa que después de que la tarea se completa, el código continúa ejecutándose en el mismo hilo.
+No hay persistencia o reintentos automáticos: A diferencia de BackgroundJob.Enqueue, await no maneja la persistencia o reintentos en caso de fallos. Si se necesita, debe implementarse manualmente.
+Bloqueo del flujo de la aplicación: Aunque no bloquea el hilo, await espera a que la tarea termine antes de continuar con la ejecución del código posterior.
+
+Diferencias Clave
+Contexto de ejecución: await mantiene el contexto de sincronización y continua en el mismo hilo, mientras que BackgroundJob.Enqueue ejecuta la tarea en un contexto completamente separado.
+Persistencia y manejo de fallos: Hangfire maneja la persistencia y los reintentos automáticos de tareas fallidas, mientras que await no lo hace.
+Idoneidad: BackgroundJob.Enqueue es más adecuado para tareas largas y no críticas que pueden ejecutarse independientemente del flujo principal de la aplicación. await es adecuado para tareas que deben completarse antes de continuar, manteniendo el flujo lógico del programa.

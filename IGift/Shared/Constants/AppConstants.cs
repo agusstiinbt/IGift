@@ -6,7 +6,6 @@
         {
             public const string AdministratorRole = "Administrator";
             public const string BasicRole = "Basic";
-            public const string DefaultPassword = "Zx2555@@";
         }
 
         public static class Controllers
@@ -50,5 +49,10 @@
 
             //podemos tener constantes que utilicemos también en el servidor entonces además de Local y para eso debemos tener una clase Server. 
         }
+
+        public static string AdminEmail = "agusstiinbt@gmail.com";
+        public static string BasicEmail = "joseespositoing@gmail.com";
+        public static string DefaultPassword = "Zx2555@@";
+
     }
 }

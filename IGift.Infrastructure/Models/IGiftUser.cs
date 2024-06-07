@@ -19,6 +19,8 @@ namespace IGift.Infrastructure.Models
         public DateTime CreatedOn { get; set; }
         public DateTime? LastModifiedOn { get; set; }
 
+        public bool IsActive { get; set; }
+
         //TODO implementar para el chat
         public IGiftUser()
         {

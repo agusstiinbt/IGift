@@ -53,7 +53,7 @@ namespace IGift.Infrastructure
                   {
                       FirstName = "Agustin",
                       LastName = "Esposito",
-                      Email = "agusstiinbt@gmail.com",
+                      Email = AppConstants.AdminEmail,
                       UserName = "agusstiinbt",
                       EmailConfirmed = true,
                       PhoneNumberConfirmed = true,
@@ -63,7 +63,7 @@ namespace IGift.Infrastructure
                   var superUserInDb = await _userManager.FindByEmailAsync(superUser.Email);
                   if (superUserInDb == null)
                   {
-                      await _userManager.CreateAsync(superUser, AppConstants.Role.DefaultPassword);
+                      await _userManager.CreateAsync(superUser, AppConstants.DefaultPassword);
                       var UserCreatedWithId = await _userManager.FindByEmailAsync(superUser.Email);
 
                       await _userManager.AddToRoleAsync(UserCreatedWithId, admin);
@@ -91,7 +91,7 @@ namespace IGift.Infrastructure
                     CreatedBy = admin,
                     LastModifiedBy = admin,
                     LastModifiedOn = DateTime.Now,
-                    CreatedOn=DateTime.Now
+                    CreatedOn = DateTime.Now
                 };
 
                 var basicRoleInDb = await _roleManager.FindByNameAsync(basic);
@@ -105,7 +105,7 @@ namespace IGift.Infrastructure
                 {
                     FirstName = "Jose",
                     LastName = "Esposito",
-                    Email = "joseespositoing@gmail.com",
+                    Email = AppConstants.BasicEmail,
                     UserName = "joseespositoing",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
@@ -116,7 +116,7 @@ namespace IGift.Infrastructure
                 var basicUserInDb = await _userManager.FindByEmailAsync(basicUser.Email);
                 if (basicUserInDb == null)
                 {
-                    await _userManager.CreateAsync(basicUser, AppConstants.Role.DefaultPassword);
+                    await _userManager.CreateAsync(basicUser, AppConstants.DefaultPassword);
                     var UserCreatedWithId = await _userManager.FindByEmailAsync(basicUser.Email);
                     await _userManager.AddToRoleAsync(UserCreatedWithId, AppConstants.Role.BasicRole);
                 }

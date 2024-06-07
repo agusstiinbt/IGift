@@ -10,7 +10,11 @@ using IGift.Infrastructure.Services.Identity;
 using IGift.Application.Interfaces;
 using IGift.Infrastructure;
 using IGift.Server.Middleware;
-using System.Reflection;
+using IGift.Application.Interfaces.IMailService;
+using IGift.Infrastructure.Services.Mail;
+using Hangfire;
+using IGift.Shared;
+using HangfireBasicAuthenticationFilter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +23,6 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 
 
 builder.Services.AddIdentity<IGiftUser, IGiftRole>(options =>
@@ -65,6 +68,7 @@ builder.Services
 //Scopes
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMailService, MailService>();
 
 //transients
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
@@ -72,6 +76,17 @@ builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 //Mapeo
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+//CORS
+builder.Services.AddCors(options =>
+options.AddDefaultPolicy(
+    builder =>
+    {
+        builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().WithOrigins();
+    }));
+
+//hangfire
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
@@ -81,7 +96,6 @@ using (var scope = app.Services.CreateScope())
     var seeder = services.GetRequiredService<IDatabaseSeeder>();
     seeder.Initialize();
 }
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -109,6 +123,21 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//Hangfire
+app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
+{
+    //AppPath = "" //The path for the Back To Site link. Set to null in order to hide the Back To  Site link.
+    DashboardTitle = "IGift Dashboard",
+    Authorization = new[]
+    {
+        new HangfireCustomBasicAuthenticationFilter
+        {
+            User =AppConstants.AdminEmail,
+            Pass = AppConstants.DefaultPassword
+        }
+    }
+});
 
 app.MapRazorPages();
 

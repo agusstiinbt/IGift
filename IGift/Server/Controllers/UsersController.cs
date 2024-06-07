@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using IGift.Application.Interfaces.Identity;
 using IGift.Shared;
 using IGift.Application.Requests.Identity.Users;
+using IGift.Application.Requests.Identity.Password;
 
 namespace IGift.Server.Controllers
 {
@@ -22,8 +23,8 @@ namespace IGift.Server.Controllers
         [Authorize(Roles = (AppConstants.Role.AdministratorRole))]
         public async Task<ActionResult> GetAll()
         {
-            // var users = await _userService.GetAllAsync();
-            return Ok();
+            var users = await _userService.GetAllAsync();
+            return Ok(users);
         }
 
         [HttpGet("GetById")]
@@ -37,6 +38,13 @@ namespace IGift.Server.Controllers
         public async Task<ActionResult<Result>> Register(UserCreateRequest m)
         {
             return Ok(await _userService.RegisterAsync(m));
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult> ForgotPasswordAsync(ForgotPasswordRequest request)
+        {
+            var origin = Request.Headers["origin"];
+            return Ok(await _userService.ForgotPasswordAsync(request, origin));
         }
 
     }

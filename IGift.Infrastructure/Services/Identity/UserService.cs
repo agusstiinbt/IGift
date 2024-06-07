@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
-using Azure;
+using AutoMapper.QueryableExtensions;
+using Hangfire;
 using IGift.Application.Interfaces.Identity;
-using IGift.Application.Requests.Identity;
+using IGift.Application.Interfaces.IMailService;
+using IGift.Application.Requests.Identity.Email;
+using IGift.Application.Requests.Identity.Password;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses;
 using IGift.Application.Responses.Identity.Users;
@@ -10,7 +13,10 @@ using IGift.Infrastructure.Models;
 using IGift.Shared;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace IGift.Infrastructure.Services.Identity
 {
@@ -19,20 +25,31 @@ namespace IGift.Infrastructure.Services.Identity
         private readonly UserManager<IGiftUser> _userManager;
         private readonly RoleManager<IGiftRole> _roleManager;
         private readonly IMapper _mapper;
-        //private readonly IMailService _mailService;
+        private readonly IMailService _mailService;
         //private readonly IExcelService _excelService;
 
-        //TODO implementar el mapper
-        public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager, IMapper mapper)
+        public UserService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager, IMapper mapper, IMailService mailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
+            _mailService = mailService;
         }
 
-        public async Task<IResult> ChangeUserStatus(bool Active, string UserId)
+        public async Task<IResult> ChangeUserStatus(ChangeUserRequest request)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.Users.Where(u => u.Id == request.UserId).FirstOrDefaultAsync();
+            var isAdmin = await _userManager.IsInRoleAsync(user, AppConstants.Role.AdministratorRole);
+            if (isAdmin)
+            {
+                return await Result.FailAsync("No se permite modificar el estado de perfil de un Administrador");
+            }
+            if (user != null)
+            {
+                user.IsActive = request.ActivateUser;
+                var identityResult = await _userManager.UpdateAsync(user);
+            }
+            return await Result.SuccessAsync();
         }
 
         public async Task<IResult<string>> ConfirmEmailAsync(string userId, string code)
@@ -46,15 +63,37 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> ForgotPasswordAsync(string Email, string origin)
+        public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                return await Result.FailAsync("El usuario no existe o no se encuentra confirmado");
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var route = "account/reset-password";
+            var endpointUri = new Uri(string.Concat($"{origin}/", route));
+            var passwordResetURL = QueryHelpers.AddQueryString(endpointUri.ToString(), "Token", code);
+            var emailRequest = new MailRequest
+            {
+                Body = string.Format("Por favor, cambie su contraseña haciendo click <a href='{0}'>AQUÍ</a>.", HtmlEncoder.Default.Encode(passwordResetURL)),
+                Subject = "Reset Password",
+                To = request.Email
+            };
+            BackgroundJob.Enqueue(() => _mailService.SendAsync(emailRequest));
+            return await Result.SuccessAsync("El correo para reestablecer la contraseña ha sido enviado a su correo");
         }
 
-        public async Task<Result<List<UserResponse>>> GetAllAsync()
-        {
-            return null;
-        }
+        public async Task<Result<List<UserResponse>>> GetAllAsync() => await Result<List<UserResponse>>.SuccessAsync(await _userManager.Users.ProjectTo<UserResponse>(_mapper.ConfigurationProvider).ToListAsync());
+        //Código más completo =>
+        //{
+        //    // Result<List<UserResponse>>.SuccessAsync(
+
+        //    var response = await _userManager.Users.ProjectTo<UserResponse>(_mapper.ConfigurationProvider).ToListAsync();
+        //    return await Result<List<UserResponse>>.SuccessAsync(response);
+        //}
 
         public async Task<IResult<UserResponse>> GetByIdAsync(string id)
         {
@@ -70,13 +109,36 @@ namespace IGift.Infrastructure.Services.Identity
 
         public async Task<IResult<UserRolesResponse>> GetRolesAsync(string id)
         {
-            throw new NotImplementedException();
+            var list = new List<UserRoleModel>();
+
+            var user = await _userManager.FindByIdAsync(id);//Nos traemos el usuario correspondiente
+            var roles = await _roleManager.Roles.ToListAsync();//Traemos todos los roles (por default son 2, véase databaSeeder)
+
+            foreach (var role in roles)
+            {
+
+                var userRolesViewModel = new UserRoleModel
+                {
+                    RoleName = role.Name,
+                    RoleDescription = role.Description
+                };
+
+                if (await _userManager.IsInRoleAsync(user, role.Name))   //Podemos traernos la lista completa de usuarios y de roles, pero con esto verificamos si un usuario tiene un rol específico 
+                {
+                    userRolesViewModel.Selected = true;
+                }
+                else
+                {
+                    userRolesViewModel.Selected = false;
+                }
+
+                list.Add(userRolesViewModel);
+            }
+            var result = new UserRolesResponse { UserRoles = list };
+            return await Result<UserRolesResponse>.SuccessAsync(result);
         }
 
-        public async Task<int> HowMany()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<int> HowMany() => await _userManager.Users.CountAsync();
 
         public async Task<IResult> RegisterAsync(UserCreateRequest model)//TODO este método debería de implementar las configuraciones para verificar Email y talvez la verificación en 2 pasos
         {
@@ -110,16 +172,45 @@ namespace IGift.Infrastructure.Services.Identity
             return await Result.FailAsync("Error al registrar usuario");
         }
 
+        //TODO este método debería de implementar algún tipo de seguridad que aún no entendemos bien. Para eso vamos a implementar lo que diga la documentación oficial pero para fines prácticos vamos a dejarlo simple
         public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                return await Result.FailAsync("El usuario no existe");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.ConfirmedNewPassword);
+            if (result.Succeeded)
+            {
+                return await Result.SuccessAsync("Cambio de clave exitoso");
+            }
+            else
+            {
+                return await Result.FailAsync("Ha ocurrido un problema al intentar cambiar clave");
+            }
         }
 
-        public async Task<IResult> UpdateRolesAsync(string UserId, IList<UserRoleModel> UserRoles)
+        public async Task<IResult> UpdateRolesAsync(UpdateUserRolesRequest request)
         {
-            throw new NotImplementedException();
-        }
+            var user = await _userManager.FindByIdAsync(request.UserId);
+            if (user.Email == AppConstants.AdminEmail)
+            {
+                return await Result.FailAsync("No se permite cambiar el rol a este usuario");
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            var selectedRoles = request.UserRoles.Where(x => x.Selected).ToList();
 
+            if (request.CurrentUserRole != AppConstants.Role.AdministratorRole)
+            {
+                return await Result.FailAsync("Solo el administrador puede modificar o agregar roles a otros usuarios");
+            }
+
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+            result = await _userManager.AddToRolesAsync(user, selectedRoles.Select(y => y.RoleName));
+            return await Result.SuccessAsync("Roles actualizados");
+        }
 
         /// <summary>
         /// Verifica si los datos del usuario ya existen
@@ -146,7 +237,6 @@ namespace IGift.Infrastructure.Services.Identity
                 }
                 catch (Exception e)
                 {
-
                     throw;
                 }
 
@@ -160,6 +250,5 @@ namespace IGift.Infrastructure.Services.Identity
 
             return await Result.SuccessAsync();
         }
-
     }
 }
