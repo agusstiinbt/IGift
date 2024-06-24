@@ -25,7 +25,6 @@ namespace IGift.Infrastructure
             AddBasicUser();
             await _context.SaveChangesAsync();
         }
-
         private void AddAdministrator()
         {
             Task.Run(async () =>
