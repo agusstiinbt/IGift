@@ -21,7 +21,6 @@ namespace IGift.Client.Shared
         {
             //TODO revisar para qué nos puede servir esto en el nav como tienen en BlazorHero. Esto lleva tiempo
             // var claimsPrincipal = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateProviderUserAsync();
-            
             _interceptor.RegisterEvent();
         }
     }

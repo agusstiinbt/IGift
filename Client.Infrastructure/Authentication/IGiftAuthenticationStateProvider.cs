@@ -18,7 +18,6 @@ namespace Client.Infrastructure.Authentication
         }
         public ClaimsPrincipal AuthenticationStateUser { get; set; }
  
-
         /// <summary>
         /// Este método actualiza el estado de autenticación del usuario en toda la aplicación. Cuando hagamos un Login o un refresh token se debe invocar este método que notifica cuando se haya actualizado el estado de autenticación y prepara los headers del cliente HTTP
         /// </summary>
