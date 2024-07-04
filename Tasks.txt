@@ -1,0 +1,22 @@
+1) Construir una buena gráfica de:
+	a)La página de inicio
+	b)La sección de Login
+	c)La sección de register
+	d)La sección de Lista de deseos => crear la clase Deseos o Wishes.
+		Esta interfaz deberá ser parecida a la de mercadolibre con
+		su propiop carrito de compras
+
+2) La última tarea de las anteriores nos va a dar paso a iniciar la lógica e interfaz del chat;
+	a)Diseñar una interfaz de chat entre distintos usuarios
+	b)Implementar una campanita de notificaciones; esto es signalR y debería de estar en alguna 
+		parte del código que se comparta. Fijarse el código de Blazor Hero para más detalles
+	c)Implementar lógica para que se pueda ver la imagen de los usuarios en sus perfiles
+	d)Crear un perfil de usuario con las opciones que tenemos para utilizar en el servicio de 
+		UserService.
+	e)Hasta acá deberíamos de tener TODOS los TODO finalizados
+	f)Luego de completar el punto e), debemos estudiar la parte de SmartContracts y lograr 
+		generar un smart contract que genere una tarjeta de regalo ficticia.
+
+
+
+
