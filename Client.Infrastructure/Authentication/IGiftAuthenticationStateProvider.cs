@@ -52,7 +52,6 @@ namespace Client.Infrastructure.Authentication
             NotifyAuthenticationStateChanged(authState);
         }
 
-        //TODO debería este método ser privado?
         /// <summary>
         /// Devuelve el estado de autenticación de usuario y prepara los headers del client HTTP con el token
         /// </summary>
