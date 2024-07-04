@@ -9,7 +9,6 @@ namespace Client.Infrastructure.Authentication
 {
     public class IGiftAuthenticationStateProvider : AuthenticationStateProvider
     {
-        //TODO revisar estos métodos y fijarse si hace falta algo y cómo usar correctamente el StateChangedAsync()
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         public IGiftAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorageService)
@@ -18,11 +17,7 @@ namespace Client.Infrastructure.Authentication
             _localStorage = localStorageService;
         }
         public ClaimsPrincipal AuthenticationStateUser { get; set; }
-        ////public async Task<ClaimsPrincipal> GetAuthenticationStateProviderUserAsync()
-        ////{
-        ////    var state = await GetAuthenticationStateAsync();
-        ////    return state.User;
-        ////}
+ 
 
         /// <summary>
         /// Este método actualiza el estado de autenticación del usuario en toda la aplicación. Cuando hagamos un Login o un refresh token se debe invocar este método que notifica cuando se haya actualizado el estado de autenticación y prepara los headers del cliente HTTP
