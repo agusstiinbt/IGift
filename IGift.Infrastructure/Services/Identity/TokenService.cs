@@ -115,8 +115,8 @@ namespace IGift.Infrastructure.Services.Identity
         }
 
         #region Private
-
-
+         
+        
         /// <summary>
         /// Genera un string aleatorio que funciona como RefreshToken
         /// </summary>

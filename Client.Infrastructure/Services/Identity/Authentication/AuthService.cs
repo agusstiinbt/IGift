@@ -34,7 +34,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Register(UserCreateRequest registerModel)
         {
             var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.Users.Register, registerModel);
-            return await response.ToResult();
+            return await response.ToResult<IResult>();
         }
 
         public async Task<IResult> Login(UserLoginRequest loginModel)
@@ -81,8 +81,8 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<string> TryRefreshToken()
         {
-            //var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
-            //if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
+            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
+            if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
 
             //var authState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync(); es lo mismo
             var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();

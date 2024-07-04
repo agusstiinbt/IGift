@@ -8,11 +8,11 @@ using Microsoft.Extensions.Options;
 
 namespace IGift.Infrastructure.Services.Mail
 {
+    //TODO a implementar
     public class MailService : IMailService
     {
         private readonly MailConfiguration _config;
         private readonly ILogger<MailService> _logger;
-
 
         public MailService(IOptions<MailConfiguration> config, ILogger<MailService> logger)
         {

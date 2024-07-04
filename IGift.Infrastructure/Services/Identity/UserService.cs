@@ -234,7 +234,7 @@ namespace IGift.Infrastructure.Services.Identity
                 }
                 catch (Exception e)
                 {
-                    throw;
+                    throw new Exception("Error al verificar registro de usuario: "+e.Message);
                 }
 
             }

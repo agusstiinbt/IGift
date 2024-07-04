@@ -25,7 +25,7 @@ namespace Client.Infrastructure.Services.Interceptor
         public async Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e)
         {
             var absPath = e.Request.RequestUri.AbsolutePath;
-            if (!absPath.ToLower().Contains("token") /*&& !absPath.Contains("accounts")*/)//TODO es posible en blazor Hero haya puesto también accounts porque quiere que el usuario vuelva a loguearse
+            if (!absPath.ToLower().Contains("token") /*&& !absPath.Contains("accounts")*/)//TODO mejorar
             {
                 try
                 {

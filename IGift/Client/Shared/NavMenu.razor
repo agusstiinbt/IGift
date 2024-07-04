@@ -1,4 +1,5 @@
 ﻿@using global::Client.Infrastructure.Authentication
+
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">IGift</a>
@@ -28,18 +29,3 @@
     </nav>
 </div>
 
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-    protected override async Task OnParametersSetAsync()
-    {
-        //TODO revisar para qué nos puede servir esto en el nav como tienen en BlazorHero. Esto lleva tiempo
-        // var claimsPrincipal = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateProviderUserAsync();
-    }
-}
