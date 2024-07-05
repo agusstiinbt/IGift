@@ -1,0 +1,56 @@
+﻿<MudPaper Elevation="25">
+    <MudToolBar>
+        <MudButton>Ofertas</MudButton>
+        <MudButton>Peticiones</MudButton>
+        <MudButton>Moda</MudButton>
+        <MudButton>Electrodomésticos</MudButton>
+        <MudButton>Historial</MudButton>
+        <MudButton>Ayuda</MudButton>
+
+        <MudSpacer />
+
+        <MudNavMenu>
+            <MudNavGroup Title="@userName" Expanded="false">
+                <MudNavGroup Title="Level 1" Icon="@Icons.Material.Filled.AdminPanelSettings" Expanded="false">
+                    <MudNavGroup Title="Level 2" Icon="@Icons.Material.Filled.People" Expanded="false">
+                        <MudNavGroup Title="Level 3" Icon="@Icons.Material.Filled.Lock" Expanded="false">
+                            <MudNavLink Href="/delete" Icon="@Icons.Material.Filled.DeleteForever">Delete Password</MudNavLink>
+                        </MudNavGroup>
+                    </MudNavGroup>
+                </MudNavGroup>
+            </MudNavGroup>
+        </MudNavMenu>
+
+        <MudButton>
+            <a href=@AppConstants.Routes.Login>Log in</a>
+        </MudButton>
+        <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Inherit" />
+    </MudToolBar>
+</MudPaper>
+
+
+@code {
+    [Parameter]
+    public string userName { get; set; }
+
+    private string _buttonText = "Reply";
+
+    private void SetButtonText(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                _buttonText = "Reply";
+                break;
+            case 1:
+                _buttonText = "Reply All";
+                break;
+            case 2:
+                _buttonText = "Forward";
+                break;
+            case 3:
+                _buttonText = "Reply & Delete";
+                break;
+        }
+    }
+}

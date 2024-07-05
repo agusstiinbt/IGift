@@ -62,7 +62,7 @@ namespace IGift.Infrastructure.Services.Identity
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
             user.RefreshToken = GenerateRefreshToken();
             await _userManager.UpdateAsync(user);
-            
+
             //TODO implementar la imagen url
             var response = new LoginResponse { Token = token, RefreshToken = user.RefreshToken, UserImageURL = "" };
 
@@ -115,8 +115,8 @@ namespace IGift.Infrastructure.Services.Identity
         }
 
         #region Private
-         
-        
+
+
         /// <summary>
         /// Genera un string aleatorio que funciona como RefreshToken
         /// </summary>
@@ -187,6 +187,7 @@ namespace IGift.Infrastructure.Services.Identity
             }
             var claims = new List<Claim>
             {
+                new(ClaimTypes.Name,user.FirstName),
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(ClaimTypes.Email, user.Email)
             }.Union(roleClaims);

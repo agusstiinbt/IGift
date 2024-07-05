@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Shared\IGift.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

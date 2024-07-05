@@ -1,12 +1,19 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<button @onclick="HandleSubmit">Prueba de refreshToken!!</button>
 
-<h1>Hello, world!</h1>
+<AuthorizeView>
 
-Welcome to your new app.
+    <Authorized>
+        <h1>Estamos conectados!</h1>
+        <BarraHerramientasConectado userName="@NombreUsuario" />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    </Authorized>
 
-<button @onclick="HandleSubmit">Prueba de refreshToken</button>
+    <NotAuthorized>
+        <BarraHerramientasDesconectado />
+    </NotAuthorized>
 
+</AuthorizeView>
+
+<CaruselInicio />

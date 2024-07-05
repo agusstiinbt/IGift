@@ -33,13 +33,8 @@ namespace IGift.Client.Pages
             {
                 _snackBar.Add("Registración de usuario exitosa", Severity.Success);
             }
-            loginModel = new UserLoginRequest();
         }
-        protected override Task OnAfterRenderAsync(bool firstRender)
-        {
-            loginModel = new();
-            return base.OnAfterRenderAsync(firstRender);
-        }
+     
         private async Task HandleLogin()
         {
             var result = await AuthService.Login(loginModel);

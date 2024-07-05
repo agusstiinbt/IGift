@@ -1,0 +1,28 @@
+﻿<MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+
+    <MudCarouselItem Transition="transition" Style="background-color:black">
+        <div class="d-flex justify-center">
+            <MudImage ObjectFit="ObjectFit.Cover" Style="position:center;" Height="200" Width="800" Src="svg/MainLogo.svg" />
+        </div>
+    </MudCarouselItem>
+
+    <MudCarouselItem Transition="transition">
+        <div class="d-flex justify-center">
+            <MudImage ObjectFit="ObjectFit.Cover" Style="position:center;width:100%;" Height="300" Src="svg/CryptoLogo.svg" />
+        </div>
+    </MudCarouselItem>
+
+    <MudCarouselItem Transition="transition" Style="background-color:white">
+        <div class="d-flex justify-center">
+            <MudImage Style="position:center;width:100%;height:200px" Src="svg/Security.svg" />
+        </div>
+    </MudCarouselItem>
+
+</MudCarousel>
+
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+    private Transition transition = Transition.Slide;
+}
