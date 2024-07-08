@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IGift.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240607120719_2Migration")]
-    partial class _2Migration
+    [Migration("20240708173929_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,33 @@ namespace IGift.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("IGift.Application.Models.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdUser");
+
+                    b.ToTable("Notification");
+                });
 
             modelBuilder.Entity("IGift.Domain.Entities.Contract", b =>
                 {
@@ -396,6 +423,15 @@ namespace IGift.Infrastructure.Migrations
                     b.ToTable("UserTokens", "Identity");
                 });
 
+            modelBuilder.Entity("IGift.Application.Models.Notification", b =>
+                {
+                    b.HasOne("IGift.Infrastructure.Models.IGiftUser", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("IGift.Domain.Entities.GiftCard", b =>
                 {
                     b.HasOne("IGift.Domain.Entities.LocalAdherido", "Local")
@@ -467,6 +503,11 @@ namespace IGift.Infrastructure.Migrations
             modelBuilder.Entity("IGift.Infrastructure.Models.IGiftRole", b =>
                 {
                     b.Navigation("RoleClaims");
+                });
+
+            modelBuilder.Entity("IGift.Infrastructure.Models.IGiftUser", b =>
+                {
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

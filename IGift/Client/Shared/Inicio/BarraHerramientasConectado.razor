@@ -1,4 +1,4 @@
-﻿<MudPaper Elevation="25">
+﻿<MudPaper Elevation="0">
     <MudToolBar>
         <MudButton>Ofertas</MudButton>
         <MudButton>Peticiones</MudButton>
@@ -9,43 +9,40 @@
 
         <MudSpacer />
 
-        <MudPaper Class="px-12 py-6;width:100px;height:35px;">
-            <button @onclick="@ToggleOpen">@userName</button>
-            <MudPopover Open="_open" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
-                <MudPaper Outlined="true" Class="px-4 py-8">
-                    <MudPaper Width="250px" Class="py-3" Elevation="0">
-                        <MudNavMenu>
-                            <MudText Typo="Typo.h6" Class="px-4">@userName</MudText>
-                            <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Mi perfil></MudText>
-                            <MudDivider Class="my-2" Style="border:20px; " />
-                            <MudNavLink Href="/dashboard">Dashboard</MudNavLink>
-                            <MudNavLink Href="/servers">Servers</MudNavLink>
-                            <MudNavLink Href="/billing" Disabled="true">Billing</MudNavLink>
-                            <MudDivider Class="my-2" Style="border:20px; " />
-                            <MudNavGroup Title="Settings" Expanded="true">
-                                <MudNavLink Href="/security">Security</MudNavLink>
-                            </MudNavGroup>
-                            <MudNavLink Href=@AppConstants.Routes.Logout>Salir</MudNavLink>
-                        </MudNavMenu>
-                    </MudPaper>
-                </MudPaper>
-            </MudPopover>
-        </MudPaper>
 
-        @* </MudPaper> *@
+        <TogglePerfil userName=@userName />
+
+        <Notificaciones />
 
 
-        <MudButton>
-            <a href=@AppConstants.Routes.Login>Log in</a>
-        </MudButton>
         <MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Inherit" />
+
     </MudToolBar>
 </MudPaper>
 
 
 @code {
 
+    private string _buttonText = "Reply";
 
+    private void SetButtonText(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                _buttonText = "Reply";
+                break;
+            case 1:
+                _buttonText = "Reply All";
+                break;
+            case 2:
+                _buttonText = "Forward";
+                break;
+            case 3:
+                _buttonText = "Reply & Delete";
+                break;
+        }
+    }
     public bool _open;
 
     public void ToggleOpen()
@@ -74,24 +71,4 @@
     [Parameter]
     public string userName { get; set; }
 
-    private string _buttonText = "Reply";
-
-    private void SetButtonText(int id)
-    {
-        switch (id)
-        {
-            case 0:
-                _buttonText = "Reply";
-                break;
-            case 1:
-                _buttonText = "Reply All";
-                break;
-            case 2:
-                _buttonText = "Forward";
-                break;
-            case 3:
-                _buttonText = "Reply & Delete";
-                break;
-        }
-    }
 }

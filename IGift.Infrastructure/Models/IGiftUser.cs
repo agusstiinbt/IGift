@@ -1,4 +1,5 @@
-﻿using IGift.Domain.Contracts;
+﻿using IGift.Application.Models;
+using IGift.Domain.Contracts;
 using Microsoft.AspNetCore.Identity;
 
 namespace IGift.Infrastructure.Models
@@ -21,10 +22,12 @@ namespace IGift.Infrastructure.Models
 
         public bool IsActive { get; set; }
 
+        public List<Notification> Notifications { get; set; } = new List<Notification>() { };
+
         //TODO implementar para el chat
         public IGiftUser()
         {
-            
+
         }
     }
 }
