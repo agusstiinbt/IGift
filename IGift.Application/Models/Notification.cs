@@ -1,9 +1,10 @@
 ﻿using IGift.Application.Enums;
+using IGift.Domain.Contracts;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IGift.Application.Models
 {
-    public class Notification
+    public class Notification : AuditableEntity<Guid>
     {
         public Guid Id { get; set; }
         public string IdUser { get; set; } = string.Empty;

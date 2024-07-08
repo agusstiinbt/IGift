@@ -1,11 +1,8 @@
 ﻿using Client.Infrastructure.Extensions;
-using IGift.Application.Responses;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Shared;
 using IGift.Shared.Wrapper;
 using Microsoft.JSInterop;
-using System.Net.Http;
-using System.Net.Http.Json;
 
 namespace Client.Infrastructure.Services.Identity.Users
 {

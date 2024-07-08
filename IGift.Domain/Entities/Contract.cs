@@ -2,7 +2,7 @@
 
 namespace IGift.Domain.Entities
 {
-    public class Contract : IAuditableEntity<int>
+    public class Contract : AuditableEntity<int>
     {
         public Contract(int idUser1, int idUser2, string createdBy, DateTime createdOn, DateTime? lastModifiedOn)
         {

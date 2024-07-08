@@ -2,16 +2,16 @@
     <MudBadge Color="Color.Error" Visible=@_visible Content=@_notifications Overlap="true" Bordered="true" Class="mx-6 my-4">
         <MudIcon @onclick="ToggleOpen" Icon="@Icons.Material.Filled.Notifications" Color="Color.Warning" />
     </MudBadge>
-     <MudPopover Open="_open" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
+    <MudPopover Open="_open" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
         <MudPaper Outlined="true" Class="px-4 py-8">
             <MudPaper Width="250px" Class="py-3" Elevation="0">
 
                 <MudNavMenu>
 
-                 @*    @foreach (var item in collection)
+                    @foreach (var n in list)
                     {
-                        
-                    } *@
+
+                    }
                     <MudMenuItem OnClick="() => SetButtonText(0)">Reply</MudMenuItem>
                     <MudMenuItem OnClick="() => SetButtonText(1)">Reply All</MudMenuItem>
                     <MudMenuItem OnClick="() => SetButtonText(2)">Forward</MudMenuItem>
@@ -39,50 +39,3 @@
         </MudPaper>
     </MudPopover>
 </div>
-
-@code {
-    //private List<NotificationResponse> Notificaciones = new();
-
-    private string _buttonText = "Reply";
-
-    private void SetButtonText(int id)
-    {
-        switch (id)
-        {
-            case 0:
-                _buttonText = "Reply";
-                break;
-            case 1:
-                _buttonText = "Reply All";
-                break;
-            case 2:
-                _buttonText = "Forward";
-                break;
-            case 3:
-                _buttonText = "Reply & Delete";
-                break;
-        }
-    }
-
-
-    private int _notifications { get; set; }
-    private bool _visible { get; set; }
-
-    protected override Task OnInitializedAsync()
-    {
-        _notifications = 1;
-        _visible = _notifications == 0 ? false : true;
-
-        return base.OnInitializedAsync();
-    }
-    public bool _open;
-
-    public void ToggleOpen()
-    {
-        if (_open)
-            _open = false;
-        else
-            _open = true;
-    }
-
-}

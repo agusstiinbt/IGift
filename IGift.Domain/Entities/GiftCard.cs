@@ -2,7 +2,7 @@
 
 namespace IGift.Domain.Entities
 {
-    public class GiftCard : IAuditableEntity<Guid>
+    public class GiftCard : AuditableEntity<Guid>
     {
         public Guid Id { get; set; }   
         public int IdUser { get; set; }
