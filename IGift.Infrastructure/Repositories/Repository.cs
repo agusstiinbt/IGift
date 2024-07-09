@@ -9,7 +9,12 @@ namespace IGift.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public IQueryable<T> Entities => throw new NotImplementedException();
+        public Repository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IQueryable<T> Entities => _context.Set<T>();
 
         public Task<T> AddAsync(T entity)
         {

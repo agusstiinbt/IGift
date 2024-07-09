@@ -15,6 +15,10 @@ using IGift.Infrastructure.Services.Mail;
 using Hangfire;
 using IGift.Shared;
 using HangfireBasicAuthenticationFilter;
+using IGift.Application.Features.Notifications.Query;
+using Org.BouncyCastle.Crypto.Utilities;
+using IGift.Application.Interfaces.Repositories;
+using IGift.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +69,10 @@ builder.Services
     };
 });
 
+//Repositories
+builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+builder.Services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
+
 //Scopes
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -73,6 +81,7 @@ builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 
 //Mapeo
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 //CORS
 builder.Services.AddCors(options =>
@@ -85,6 +94,11 @@ options.AddDefaultPolicy(
 //hangfire
 builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
 builder.Services.AddHangfireServer();
+
+//MediatR
+
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllNotificationQuery).Assembly));
 
 var app = builder.Build();
 
