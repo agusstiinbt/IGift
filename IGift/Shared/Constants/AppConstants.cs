@@ -38,7 +38,7 @@
             public static class NotificationController
             {
                 private static string route = "api/Notification/";
-                private static string GetAll = route + "GetAll";
+                public static string GetAll = route + "GetAll";
             }
         }
 

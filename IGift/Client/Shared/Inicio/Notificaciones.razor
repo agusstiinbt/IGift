@@ -10,7 +10,7 @@
 
                     @foreach (var n in list)
                     {
-
+                        <MudNavLink Href="/">@n.Message</MudNavLink>
                     }
                     <MudMenuItem OnClick="() => SetButtonText(0)">Reply</MudMenuItem>
                     <MudMenuItem OnClick="() => SetButtonText(1)">Reply All</MudMenuItem>

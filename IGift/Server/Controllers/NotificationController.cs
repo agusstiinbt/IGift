@@ -7,21 +7,12 @@ namespace IGift.Server.Controllers
     [ApiController]
     public class NotificationController : BaseApiController<NotificationController>
     {
-        [HttpGet("GetAll")]
-        public async Task<ActionResult> GetAll(string query)
+        [HttpGet("GetAll/{IdUser}")]//TODO usar FromRoute?
+        public async Task<ActionResult> GetAll([FromRoute] string IdUser)
         {
-            try
-            {
-                var query2 = new GetAllNotificationQuery(query);
-                var response = await _mediator.Send(query2);
-                return Ok(response);
-            }
-            catch (Exception e)
-            {
-
-            }
-            return BadRequest();
-
+            var query = new GetAllNotificationQuery(IdUser);
+            var response = await _mediator.Send(query);
+            return Ok(response);
         }
     }
 }

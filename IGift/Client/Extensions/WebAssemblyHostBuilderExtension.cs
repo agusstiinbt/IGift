@@ -10,6 +10,7 @@ using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Client.Infrastructure.Services.Interceptor;
 using Blazored.LocalStorage;
 using System.Globalization;
+using Client.Infrastructure.Services.Notification;
 
 namespace IGift.Client.Extensions
 {
@@ -51,6 +52,7 @@ namespace IGift.Client.Extensions
             .AddScoped<IGiftAuthenticationStateProvider>()
             .AddScoped<AuthenticationStateProvider, IGiftAuthenticationStateProvider>()
             .AddScoped<IHttpInterceptorManager, HttpInterceptorManager>()
+            .AddScoped<INotificationService, NotificationService>()
 
             .AddAuthorizationCore()
 

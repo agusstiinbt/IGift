@@ -1,12 +1,5 @@
-﻿using Client.Infrastructure.Authentication;
-using Client.Infrastructure.Services.Notification;
-using Client.Infrastructure.Services.Identity.Authentication;
-using IGift.Application.Requests.Identity.Users;
-using IGift.Shared;
+﻿using Client.Infrastructure.Services.Notification;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
-using MudBlazor;
 using IGift.Application.Responses.Chat;
 
 namespace IGift.Client.Shared.Inicio
@@ -25,7 +18,11 @@ namespace IGift.Client.Shared.Inicio
         protected async override Task OnInitializedAsync()
         {
             var result = await _notificationService.GetAll();
-            _notifications = result.Count;
+            _notifications = 0;
+            if (result.Succeeded)
+            {
+                _notifications = result.Data.Count;
+            }
             _visible = _notifications == 0 ? false : true;
         }
 

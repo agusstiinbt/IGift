@@ -1,8 +1,11 @@
-﻿using IGift.Application.Responses.Chat;
+﻿using Client.Infrastructure.Extensions;
+using IGift.Application.Responses.Chat;
+using IGift.Shared;
+using IGift.Shared.Wrapper;
 
 namespace Client.Infrastructure.Services.Notification
 {
-    public class NotificationService
+    public class NotificationService : INotificationService
     {
         private readonly HttpClient _httpClient;
 
@@ -11,10 +14,11 @@ namespace Client.Infrastructure.Services.Notification
             _httpClient = httpClient;
         }
 
-        public async Task<List<NotificationResponse>> GetAll()
+        public async Task<IResult<List<NotificationResponse>>> GetAll()
         {
-            var response= await _httpClient.GetAsync("asd");
-            return null;
+            string idUser = "5fd28233-b939-4646-9178-8687357797fb";
+            var response = await _httpClient.GetAsync(AppConstants.Controllers.NotificationController.GetAll+ idUser);
+            return await response.ToResult<List<NotificationResponse>>();
         }
     }
 }
