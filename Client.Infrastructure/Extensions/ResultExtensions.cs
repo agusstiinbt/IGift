@@ -83,6 +83,5 @@ namespace Client.Infrastructure.Extensions
 
             return message;
         }
-
     }
 }
