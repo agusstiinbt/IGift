@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Responses\Identity\Token\" />
   </ItemGroup>
 
 </Project>

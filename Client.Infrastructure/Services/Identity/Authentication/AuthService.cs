@@ -9,8 +9,8 @@ using Microsoft.JSInterop;
 using static IGift.Shared.AppConstants.Controllers;
 using MudBlazor;
 using IGift.Application.Requests.Identity.Users;
-using IGift.Application.Responses;
 using IGift.Application.Requests.Identity.Token;
+using IGift.Application.Responses.Identity.Users;
 
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
@@ -40,7 +40,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
             var response = await _httpClient.PostAsJsonAsync(TokenController.LogIn, loginModel);
-            var result = await response.ToResult<LoginResponse>();
+            var result = await response.ToResult<UserLoginResponse>();
 
             if (result.Succeeded)
             {
@@ -110,7 +110,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
             //TODO fijarse si usar postasync o postasjsonasync
             var response = await _httpClient.PostAsJsonAsync(TokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
-            var result = await response.ToResult<LoginResponse>();
+            var result = await response.ToResult<UserLoginResponse>();
 
             if (!result.Succeeded)
             {

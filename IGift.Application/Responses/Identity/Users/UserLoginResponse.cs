@@ -1,8 +1,8 @@
 ﻿using IGift.Domain.Entities;
 
-namespace IGift.Application.Responses
+namespace IGift.Application.Responses.Identity.Users
 {
-    public class LoginResponse
+    public class UserLoginResponse
     {
         public string Token { get; set; }
         public string RefreshToken { get; set; }

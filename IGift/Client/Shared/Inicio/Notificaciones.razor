@@ -12,7 +12,7 @@
                     {
                         <MudNavLink Href="/">@n.Message</MudNavLink>
                     }
-                    <MudMenuItem OnClick="() => SetButtonText(0)">Reply</MudMenuItem>
+                   @*  <MudMenuItem OnClick="() => SetButtonText(0)">Reply</MudMenuItem>
                     <MudMenuItem OnClick="() => SetButtonText(1)">Reply All</MudMenuItem>
                     <MudMenuItem OnClick="() => SetButtonText(2)">Forward</MudMenuItem>
                     <MudMenuItem OnClick="() => SetButtonText(3)">Reply & Delete</MudMenuItem>
@@ -32,7 +32,7 @@
                         <MudNavLink Href="/security">Configuraciones de inicio</MudNavLink>
                     </MudNavGroup>
 
-                    <MudNavLink Href=@AppConstants.Routes.Logout>Salir</MudNavLink>
+                    <MudNavLink Href=@AppConstants.Routes.Logout>Salir</MudNavLink> *@
 
                 </MudNavMenu>
             </MudPaper>

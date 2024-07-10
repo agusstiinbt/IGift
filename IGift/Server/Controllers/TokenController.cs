@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity.Token;
 using IGift.Application.Requests.Identity.Users;
-using IGift.Application.Responses;
+using IGift.Application.Responses.Identity.Users;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,7 @@ namespace IGift.Server.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<Result<LoginResponse>>> Login(UserLoginRequest m)
+        public async Task<ActionResult<Result<UserLoginResponse>>> Login(UserLoginRequest m)
         {
             return Ok(await _tokenService.LoginAsync(m));
         }

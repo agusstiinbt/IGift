@@ -8,9 +8,9 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using IGift.Application.Interfaces.Identity;
-using IGift.Application.Responses;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Requests.Identity.Token;
+using IGift.Application.Responses.Identity.Users;
 
 namespace IGift.Infrastructure.Services.Identity
 {
@@ -32,10 +32,10 @@ namespace IGift.Infrastructure.Services.Identity
         /// </summary>
         /// <param name="tRequest"></param>
         /// <returns></returns>
-        public async Task<Result<LoginResponse>> RefreshUserToken(TokenRequest tRequest)
+        public async Task<Result<UserLoginResponse>> RefreshUserToken(TokenRequest tRequest)
         {
             string errorMessage = string.Empty;
-            if (tRequest == null) { return await Result<LoginResponse>.FailAsync("TokenController nulo"); }
+            if (tRequest == null) { return await Result<UserLoginResponse>.FailAsync("TokenController nulo"); }
 
             var userPrincipal = GetPrincipalFromExpiredToken(tRequest.Token);
             var userEmail = userPrincipal.FindFirstValue(ClaimTypes.Email);
@@ -56,7 +56,7 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                return await Result<LoginResponse>.FailAsync(errorMessage);
+                return await Result<UserLoginResponse>.FailAsync(errorMessage);
             }
 
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
@@ -64,9 +64,9 @@ namespace IGift.Infrastructure.Services.Identity
             await _userManager.UpdateAsync(user);
 
             //TODO implementar la imagen url
-            var response = new LoginResponse { Token = token, RefreshToken = user.RefreshToken, UserImageURL = "" };
+            var response = new UserLoginResponse { Token = token, RefreshToken = user.RefreshToken, UserImageURL = "" };
 
-            return await Result<LoginResponse>.SuccessAsync(response);
+            return await Result<UserLoginResponse>.SuccessAsync(response);
         }
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace IGift.Infrastructure.Services.Identity
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<Result<LoginResponse>> LoginAsync(UserLoginRequest model)
+        public async Task<Result<UserLoginResponse>> LoginAsync(UserLoginRequest model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email!);
 
             if (user == null)
             {
-                return await Result<LoginResponse>.FailAsync("Email no encontrado.");
+                return await Result<UserLoginResponse>.FailAsync("Email no encontrado.");
             }
 
             //TODO: Dejar esto para decidir más adelante si lo usamos o no
@@ -91,27 +91,27 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (!user.EmailConfirmed)
             {
-                return await Result<LoginResponse>.FailAsync("E-Mail aún no confirmado.");
+                return await Result<UserLoginResponse>.FailAsync("E-Mail aún no confirmado.");
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password!);
             if (!passwordValid)
             {
-                return await Result<LoginResponse>.FailAsync("Contraseña inválida.");
+                return await Result<UserLoginResponse>.FailAsync("Contraseña inválida.");
             }
 
             user.RefreshToken = GenerateRefreshToken();
             user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(45);
             await _userManager.UpdateAsync(user);
 
-            var response = new LoginResponse
+            var response = new UserLoginResponse
             {
                 Token = await GenerateJwtAsync(user),
                 RefreshToken = user.RefreshToken,
                 UserImageURL = user.ProfilePictureDataUrl
             };
 
-            return await Result<LoginResponse>.SuccessAsync(response);
+            return await Result<UserLoginResponse>.SuccessAsync(response);
         }
 
         #region Private

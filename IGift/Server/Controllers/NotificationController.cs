@@ -1,4 +1,4 @@
-﻿using IGift.Application.MediatR;
+﻿using IGift.Application.Features.Notifications.Query;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
@@ -7,10 +7,9 @@ namespace IGift.Server.Controllers
     [ApiController]
     public class NotificationController : BaseApiController<NotificationController>
     {
-        [HttpGet("GetAll/{IdUser}")]//TODO usar FromRoute?
-        public async Task<ActionResult> GetAll([FromRoute] string IdUser)
+        [HttpPost]
+        public async Task<ActionResult> GetAll(GetAllNotificationQuery query)
         {
-            var query = new GetAllNotificationQuery(IdUser);
             var response = await _mediator.Send(query);
             return Ok(response);
         }

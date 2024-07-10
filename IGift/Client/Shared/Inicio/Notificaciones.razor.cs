@@ -18,11 +18,15 @@ namespace IGift.Client.Shared.Inicio
         protected async override Task OnInitializedAsync()
         {
             var result = await _notificationService.GetAll();
-            _notifications = 0;
             if (result.Succeeded)
             {
-                _notifications = result.Data.Count;
+                list = result.Data;
             }
+            else
+            {
+                list = new List<NotificationResponse>();
+            }
+            _notifications = result.Data.Count;
             _visible = _notifications == 0 ? false : true;
         }
 
