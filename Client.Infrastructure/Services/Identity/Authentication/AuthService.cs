@@ -48,11 +48,13 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 var token = result!.Data.Token;
                 var refreshToken = result!.Data.RefreshToken;
                 var userPicture = result!.Data.UserImageURL;
+                var idUser = result!.Data.IdUser;
 
                 //gurdamos cada propiedad en el cliente
                 await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.AuthToken, token);
                 await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.RefreshToken, refreshToken);
                 await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.UserImageURL, userPicture);
+                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.IdUser, idUser);
 
 
                 //preparamos los headers con el token correcto

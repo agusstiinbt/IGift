@@ -108,7 +108,8 @@ namespace IGift.Infrastructure.Services.Identity
             {
                 Token = await GenerateJwtAsync(user),
                 RefreshToken = user.RefreshToken,
-                UserImageURL = user.ProfilePictureDataUrl
+                UserImageURL = user.ProfilePictureDataUrl,
+                IdUser = user.Id!
             };
 
             return await Result<UserLoginResponse>.SuccessAsync(response);

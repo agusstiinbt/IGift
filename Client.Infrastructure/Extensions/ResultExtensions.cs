@@ -7,12 +7,12 @@ namespace Client.Infrastructure.Extensions
     internal static class ResultExtensions
     {
         internal static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response)
-        {            
+        {
             if (response.IsSuccessStatusCode)
             {
                 try
                 {
-                  return await response.Content.ReadFromJsonAsync<Result<T>>();
+                    return await response.Content.ReadFromJsonAsync<Result<T>>();
                     //var responseObject = JsonSerializer.Deserialize<Result<T>>(responseAsString, new JsonSerializerOptions
                     //{
                     //    PropertyNameCaseInsensitive = true,
@@ -31,13 +31,13 @@ namespace Client.Infrastructure.Extensions
 
         internal static async Task<IResult> ToResult(this HttpResponseMessage response)
         {
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 try
                 {
                     return await response.Content.ReadFromJsonAsync<Result>();
                 }
-                catch (Exception e) 
+                catch (Exception e)
                 {
 
                     return await Result.FailAsync(e.Message);

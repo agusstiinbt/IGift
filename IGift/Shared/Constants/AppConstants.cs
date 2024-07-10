@@ -60,6 +60,7 @@
                 public static string RefreshToken = "refreshToken";
                 public static string UserImageURL = "userImageURL";
                 public static string ExpiryTime = "expiryTime";
+                public static string IdUser = "idUser";
             }
 
             //podemos tener constantes que utilicemos también en el servidor entonces además de Local y para eso debemos tener una clase Server. 

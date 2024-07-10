@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Extensions;
+﻿using Blazored.LocalStorage;
+using Client.Infrastructure.Extensions;
 using IGift.Application.Features.Notifications.Query;
 using IGift.Application.Responses.Chat;
 using IGift.Shared;
@@ -10,16 +11,19 @@ namespace Client.Infrastructure.Services.Notification
     public class NotificationService : INotificationService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILocalStorageService _localStorage;
 
-        public NotificationService(HttpClient httpClient)
+
+        public NotificationService(HttpClient httpClient, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
+            _localStorage = localStorage;
         }
 
         public async Task<IResult<List<NotificationResponse>>> GetAll()
         {
             //TODO implementar lógica para obtener el id de otra manera
-            string idUser = "5fd28233-b939-4646-9178-8687357797fb";
+            var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
 
             var query = new GetAllNotificationQuery(idUser);
 
