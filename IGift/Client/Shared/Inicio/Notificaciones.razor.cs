@@ -11,7 +11,7 @@ namespace IGift.Client.Shared.Inicio
         private List<NotificationResponse> list { get; set; } = new();
 
         private string _buttonText = "Reply";
-        private int _notifications { get; set; }
+        private int _notifications { get; set; } = 0;
         public bool _open;
         private bool _visible { get; set; }
 
@@ -21,12 +21,8 @@ namespace IGift.Client.Shared.Inicio
             if (result.Succeeded)
             {
                 list = result.Data;
+                _notifications = result.Data.Count;
             }
-            else
-            {
-                list = new List<NotificationResponse>();
-            }
-            _notifications = result.Data.Count;
             _visible = _notifications == 0 ? false : true;
         }
 
