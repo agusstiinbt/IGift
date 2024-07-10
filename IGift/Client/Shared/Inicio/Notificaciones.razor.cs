@@ -10,7 +10,6 @@ namespace IGift.Client.Shared.Inicio
 
         private List<NotificationResponse> list { get; set; } = new();
 
-        private string _buttonText = "Reply";
         private int _notifications { get; set; } = 0;
         public bool _open;
         private bool _visible { get; set; }
@@ -32,25 +31,6 @@ namespace IGift.Client.Shared.Inicio
                 _open = false;
             else
                 _open = true;
-        }
-
-        private void SetButtonText(int id)
-        {
-            switch (id)
-            {
-                case 0:
-                    _buttonText = "Reply";
-                    break;
-                case 1:
-                    _buttonText = "Reply All";
-                    break;
-                case 2:
-                    _buttonText = "Forward";
-                    break;
-                case 3:
-                    _buttonText = "Reply & Delete";
-                    break;
-            }
         }
     }
 }
