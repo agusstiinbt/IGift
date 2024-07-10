@@ -9,9 +9,6 @@ namespace IGift.Client.Shared.Login
     public partial class HandleLogin
     {
         [Inject] private IAuthService? AuthService { get; set; }
-        [Inject] private ISnackbar? _snackBar { get; set; }
-        [Inject] private NavigationManager _navigationManager { get; set; }
-
 
         [Parameter]
         public UserLoginRequest loginModel { get; set; }
@@ -22,11 +19,11 @@ namespace IGift.Client.Shared.Login
 
             if (result.Succeeded)
             {
-                _navigationManager.NavigateTo(AppConstants.Routes.Home);
+                _nav.NavigateTo(AppConstants.Routes.Home);
             }
             else
             {
-                _snackBar.Add(result.Messages.FirstOrDefault(), Severity.Error);
+                _snack.Add(result.Messages.FirstOrDefault(), Severity.Error);
             }
         }
     }

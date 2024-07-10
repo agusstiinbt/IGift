@@ -11,8 +11,6 @@ namespace IGift.Client.Pages
 {
     public partial class Login
     {
-        [Inject] private ISnackbar? _snackBar { get; set; }
-        [Inject] private NavigationManager _navigationManager { get; set; }
         [Inject] private AuthenticationStateProvider? _authenticationStateProvider { get; set; }
 
         [Parameter] public string RegistrationSuccess { get; set; }
@@ -25,14 +23,14 @@ namespace IGift.Client.Pages
             var user = state.User;
             if (state != null && user.Identity.IsAuthenticated)
             {
-                _navigationManager.NavigateTo("/");
+                _nav.NavigateTo("/");
             }
 
             if (RegistrationSuccess == "true")
             {
-                _snackBar.Add("Registración de usuario exitosa", Severity.Success);
+                _snack.Add("Registración de usuario exitosa", Severity.Success);
             }
         }
-     
+
     }
 }

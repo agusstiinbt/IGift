@@ -6,7 +6,7 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using Client.Infrastructure.Services.Interceptor;
 
-namespace IGift.Client.Shared
+namespace IGift.Client.Layouts
 {
     public partial class MainLayout
     {
@@ -14,7 +14,6 @@ namespace IGift.Client.Shared
         public Task<AuthenticationState> AuthenticationState { get; set; }
 
         [Inject] private IAuthService AuthService { get; set; }
-        [Inject] private ISnackbar _snack { get; set; }
         [Inject] private IHttpInterceptorManager _interceptor { get; set; }
 
         protected override async Task OnInitializedAsync()

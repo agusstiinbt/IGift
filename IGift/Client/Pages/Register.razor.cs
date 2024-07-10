@@ -10,8 +10,6 @@ namespace IGift.Client.Pages
     public partial class Register
     {
         [Inject] private IAuthService _authService { get; set; }
-        [Inject] private NavigationManager _nav { get; set; }
-        [Inject] private ISnackbar _snackBar { get; set; }
         private UserCreateRequest RegisterModel = new UserCreateRequest();
         [Inject] private IHttpInterceptorManager _interceptor { get; set; }
 
@@ -26,11 +24,11 @@ namespace IGift.Client.Pages
 
             if (result.Succeeded)
             {
-                _nav.NavigateTo(AppConstants.Routes.Login+"/true");
+                _nav.NavigateTo(AppConstants.Routes.Login + "/true");
             }
             else
             {
-                _snackBar.Add(result.Messages.First());
+                _snack.Add(result.Messages.First());
             }
         }
     }

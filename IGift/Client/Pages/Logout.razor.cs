@@ -8,14 +8,13 @@ namespace IGift.Client.Pages
     public partial class Logout
     {
         [Inject] IAuthService AuthService { get; set; }
-        [Inject] NavigationManager NavigationManager {  get; set; }
         [Inject] private IHttpInterceptorManager _interceptor { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await AuthService.Logout();
             _interceptor.DisposeEvent();
-            NavigationManager.NavigateTo(AppConstants.Routes.Login);
+            _nav.NavigateTo(AppConstants.Routes.Login);
         }
     }
 }

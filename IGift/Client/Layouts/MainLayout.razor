@@ -1,0 +1,26 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<div class="page">
+
+  @*   <div class="sidebar">
+        <NavMenu />
+    </div> *@
+
+    <main>
+
+        <div style="background-color:#000000;">
+            <MudImage Fluid="true" Src="svg/MainLogo.svg" Style="width:300px;height:120px;margin-left:400px" Class="rounded-lg" />
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+
+    </main>
+
+</div>
+
