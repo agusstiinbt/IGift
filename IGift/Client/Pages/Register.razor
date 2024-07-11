@@ -1,59 +1,10 @@
 ﻿@page "/register"
 @inject NavigationManager NavigationManager
 
-<h1>Register</h1>
+<h1>Registro</h1>
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Please enter your details</h5>
-        <EditForm Model="RegisterModel" OnValidSubmit="HandleRegistration">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+<RegistrationLogo>
 
-            <div class="form-group">
-                <label for="FirstName">FirstName</label>
-                <InputText id="FirstName" class="form-control" @bind-Value="RegisterModel.FirstName" />
-                <ValidationMessage For="@(()=>RegisterModel.FirstName)" />
-            </div>
+    <RegisterBody />
 
-            <div class="form-group">
-                <label for="LastName">LastName</label>
-                <InputText id="LastName" class="form-control" @bind-Value="RegisterModel.LastName" />
-                <ValidationMessage For="@(()=>RegisterModel.LastName)" />
-            </div>
-
-            <div class="form-group">
-                <label for="UserName">UserName</label>
-                <InputText id="UserName" class="form-control" @bind-Value="RegisterModel.UserName" />
-                <ValidationMessage For="@(()=>RegisterModel.UserName)" />
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <InputText Id="email" class="form-control" @bind-Value="RegisterModel.Email" />
-                <ValidationMessage For="@(() => RegisterModel.Email)" />
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <InputText Id="password" type="password" class="form-control" @bind-Value="RegisterModel.Password" />
-                <ValidationMessage For="@(() => RegisterModel.Password)" />
-            </div>
-
-            <div class="form-group">
-                <label for="password">Confirm Password</label>
-                <InputText Id="ConfirmPassword" type="password" class="form-control" @bind-Value="RegisterModel.ConfirmPassword" />
-                <ValidationMessage For="@(() => RegisterModel.ConfirmPassword)" />
-            </div>
-
-            <div class="form-group">
-                <label for="PhoneNumber">PhoneNumber</label>
-                <InputText Id="PhoneNumber" type="PhoneNumber" class="form-control" @bind-Value="RegisterModel.PhoneNumber" />
-                <ValidationMessage For="@(() => RegisterModel.PhoneNumber)" />
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </EditForm>
-    </div>
-</div>
-
+</RegistrationLogo>

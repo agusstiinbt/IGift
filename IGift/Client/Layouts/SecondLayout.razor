@@ -1,20 +1,56 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager _nav;
-<MudThemeProvider />
+
+<MudThemeProvider Theme="CustomTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <div class="page">
-
     <main>
-
-        <div style="background-color:#000000;">
-            <MudImage Fluid="true" Src="svg/MainLogo.svg" Style="width:300px;height:120px;margin-left:400px" Class="rounded-lg" />
-        </div>
-
-        <article class="content px-4">
-            @Body
+        <article class="content p-0">
+            <AuthorizeView>
+                <Authorized>
+                     <Navmenu >
+                        @Body
+                    </Navmenu>
+                </Authorized>
+                <NotAuthorized>
+                    @Body
+                </NotAuthorized>
+            </AuthorizeView>
         </article>
     </main>
 </div>
 
+
+
+@code{
+
+
+    private MudTheme CustomTheme = new MudTheme()
+        {
+            Palette = new Palette()
+            {
+                AppbarBackground = "#F7F7F7",
+                AppbarText = "#181819"
+            },
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontSize = "0.75rem",
+                },
+                Body1 = new Body1()
+                {
+                    FontSize = "0.8rem",
+                },
+                Body2 = new Body2()
+                {
+                    FontSize = "0.7rem",
+                },
+                Button = new Button()
+                {
+                    FontSize = "0.8rem",
+                },
+            }
+        };
+}
