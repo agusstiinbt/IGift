@@ -1,4 +1,4 @@
-1) Construir una buena gráfica de:
+1) Construir una buena interfaz gráfica de:
 	d)La sección de Lista de deseos => crear la clase Deseos o Wishes.
 		Esta interfaz deberá ser parecida a la de mercadolibre con
 		su propiop carrito de compras
