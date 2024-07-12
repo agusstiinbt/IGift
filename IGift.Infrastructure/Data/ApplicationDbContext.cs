@@ -3,9 +3,7 @@ using IGift.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using IGift.Application.Enums;
 using IGift.Application.Models;
-using System.Reflection.Emit;
 namespace IGift.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IGiftUser, IGiftRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IGiftRoleClaim, IdentityUserToken<string>>
