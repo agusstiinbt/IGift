@@ -16,6 +16,6 @@ namespace IGift.Application.Interfaces.Repositories
 
         Task UpdateAsync(T entity);
 
-        Task DeleteAsync(T entity);
+        Task<Task> DeleteAsync(T entity);
     }
 }

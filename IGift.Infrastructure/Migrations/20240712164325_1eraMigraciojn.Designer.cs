@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IGift.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240712125343_primeraMigracion")]
-    partial class primeraMigracion
+    [Migration("20240712164325_1eraMigraciojn")]
+    partial class _1eraMigraciojn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

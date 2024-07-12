@@ -16,14 +16,18 @@ namespace IGift.Infrastructure.Repositories
 
         public IQueryable<T> Entities => _context.Set<T>();
 
-        public Task<T> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            return entity;
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task<Task> DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            return Task.CompletedTask;
         }
 
         public async Task<List<T>> GetAllAsync()
@@ -31,19 +35,23 @@ namespace IGift.Infrastructure.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public Task<T> GetByIdAsync(TId id)
+        public async Task<T> GetByIdAsync(TId id)
         {
-            throw new NotImplementedException();
+            return await _context!.Set<T>().FindAsync(id);
         }
 
         public Task<List<T>> GetPagedResponseAsync(int pageNumber, int pageSize)
         {
+            //TODO utilizar?
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+
+            T exist = _context.Set<T>().Find(entity.Id);
+            _context.Entry(exist).CurrentValues.SetValues(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }
