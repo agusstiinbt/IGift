@@ -15,13 +15,13 @@
 
         <MudItem xs="6">
 
-            <MudTextField OnlyValidateIfDirty="true" Text=""  Label="Email" Class="mb-3" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense" MaxLength="256"
+            <MudTextField OnlyValidateIfDirty="true"  Label="Email" Class="mb-3" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense" MaxLength="256"
                           @bind-Value="_user.Email" For="@(() => _user.Email)" />
 
-            <MudTextField OnlyValidateIfDirty="true" Text="" Label="Contraseña" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="HandleIconPasswordClick" AdornmentAriaLabel="Show Password" T="string" Counter="25" MaxLength="25" Immediate="true" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
+            <MudTextField OnlyValidateIfDirty="true" Label="Contraseña" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="HandleIconPasswordClick" AdornmentAriaLabel="Show Password" T="string" Counter="25" MaxLength="25" Immediate="true" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
                           @bind-Value="_user.Password" For="@(() => _user.Password)" />
 
-            <MudTextField OnlyValidateIfDirty="true" Label="Confirmar Contraseña" InputType="@PasswordConfirmInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputConfirmIcon" OnAdornmentClick="HandleIconPasswordConfirmClick" AdornmentAriaLabel="Show Password" T="string" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
+            <MudTextField OnlyValidateIfDirty="true" Label="Confirmar Contraseña" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="HandleIconPasswordClick" AdornmentAriaLabel="Show Password" T="string" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
                           @bind-Value="_user.ConfirmPassword" For="@(() => _user.ConfirmPassword)" />
         </MudItem>
 

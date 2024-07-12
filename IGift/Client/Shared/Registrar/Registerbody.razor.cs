@@ -8,31 +8,19 @@ namespace IGift.Client.Shared.Registrar
 {
     public partial class RegisterBody
     {
-        private UserCreateRequest _user { get; set; } = new UserCreateRequest();
-        private void RegistrarUsuario() { }
-
         [Inject] private IAuthService _authService { get; set; }
 
-
-
-        public bool passwordIsShow;
-        public InputType PasswordInput = InputType.Password;
-        public string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
-
-        public bool passwordConfirmIsShow;
-        public InputType PasswordConfirmInput = InputType.Password;
-        public string PasswordInputConfirmIcon = Icons.Material.Filled.VisibilityOff;
-
-        public string verificationAdornmentIcon = Icons.Material.Filled.CheckCircle;
-        public Color verificationAdornmentColor = Color.Default;
+        private UserCreateRequest _user { get; set; } = new UserCreateRequest();
+        private bool passwordIsShow;
+        private InputType PasswordInput = InputType.Password;
+        private string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
         protected override Task OnInitializedAsync()
         {
             _user = new UserCreateRequest();
             return base.OnInitializedAsync();
         }
-
-        private async Task HandleRegistration()
+        private async Task RegistrarUsuario()
         {
             var result = await _authService.Register(_user);
 
@@ -50,18 +38,9 @@ namespace IGift.Client.Shared.Registrar
         /// Maneja el clic en el ícono de visibilidad de la contraseña.
         /// Cambia el estado de visibilidad de la contraseña y actualiza el ícono correspondiente.
         /// </summary>
-        void HandleIconPasswordClick()
+        private void HandleIconPasswordClick()
         {
             IconClick(ref PasswordInput, ref PasswordInputIcon, ref passwordIsShow);
-        }
-
-        /// <summary>
-        /// Maneja el clic en el ícono de visibilidad de la confirmación de la contraseña.
-        /// Cambia el estado de visibilidad de la confirmación de la contraseña y actualiza el ícono correspondiente.
-        /// </summary>
-        void HandleIconPasswordConfirmClick()
-        {
-            IconClick(ref PasswordConfirmInput, ref PasswordInputConfirmIcon, ref passwordConfirmIsShow);
         }
 
         /// <summary>
@@ -70,7 +49,7 @@ namespace IGift.Client.Shared.Registrar
         /// <param name="PasswordInput">La entrada de contraseña a modificar.</param>
         /// <param name="PasswordInputIcon">El ícono de contraseña a actualizar.</param>
         /// <param name="isShow">Un valor booleano que indica si la contraseña es visible o no.</param>
-        void IconClick(ref InputType PasswordInput, ref string PasswordInputIcon, ref bool isShow)
+        private void IconClick(ref InputType PasswordInput, ref string PasswordInputIcon, ref bool isShow)
         {
             if (isShow)
             {
@@ -87,25 +66,5 @@ namespace IGift.Client.Shared.Registrar
                 PasswordInput = InputType.Text;
             }
         }
-
-        /// <summary>
-        /// Verifica las credenciales del usuario extranet y actualiza la apariencia visual en función de la validación.
-        /// </summary>
-        async Task VerifyExtranetUserCredentials()
-        {
-
-
-        }
-
-        public void Dispose()
-        {
-            ClearViewModelFields();
-        }
-
-        private void ClearViewModelFields()
-        {
-
-        }
-
     }
 }
