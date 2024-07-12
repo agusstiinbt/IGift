@@ -26,6 +26,11 @@ namespace IGift.Client.Shared.Registrar
         public string verificationAdornmentIcon = Icons.Material.Filled.CheckCircle;
         public Color verificationAdornmentColor = Color.Default;
 
+        protected override Task OnInitializedAsync()
+        {
+            _user = new UserCreateRequest();
+            return base.OnInitializedAsync();
+        }
 
         private async Task HandleRegistration()
         {
@@ -89,7 +94,7 @@ namespace IGift.Client.Shared.Registrar
         async Task VerifyExtranetUserCredentials()
         {
 
-          
+
         }
 
         public void Dispose()
@@ -99,7 +104,7 @@ namespace IGift.Client.Shared.Registrar
 
         private void ClearViewModelFields()
         {
-           
+
         }
 
     }

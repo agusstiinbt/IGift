@@ -1,7 +1,4 @@
 1) Construir una buena gráfica de:
-	a)La página de inicio
-	b)La sección de Login
-	c)La sección de register
 	d)La sección de Lista de deseos => crear la clase Deseos o Wishes.
 		Esta interfaz deberá ser parecida a la de mercadolibre con
 		su propiop carrito de compras
@@ -16,7 +13,3 @@
 	e)Hasta acá deberíamos de tener TODOS los TODO finalizados
 	f)Luego de completar el punto e), debemos estudiar la parte de SmartContracts y lograr 
 		generar un smart contract que genere una tarjeta de regalo ficticia.
-
-
-
-

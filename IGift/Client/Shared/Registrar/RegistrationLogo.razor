@@ -1,17 +1,16 @@
-﻿<MudPaper Height="450px" Width="100%">
+﻿<MudPaper Height="450px" Width="100%" Elevation="0" >
 
     <MudContainer MaxWidth="MaxWidth.Small">
 
-        <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
+        <MudPaper Elevation="0" Height="400px" Width="100%" Square="true">
 
-            <MudContainer Class="d-flex justify-center mt-8" Elevation="0" Style="background-color:white;margin-bottom:50px;">
-                <MudImage ObjectFit="ObjectFit.Contain" Height="70" Width="300" Src="svg/MainLogo.svg" Elevation="0" Class="rounded-lg" />
+            <MudContainer Class="d-flex justify-center mt-8" Style="margin-bottom:50px;">
+                <MudImage ObjectFit="ObjectFit.Cover" Height="100" Width="300" Src="svg/MainLogo.svg" Elevation="0" Class="rounded-lg" />
             </MudContainer>
 
-            <MudCard>
+            <MudCard Style="border:solid;border-color:#F48536;background-color:#daa520">
 
                @ChildContent
-
 
             </MudCard>
 
