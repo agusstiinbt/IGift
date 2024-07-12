@@ -1,0 +1,22 @@
+﻿<div>
+    <MudBadge Color="Color.Error" Visible=@_visible Content=@_notifications Overlap="true" Bordered="true" Class="mx-6 my-4">
+        <MudIconButton @onclick="ToggleOpen" Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Inherit" />
+
+    </MudBadge>
+    <MudPopover Open="_open" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
+        <MudPaper Outlined="true" Class="px-4 py-8">
+            <MudPaper Width="250px" Class="py-3" Elevation="0">
+
+                <MudNavMenu>
+
+                    @foreach (var n in list)
+                    {
+                        <MudNavLink Href="/">@n.Message</MudNavLink>
+                    }
+
+                </MudNavMenu>
+
+            </MudPaper>
+        </MudPaper>
+    </MudPopover>
+</div>

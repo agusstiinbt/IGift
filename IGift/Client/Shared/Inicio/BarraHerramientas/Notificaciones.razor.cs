@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using IGift.Application.Responses.Chat;
 
-namespace IGift.Client.Shared.Inicio
+namespace IGift.Client.Shared.Inicio.BarraHerramientas
 {
     public partial class Notificaciones
     {
