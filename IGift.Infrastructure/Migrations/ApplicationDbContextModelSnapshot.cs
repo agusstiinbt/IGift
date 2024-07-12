@@ -24,9 +24,8 @@ namespace IGift.Infrastructure.Migrations
 
             modelBuilder.Entity("IGift.Application.Models.Notification", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -90,9 +89,9 @@ namespace IGift.Infrastructure.Migrations
 
             modelBuilder.Entity("IGift.Domain.Entities.Gift", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -123,14 +122,13 @@ namespace IGift.Infrastructure.Migrations
 
                     b.HasIndex("IdUser");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", "dbo");
                 });
 
             modelBuilder.Entity("IGift.Domain.Entities.GiftCard", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()

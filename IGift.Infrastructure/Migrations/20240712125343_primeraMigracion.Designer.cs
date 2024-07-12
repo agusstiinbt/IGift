@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IGift.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240712120014_agregamospedidos")]
-    partial class agregamospedidos
+    [Migration("20240712125343_primeraMigracion")]
+    partial class primeraMigracion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,8 @@ namespace IGift.Infrastructure.Migrations
 
             modelBuilder.Entity("IGift.Application.Models.Notification", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -93,9 +92,9 @@ namespace IGift.Infrastructure.Migrations
 
             modelBuilder.Entity("IGift.Domain.Entities.Gift", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -126,14 +125,13 @@ namespace IGift.Infrastructure.Migrations
 
                     b.HasIndex("IdUser");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", "dbo");
                 });
 
             modelBuilder.Entity("IGift.Domain.Entities.GiftCard", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()

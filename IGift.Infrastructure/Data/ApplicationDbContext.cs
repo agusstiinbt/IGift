@@ -47,6 +47,12 @@ namespace IGift.Infrastructure.Data
            .WithMany(u => u.Pedidos)
            .HasForeignKey(n => n.IdUser);
 
+            builder.Entity<Gift>(entity =>
+            {
+                entity.ToTable(name: "Pedidos", "dbo");
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+
             builder.Entity<IGiftUser>(entity =>
             {
                 entity.ToTable(name: "Users", "Identity");
