@@ -1,5 +1,7 @@
 ﻿using IGift.Domain.Contracts;
 using IGift.Shared.Wrapper;
+using IGift.Application.Filtros;
+using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Application.Extensions
 {
@@ -16,5 +18,15 @@ namespace IGift.Application.Extensions
             return await Task.FromResult(PaginatedResult<T>.Success(items, count, pageNumber, pageSize));
         }
 
+        public static IQueryable<T> Specify<T>(this IQueryable<T> query, ISpecification<T> spec) where T : class, IEntity
+        {
+            var queryableResultWithIncludes = spec.Includes
+                .Aggregate(query,
+                    (current, include) => current.Include(include));
+            var secondaryResult = spec.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+            return secondaryResult.Where(spec.Criteria);
+        }
     }
 }
