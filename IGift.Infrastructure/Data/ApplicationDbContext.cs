@@ -15,7 +15,7 @@ namespace IGift.Infrastructure.Data
         public DbSet<GiftCard> GiftCards { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<LocalAdherido> LocalesAdheridos { get; set; }
-        public DbSet<Request> Pedidos { get; set; }
+        public DbSet<Pedidos> Pedidos { get; set; }
         public DbSet<Notification> Notification { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -42,12 +42,12 @@ namespace IGift.Infrastructure.Data
            .WithMany(u => u.Notifications)
            .HasForeignKey(n => n.IdUser);
 
-            builder.Entity<Request>()
+            builder.Entity<Pedidos>()
            .HasOne<IGiftUser>()
            .WithMany(u => u.Pedidos)
            .HasForeignKey(n => n.IdUser);
 
-            builder.Entity<Request>(entity =>
+            builder.Entity<Pedidos>(entity =>
             {
                 entity.ToTable(name: "Pedidos", "dbo");
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();

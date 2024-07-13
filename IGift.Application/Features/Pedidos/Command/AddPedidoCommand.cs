@@ -29,7 +29,7 @@ namespace IGift.Application.Features.Pedidos.Command
 
         public async Task<IResult> Handle(AddPedidoCommand request, CancellationToken cancellationToken)
         {
-            var pedido = new Request
+            var pedido = new Domain.Entities.Pedidos
             {
                 IdUser = request.IdUser,
                 Descripcion = request.Descripcion,
@@ -39,7 +39,7 @@ namespace IGift.Application.Features.Pedidos.Command
                 CreatedOn = DateTime.Now,
                 LastModifiedOn = DateTime.Now
             };
-            await _unitOfWork.Repository<Request>().AddAsync(pedido);
+            await _unitOfWork.Repository<Domain.Entities.Pedidos>().AddAsync(pedido);
 
             return await Result.SuccessAsync("Pedido agregado con éxito");
         }

@@ -24,7 +24,7 @@ namespace IGift.Infrastructure.Models
         public bool IsActive { get; set; }
 
         public List<Notification> Notifications { get; set; } = new List<Notification>() { };
-        public List<Request> Pedidos { get; set; } = new List<Request>() { };
+        public List<Pedidos> Pedidos { get; set; } = new List<Pedidos>() { };
 
         //TODO implementar para el chat
         public IGiftUser()

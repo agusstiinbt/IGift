@@ -17,10 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Features\Notifications\Command\" />
     <Folder Include="Responses\Identity\Token\" />
-    <Folder Include="Responses\Pedidos\" />
   </ItemGroup>
 
 </Project>

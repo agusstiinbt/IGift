@@ -40,6 +40,13 @@
                 private static string route = "api/Notification";
                 public static string GetAll = route;
             }
+
+            public static class PedidosController
+            {
+                private static string route = "api/Pedidos/";
+
+                public static string GetAll = route + "GetAll";
+            }
         }
 
         public static class Routes
