@@ -19,8 +19,9 @@ namespace Client.Infrastructure.Services.Requests
         public async Task<PaginatedResult<PedidosResponse>> GetAll()
         {
             //TODO va a llegar un momento donde vamos a tener mil productos, entonces ver el ejemplo de blazorHero
-            var response = await _http.PostAsJsonAsync(AppConstants.Controllers.PedidosController.GetAll, new GetAllPedidosQuery());
-            return await response.ToPaginatedResult<PedidosResponse>();
+            //var response = await _http.PostAsJsonAsync(AppConstants.Controllers.PedidosController.GetAll, new GetAllPedidosQuery());
+            //return await response.ToPaginatedResult<PedidosResponse>();
+            throw new NotFiniteNumberException();
         }
     }
 }
