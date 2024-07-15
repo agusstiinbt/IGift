@@ -25,6 +25,8 @@ namespace IGift.Application.Features.LocalesAdheridos
     internal class AddEditLocalAdheridoCommandHandler : IRequestHandler<AddEditLocalAdheridoCommand, Result>
     {
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork<int> _unitOfWork;
+
         public async Task<Result> Handle(AddEditLocalAdheridoCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
