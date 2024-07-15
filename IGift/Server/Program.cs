@@ -19,6 +19,8 @@ using IGift.Application.Features.Notifications.Query;
 using Org.BouncyCastle.Crypto.Utilities;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Infrastructure.Repositories;
+using IGift.Application.Interfaces.Files;
+using IGift.Infrastructure.Services.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +80,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
+builder.Services.AddScoped<IUploadService, UploadService>();
 
 //Mapeo
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

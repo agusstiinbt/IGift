@@ -5,6 +5,7 @@ using IGift.Shared;
 using IGift.Shared.Wrapper;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace IGift.Application.Features.LocalesAdheridos
 {
