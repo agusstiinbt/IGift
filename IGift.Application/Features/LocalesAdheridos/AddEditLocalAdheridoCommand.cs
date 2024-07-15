@@ -1,4 +1,6 @@
-﻿using IGift.Application.Requests.Files;
+﻿using AutoMapper;
+using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Requests.Files;
 using IGift.Shared;
 using IGift.Shared.Wrapper;
 using MediatR;
@@ -18,5 +20,14 @@ namespace IGift.Application.Features.LocalesAdheridos
         public string CreatedBy { get; set; } = AppConstants.AdminEmail;
         public string Descripcion { get; set; } = string.Empty;
         public UploadRequest UploadRequest { get; set; }
+    }
+
+    internal class AddEditLocalAdheridoCommandHandler : IRequestHandler<AddEditLocalAdheridoCommand, Result>
+    {
+        private readonly IMapper _mapper;
+        public async Task<Result> Handle(AddEditLocalAdheridoCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IGift.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240712164325_1eraMigraciojn")]
-    partial class _1eraMigraciojn
+    [Migration("20240715180229_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.18")
+                .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -90,44 +90,6 @@ namespace IGift.Infrastructure.Migrations
                     b.ToTable("Contracts");
                 });
 
-            modelBuilder.Entity("IGift.Domain.Entities.Gift", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Moneda")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Monto")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdUser");
-
-                    b.ToTable("Pedidos", "dbo");
-                });
-
             modelBuilder.Entity("IGift.Domain.Entities.GiftCard", b =>
                 {
                     b.Property<string>("Id")
@@ -184,6 +146,10 @@ namespace IGift.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -194,6 +160,44 @@ namespace IGift.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LocalesAdheridos");
+                });
+
+            modelBuilder.Entity("IGift.Domain.Entities.Pedidos", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Moneda")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Monto")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdUser");
+
+                    b.ToTable("Pedidos", "dbo");
                 });
 
             modelBuilder.Entity("IGift.Infrastructure.Models.IGiftRole", b =>
@@ -478,15 +482,6 @@ namespace IGift.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("IGift.Domain.Entities.Gift", b =>
-                {
-                    b.HasOne("IGift.Infrastructure.Models.IGiftUser", null)
-                        .WithMany("Pedidos")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("IGift.Domain.Entities.GiftCard", b =>
                 {
                     b.HasOne("IGift.Domain.Entities.LocalAdherido", "Local")
@@ -496,6 +491,15 @@ namespace IGift.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Local");
+                });
+
+            modelBuilder.Entity("IGift.Domain.Entities.Pedidos", b =>
+                {
+                    b.HasOne("IGift.Infrastructure.Models.IGiftUser", null)
+                        .WithMany("Pedidos")
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("IGift.Infrastructure.Models.IGiftRoleClaim", b =>

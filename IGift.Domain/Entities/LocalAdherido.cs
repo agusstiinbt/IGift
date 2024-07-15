@@ -4,7 +4,6 @@ namespace IGift.Domain.Entities
 {
     public class LocalAdherido : AuditableEntity<int>
     {
-        public int Id { get; set; }
         public required string Nombre { get; set; }
         public bool Activo { get; set; }
         public string CreatedBy { get; set; }
