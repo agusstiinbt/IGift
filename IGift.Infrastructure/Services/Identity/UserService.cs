@@ -62,7 +62,7 @@ namespace IGift.Infrastructure.Services.Identity
             throw new NotImplementedException();
         }
 
-        public async Task<Result<List<UserResponse>>> GetAllAsync() => await Result<List<UserResponse>>.SuccessAsync(await _userManager.Users.ProjectTo<UserResponse>(_mapper.ConfigurationProvider).ToListAsync());
+        public async Task<Result<IEnumerable<UserResponse>>> GetAllAsync() => await Result<IEnumerable<UserResponse>>.SuccessAsync(await _userManager.Users.ProjectTo<UserResponse>(_mapper.ConfigurationProvider).ToListAsync());
         //Código más completo =>
         //{
         //    // Result<List<UserResponse>>.SuccessAsync(
@@ -234,7 +234,7 @@ namespace IGift.Infrastructure.Services.Identity
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Error al verificar registro de usuario: "+e.Message);
+                    throw new Exception("Error al verificar registro de usuario: " + e.Message);
                 }
 
             }
