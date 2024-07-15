@@ -19,8 +19,8 @@ namespace IGift.Client.Shared.Inicio.BarraHerramientas
             var result = await _notificationService.GetAll();
             if (result.Succeeded)
             {
-                list = result.Data;
-                _notifications = result.Data.Count;
+                list = result.Data.ToList();
+                _notifications = list.Count;
             }
             _visible = _notifications == 0 ? false : true;
         }
