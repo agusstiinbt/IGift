@@ -7,9 +7,9 @@ using MediatR;
 
 namespace IGift.Application.Features.Notifications.Query
 {
-    public record GetAllNotificationQuery(string Id) : IRequest<IResult<List<NotificationResponse>>>;
+    public record GetAllNotificationQuery(string Id) : IRequest<IResult<IEnumerable<NotificationResponse>>>;
 
-    internal class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, IResult<List<NotificationResponse>>>
+    internal class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, IResult<IEnumerable<NotificationResponse>>>
     {
         //Acá ponemos un int porque sabemos que nuestras notificaciones tienen un Int
         private readonly IUnitOfWork<string> _unitOfWork;
@@ -21,11 +21,11 @@ namespace IGift.Application.Features.Notifications.Query
             _mapper = mapper;
         }
 
-        public async Task<IResult<List<NotificationResponse>>> Handle(GetAllNotificationQuery request, CancellationToken cancellationToken)
+        public async Task<IResult<IEnumerable<NotificationResponse>>> Handle(GetAllNotificationQuery request, CancellationToken cancellationToken)
         {
             var response = await _unitOfWork.Repository<Notification>().GetAllAsync();
             var lista = new List<NotificationResponse>();
-
+            //TODO modificar y hacer algun tipo de mapeo
             foreach (var item in response)
             {
                 lista.Add(new NotificationResponse
@@ -39,7 +39,7 @@ namespace IGift.Application.Features.Notifications.Query
             //TODO implementar el mapeo aquí
             //var result = _mapper.Map<List<NotificationResponse>>(response);
 
-            return await Result<List<NotificationResponse>>.SuccessAsync(lista);
+            return await Result<IEnumerable<NotificationResponse>>.SuccessAsync(lista);
         }
     }
 }

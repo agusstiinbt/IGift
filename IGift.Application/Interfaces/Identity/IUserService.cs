@@ -1,7 +1,5 @@
-﻿using IGift.Application.Requests.Identity;
-using IGift.Application.Requests.Identity.Password;
+﻿using IGift.Application.Requests.Identity.Password;
 using IGift.Application.Requests.Identity.Users;
-using IGift.Application.Responses;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Application.Responses.Users;
 using IGift.Shared.Wrapper;
@@ -10,7 +8,7 @@ namespace IGift.Application.Interfaces.Identity
 {
     public interface IUserService
     {
-        Task<Result<List<UserResponse>>> GetAllAsync();
+        Task<Result<IEnumerable<UserResponse>>> GetAllAsync();
         Task<int> HowMany();
 
         Task<IResult<UserResponse>> GetByIdAsync(string id);

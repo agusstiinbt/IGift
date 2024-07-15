@@ -30,9 +30,9 @@ namespace IGift.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await Task.FromResult(_context.Set<T>().AsEnumerable());
         }
 
         public async Task<T> GetByIdAsync(TId id)
@@ -40,7 +40,7 @@ namespace IGift.Infrastructure.Repositories
             return await _context!.Set<T>().FindAsync(id);
         }
 
-        public Task<List<T>> GetPagedResponseAsync(int pageNumber, int pageSize)
+        public Task<IEnumerable<T>> GetPagedResponseAsync(int pageNumber, int pageSize)
         {
             //TODO utilizar?
             throw new NotImplementedException();

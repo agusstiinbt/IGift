@@ -20,7 +20,7 @@ namespace Client.Infrastructure.Services.Notification
             _localStorage = localStorage;
         }
 
-        public async Task<IResult<List<NotificationResponse>>> GetAll()
+        public async Task<IResult<IEnumerable<NotificationResponse>>> GetAll()
         {
             //TODO implementar lógica para obtener el id de otra manera
             var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
@@ -30,8 +30,9 @@ namespace Client.Infrastructure.Services.Notification
             var url = AppConstants.Controllers.NotificationController.GetAll;
 
             var response = await _httpClient.PostAsJsonAsync(url, query);
-            var result = await response.ToResult<List<NotificationResponse>>();
+            var result = await response.ToResult<IEnumerable<NotificationResponse>>();
             return result;
         }
+       
     }
 }

@@ -5,6 +5,6 @@ namespace Client.Infrastructure.Services.Notification
 {
     public interface INotificationService
     {
-        Task<IResult<List<NotificationResponse>>> GetAll();
+        Task<IResult<IEnumerable<NotificationResponse>>> GetAll();
     }
 }

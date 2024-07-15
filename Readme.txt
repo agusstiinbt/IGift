@@ -47,3 +47,44 @@ Diferencias Clave
 Contexto de ejecución: await mantiene el contexto de sincronización y continua en el mismo hilo, mientras que BackgroundJob.Enqueue ejecuta la tarea en un contexto completamente separado.
 Persistencia y manejo de fallos: Hangfire maneja la persistencia y los reintentos automáticos de tareas fallidas, mientras que await no lo hace.
 Idoneidad: BackgroundJob.Enqueue es más adecuado para tareas largas y no críticas que pueden ejecutarse independientemente del flujo principal de la aplicación. await es adecuado para tareas que deben completarse antes de continuar, manteniendo el flujo lógico del programa.
+
+
+
+
+
+Colecciones:
+
+Usar la interfaz más genérica posible:
+
+public IEnumerable<string> GetNames()
+{
+    return new List<string> { "Alice", "Bob", "Charlie" 
+};
+
+
+Preferir IEnumerable<T> para iteración:
+
+Si el propósito del método es simplemente iterar sobre una colección, usa IEnumerable<T>.
+Por qué: Es la interfaz más genérica y cubre la mayoría de los casos de uso para la iteración.
+
+
+Usar ICollection<T> para manipulación de colecciones:
+
+
+// Para iteración
+public IEnumerable<string> GetNames()
+{
+    return new List<string> { "Alice", "Bob", "Charlie" };
+}
+
+// Para manipulación básica
+public ICollection<string> GetEditableNames()
+{
+    return new List<string> { "Alice", "Bob", "Charlie" };
+}
+
+// Para acceso por índice
+public IList<string> GetIndexedNames()
+{
+    return new List<string> { "Alice", "Bob", "Charlie" };
+}
