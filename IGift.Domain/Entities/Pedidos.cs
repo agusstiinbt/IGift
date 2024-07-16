@@ -2,7 +2,7 @@
 
 namespace IGift.Domain.Entities
 {
-    public class Pedidos : AuditableEntity<string>
+    public class Peticiones : AuditableEntity<string>
     {
         public string IdUser { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;

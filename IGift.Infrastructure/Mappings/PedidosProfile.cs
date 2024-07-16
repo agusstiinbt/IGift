@@ -8,7 +8,7 @@ namespace IGift.Infrastructure.Mappings
     {
         public PedidosProfile()
         {
-            CreateMap<Pedidos, PedidosResponse>();
+            CreateMap<Peticiones, PedidosResponse>();
         }
     }
 }

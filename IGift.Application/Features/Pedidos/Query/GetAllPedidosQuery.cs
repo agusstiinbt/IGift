@@ -41,7 +41,7 @@ namespace IGift.Application.Features.Pedidos.Query
         {
             //ReadMe and DoNotDeleteme:
             //Esto evita el uso del Mapper?Sí, esta técnica puede mejorar el rendimiento de la consulta, ya que se seleccionan y se transfieren solo los datos necesarios desde la base de datos hasta la aplicación. Además, reduce el tráfico de red y la carga en el servidor de base de datos al seleccionar solo los campos requeridos.
-            Expression<Func<Domain.Entities.Pedidos, PedidosResponse>> expression = e => new PedidosResponse
+            Expression<Func<Domain.Entities.Peticiones, PedidosResponse>> expression = e => new PedidosResponse
             {
                 Descripcion = e.Descripcion,
                 Moneda = e.Moneda,
@@ -51,7 +51,7 @@ namespace IGift.Application.Features.Pedidos.Query
             var filtro = new PedidosFilter(request.SearchString);
             if (request.OrderBy?.Any() != true)
             {
-                var response = await _unitOfWork.Repository<Domain.Entities.Pedidos>().Entities
+                var response = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Entities
                     .Specify(filtro)
                     .Select(expression)
                     .ToPaginatedListAsync(request.PageNumber, request.PageSize);
@@ -61,7 +61,7 @@ namespace IGift.Application.Features.Pedidos.Query
             else
             {
                 var ordering = string.Join(",", request.OrderBy);//TODO explicar...
-                var data = await _unitOfWork.Repository<Domain.Entities.Pedidos>().Entities
+                var data = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Entities
                     .Specify(filtro)
                     .OrderBy(ordering)
                     .Select(expression).

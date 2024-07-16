@@ -1,6 +1,8 @@
-﻿namespace IGift.Application.Filtros.Pedidos
+﻿using IGift.Domain.Entities;
+
+namespace IGift.Application.Filtros.Pedidos
 {
-    public class PedidosFilter : Specification<Domain.Entities.Pedidos>
+    public class PedidosFilter : Specification<Pedidos>
     {
         public PedidosFilter(string filtroBusqueda)
         {
