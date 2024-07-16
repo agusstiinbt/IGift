@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Shared\Registrar\Locales\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
