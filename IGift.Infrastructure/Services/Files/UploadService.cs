@@ -1,4 +1,5 @@
-﻿using IGift.Application.Interfaces.Files;
+﻿using IGift.Application.Extensions;
+using IGift.Application.Interfaces.Files;
 using IGift.Application.Requests.Files;
 
 namespace IGift.Infrastructure.Services.Files

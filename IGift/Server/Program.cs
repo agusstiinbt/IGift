@@ -16,7 +16,6 @@ using Hangfire;
 using IGift.Shared;
 using HangfireBasicAuthenticationFilter;
 using IGift.Application.Features.Notifications.Query;
-using Org.BouncyCastle.Crypto.Utilities;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Infrastructure.Repositories;
 using IGift.Application.Interfaces.Files;
