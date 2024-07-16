@@ -5,7 +5,7 @@
         public PedidosFilter(string filtroBusqueda)
         {
 
-            //Includes.Add(a => a.Brands); Esto se usa para filtrar no solamente por el nombre (descripcion) sino también por la marca
+            //  Includes.Add(a => a.Brands); Esto se usa para evitar LazyLoading y hacer un EagleLoading
             if (!string.IsNullOrEmpty(filtroBusqueda))
             {
                 Criteria = p => p.Descripcion != null && (p.Descripcion.Contains(filtroBusqueda) || p.Descripcion.Contains(filtroBusqueda));

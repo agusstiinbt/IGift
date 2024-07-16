@@ -88,3 +88,26 @@ public IList<string> GetIndexedNames()
 {
     return new List<string> { "Alice", "Bob", "Charlie" };
 }
+
+
+
+Mapeos:
+Veamos el siguiente ejemplo 
+
+Esto es mucho más rapido que un mapeo. Ver código fuente con explicación
+ Expression<Func<Domain.Entities.Pedidos, PedidosResponse>> expression = e => new PedidosResponse
+            {
+                Descripcion = e.Descripcion,
+                Moneda = e.Moneda,
+                Monto = e.Monto,
+            };
+
+            var filtro = new PedidosFilter(request.SearchString);
+            if (request.OrderBy?.Any() != true)
+            {
+                var response = await _unitOfWork.Repository<Domain.Entities.Pedidos>().Entities
+                    .Specify(filtro)
+                    .Select(expression)
+                    .ToPaginatedListAsync(request.PageNumber, request.PageSize);
+                return response;
+            }

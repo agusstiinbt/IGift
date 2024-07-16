@@ -39,7 +39,8 @@ namespace IGift.Application.Features.Pedidos.Query
 
         public async Task<PaginatedResult<PedidosResponse>> Handle(GetAllPedidosQuery request, CancellationToken cancellationToken)
         {
-            //TODO esto evita el uso del Mapper?
+            //ReadMe and DoNotDeleteme:
+            //Esto evita el uso del Mapper?Sí, esta técnica puede mejorar el rendimiento de la consulta, ya que se seleccionan y se transfieren solo los datos necesarios desde la base de datos hasta la aplicación. Además, reduce el tráfico de red y la carga en el servidor de base de datos al seleccionar solo los campos requeridos.
             Expression<Func<Domain.Entities.Pedidos, PedidosResponse>> expression = e => new PedidosResponse
             {
                 Descripcion = e.Descripcion,

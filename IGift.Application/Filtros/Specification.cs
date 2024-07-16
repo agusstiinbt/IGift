@@ -29,5 +29,6 @@ namespace IGift.Application.Filtros
         {
             return Criteria = Criteria == null ? query : Criteria.Or(query);
         }
+
     }
 }

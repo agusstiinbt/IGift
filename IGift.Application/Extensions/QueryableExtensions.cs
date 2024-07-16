@@ -20,13 +20,14 @@ namespace IGift.Application.Extensions
 
         public static IQueryable<T> Specify<T>(this IQueryable<T> query, ISpecification<T> spec) where T : class, IEntity
         {
-            var queryableResultWithIncludes = spec.Includes
-                .Aggregate(query,
-                    (current, include) => current.Include(include));
-            var secondaryResult = spec.IncludeStrings
-                .Aggregate(queryableResultWithIncludes,
-                    (current, include) => current.Include(include));
+            //Agrega los 'includes' especificados en la especificación
+            var queryableResultWithIncludes = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+            //Agrega includes adicionales especificados como cadenas
+            var secondaryResult = spec.IncludeStrings.Aggregate(queryableResultWithIncludes, (current, include) => current.Include(include));
+
             return secondaryResult.Where(spec.Criteria);
         }
     }
+
+
 }
