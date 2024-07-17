@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Features.Notifications.Query;
+using IGift.Server.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers

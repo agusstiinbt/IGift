@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IGift.Server.Controllers
+namespace IGift.Server.Controllers.Base
 {
     /// <summary>
     /// Clase abstracta

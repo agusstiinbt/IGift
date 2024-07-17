@@ -1,5 +1,6 @@
 ﻿using IGift.Application.Features.Pedidos.Command;
 using IGift.Application.Features.Pedidos.Query;
+using IGift.Server.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
