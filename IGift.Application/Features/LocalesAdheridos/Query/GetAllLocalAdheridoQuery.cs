@@ -10,7 +10,7 @@ using IGift.Application.Extensions;
 
 namespace IGift.Application.Features.LocalesAdheridos.Query
 {
-    public class GetAllLocalAdheridoQuery : IRequest<IResult<IEnumerable<LocalAdheridoResponse>>>
+    public class GetAllLocalAdheridoQuery : IRequest<IResult<PaginatedResult<LocalAdheridoResponse>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }//TODO documentar que en el front cuando usamos un tablestate siempre tiene por defecto un 10. No hay que usar en el front un pagination, sino que debemos usar un MudTablePager porque este otorga siempre por defecto 10. Ver el código de Blazor Hero la parte de Products para ver cómo se comporta    
@@ -23,7 +23,7 @@ namespace IGift.Application.Features.LocalesAdheridos.Query
             SearchString = searchString;
         }
     }
-    internal class GetAllLocalAdheridoQueryHandler : IRequestHandler<GetAllLocalAdheridoQuery, IResult<IEnumerable<LocalAdheridoResponse>>>
+    internal class GetAllLocalAdheridoQueryHandler : IRequestHandler<GetAllLocalAdheridoQuery, IResult<PaginatedResult<LocalAdheridoResponse>>>
     {
         private readonly IUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
@@ -34,8 +34,9 @@ namespace IGift.Application.Features.LocalesAdheridos.Query
             _mapper = mapper;
         }
 
-        public async Task<IResult<IEnumerable<LocalAdheridoResponse>>> Handle(GetAllLocalAdheridoQuery request, CancellationToken cancellationToken)
+        public async Task<IResult<PaginatedResult<LocalAdheridoResponse>>> Handle(GetAllLocalAdheridoQuery request, CancellationToken cancellationToken)
         {
+            //Esto evita un mapeo, generando menos tráfico de datos por parte del servidor
             Expression<Func<LocalAdherido, LocalAdheridoResponse>> expression = e => new LocalAdheridoResponse
             {
                 Descripcion = e.Descripcion,
@@ -46,9 +47,14 @@ namespace IGift.Application.Features.LocalesAdheridos.Query
             if (!string.IsNullOrEmpty(request.SearchString))
             {
                 var filtro = new LocalesFilter(request.SearchString);
-                var response = await _unitOfWork.Repository<LocalAdherido>().Entities.Specify(filtro).Select(expression).ToPaginatedListAsync();
+                var response = await _unitOfWork.Repository<LocalAdherido>().Entities.Specify(filtro).Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+                return await Result<PaginatedResult<LocalAdheridoResponse>>.SuccessAsync(response);
             }
-            throw new NotImplementedException();
+            else
+            {
+                var response = await _unitOfWork.Repository<LocalAdherido>().Entities.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+                return await Result<PaginatedResult<LocalAdheridoResponse>>.SuccessAsync(response);
+            }
         }
     }
 }
