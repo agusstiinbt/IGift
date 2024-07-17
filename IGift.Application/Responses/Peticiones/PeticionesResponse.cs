@@ -1,6 +1,6 @@
 ﻿namespace IGift.Application.Responses.Pedidos
 {
-    public class PedidosResponse
+    public class PeticionesResponse
     {
         public string Descripcion { get; set; } = string.Empty;
         public int Monto { get; set; }

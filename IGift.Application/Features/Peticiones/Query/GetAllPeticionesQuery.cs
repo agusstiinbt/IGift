@@ -10,9 +10,9 @@ using System.Linq.Expressions;
 
 namespace IGift.Application.Features.Pedidos.Query
 {
-    public class GetAllPedidosQuery : IRequest<PaginatedResult<PedidosResponse>>
+    public class GetAllPeticionesQuery : IRequest<PaginatedResult<PeticionesResponse>>
     {
-        public GetAllPedidosQuery(int pageNumber, int pageSize, string searchString, string[] orderBy)
+        public GetAllPeticionesQuery(int pageNumber, int pageSize, string searchString, string[] orderBy)
         {
             PageNumber = pageNumber;
             PageSize = pageSize;
@@ -26,29 +26,29 @@ namespace IGift.Application.Features.Pedidos.Query
         public string[] OrderBy { get; set; }
     }
 
-    internal class GetAllPedidosQueryHandler : IRequestHandler<GetAllPedidosQuery, PaginatedResult<PedidosResponse>>
+    internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, PaginatedResult<PeticionesResponse>>
     {
         private readonly IUnitOfWork<string> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetAllPedidosQueryHandler(IUnitOfWork<string> unitOfWork, IMapper mapper)
+        public GetAllPeticionesQueryHandler(IUnitOfWork<string> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<PaginatedResult<PedidosResponse>> Handle(GetAllPedidosQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<PeticionesResponse>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
         {
             //ReadMe and DoNotDeleteme:
             //Esto evita el uso del Mapper?Sí, esta técnica puede mejorar el rendimiento de la consulta, ya que se seleccionan y se transfieren solo los datos necesarios desde la base de datos hasta la aplicación. Además, reduce el tráfico de red y la carga en el servidor de base de datos al seleccionar solo los campos requeridos.
-            Expression<Func<Domain.Entities.Peticiones, PedidosResponse>> expression = e => new PedidosResponse
+            Expression<Func<Domain.Entities.Peticiones, PeticionesResponse>> expression = e => new PeticionesResponse
             {
                 Descripcion = e.Descripcion,
                 Moneda = e.Moneda,
                 Monto = e.Monto,
             };
 
-            var filtro = new PedidosFilter(request.SearchString);
+            var filtro = new PeticionesFilter(request.SearchString);
             if (request.OrderBy?.Any() != true)
             {
                 var response = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Entities

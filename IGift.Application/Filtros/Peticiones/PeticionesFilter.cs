@@ -2,9 +2,9 @@
 
 namespace IGift.Application.Filtros.Pedidos
 {
-    public class PedidosFilter : Specification<Peticiones>
+    public class PeticionesFilter : Specification<Peticiones>
     {
-        public PedidosFilter(string filtroBusqueda)
+        public PeticionesFilter(string filtroBusqueda)
         {
 
             //  Includes.Add(a => a.Brands); Esto se usa para evitar LazyLoading y hacer un EagleLoading

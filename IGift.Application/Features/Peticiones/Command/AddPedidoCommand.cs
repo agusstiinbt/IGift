@@ -6,7 +6,7 @@ using MediatR;
 
 namespace IGift.Application.Features.Pedidos.Command
 {
-    public class AddPedidoCommand : IRequest<IResult>
+    public class AddPeticionesCommand : IRequest<IResult>
     {
         public string IdUser { get; set; }
         public string Descripcion { get; set; }
@@ -14,7 +14,7 @@ namespace IGift.Application.Features.Pedidos.Command
         public required string Moneda { get; set; }
 
     }
-    internal class AddPedidoCommandHandler : IRequestHandler<AddPedidoCommand, IResult>
+    internal class AddPedidoCommandHandler : IRequestHandler<AddPeticionesCommand, IResult>
     {
 
 
@@ -27,7 +27,7 @@ namespace IGift.Application.Features.Pedidos.Command
             _mapper = mapper;
         }
 
-        public async Task<IResult> Handle(AddPedidoCommand request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(AddPeticionesCommand request, CancellationToken cancellationToken)
         {
             var pedido = new Domain.Entities.Peticiones
             {

@@ -4,11 +4,11 @@ using IGift.Domain.Entities;
 
 namespace IGift.Infrastructure.Mappings
 {
-    public class PedidosProfile : Profile
+    public class PeticionesProfile : Profile
     {
-        public PedidosProfile()
+        public PeticionesProfile()
         {
-            CreateMap<Peticiones, PedidosResponse>();
+            CreateMap<Peticiones, PeticionesResponse>();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace IGift.Infrastructure.Mappings
 
         public GiftProfile()
         {
-            CreateMap<Peticiones, AddPedidoCommand>();
+            CreateMap<Peticiones, AddPeticionesCommand>();
         }
     }
 }

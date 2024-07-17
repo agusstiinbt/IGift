@@ -1,12 +1,10 @@
-﻿using IGift.Application.Features.Pedidos.Query;
-using IGift.Application.Responses.Pedidos;
+﻿using IGift.Application.Responses.Pedidos;
 using IGift.Shared.Wrapper;
 
 namespace Client.Infrastructure.Services.Requests
 {
-    public interface IPedidosService
+    public interface IPeticiones
     {
-        Task<PaginatedResult<PedidosResponse>> GetAll();
-
+        Task<PaginatedResult<PeticionesResponse>> GetAll();
     }
 }
