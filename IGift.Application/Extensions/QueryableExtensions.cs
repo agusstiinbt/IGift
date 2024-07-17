@@ -28,6 +28,4 @@ namespace IGift.Application.Extensions
             return secondaryResult.Where(spec.Criteria);
         }
     }
-
-
 }

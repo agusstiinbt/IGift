@@ -15,6 +15,10 @@
         DateTime? LastModifiedOn { get; set; }
     }
 
+    /// <summary>
+    /// Quienes implementen este servicio no deberan poner implicitamente un Id
+    /// </summary>
+    /// <typeparam name="TId"></typeparam>
     public abstract class AuditableEntity<TId> : IAuditableEntity<TId>
     {
 

@@ -11,7 +11,7 @@ using System.Threading;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
-namespace IGift.Application.Features.LocalesAdheridos
+namespace IGift.Application.Features.LocalesAdheridos.Command
 {
     public class AddEditLocalAdheridoCommand : IRequest<IResult>
     {
