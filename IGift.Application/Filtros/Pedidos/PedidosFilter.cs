@@ -2,7 +2,7 @@
 
 namespace IGift.Application.Filtros.Pedidos
 {
-    public class PedidosFilter : Specification<Pedidos>
+    public class PedidosFilter : Specification<Peticiones>
     {
         public PedidosFilter(string filtroBusqueda)
         {
@@ -10,7 +10,7 @@ namespace IGift.Application.Filtros.Pedidos
             //  Includes.Add(a => a.Brands); Esto se usa para evitar LazyLoading y hacer un EagleLoading
             if (!string.IsNullOrEmpty(filtroBusqueda))
             {
-                Criteria = p => p.Descripcion != null && (p.Descripcion.Contains(filtroBusqueda) || p.Descripcion.Contains(filtroBusqueda));
+                Criteria = p => p.Descripcion != null && p.Descripcion.Contains(filtroBusqueda);
             }
             else
             {
