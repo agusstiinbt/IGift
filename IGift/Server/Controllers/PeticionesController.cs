@@ -17,7 +17,7 @@ namespace IGift.Server.Controllers
             return Ok(response);
         }
 
-        [HttpPost("GetAll")]
+        [HttpPost]
         public async Task<ActionResult> GetAll(GetAllPeticionesQuery query)
         {
             var response = await _mediator.Send(query);

@@ -54,7 +54,7 @@ namespace IGift.Client.Extensions
             .AddScoped<AuthenticationStateProvider, IGiftAuthenticationStateProvider>()
             .AddScoped<IHttpInterceptorManager, HttpInterceptorManager>()
             .AddScoped<INotificationService, NotificationService>()
-            .AddScoped<IPeticiones, PeticionesService>()
+            .AddScoped<IPeticionesService, PeticionesService>()
 
             .AddAuthorizationCore()
 

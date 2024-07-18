@@ -47,6 +47,12 @@
 
                 public static string GetAll = route + "GetAll";
             }
+
+            public static class PeticionesController
+            {
+                private static string route = "api/Peticiones";
+                public static string GetAll = route;
+            }
         }
 
         public static class Routes

@@ -12,18 +12,9 @@ namespace IGift.Application.Features.Pedidos.Query
 {
     public class GetAllPeticionesQuery : IRequest<PaginatedResult<PeticionesResponse>>
     {
-        public GetAllPeticionesQuery(int pageNumber, int pageSize, string searchString, string[] orderBy)
-        {
-            PageNumber = pageNumber;
-            PageSize = pageSize;
-            SearchString = searchString;
-            OrderBy = orderBy;
-        }
-
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public string SearchString { get; set; }
-        public string[] OrderBy { get; set; }
     }
 
     internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, PaginatedResult<PeticionesResponse>>
@@ -49,26 +40,11 @@ namespace IGift.Application.Features.Pedidos.Query
             };
 
             var filtro = new PeticionesFilter(request.SearchString);
-            if (request.OrderBy?.Any() != true)
-            {
-                var response = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Entities
-                    .Specify(filtro)
-                    .Select(expression)
-                    .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-                return response;
-            }
-
-            else
-            {
-                var ordering = string.Join(",", request.OrderBy);//TODO explicar...
-                var data = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Entities
-                    .Specify(filtro)
-                    .OrderBy(ordering)
-                    .Select(expression).
-                    ToPaginatedListAsync(request.PageNumber, request.PageSize);
-                return data;
-            }
-
+            var response = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Entities
+                .Specify(filtro)
+                .Select(expression)
+                .ToPaginatedListAsync(request.PageNumber, request.PageSize);
+            return response;
         }
     }
 }

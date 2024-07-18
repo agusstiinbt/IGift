@@ -3,3 +3,79 @@
 <h3>GrillaPedidos</h3>
 
 
+<AuthorizeView>
+
+    <Authorized>
+
+    </Authorized>
+
+    <NotAuthorized>
+        <TituloDeslogueado />
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table">
+
+    <ToolBarContent>
+
+
+        @* Compra y venta *@
+        <MudPaper Class=" pa-4 align-start d-flex" Style="width: 300px;" Elevation="0">
+
+            <MudButton Variant="Variant.Filled" Color="Color.Warning">Registrarse</MudButton>
+
+            <MudSpacer />
+
+            <MudButton Variant="Variant.Filled">Iniciar sesión</MudButton>
+
+            <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
+        </MudPaper>
+
+
+        <MudButton Variant="Variant.Filled">USDT</MudButton>
+        <MudButton Variant="Variant.Filled">BTC</MudButton>
+        <MudButton Variant="Variant.Filled">USDC</MudButton>
+        <MudButton Variant="Variant.Filled">ETH</MudButton>
+        <MudButton Variant="Variant.Filled">Tokens</MudButton>
+        <MudButton Variant="Variant.Filled">Otros</MudButton>
+
+
+    </ToolBarContent>
+
+
+    <HeaderContent>
+
+        <MudTh><MudTableSortLabel T="PeticionesResponse" SortLabel="Descripcion">Descripcion</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="PeticionesResponse" SortLabel="Moneda">Moneda</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="PeticionesResponse" SortLabel="Monto">Monto</MudTableSortLabel></MudTh>
+
+    </HeaderContent>
+
+    <RowTemplate>
+
+        <MudTd DataLabel="Name">
+            <MudHighlighter Text="@context.Descripcion" HighlightedText="@_searchString" />
+        </MudTd>
+
+        <MudTd DataLabel="Brand">
+            <MudHighlighter Text="@context.Moneda" HighlightedText="@_searchString" />
+        </MudTd>
+
+        <MudTd DataLabel="Brand">
+            <MudHighlighter Text="@context.Monto.ToString()" HighlightedText="@_searchString" />
+        </MudTd>
+
+        <MudButton Variant="Variant.Filled">Comprar</MudButton>
+
+    </RowTemplate>
+
+
+</MudTable>
+
+
+@code {
+   
+}
