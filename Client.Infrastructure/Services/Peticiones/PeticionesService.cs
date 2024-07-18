@@ -3,7 +3,6 @@ using IGift.Application.Features.Pedidos.Query;
 using IGift.Application.Responses.Pedidos;
 using IGift.Shared;
 using IGift.Shared.Wrapper;
-using MudBlazor;
 using System.Net.Http.Json;
 
 namespace Client.Infrastructure.Services.Requests

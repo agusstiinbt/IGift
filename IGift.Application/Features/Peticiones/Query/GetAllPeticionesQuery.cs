@@ -10,14 +10,14 @@ using System.Linq.Expressions;
 
 namespace IGift.Application.Features.Pedidos.Query
 {
-    public class GetAllPeticionesQuery : IRequest<PaginatedResult<PeticionesResponse>>
+    public class GetAllPeticionesQuery : IRequest<IResult<PaginatedResult<PeticionesResponse>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public string SearchString { get; set; }
     }
 
-    internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, PaginatedResult<PeticionesResponse>>
+    internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, IResult<PaginatedResult<PeticionesResponse>>>
     {
         private readonly IUnitOfWork<string> _unitOfWork;
         private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace IGift.Application.Features.Pedidos.Query
             _mapper = mapper;
         }
 
-        public async Task<PaginatedResult<PeticionesResponse>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
+        public async Task<IResult<PaginatedResult<PeticionesResponse>>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
         {
             //ReadMe and DoNotDeleteme:
             //Esto evita el uso del Mapper?Sí, esta técnica puede mejorar el rendimiento de la consulta, ya que se seleccionan y se transfieren solo los datos necesarios desde la base de datos hasta la aplicación. Además, reduce el tráfico de red y la carga en el servidor de base de datos al seleccionar solo los campos requeridos.
@@ -44,7 +44,7 @@ namespace IGift.Application.Features.Pedidos.Query
                 .Specify(filtro)
                 .Select(expression)
                 .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-            return response;
+            return await Result<PaginatedResult<PeticionesResponse>>.SuccessAsync(response);
         }
     }
 }

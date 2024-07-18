@@ -2,7 +2,6 @@
 using IGift.Application.Features.Pedidos.Query;
 using IGift.Application.Responses.Pedidos;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
 using MudBlazor;
 
 namespace IGift.Client.Pages
@@ -13,7 +12,6 @@ namespace IGift.Client.Pages
 
         private IEnumerable<PeticionesResponse> _pagedData;
         private MudTable<PeticionesResponse> _table;
-
 
         private int _totalItems;
         private string _searchString { get; set; } = string.Empty;
@@ -51,7 +49,6 @@ namespace IGift.Client.Pages
                 }
             }
         }
-
 
         private void OnSearch(string text)
         {
