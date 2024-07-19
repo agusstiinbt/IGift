@@ -1,4 +1,4 @@
-﻿@page "/Grilla"
+﻿@page "/Peticiones"
 
 <h3>GrillaPedidos</h3>
 
@@ -12,28 +12,27 @@
     <NotAuthorized>
         <TituloDeslogueado />
     </NotAuthorized>
-
 </AuthorizeView>
-
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table">
 
+
     <ToolBarContent>
 
-
         @* Compra y venta *@
-        <MudPaper Class=" pa-4 align-start d-flex" Style="width: 300px;" Elevation="0">
+        <MudPaper Class=" pa-4 align-start d-flex" Style="width: 300px;border-radius:10px;" Elevation="0" Outlined="true">
 
-            <MudButton Variant="Variant.Filled" Color="Color.Warning">Registrarse</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Warning">Comprar</MudButton>
 
             <MudSpacer />
 
-            <MudButton Variant="Variant.Filled">Iniciar sesión</MudButton>
+            <MudButton Variant="Variant.Filled">Vender</MudButton>
 
-            <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 
         </MudPaper>
 
+
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
 
         <MudButton Variant="Variant.Filled">USDT</MudButton>
         <MudButton Variant="Variant.Filled">BTC</MudButton>
@@ -41,6 +40,7 @@
         <MudButton Variant="Variant.Filled">ETH</MudButton>
         <MudButton Variant="Variant.Filled">Tokens</MudButton>
         <MudButton Variant="Variant.Filled">Otros</MudButton>
+
 
 
     </ToolBarContent>
@@ -77,5 +77,5 @@
 
 
 @code {
-   
+
 }

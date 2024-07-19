@@ -1,12 +1,12 @@
-﻿<MudPaper Elevation="25">
+﻿<MudPaper Elevation="25" Style="background-color:#181A20">
     <MudToolBar>
         @* <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Class="mr-5" /> *@
-        <MudButton>Ofertas</MudButton>
-        <MudButton>Peticiones</MudButton>
-        <MudButton>Moda</MudButton>
-        <MudButton>Electrodomésticos</MudButton>
-        <MudButton>Historial</MudButton>
-        <MudButton>Ayuda</MudButton>
+        <MudButton Style="@Style">Ofertas</MudButton>
+        <MudButton Style="@Style">Peticiones</MudButton>
+        <MudButton Style="@Style">Moda</MudButton>
+        <MudButton Style="@Style">Electrodomésticos</MudButton>
+        <MudButton Style="@Style">Historial</MudButton>
+        <MudButton Style="@Style">Ayuda</MudButton>
         <MudSpacer />
         <MudButton>
             <a href=@AppConstants.Routes.Register>Creá tu cuenta</a>
@@ -16,3 +16,10 @@
         </MudButton>
     </MudToolBar>
 </MudPaper>
+
+@code {
+    private string Style { get; set; } = "background-color:white";
+
+    //TODO el background color que estamos viendo más arriba, si va a ser el color de todos los elementos 'hijo' entonces se deben pasar desde arriba
+
+}

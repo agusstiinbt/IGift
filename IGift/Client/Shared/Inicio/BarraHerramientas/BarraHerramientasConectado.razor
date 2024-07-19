@@ -1,12 +1,13 @@
 ﻿<MudPaper Elevation="0">
-    <MudToolBar>
+    <MudToolBar Style="background-color:#181A20">
 
-        <MudButton>Ofertas</MudButton>
-        <MudButton>Peticiones</MudButton>
-        <MudButton>Moda</MudButton>
-        <MudButton>Electrodomésticos</MudButton>
-        <MudButton>Historial</MudButton>
-        <MudButton>Ayuda</MudButton>
+        <MudButton Style="color:#828C9A">Ofertas</MudButton>
+        <MudButton Style="color:#828C9A">Moda</MudButton>
+        <MudButton Style="color:#828C9A">Peticiones</MudButton>
+        <MudButton Style="color:#828C9A">Electrodomésticos</MudButton>
+        <MudButton Style="color:#828C9A">Historial</MudButton>
+        <MudButton Style="color:#828C9A">Ayuda</MudButton>
+        <MudButton Style="color:#828C9A">Ofertas grandes</MudButton>
 
         <MudSpacer />
 
@@ -14,7 +15,7 @@
 
         <Notificaciones />
 
-        <CarritoCompras/>
+        <CarritoCompras />
 
     </MudToolBar>
 </MudPaper>
@@ -22,26 +23,6 @@
 
 @code {
 
-    private string _buttonText = "Reply";
-
-    private void SetButtonText(int id)
-    {
-        switch (id)
-        {
-            case 0:
-                _buttonText = "Reply";
-                break;
-            case 1:
-                _buttonText = "Reply All";
-                break;
-            case 2:
-                _buttonText = "Forward";
-                break;
-            case 3:
-                _buttonText = "Reply & Delete";
-                break;
-        }
-    }
     public bool _open;
 
     public void ToggleOpen()

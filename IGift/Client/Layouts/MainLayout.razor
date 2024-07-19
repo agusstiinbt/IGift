@@ -5,13 +5,13 @@
 <MudSnackbarProvider />
 
 
-<MudLayout Style="height:1080px">
+<MudLayout Style="height:1080px;background-color:#181A20">
 
     <ContenedorLogoPrincipal />
 
     <MudMainContent>
 
-        <div style="background: #f6f7fb" class="flex-grow-1 flex-shrink-1">
+        <div style="background-color:#181A20" class="flex-grow-1 flex-shrink-1">
             @Body
         </div>
 
@@ -23,4 +23,10 @@
 
     </MudMainContent>
 </MudLayout>
+
+
+@code{
+
+    public string BackgroundColor = "#181A20";
+}
 
