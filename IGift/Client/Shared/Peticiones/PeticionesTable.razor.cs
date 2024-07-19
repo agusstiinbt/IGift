@@ -4,24 +4,32 @@ using IGift.Application.Responses.Pedidos;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace IGift.Client.Pages
+namespace IGift.Client.Shared.Peticiones
 {
-    public partial class Peticiones
+    public partial class PeticionesTable
     {
-        [Inject] IPeticionesService _peticiones { get; set; }
-
-        private IEnumerable<PeticionesResponse> _pagedData;
-        private MudTable<PeticionesResponse> _table;
-
-        private int _totalItems;
-        private string _searchString { get; set; } = string.Empty;
-        private int _currentPage;
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
 
         private string EstiloBotonCompra { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonVenta { get; set; } = "color:white;";
-        private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white";
+        private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
+        private string BotonSeleccionado { get; set; } = "";
+
+
+        private void SeleccionarBoton(string boton)
+        {
+            BotonSeleccionado = boton;
+        }
+
+        private string GetEstiloBoton(string boton)
+        {
+            if (BotonSeleccionado == boton)
+            {
+                return "background-color:#181A20;color:yellow;";
+            }
+            return EstiloCrypto;
+        }
 
         private void TipoOperacion(string boton)
         {
@@ -37,6 +45,16 @@ namespace IGift.Client.Pages
             }
 
         }
+
+      
+        [Inject] IPeticionesService _peticiones { get; set; }
+
+        private IEnumerable<PeticionesResponse> _pagedData;
+        private MudTable<PeticionesResponse> _table;
+
+        private int _totalItems;
+        private string _searchString { get; set; } = string.Empty;
+        private int _currentPage;
 
         private async Task<TableData<PeticionesResponse>> GetData(TableState state)
         {
@@ -70,10 +88,5 @@ namespace IGift.Client.Pages
             }
         }
 
-        private void OnSearch(string text)
-        {
-            _searchString = text;
-            _table.ReloadServerData();
-        }
     }
 }
