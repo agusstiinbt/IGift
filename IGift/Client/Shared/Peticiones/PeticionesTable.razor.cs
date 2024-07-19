@@ -8,6 +8,15 @@ namespace IGift.Client.Shared.Peticiones
 {
     public partial class PeticionesTable
     {
+        [Inject] IPeticionesService _peticiones { get; set; }
+
+        private IEnumerable<PeticionesResponse> _pagedData;
+        private MudTable<PeticionesResponse> _table;
+
+        private int _totalItems;
+        private int _currentPage;
+
+        private string _searchString { get; set; } = string.Empty;
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
 
@@ -15,7 +24,6 @@ namespace IGift.Client.Shared.Peticiones
         private string EstiloBotonVenta { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "";
-
 
         private void SeleccionarBoton(string boton)
         {
@@ -45,16 +53,6 @@ namespace IGift.Client.Shared.Peticiones
             }
 
         }
-
-      
-        [Inject] IPeticionesService _peticiones { get; set; }
-
-        private IEnumerable<PeticionesResponse> _pagedData;
-        private MudTable<PeticionesResponse> _table;
-
-        private int _totalItems;
-        private string _searchString { get; set; } = string.Empty;
-        private int _currentPage;
 
         private async Task<TableData<PeticionesResponse>> GetData(TableState state)
         {
@@ -87,6 +85,10 @@ namespace IGift.Client.Shared.Peticiones
                 }
             }
         }
-
+        private void OnSearch(string text)
+        {
+            _searchString = text;
+            _table.ReloadServerData();
+        }
     }
 }
