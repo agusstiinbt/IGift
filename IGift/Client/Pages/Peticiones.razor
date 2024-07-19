@@ -14,28 +14,39 @@
     </NotAuthorized>
 </AuthorizeView>
 
-<MudPaper Style="background-color:#181A20;" Class="d-flex justify-center" Elevation="0" >
+<MudPaper Style="margin-right:13%;background-color:#181A20;" Class="d-flex justify-center" Elevation="0">
 
     <MudTable Style="background-color:#181A20" ServerData="@(new Func<TableState, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table">
 
         <ToolBarContent>
 
             @* Compra y venta *@
-            <MudPaper Style="background-color:#181A20;width: 860px; border-width: 1px;border-radius:10px;border-color:white;" Elevation="20" Outlined="true">
+            <MudPaper Style="width:980px;background-color:#181A20;" Elevation="20" Outlined="true">
 
-                <MudButton OnClick="()=>TipoOperacion(Compra)" Variant="Variant.Filled" Style="@EstiloBotonCompra">Comprar</MudButton>
+                <MudStack Wrap="Wrap.NoWrap" Spacing="4" Row="true" AlignItems="AlignItems.Start">
 
-                <MudButton OnClick="()=>TipoOperacion(Venta)" Variant="Variant.Filled" Style="@EstiloBotonVenta">Vender</MudButton>
+
+                    <MudPaper Style="background-color:transparent">
+                        <MudButton OnClick="()=>TipoOperacion(Compra)" Variant="Variant.Filled" Style="@EstiloBotonCompra">Comprar</MudButton>
+
+                        <MudButton OnClick="()=>TipoOperacion(Venta)" Variant="Variant.Filled" Style="@EstiloBotonVenta">Vender</MudButton>
+                    </MudPaper>
+
+
+
+
+                    <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">USDT</MudButton>
+                    <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">BTC</MudButton>
+                    <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">USDC</MudButton>
+                    <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">ETH</MudButton>
+                    <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">Tokens</MudButton>
+                    <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">Otros</MudButton>
+                </MudStack>
 
             </MudPaper>
 
-            <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">USDT</MudButton>
-            <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">BTC</MudButton>
-            <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">USDC</MudButton>
-            <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">ETH</MudButton>
-            <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">Tokens</MudButton>
-            <MudButton Style="@EstiloCrypto" Variant="Variant.Filled">Otros</MudButton>
 
+            @* border-width: 1px;border-radius:10px;border-color:white;" *@
 
         </ToolBarContent>
 
@@ -70,6 +81,7 @@
 
 
     </MudTable>
+
 </MudPaper>
 
 
