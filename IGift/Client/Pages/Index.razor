@@ -1,25 +1,4 @@
 ﻿@page "/"
 
-<AuthorizeView>
-
-    <Authorized>
-        <CascadingValue Value="EstiloBotones">
-            <BarraHerramientasConectado userName="@NombreUsuario" />
-        </CascadingValue>
-    </Authorized>
-
-    <NotAuthorized>
-        <CascadingValue Value="EstiloBotones">
-            <BarraHerramientasDesconectado />
-        </CascadingValue>
-    </NotAuthorized>
-
-</AuthorizeView>
-
 <CaruselInicio />
 
-
-@code {
-    [CascadingParameter]
-    public string EstiloBotones { get; set; } = "color:#828C9A";
-}
