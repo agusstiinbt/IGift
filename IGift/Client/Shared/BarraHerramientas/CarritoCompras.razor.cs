@@ -2,7 +2,7 @@
 using IGift.Application.Responses.Chat;
 using Microsoft.AspNetCore.Components;
 
-namespace IGift.Client.Shared.Inicio.BarraHerramientas
+namespace IGift.Client.Shared.BarraHerramientas
 {
     public partial class CarritoCompras
     {

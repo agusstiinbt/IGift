@@ -1,13 +1,13 @@
 ﻿<MudPaper Elevation="0">
     <MudToolBar Style="background-color:#181A20">
 
-        <MudButton Style="color:#828C9A">Ofertas</MudButton>
-        <MudButton Style="color:#828C9A">Moda</MudButton>
-        <MudButton Href="/Peticiones" Style="color:#828C9A"> Peticiones</MudButton>
-        <MudButton Style="color:#828C9A">Electrodomésticos</MudButton>
-        <MudButton Style="color:#828C9A">Historial</MudButton>
-        <MudButton Style="color:#828C9A">Ayuda</MudButton>
-        <MudButton Style="color:#828C9A">Ofertas grandes</MudButton>
+        <MudButton Style=@_estiloBotones>Ofertas</MudButton>
+        <MudButton Style=@_estiloBotones>Moda</MudButton>
+        <MudButton Href="/Peticiones" Style=@_estiloBotones> Peticiones</MudButton>
+        <MudButton Style=@_estiloBotones>Electrodomésticos</MudButton>
+        <MudButton Style=@_estiloBotones>Historial</MudButton>
+        <MudButton Style=@_estiloBotones>Ayuda</MudButton>
+        <MudButton Style=@_estiloBotones>Ofertas grandes</MudButton>
 
         <MudSpacer />
 
@@ -22,6 +22,10 @@
 
 
 @code {
+
+    [CascadingParameter]
+    private string _estiloBotones { get; set; }
+
 
     public bool _open;
 

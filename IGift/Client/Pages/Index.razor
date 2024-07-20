@@ -3,13 +3,23 @@
 <AuthorizeView>
 
     <Authorized>
-        <BarraHerramientasConectado userName="@NombreUsuario" />
+        <CascadingValue Value="EstiloBotones">
+            <BarraHerramientasConectado userName="@NombreUsuario" />
+        </CascadingValue>
     </Authorized>
 
     <NotAuthorized>
-        <BarraHerramientasDesconectado />
+        <CascadingValue Value="EstiloBotones">
+            <BarraHerramientasDesconectado />
+        </CascadingValue>
     </NotAuthorized>
 
 </AuthorizeView>
 
 <CaruselInicio />
+
+
+@code {
+    [CascadingParameter]
+    public string EstiloBotones { get; set; } = "color:#828C9A";
+}
