@@ -1,12 +1,12 @@
 ﻿<MudPaper Elevation="25" Style="background-color:#181A20">
     <MudToolBar>
-        @* <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Class="mr-5" /> *@
         <MudButton Style="@_estiloBotones">Ofertas</MudButton>
         <MudButton Href="/Peticiones" Style="@_estiloBotones"> Peticiones</MudButton>
         <MudButton Style="@_estiloBotones">Moda</MudButton>
         <MudButton Style="@_estiloBotones">Electrodomésticos</MudButton>
         <MudButton Style="@_estiloBotones">Historial</MudButton>
         <MudButton Style="@_estiloBotones">Ayuda</MudButton>
+
         <MudSpacer />
 
 
@@ -20,7 +20,4 @@
 @code {
     [CascadingParameter]
     private string _estiloBotones { get; set; }
-
-    //TODO el background color que estamos viendo más arriba, si va a ser el color de todos los elementos 'hijo' entonces se deben pasar desde arriba
-
 }
