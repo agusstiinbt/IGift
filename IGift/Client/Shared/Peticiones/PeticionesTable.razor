@@ -10,7 +10,7 @@
                 <MudStack Wrap="Wrap.NoWrap" Spacing="4" Row="true" AlignItems="AlignItems.Start">
 
                     <MudPaper Style="background-color:transparent">
-                        <MudButton OnClick="()=>TipoOperacion(Compra)" Style="@EstiloBotonCompra">Comprar</MudButton>
+                        <MudButton OnClick="()=>TipoOperacion(Compra)" Style="@EstiloBotonCompra">Comprar </MudButton>
 
                         <MudButton OnClick="()=>TipoOperacion(Venta)" Style="@EstiloBotonVenta">Vender</MudButton>
                     </MudPaper>
@@ -30,27 +30,31 @@
 
         <HeaderContent>
 
-            <MudTh><MudTableSortLabel T="PeticionesResponse" SortLabel="Descripcion">Descripcion</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="PeticionesResponse" SortLabel="Moneda">Moneda</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="PeticionesResponse" SortLabel="Monto">Monto</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel Style="color:white;" T="PeticionesResponse" SortLabel="Descripcion">Descripcion</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel Style="color:white;" T="PeticionesResponse" SortLabel="Moneda">Moneda</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel Style="color:white;" T="PeticionesResponse" SortLabel="Monto">Monto</MudTableSortLabel></MudTh>
 
         </HeaderContent>
 
         <RowTemplate>
 
             <MudTd DataLabel="Name">
-                <MudHighlighter Text="@context.Descripcion" HighlightedText="@_searchString" />
+                <MudHighlighter HighlightedText="@_searchString" />
+                <MudText Style="color:white;">@context.Descripcion</MudText>
             </MudTd>
 
             <MudTd DataLabel="Brand">
-                <MudHighlighter Text="@context.Moneda" HighlightedText="@_searchString" />
+                <MudHighlighter HighlightedText="@_searchString" />
+                <MudText Style="color:white;">@context.Moneda</MudText>
             </MudTd>
 
             <MudTd DataLabel="Brand">
-                <MudHighlighter Text="@context.Monto.ToString()" HighlightedText="@_searchString" />
+                <MudHighlighter HighlightedText="@_searchString" />
+                <MudText Style="color:white;">@context.Monto</MudText>
+
             </MudTd>
 
-            <MudButton>Comprar</MudButton>
+            <MudButton Style="background-color:green;color:white;">Comprar @BotonSeleccionado</MudButton>
 
         </RowTemplate>
 

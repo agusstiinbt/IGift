@@ -23,7 +23,7 @@ namespace IGift.Client.Shared.Peticiones
         private string EstiloBotonCompra { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonVenta { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
-        private string BotonSeleccionado { get; set; } = "";
+        private string BotonSeleccionado { get; set; } = "USDT";
 
         private void SeleccionarBoton(string boton)
         {
