@@ -8,6 +8,7 @@ namespace IGift.Client.Shared.Peticiones
 {
     public partial class PeticionesTable
     {
+        //TODO limpiar código que no se esté utilizando
         [Inject] IPeticionesService _peticiones { get; set; }
 
         private IEnumerable<PeticionesResponse> _pagedData;
@@ -54,6 +55,11 @@ namespace IGift.Client.Shared.Peticiones
 
         }
 
+        private void AgregarAlCarrito()
+        {
+
+        }
+
         private async Task<TableData<PeticionesResponse>> GetData(TableState state)
         {
             if (!string.IsNullOrEmpty(_searchString))
@@ -89,6 +95,6 @@ namespace IGift.Client.Shared.Peticiones
         {
             _searchString = text;
             _table.ReloadServerData();
-        }
+        }//Esto no borrarlo porque se va a utilizar más adelante
     }
 }
