@@ -2,7 +2,7 @@
 {
     public class Chat
     {
-        public ICollection<Mensaje> Mensajes { get; set; }
+        public ICollection<ChatMessage> Mensajes { get; set; }
         public string FromUserId { get; set; } = string.Empty;
         public string ToUserId { get; set; }=string.Empty;
         /// <summary>

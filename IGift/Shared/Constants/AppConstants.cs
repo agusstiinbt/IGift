@@ -2,6 +2,12 @@
 {
     public static class AppConstants
     {
+        public static class SignalR
+        {
+            public const string ReceiveMessage = "ReceiveMessage";
+            public const string ReceiveChatNotification = "ReceiveChatNotification";
+        }
+
         public static class Role
         {
             public const string AdministratorRole = "Administrator";
