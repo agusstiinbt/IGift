@@ -1,4 +1,5 @@
-﻿using IGift.Application.Models;
+﻿using IGift.Application.Interfaces.Chat;
+using IGift.Application.Models;
 using IGift.Domain.Contracts;
 using IGift.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -9,10 +10,10 @@ namespace IGift.Infrastructure.Models
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
+        public string? ProfilePictureDataUrl { get; set; }
 
 
         public string? RefreshToken { get; set; }
-        public string? ProfilePictureDataUrl { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
 
 
@@ -26,7 +27,7 @@ namespace IGift.Infrastructure.Models
         public List<Notification> Notifications { get; set; } = new List<Notification>() { };
         public List<Peticiones> Pedidos { get; set; } = new List<Peticiones>() { };
 
-        //TODO implementar para el chat
+        //TODO implementar para el chat?
         public IGiftUser()
         {
 

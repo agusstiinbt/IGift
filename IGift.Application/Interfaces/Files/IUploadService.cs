@@ -2,7 +2,7 @@
 
 namespace IGift.Application.Interfaces.Files
 {
-    public interface IUploadService
+    public interface IUploadService//TODO implementar
     {
         string Uploadsync(UploadRequest request);
     }

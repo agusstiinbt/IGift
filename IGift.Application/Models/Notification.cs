@@ -1,6 +1,5 @@
 ﻿using IGift.Application.Enums;
 using IGift.Domain.Contracts;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IGift.Application.Models
 {
