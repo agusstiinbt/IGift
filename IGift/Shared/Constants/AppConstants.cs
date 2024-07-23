@@ -67,6 +67,8 @@
             public static string Register = "/Register";
             public static string Logout = "/Logout";
             public static string Login = "/Login";
+            public static string Chat = "/Chat";
+            public static string Peticiones = "/Peticiones";
         }
 
         public static class StorageConstants

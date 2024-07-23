@@ -2,8 +2,8 @@
     <MudToolBar Style="background-color:#181A20">
 
         <MudButton Style=@_estiloBotones>Ofertas</MudButton>
-        <MudButton Style=@_estiloBotones>Moda</MudButton>
-        <MudButton Href="/Peticiones" Style=@_estiloBotones> Peticiones</MudButton>
+        <MudButton Href=@AppConstants.Routes.Chat Style=@_estiloBotones>Chat</MudButton>
+        <MudButton Href=@AppConstants.Routes.Peticiones Style=@_estiloBotones> Peticiones</MudButton>
         <MudButton Style=@_estiloBotones>Electrodomésticos</MudButton>
         <MudButton Style=@_estiloBotones>Historial</MudButton>
         <MudButton Style=@_estiloBotones>Ayuda</MudButton>
@@ -14,8 +14,6 @@
         <TogglePerfil userName=@userName />
 
         <Notificaciones />
-
-        <CarritoCompras />
 
     </MudToolBar>
 </MudPaper>
