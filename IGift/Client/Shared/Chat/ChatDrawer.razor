@@ -1,5 +1,25 @@
-﻿<h3>ChatDrawer</h3>
+﻿<MudDrawerHeader>
+    <ChatProfileToggle />
+</MudDrawerHeader>
 
-@code {
+<MudNavMenu>
 
-}
+    <MudDivider Class="my-2" />
+
+    <MudText Typo="Typo.h6" Class="px-4">Mensajes</MudText>
+    <MudDivider Class="my-2" />
+
+    <MudNavLink Href="/dashboard">Usuario 1</MudNavLink>
+    <MudNavLink Href="/servers">Usuario 2</MudNavLink>
+    <MudNavLink Href="/billing" Disabled="true">Usuario 3</MudNavLink>
+
+
+    <MudNavGroup Title="No leídos(1)" Icon="@Icons.Material.Filled.Email" Expanded="false">
+        <MudNavLink Href="/users">Usuario 4</MudNavLink>
+        <MudNavLink Href="/security">Usuario 5</MudNavLink>
+    </MudNavGroup>
+
+
+    <MudNavLink Href="/about">About</MudNavLink>
+
+</MudNavMenu>
