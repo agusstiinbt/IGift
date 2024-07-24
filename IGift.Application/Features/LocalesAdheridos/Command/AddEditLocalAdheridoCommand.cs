@@ -7,10 +7,6 @@ using IGift.Shared;
 using IGift.Shared.Wrapper;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
-using System.Threading;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Headers;
 namespace IGift.Application.Features.LocalesAdheridos.Command
 {
     public class AddEditLocalAdheridoCommand : IRequest<IResult>

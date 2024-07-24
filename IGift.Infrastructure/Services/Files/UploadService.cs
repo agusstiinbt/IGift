@@ -7,6 +7,8 @@ namespace IGift.Infrastructure.Services.Files
     //TODO estudiar esta clase
     public class UploadService : IUploadService
     {
+        private static string numberPattern = " ({0})";
+
         public string Uploadsync(UploadRequest request)
         {
             if (request.Data == null) return string.Empty;
@@ -16,9 +18,9 @@ namespace IGift.Infrastructure.Services.Files
                 var folder = request.UploadType.ToDescriptionString();
                 var folderName = Path.Combine("Files", folder);
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                bool exists = System.IO.Directory.Exists(pathToSave);
+                bool exists = Directory.Exists(pathToSave);
                 if (!exists)
-                    System.IO.Directory.CreateDirectory(pathToSave);
+                    Directory.CreateDirectory(pathToSave);
                 var fileName = request.FileName.Trim('"');
                 var fullPath = Path.Combine(pathToSave, fileName);
                 var dbPath = Path.Combine(folderName, fileName);
@@ -39,22 +41,27 @@ namespace IGift.Infrastructure.Services.Files
             }
         }
 
-        private static string numberPattern = " ({0})";
-
+        /// <summary>
+        /// Este método genera el siguiente nombre de archivo disponible si el archivo con el nombre dado ya existe.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string NextAvailableFilename(string path)
         {
-            // Short-cut if already available
-            if (!File.Exists(path))
+            if (!File.Exists(path))// Si el archivo no existe, retorna la ruta original
                 return path;
 
-            // If path has extension then insert the number pattern just before the extension and return next filename
-            if (Path.HasExtension(path))
+            if (Path.HasExtension(path))//Si el archivo tiene extensión, inserta un patrón de numeración justo antes de la extensión. Si no tiene extensión, agrega el patrón al final.
                 return GetNextFilename(path.Insert(path.LastIndexOf(Path.GetExtension(path)), numberPattern));
 
-            // Otherwise just append the pattern to the path and return next filename
             return GetNextFilename(path + numberPattern);
         }
 
+        /// <summary>
+        /// Este método implementa una búsqueda binaria para encontrar el siguiente nombre de archivo disponible.
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
         private static string GetNextFilename(string pattern)
         {
             string tmp = string.Format(pattern, 1);
