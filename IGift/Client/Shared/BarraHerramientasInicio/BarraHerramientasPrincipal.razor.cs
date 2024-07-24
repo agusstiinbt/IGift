@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using Client.Infrastructure.Authentication;
 
-namespace IGift.Client.Shared.BarraHerramientas
+namespace IGift.Client.Shared.BarraHerramientasInicio
 {
     public partial class BarraHerramientasPrincipal
     {
