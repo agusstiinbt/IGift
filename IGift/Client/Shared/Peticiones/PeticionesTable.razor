@@ -1,6 +1,8 @@
 ﻿<MudPaper Style="margin-right:13%;background-color:#181A20;" Class="d-flex justify-center" Elevation="0">
 
-    <MudTable Style="background-color:#181A20" ServerData="@(new Func<TableState, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table">
+
+    <MudTable T="PeticionesResponse" Style="background-color:#181A20" ServerData="@(new Func<TableState, CancellationToken, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table">
+        <!-- Aquí puedes agregar las columnas y otras configuraciones del MudTable -->
 
         <ToolBarContent>
 

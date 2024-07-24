@@ -1,4 +1,5 @@
 ﻿using Client.Infrastructure.Authentication;
+using System.Security.Claims;
 
 namespace IGift.Client.Layouts.Main.ToolBar
 {
@@ -12,7 +13,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
             var user = state.User;
             if (state != null && user.Identity.IsAuthenticated)
             {
-                NombreUsuario = state.User.Identity.Name;
+                NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
             }
         }
     }

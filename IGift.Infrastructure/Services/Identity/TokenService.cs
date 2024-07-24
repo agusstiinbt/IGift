@@ -189,6 +189,7 @@ namespace IGift.Infrastructure.Services.Identity
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Name,user.FirstName),
+                new(ClaimTypes.Surname,user.LastName),
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(ClaimTypes.Email, user.Email)
             }.Union(roleClaims);

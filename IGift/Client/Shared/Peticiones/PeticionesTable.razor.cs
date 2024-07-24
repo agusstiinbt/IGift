@@ -60,7 +60,7 @@ namespace IGift.Client.Shared.Peticiones
 
         }
 
-        private async Task<TableData<PeticionesResponse>> GetData(TableState state)
+        private async Task<TableData<PeticionesResponse>> GetData(TableState state, CancellationToken cancellationToken)
         {
             if (!string.IsNullOrEmpty(_searchString))
             {
@@ -69,6 +69,7 @@ namespace IGift.Client.Shared.Peticiones
             await LoadData(state.Page, state.PageSize, state);
             return new TableData<PeticionesResponse> { TotalItems = _totalItems, Items = _pagedData };
         }
+
 
         private async Task LoadData(int pageNumber, int pageSize, TableState state)
         {

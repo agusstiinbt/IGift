@@ -1,10 +1,46 @@
 ﻿@page "/UserProfile"
 @layout UserProfilieLayout
 @attribute [Authorize]
-
+@using MudBlazor;
 
 <MudStack>
-    <MudPaper Class="pa-3">Item 1</MudPaper>
-    <MudPaper Class="pa-3">Item 2</MudPaper>
-    <MudPaper Class="pa-3">Item 3</MudPaper>
+    <MudPaper Class="pa-4">
+        <MudStack Row="true">
+
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+                <ActivatorContent>
+                    <MudFab Style=" background-image: url('../img/Perfil.jpg'); background-size: cover;background-position: center;background-repeat: no-repeat;" />
+                </ActivatorContent>
+            </MudFileUpload>
+
+
+            <MudStack Justify="Justify.Center" Spacing="0">
+                <MudText Typo="Typo.body1">@Nombre</MudText>
+                <MudText Typo="Typo.body2">@Correo</MudText>
+            </MudStack>
+
+        </MudStack>
+    </MudPaper>
+
+    <MudPaper Class="pa-4">
+        <MudStack Spacing="4">
+            <MudTextField T="string" Label="Card number" Mask="@(new PatternMask("0000 0000 0000 0000"))" />
+            <MudStack Row="true">
+                <MudTextField T="string" Label="Expires" Mask="@(new DateMask("MM/YY", 'Y', 'M'))" />
+                <MudTextField T="string" Label="CVC" Mask="@(new PatternMask("000"))" />
+            </MudStack>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" DropShadow="false">Pay Now</MudButton>
+        </MudStack>
+    </MudPaper>
 </MudStack>
+
+
+@code {
+
+    IList<IBrowserFile> _files = new List<IBrowserFile>();
+    private void UploadFiles(IBrowserFile file)
+    {
+        _files.Add(file);
+        //TODO upload the files to the server
+    }
+}
