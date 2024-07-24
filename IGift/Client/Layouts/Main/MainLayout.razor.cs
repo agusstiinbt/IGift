@@ -6,7 +6,7 @@ using Microsoft.JSInterop;
 using MudBlazor;
 using Client.Infrastructure.Services.Interceptor;
 
-namespace IGift.Client.Layouts
+namespace IGift.Client.Layouts.Main
 {
     public partial class MainLayout
     {
