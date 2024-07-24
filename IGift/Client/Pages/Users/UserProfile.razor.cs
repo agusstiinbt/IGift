@@ -1,5 +1,4 @@
-﻿
-using Client.Infrastructure.Authentication;
+﻿using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Services.Identity.Users;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;

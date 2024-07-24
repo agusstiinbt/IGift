@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Client.Infrastructure.Services.Interceptor;
 
 namespace IGift.Client.Shared
@@ -10,7 +9,6 @@ namespace IGift.Client.Shared
         private bool collapseNavMenu = true;
         private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
         [Inject] private IHttpInterceptorManager _interceptor { get; set; }
-
 
         private void ToggleNavMenu()
         {

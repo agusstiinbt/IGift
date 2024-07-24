@@ -7,7 +7,6 @@ namespace IGift.Client.Pages.Users
 {
     public partial class Login
     {
-
         [Parameter] public string RegistrationSuccess { get; set; }
 
         private UserLoginRequest loginModel = new();
@@ -26,6 +25,5 @@ namespace IGift.Client.Pages.Users
                 _snack.Add("Registración de usuario exitosa", Severity.Success);
             }
         }
-
     }
 }
