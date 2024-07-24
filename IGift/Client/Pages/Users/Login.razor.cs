@@ -1,13 +1,10 @@
 ﻿using Client.Infrastructure.Authentication;
-using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Application.Requests.Identity.Users;
-using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
 using MudBlazor;
 
-namespace IGift.Client.Pages
+namespace IGift.Client.Pages.Users
 {
     public partial class Login
     {

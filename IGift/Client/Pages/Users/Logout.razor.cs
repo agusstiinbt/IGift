@@ -3,7 +3,7 @@ using Client.Infrastructure.Services.Interceptor;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 
-namespace IGift.Client.Pages
+namespace IGift.Client.Pages.Users
 {
     public partial class Logout
     {

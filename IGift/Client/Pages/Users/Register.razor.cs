@@ -3,9 +3,8 @@ using Client.Infrastructure.Services.Interceptor;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 
-namespace IGift.Client.Pages
+namespace IGift.Client.Pages.Users
 {
     public partial class Register
     {
