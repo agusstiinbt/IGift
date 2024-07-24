@@ -1,15 +1,9 @@
-﻿using Client.Infrastructure.Services.Identity.Users;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components;
-using Client.Infrastructure.Authentication;
+﻿using Client.Infrastructure.Authentication;
 
 namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class BarraHerramientasPrincipal
     {
-        [Inject] private IUserManager? _userManager { get; set; }
-        [Inject] private AuthenticationStateProvider? _authenticationStateProvider { get; set; }
-
         private string NombreUsuario { get; set; }
 
         protected override async Task OnInitializedAsync()

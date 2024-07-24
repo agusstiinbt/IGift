@@ -1,14 +1,12 @@
 ﻿using Client.Infrastructure.Authentication;
 using IGift.Application.Requests.Identity.Users;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 
 namespace IGift.Client.Pages.Users
 {
     public partial class Login
     {
-        [Inject] private AuthenticationStateProvider? _authenticationStateProvider { get; set; }
 
         [Parameter] public string RegistrationSuccess { get; set; }
 

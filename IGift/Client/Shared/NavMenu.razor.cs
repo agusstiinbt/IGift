@@ -9,7 +9,6 @@ namespace IGift.Client.Shared
 
         private bool collapseNavMenu = true;
         private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-        [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
         [Inject] private IHttpInterceptorManager _interceptor { get; set; }
 
 

@@ -31,7 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Client.Infrastructure\Client.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Client.Infrastructure\IGift.Client.Infrastructure.csproj" />
 		<ProjectReference Include="..\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
 

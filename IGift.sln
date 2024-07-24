@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGift.Infrastructure", "IGi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGift.Application", "IGift.Application\IGift.Application.csproj", "{60B597A9-395F-4EFA-9142-30DDC6D4A312}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Infrastructure", "Client.Infrastructure\Client.Infrastructure.csproj", "{50F642F9-A1BA-4457-9C27-BC0873F9DF53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGift.Client.Infrastructure", "Client.Infrastructure\IGift.Client.Infrastructure.csproj", "{50F642F9-A1BA-4457-9C27-BC0873F9DF53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{209E7E0C-A71E-4117-AD95-EFF908573034}"
 EndProject

@@ -45,5 +45,10 @@
 @inject NavigationManager _nav;
 @inject ISnackbar _snack;
 
-@* @inject DialogService _dialogService; *@
+
+@using global::Client.Infrastructure.Services.Identity.Users
+
+@inject DialogService _dialogService;
+@inject IUserManager _userManager;
+@inject AuthenticationStateProvider _authenticationStateProvider;
 
