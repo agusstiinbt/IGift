@@ -7,7 +7,7 @@
     <MudPaper Class="pa-4">
         <MudStack Row="true">
 
-            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+            <MudFileUpload Accept=".png,.jpg,.jpeg" T="IBrowserFile" FilesChanged="UploadFiles">
                 <ActivatorContent>
                     <MudBadge Origin="Origin.BottomRight" Icon="@Icons.Material.Filled.CameraAlt" Color="Color.Error" Overlap="true" Bordered="true" Class="mx-6 my-4">
                         <MudFab Label="@Iniciales" Style="@background" />
@@ -34,8 +34,3 @@
         </MudStack>
     </MudPaper>
 </MudStack>
-
-
-@code {
-
-}

@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Interfaces.Files;
+using IGift.Application.Requests.Files;
 using IGift.Application.Responses.Files;
 using IGift.Infrastructure.Data;
 using IGift.Shared.Wrapper;
@@ -18,7 +19,7 @@ namespace IGift.Infrastructure.Services.Files
             _env = env;
         }
 
-        public async Task<Result<ProfilePictureResponse>> GetByUserIdAsync(string IdUser)
+        public async Task<IResult<ProfilePictureResponse>> GetByUserIdAsync(string IdUser)
         {
             var response = await _dbContext.ProfilePicture.Where(x => x.IdUser == IdUser).FirstAsync();
             if (string.IsNullOrEmpty(response.Url))
@@ -38,6 +39,12 @@ namespace IGift.Infrastructure.Services.Files
             var profilePicture = new ProfilePictureResponse { Data = data, FileType = fileType, UploadDate = response.UploadDate };
 
             return Result<ProfilePictureResponse>.Success(profilePicture);
+        }
+
+        public async Task<IResult> UploadProfileAsync(UploadRequest request)
+        {
+
+            return await Result.SuccessAsync();
         }
     }
 }

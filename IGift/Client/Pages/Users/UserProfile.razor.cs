@@ -4,7 +4,6 @@ using IGift.Client.Infrastructure.Services.Files;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using System.Buffers.Text;
 using System.Security.Claims;
 
 namespace IGift.Client.Pages.Users
@@ -23,9 +22,8 @@ namespace IGift.Client.Pages.Users
         private string background = string.Empty;
         private string Correo { get; set; }
 
-
+        //Esto se puede usar para más adelante
         IList<IBrowserFile> _files = new List<IBrowserFile>();
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -42,8 +40,7 @@ namespace IGift.Client.Pages.Users
 
         private void UploadFiles(IBrowserFile file)
         {
-            _files.Add(file);
-            //TODO upload the files to the server
+          _profileService.UploadAsync(file);
         }
 
         private async Task GetProfilePicture()
