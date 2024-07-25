@@ -9,9 +9,11 @@
 
             <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
                 <ActivatorContent>
-                    <MudFab Style=" background-image: url('../img/Perfil.jpg'); background-size: cover;background-position: center;background-repeat: no-repeat;" />
+                    <MudFab Style="@background" />
                 </ActivatorContent>
             </MudFileUpload>
+
+
 
 
             <MudStack Justify="Justify.Center" Spacing="0">
@@ -37,10 +39,4 @@
 
 @code {
 
-    IList<IBrowserFile> _files = new List<IBrowserFile>();
-    private void UploadFiles(IBrowserFile file)
-    {
-        _files.Add(file);
-        //TODO upload the files to the server
-    }
 }

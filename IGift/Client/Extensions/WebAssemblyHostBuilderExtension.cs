@@ -12,6 +12,7 @@ using Blazored.LocalStorage;
 using System.Globalization;
 using Client.Infrastructure.Services.Notification;
 using Client.Infrastructure.Services.Requests;
+using IGift.Client.Infrastructure.Services.Files;
 
 namespace IGift.Client.Extensions
 {
@@ -55,6 +56,7 @@ namespace IGift.Client.Extensions
             .AddScoped<IHttpInterceptorManager, HttpInterceptorManager>()
             .AddScoped<INotificationService, NotificationService>()
             .AddScoped<IPeticionesService, PeticionesService>()
+            .AddScoped<IProfilePicture, ProfilePictureService>()
 
             .AddAuthorizationCore()
 

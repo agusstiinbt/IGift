@@ -59,6 +59,13 @@
                 private static string route = "api/Peticiones";
                 public static string GetAll = route;
             }
+
+            public static class FilesController
+            {
+                private static string route = "api/Files/";
+
+                public static string GetProfilePictureById = route + "GetProfilePictureById";
+            }
         }
 
         public static class Routes

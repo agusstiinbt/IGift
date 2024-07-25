@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Interfaces.Files;
+using IGift.Application.Requests.Files;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
@@ -14,10 +15,10 @@ namespace IGift.Server.Controllers
             _profileService = profileService;
         }
 
-        [HttpGet("GetById")]
-        public async Task<ActionResult> GetProfilePictureAsync(string IdUser)
+        [HttpPost("GetProfilePictureById")]
+        public async Task<ActionResult> GetProfilePictureAsync(ProfilePictureRequest p)
         {
-            var response = await _profileService.GetByUserIdAsync(IdUser);
+            var response = await _profileService.GetByUserIdAsync(p.Id);
             return Ok(response);
         }
     }
