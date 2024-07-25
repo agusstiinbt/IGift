@@ -80,6 +80,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 builder.Services.AddScoped<IUploadService, UploadService>();
+builder.Services.AddScoped<IProfilePicture, ProfilePictureService>();
+
 
 //Mapeo
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

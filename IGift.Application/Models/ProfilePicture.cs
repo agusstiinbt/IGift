@@ -1,7 +1,4 @@
-﻿using IGift.Domain.Contracts;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace IGift.Application.Models
+﻿namespace IGift.Application.Models
 {
     public class ProfilePicture
     {
