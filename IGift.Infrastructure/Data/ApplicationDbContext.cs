@@ -17,6 +17,7 @@ namespace IGift.Infrastructure.Data
         public DbSet<LocalAdherido> LocalesAdheridos { get; set; }
         public DbSet<Peticiones> Pedidos { get; set; }
         public DbSet<Notification> Notification { get; set; }
+        public DbSet<ProfilePicture> ProfilePicture { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,6 +38,13 @@ namespace IGift.Infrastructure.Data
             //
             base.OnModelCreating(builder);
 
+            //No confundir la construcción de este código con el siguiente entre Notification y IGiftUser. Son distintos por la relacion que hay entre ellos:
+            builder.Entity<ProfilePicture>()
+                .HasOne<IGiftUser>()
+                .WithOne(u => u.ProfilePictureDataUrl)
+                .HasForeignKey<ProfilePicture>(p => p.IdUser);
+
+            //No confundir la construcción de este código con el anterior entre ProfilePicture y IGiftUser. Son distintos por la relacion que hay entre ellos:
             builder.Entity<Notification>()
            .HasOne<IGiftUser>()
            .WithMany(u => u.Notifications)
@@ -45,7 +53,7 @@ namespace IGift.Infrastructure.Data
             builder.Entity<Peticiones>()
            .HasOne<IGiftUser>()
            .WithMany(u => u.Pedidos)
-           .HasForeignKey(n => n.IdUser);
+           .HasForeignKey(p => p.IdUser);
 
             builder.Entity<Peticiones>(entity =>
             {

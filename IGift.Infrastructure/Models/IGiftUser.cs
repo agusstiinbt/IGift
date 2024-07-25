@@ -1,5 +1,4 @@
-﻿using IGift.Application.Interfaces.Chat;
-using IGift.Application.Models;
+﻿using IGift.Application.Models;
 using IGift.Domain.Contracts;
 using IGift.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +9,8 @@ namespace IGift.Infrastructure.Models
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public string? ProfilePictureDataUrl { get; set; }
+
+        public ProfilePicture? ProfilePictureDataUrl { get; set; }
 
 
         public string? RefreshToken { get; set; }
