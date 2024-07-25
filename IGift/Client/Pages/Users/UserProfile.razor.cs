@@ -21,11 +21,11 @@ namespace IGift.Client.Pages.Users
         private string imageBase64 = string.Empty;
 
         private string background = string.Empty;
+        private string Correo { get; set; }
+
 
         IList<IBrowserFile> _files = new List<IBrowserFile>();
 
-
-        private string Correo { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,7 +37,6 @@ namespace IGift.Client.Pages.Users
                 Apellido = user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value!;
                 Correo = user.FindFirst(c => c.Type == ClaimTypes.Email)?.Value!;
             }
-
             await GetProfilePicture();
         }
 
@@ -53,7 +52,7 @@ namespace IGift.Client.Pages.Users
 
             var result = await _profileService.GetByIdAsync(idUser!);
 
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
                 imageBase64 = Convert.ToBase64String(result.Data.Data);
 

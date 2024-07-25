@@ -9,10 +9,11 @@
 
             <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
                 <ActivatorContent>
-                    <MudFab Label="@Iniciales" Style="@background" />
+                    <MudBadge Origin="Origin.BottomRight" Icon="@Icons.Material.Filled.CameraAlt" Color="Color.Error" Overlap="true" Bordered="true" Class="mx-6 my-4">
+                        <MudFab Label="@Iniciales" Style="@background" />
+                    </MudBadge>
                 </ActivatorContent>
             </MudFileUpload>
-
 
             <MudStack Justify="Justify.Center" Spacing="0">
                 <MudText Typo="Typo.body1">@Nombre</MudText>
