@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IGift.Application.Features.Pedidos.Command;
+using IGift.Application.Requests.Peticiones.Pedidos.Command;
 using IGift.Domain.Entities;
 
 namespace IGift.Infrastructure.Mappings

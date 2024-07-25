@@ -5,7 +5,7 @@ using IGift.Application.Responses.Chat;
 using IGift.Shared.Wrapper;
 using MediatR;
 
-namespace IGift.Application.Features.Notifications.Query
+namespace IGift.Application.Requests.Notifications.Query
 {
     public record GetAllNotificationQuery(string Id) : IRequest<IResult<IEnumerable<NotificationResponse>>>;
 

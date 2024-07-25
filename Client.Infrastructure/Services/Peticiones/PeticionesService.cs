@@ -1,5 +1,5 @@
 ﻿using Client.Infrastructure.Extensions;
-using IGift.Application.Features.Pedidos.Query;
+using IGift.Application.Requests.Peticiones.Pedidos.Query;
 using IGift.Application.Responses.Pedidos;
 using IGift.Shared;
 using IGift.Shared.Wrapper;

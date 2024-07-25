@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IGift.Server.Controllers.Base;
-using IGift.Application.Features.LocalesAdheridos.Query;
+using IGift.Application.Requests.LocalesAdheridos.Query;
 
 namespace IGift.Server.Controllers
 {

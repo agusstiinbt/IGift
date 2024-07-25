@@ -19,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\Notifications\Command\" />
+		<Folder Include="Requests\Notifications\Command\" />
 		<Folder Include="Responses\Identity\Token\" />
 	</ItemGroup>
 

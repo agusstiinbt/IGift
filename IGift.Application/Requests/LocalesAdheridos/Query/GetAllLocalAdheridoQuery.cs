@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using IGift.Application.Filtros.Locales;
 using IGift.Application.Extensions;
 
-namespace IGift.Application.Features.LocalesAdheridos.Query
+namespace IGift.Application.Requests.LocalesAdheridos.Query
 {
     public class GetAllLocalAdheridoQuery : IRequest<IResult<PaginatedResult<LocalAdheridoResponse>>>
     {

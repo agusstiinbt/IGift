@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories;
-using IGift.Domain.Entities;
 using IGift.Shared.Wrapper;
 using MediatR;
 
-namespace IGift.Application.Features.Pedidos.Command
+namespace IGift.Application.Requests.Peticiones.Pedidos.Command
 {
     public class AddPeticionesCommand : IRequest<IResult>
     {

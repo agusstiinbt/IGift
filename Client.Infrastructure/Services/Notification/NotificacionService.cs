@@ -1,6 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Client.Infrastructure.Extensions;
-using IGift.Application.Features.Notifications.Query;
+using IGift.Application.Requests.Notifications.Query;
 using IGift.Application.Responses.Chat;
 using IGift.Shared;
 using IGift.Shared.Wrapper;
@@ -33,6 +33,6 @@ namespace Client.Infrastructure.Services.Notification
             var result = await response.ToResult<IEnumerable<NotificationResponse>>();
             return result;
         }
-       
+
     }
 }

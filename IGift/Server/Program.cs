@@ -15,11 +15,11 @@ using IGift.Infrastructure.Services.Mail;
 using Hangfire;
 using IGift.Shared;
 using HangfireBasicAuthenticationFilter;
-using IGift.Application.Features.Notifications.Query;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Infrastructure.Repositories;
 using IGift.Application.Interfaces.Files;
 using IGift.Infrastructure.Services.Files;
+using IGift.Application.Requests.Notifications.Query;
 
 var builder = WebApplication.CreateBuilder(args);
 

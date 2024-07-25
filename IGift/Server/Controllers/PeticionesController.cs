@@ -1,5 +1,5 @@
-﻿using IGift.Application.Features.Pedidos.Command;
-using IGift.Application.Features.Pedidos.Query;
+﻿using IGift.Application.Requests.Peticiones.Pedidos.Command;
+using IGift.Application.Requests.Peticiones.Pedidos.Query;
 using IGift.Server.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 

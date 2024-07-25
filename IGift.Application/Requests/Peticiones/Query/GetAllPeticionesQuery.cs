@@ -8,7 +8,7 @@ using MediatR;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 
-namespace IGift.Application.Features.Pedidos.Query
+namespace IGift.Application.Requests.Peticiones.Pedidos.Query
 {
     public class GetAllPeticionesQuery : IRequest<IResult<PaginatedResult<PeticionesResponse>>>
     {
