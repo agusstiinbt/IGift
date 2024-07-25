@@ -6,7 +6,6 @@ namespace IGift.Application.Responses.Files
     {
         public string FileName { get; set; } = string.Empty;
         public string FileType { get; set; } = string.Empty;
-        public byte[] Data { get; set; }
-
+        public required byte[] Data { get; set; }
     }
 }
