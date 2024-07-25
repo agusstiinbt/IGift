@@ -22,7 +22,7 @@ namespace Client.Infrastructure.Services.Notification
 
         public async Task<IResult<IEnumerable<NotificationResponse>>> GetAll()
         {
-            //TODO implementar lógica para obtener el id de otra manera
+            //TODO implementar lógica para obtener el id de otra manera?
             var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
 
             var query = new GetAllNotificationQuery(idUser);
