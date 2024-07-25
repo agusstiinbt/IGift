@@ -21,6 +21,10 @@ namespace IGift.Infrastructure.Services.Files
         public async Task<Result<ProfilePictureResponse>> GetByUserIdAsync(string IdUser)
         {
             var response = await _dbContext.ProfilePicture.Where(x => x.IdUser == IdUser).FirstAsync();
+            if (string.IsNullOrEmpty(response.Url))
+            {
+                return await Result<ProfilePictureResponse>.FailAsync("No se ha encontrado la foto de perfil");
+            }
 
             var filePath = Path.Combine(_env.ContentRootPath, response.Url!);
             if (!File.Exists(filePath))
