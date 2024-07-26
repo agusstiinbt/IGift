@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-
+﻿
 namespace IGift.Application.Requests.Files.ProfilePicture
 {
     public class ProfilePictureUpload
     {
-        public IBrowserFile? File { get; set; }
+        public required byte[] Data { get; set; }
+        public string FileType { get; set; } = string.Empty;
     }
 }
