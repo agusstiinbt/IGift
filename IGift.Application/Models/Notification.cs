@@ -3,6 +3,7 @@ using IGift.Domain.Contracts;
 
 namespace IGift.Application.Models
 {
+    //TODO notification no debería de tener esta implementacion de Audit...
     public class Notification : AuditableEntity<string>
     {
         public string IdUser { get; set; } = string.Empty;
