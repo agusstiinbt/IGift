@@ -17,6 +17,8 @@ namespace IGift.Client.Pages.Users
 
         private ProfilePictureUpload _picture { get; set; } = new();
 
+        private string IdUser { get; set; } = string.Empty;
+
         private string Nombre { get; set; }
         private string Apellido { get; set; }
         private string Iniciales { get; set; }
@@ -40,6 +42,8 @@ namespace IGift.Client.Pages.Users
                 Nombre = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
                 Apellido = user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value!;
                 Correo = user.FindFirst(c => c.Type == ClaimTypes.Email)?.Value!;
+                IdUser = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+
             }
             await GetProfilePicture();
         }
@@ -56,7 +60,7 @@ namespace IGift.Client.Pages.Users
                 await imageFile.OpenReadStream().ReadAsync(buffer);
                 //Esto de acaá abajo sirve para mostrar en pantalla la foto que acabas de seleccionar
                 _picture.ImageDataURL = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-
+                _picture.IdUser = IdUser;
                 _picture.UploadRequest = new UploadRequest { FileName = "ProfilePicture" + extension, Data = buffer, UploadType = Application.Enums.UploadType.ProfilePicture, Extension = extension };
             }
             await SaveAsync();
@@ -64,9 +68,7 @@ namespace IGift.Client.Pages.Users
 
         private async Task GetProfilePicture()
         {
-            var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
-
-            var result = await _profileService.GetByIdAsync(idUser!);
+            var result = await _profileService.GetByIdAsync(IdUser!);
 
             if (result.Succeeded)
             {

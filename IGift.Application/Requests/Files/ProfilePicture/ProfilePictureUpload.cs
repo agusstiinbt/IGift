@@ -10,6 +10,9 @@ namespace IGift.Application.Requests.Files.ProfilePicture
 
         [JsonPropertyName("uploadRequest")]
         public UploadRequest UploadRequest { get; set; }
+
+        [JsonPropertyName("IdUser")]
+        public string IdUser { get; set; }
     }
 
 }

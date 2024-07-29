@@ -40,8 +40,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Files\Images\ProfilePictures\" />
-  </ItemGroup>
-
 </Project>

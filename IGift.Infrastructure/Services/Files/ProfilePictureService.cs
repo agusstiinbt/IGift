@@ -51,6 +51,8 @@ namespace IGift.Infrastructure.Services.Files
             var response = await _uploadService.UploadAsync(request.UploadRequest, true);
             if (!string.IsNullOrEmpty(response))
             {
+                var result = await _dbContext.ProfilePicture.Where(x => x.IdUser == request.IdUser).FirstAsync();
+                result.Url = response;
                 return await Result.SuccessAsync();
             }
             return await Result.FailAsync();
