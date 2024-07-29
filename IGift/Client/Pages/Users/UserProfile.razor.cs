@@ -43,15 +43,15 @@ namespace IGift.Client.Pages.Users
             }
             await GetProfilePicture();
         }
-
-        private async Task UploadFiles(InputFileChangeEventArgs e)
+        //InputFileChangeEventArgs
+        private async Task UploadFiles(IBrowserFile e)
         {
-            _file = e.File;
+            _file = e;
             if (_file != null)
             {
                 var extension = Path.GetExtension(_file.Name);
                 var format = "image/" + extension.Substring(1);
-                var imageFile = await e.File.RequestImageFileAsync(format, 400, 400);
+                var imageFile = await e.RequestImageFileAsync(format, 400, 400);
                 var buffer = new byte[imageFile.Size];
                 await imageFile.OpenReadStream().ReadAsync(buffer);
                 //Esto de acaá abajo sirve para mostrar en pantalla la foto que acabas de seleccionar
@@ -85,6 +85,10 @@ namespace IGift.Client.Pages.Users
             if (response.Succeeded)
             {
                 _snack.Add("Foto de perfil modificada correctamente", MudBlazor.Severity.Success); ;
+            }
+            else
+            {
+                _snack.Add(response.Messages.FirstOrDefault(), MudBlazor.Severity.Error);
             }
         }
     }

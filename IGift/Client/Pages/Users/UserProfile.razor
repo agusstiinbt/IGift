@@ -7,15 +7,17 @@
     <MudPaper Class="pa-4">
         <MudStack Row="true">
 
-            <InputFile OnChange="UploadFiles">
+            <MudFileUpload Accept=".png,.jpg,.jpeg" T="IBrowserFile" FilesChanged="UploadFiles">
+                <ActivatorContent>
                     <MudBadge Origin="Origin.BottomRight" Icon="@Icons.Material.Filled.CameraAlt" Color="Color.Error" Overlap="true" Bordered="true" Class="mx-6 my-4">
                         <MudFab Label="@Iniciales" Style="@background" />
                     </MudBadge>
-            </InputFile>
+                </ActivatorContent>
+            </MudFileUpload>
 
             <MudStack Justify="Justify.Center" Spacing="0">
                 <MudText Typo="Typo.body1">@Nombre</MudText>
-                <MudText Typo="Typo.body2">@Correo</MudText>>>
+                <MudText Typo="Typo.body2">@Correo</MudText>
             </MudStack>
 
         </MudStack>
