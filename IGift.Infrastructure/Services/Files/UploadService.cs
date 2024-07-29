@@ -1,15 +1,22 @@
 ﻿using IGift.Application.Extensions;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Requests.Files;
+using Microsoft.Extensions.Logging;
 
 namespace IGift.Infrastructure.Services.Files
 {
-    //TODO estudiar esta clase
     public class UploadService : IUploadService
     {
+        private readonly ILogger<UploadService> _logger;
+
+        public UploadService(ILogger<UploadService> logger)
+        {
+            this._logger = logger;
+        }
+
         private static string numberPattern = " ({0})";
 
-        public string Uploadsync(UploadRequest request)
+        public async Task<string> UploadAsync(UploadRequest request, bool ReplaceFile)
         {
             if (request.Data == null) return string.Empty;
             var streamData = new MemoryStream(request.Data);
@@ -26,12 +33,19 @@ namespace IGift.Infrastructure.Services.Files
                 var dbPath = Path.Combine(folderName, fileName);
                 if (File.Exists(dbPath))
                 {
-                    dbPath = NextAvailableFilename(dbPath);
-                    fullPath = NextAvailableFilename(fullPath);
+                    if (!ReplaceFile)//Con esto evitamos eliminar duplicados
+                    {
+                        dbPath = NextAvailableFilename(dbPath);
+                        fullPath = NextAvailableFilename(fullPath);
+                    }
+                    else
+                    {
+                        System.IO.File.Delete(dbPath);
+                    }
                 }
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    streamData.CopyTo(stream);
+                    await streamData.CopyToAsync(stream);
                 }
                 return dbPath;
             }
@@ -42,21 +56,29 @@ namespace IGift.Infrastructure.Services.Files
         }
 
         /// <summary>
+        /// Este método devuelve el directorio actual del proceso en ejecución. En un entorno de ASP.NET Core, esto suele ser la raíz del proyecto donde se está ejecutando la aplicación, que generalmente es el proyecto servidor
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string NextAvailableFilename(string path)
+        {
+            // Short-cut if already available
+            if (!File.Exists(path))
+                return path;
+
+            // If path has extension then insert the number pattern just before the extension and return next filename
+            if (Path.HasExtension(path))
+                return GetNextFilename(path.Insert(path.LastIndexOf(Path.GetExtension(path)), numberPattern));
+
+            // Otherwise just append the pattern to the path and return next filename
+            return GetNextFilename(path + numberPattern);
+        }
+
+        /// <summary>
         /// Este método genera el siguiente nombre de archivo disponible si el archivo con el nombre dado ya existe.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string NextAvailableFilename(string path)
-        {
-            if (!File.Exists(path))// Si el archivo no existe, retorna la ruta original
-                return path;
-
-            if (Path.HasExtension(path))//Si el archivo tiene extensión, inserta un patrón de numeración justo antes de la extensión. Si no tiene extensión, agrega el patrón al final.
-                return GetNextFilename(path.Insert(path.LastIndexOf(Path.GetExtension(path)), numberPattern));
-
-            return GetNextFilename(path + numberPattern);
-        }
-
         /// <summary>
         /// Este método implementa una búsqueda binaria para encontrar el siguiente nombre de archivo disponible.
         /// </summary>

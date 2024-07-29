@@ -58,7 +58,7 @@ namespace IGift.Application.Requests.LocalesAdheridos.Command
                 var local = _mapper.Map<LocalAdherido>(request);
                 if (uploadRequest != null)
                 {
-                    local.ImageDataURL = _uploadService.Uploadsync(uploadRequest);
+                    local.ImageDataURL = await _uploadService.UploadAsync(uploadRequest, false);
                 }
                 await _unitOfWork.Repository<LocalAdherido>().AddAsync(local);
                 return await Result.SuccessAsync();
@@ -75,7 +75,7 @@ namespace IGift.Application.Requests.LocalesAdheridos.Command
                     local.Descripcion = request.Descripcion ?? local.Descripcion;
                     if (uploadRequest != null)
                     {
-                        local.ImageDataURL = _uploadService.Uploadsync(uploadRequest);
+                        local.ImageDataURL = await _uploadService.UploadAsync(uploadRequest, false);
                     }
                     await _unitOfWork.Repository<LocalAdherido>().UpdateAsync(local);
 

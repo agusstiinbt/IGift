@@ -3,7 +3,6 @@ using IGift.Application.Requests.Files.ProfilePicture;
 using IGift.Application.Responses.Files;
 using IGift.Shared;
 using IGift.Shared.Wrapper;
-using Microsoft.AspNetCore.Components.Forms;
 using System.Net.Http.Json;
 
 namespace IGift.Client.Infrastructure.Services.Files
@@ -24,11 +23,9 @@ namespace IGift.Client.Infrastructure.Services.Files
             return await response.ToResult<ProfilePictureResponse>();
         }
 
-        public async Task<IResult> UploadAsync(IBrowserFile e)
+        public async Task<IResult> UploadAsync(ProfilePictureUpload file)
         {
-            var request = new ProfilePictureUpload();
-            request.File = e;
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.FilesController.UploadProfilePicture, request);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.FilesController.UploadProfilePicture, file);
             return await response.ToResult();
         }
     }

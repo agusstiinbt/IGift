@@ -25,8 +25,7 @@ namespace IGift.Server.Controllers
         [HttpPost("UploadProfilePicture")]
         public async Task<ActionResult> UploadProfileAsync(ProfilePictureUpload request)
         {
-            return Ok();
+            return Ok(await _profileService.SaveProfilePictureAsync(request));
         }
-
     }
 }

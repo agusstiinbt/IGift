@@ -1,12 +1,20 @@
 ﻿using IGift.Application.Enums;
+using System.Text.Json.Serialization;
 
 namespace IGift.Application.Requests.Files
 {
-    public class UploadRequest//TODO si esta clase se usa dentro de un mediatR ponerle el nombre con la nomenclatura correcta
+    public class UploadRequest
     {
-        public string FileName { get; set; }
-        public string Extension { get; set; }
+        [JsonPropertyName("fileName")]
+        public string FileName { get; set; } = string.Empty;
+
+        [JsonPropertyName("extension")]
+        public string Extension { get; set; } = string.Empty;
+
+        [JsonPropertyName("uploadType")]
         public UploadType UploadType { get; set; }
+
+        [JsonPropertyName("data")]
         public byte[] Data { get; set; }
     }
 }

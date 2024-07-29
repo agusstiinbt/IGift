@@ -20,8 +20,22 @@ using IGift.Infrastructure.Repositories;
 using IGift.Application.Interfaces.Files;
 using IGift.Infrastructure.Services.Files;
 using IGift.Application.Requests.Notifications.Query;
+using Serilog;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//TODO fijarse como vamos a usar los logs
+//serilog
+var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+var logFilePath = Path.Combine(desktopPath, "app-logs.txt");
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog(); // Usa Serilog en lugar del logger predeterminado
 
 // Add services to the container.
 builder.Services.AddSwaggerGen();
@@ -81,6 +95,9 @@ builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 builder.Services.AddScoped<IUploadService, UploadService>();
 builder.Services.AddScoped<IProfilePicture, ProfilePictureService>();
+
+//builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Files")));
+
 
 
 //Mapeo

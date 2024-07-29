@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Requests.Files;
+using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Files
 {
@@ -7,6 +8,6 @@ namespace IGift.Application.Interfaces.Files
     /// </summary>
     public interface IUploadService//TODO implementar
     {
-        string Uploadsync(UploadRequest request);
+        Task<string> UploadAsync(UploadRequest request,bool ReplaceFile);
     }
 }
