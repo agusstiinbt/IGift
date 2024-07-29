@@ -1,8 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Client.Infrastructure.Authentication;
 using IGift.Application.Requests.Files;
-using IGift.Client.Infrastructure.Services.Files;
-using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Security.Claims;
@@ -12,7 +10,6 @@ namespace IGift.Client.Pages.Users
 {
     public partial class UserProfile
     {
-        [Inject] private IProfilePicture _profileService { get; set; }
         [Inject] private ILocalStorageService _localStorage { get; set; }
 
         private ProfilePictureUpload _picture { get; set; } = new();

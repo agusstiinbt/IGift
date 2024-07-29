@@ -5,38 +5,45 @@
 <MudSnackbarProvider />
 <MudPopoverProvider />
 
-<MudLayout Style="height:100vh;background-color:#181A20">
 
-    <BarraHerramientasChat />
-
-    <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor" Target="_blank" />
-    </MudAppBar>
-
-    <MudDrawer @bind-Open="@_open" Elevation="1">
-
-        <ChatDrawer />
-
-    </MudDrawer>
+<CascadingValue Value="IdUser">
 
 
-    <MudMainContent Class="pt-16 px-16">
-        <MudMainContent>
+    <MudLayout Style="height:100vh;background-color:#181A20">
 
-            @Body
+        <BarraHerramientasChat />
 
-            <ScrollToTop />
+        <MudAppBar Elevation="1">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor" Target="_blank" />
+        </MudAppBar>
 
+        <MudDrawer @bind-Open="@_open" Elevation="1">
+
+            <ChatDrawer />
+
+        </MudDrawer>
+
+
+        <MudMainContent Class="pt-16 px-16">
+            <MudMainContent>
+
+                @Body
+
+                <ScrollToTop />
+
+            </MudMainContent>
         </MudMainContent>
-    </MudMainContent>
 
 
-</MudLayout>
+    </MudLayout>
 
+
+</CascadingValue>
 
 @code {
+
     private bool _open = false;
 
     private void ToggleDrawer()

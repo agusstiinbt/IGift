@@ -46,7 +46,10 @@
 
 
 @using global::Client.Infrastructure.Services.Identity.Users
+@using global::IGift.Client.Infrastructure.Services.Files
 
 @inject IUserManager _userManager;
 @inject AuthenticationStateProvider _authenticationStateProvider;
+@inject IProfilePicture _profileService
+
 
