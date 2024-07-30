@@ -3,7 +3,7 @@ using IGift.Application.Requests.Identity.Users;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace IGift.Client.Pages.Users
+namespace IGift.Client.Pages.Users.Login
 {
     public partial class Login
     {

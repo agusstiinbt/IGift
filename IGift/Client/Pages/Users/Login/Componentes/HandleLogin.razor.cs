@@ -4,7 +4,7 @@ using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace IGift.Client.Shared.Login
+namespace IGift.Client.Pages.Users.Login.Componentes
 {
     public partial class HandleLogin
     {
