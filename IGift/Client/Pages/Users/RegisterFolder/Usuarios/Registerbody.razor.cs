@@ -4,7 +4,7 @@ using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace IGift.Client.Shared.Registrar.Usuarios
+namespace IGift.Client.Pages.Users.RegisterFolder.Usuarios
 {
     public partial class RegisterBody
     {

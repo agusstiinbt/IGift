@@ -4,7 +4,7 @@ using IGift.Application.Requests.Identity.Users;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
 
-namespace IGift.Client.Pages.Users
+namespace IGift.Client.Pages.Users.RegisterFolder
 {
     public partial class Register
     {

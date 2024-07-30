@@ -32,7 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Shared\Registrar\Locales\" />
+		<Folder Include="Pages\Users\RegisterFolder\Locales\" />
 	</ItemGroup>
 
 </Project>
