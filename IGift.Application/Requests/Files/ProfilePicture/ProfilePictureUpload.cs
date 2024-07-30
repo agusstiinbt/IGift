@@ -1,11 +1,13 @@
-﻿using IGift.Application.Enums;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace IGift.Application.Requests.Files.ProfilePicture
 {
+    /// <summary>
+    /// Clase que se encarga de guardar información al respecto sobre cómo subir una foto de perfil
+    /// </summary>
     public class ProfilePictureUpload
     {
-        [JsonPropertyName("imageDataURL")]//TODO esto lo usamos para que al serializar la propiedad de UploadRequest, las propiedades coincidan todas 
+        [JsonPropertyName("imageDataURL")]// Esto lo usamos para que al serializar la propiedad de UploadRequest, las propiedades coincidan todas 
         public string ImageDataURL { get; set; } = string.Empty;
 
         [JsonPropertyName("uploadRequest")]

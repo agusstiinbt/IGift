@@ -13,7 +13,6 @@ namespace IGift.Client.Layouts.Chat.ToolBar
         private string imageBase64 = string.Empty;
 
         private string background = string.Empty;
-        private string Correo { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -23,7 +22,6 @@ namespace IGift.Client.Layouts.Chat.ToolBar
             {
                 Nombre = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
                 Apellido = user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value!;
-                Correo = user.FindFirst(c => c.Type == ClaimTypes.Email)?.Value!;
                 IdUser = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
             }
             await GetProfilePicture();

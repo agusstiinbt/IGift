@@ -31,8 +31,4 @@
 		<ProjectReference Include="..\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Pages\Users\RegisterFolder\Locales\" />
-	</ItemGroup>
-
 </Project>
