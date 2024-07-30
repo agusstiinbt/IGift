@@ -44,7 +44,7 @@ namespace IGift.Client.Pages.Users
             }
             await GetProfilePicture();
         }
-        //InputFileChangeEventArgs
+        
         private async Task UploadFiles(IBrowserFile e)
         {
             _file = e;
