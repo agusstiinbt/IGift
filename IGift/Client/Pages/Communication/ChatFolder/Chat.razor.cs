@@ -2,6 +2,9 @@
 {
     public partial class Chat
     {
+        protected override async Task OnInitializedAsync()
+        {
 
+        }
     }
 }
