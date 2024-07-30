@@ -1,4 +1,4 @@
-﻿namespace IGift.Client.Pages
+﻿namespace IGift.Client.Pages.Peticiones
 {
     public partial class Peticiones
     {

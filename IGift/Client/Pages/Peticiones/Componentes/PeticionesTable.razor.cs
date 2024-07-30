@@ -4,7 +4,7 @@ using IGift.Application.Responses.Pedidos;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace IGift.Client.Shared.Peticiones
+namespace IGift.Client.Pages.Peticiones.Componentes
 {
     public partial class PeticionesTable
     {
