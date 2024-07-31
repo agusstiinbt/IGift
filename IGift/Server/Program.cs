@@ -21,7 +21,6 @@ using IGift.Application.Interfaces.Files;
 using IGift.Infrastructure.Services.Files;
 using IGift.Application.Requests.Notifications.Query;
 using Serilog;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 

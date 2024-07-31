@@ -6,6 +6,17 @@ namespace IGift.Server.Hubs
 {
     public class ChatHub : Hub
     {
+        public async Task OnConnectAsync(string userId)
+        {
+            await Clients.All.SendAsync(AppConstants.SignalR.ConnectUser, userId);
+        }
+
+        public async Task OnDisconnectAsync(string userId)
+        {
+            await Clients.All.SendAsync(AppConstants.SignalR.DisconnectUser, userId);
+        }
+
+
         public async Task SendMessageAsync(Chat chat, string userName)
         {
             //await Clients.All.SendAsync("ReceiveMessage", userName);

@@ -6,6 +6,12 @@
         {
             public const string HubUrl = "/signalRHub";
 
+            public const string OnConnect = "OnConnectAsync";
+            public const string ConnectUser = "ConnectUser";
+
+            public const string OnDisconnect = "OnDisconnectAsync";
+            public const string DisconnectUser = "DisconnectUser";
+
 
             public const string ReceiveMessage = "ReceiveMessage";
             public const string ReceiveChatNotification = "ReceiveChatNotification";
