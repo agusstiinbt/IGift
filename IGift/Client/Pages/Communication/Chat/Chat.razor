@@ -3,12 +3,15 @@
 
 <MudLayout>
 
+    @* Barra herramientas superior con boton para abrir "barra de herramientas deslizable" *@
     <MudToolBar Style="background-color:#181A20">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor" Target="_blank" />
+        <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Primary" />
     </MudToolBar>
 
+
+    @* Barra de herramientas deslizable *@
     <MudDrawer Style="background-color:transparent" @bind-Open="@_open" Elevation="1">
 
         <ChatDrawer />
@@ -16,8 +19,25 @@
     </MudDrawer>
 
 
-    <MudMainContent Class="pt-16 px-16"  Style="background-color:white">
+    @* En este contenedor tendremos todo lo que corresponde al "Chat" *@
+    <MudMainContent Style="background-color:red">
 
+        <MudToolBar Style="background-color:orangered">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"/>
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Primary" />
+        </MudToolBar>
+
+        <MudContainer Fixed="true">
+
+
+
+            <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
+
+                <h1>Hola mundo</h1>
+
+            </MudPaper>
+        </MudContainer>
     </MudMainContent>
 
 

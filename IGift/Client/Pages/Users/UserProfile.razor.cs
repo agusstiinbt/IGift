@@ -44,13 +44,13 @@ namespace IGift.Client.Pages.Users
             }
             await GetProfilePicture();
         }
-        
+
         private async Task UploadFiles(IBrowserFile e)
         {
             _file = e;
             if (_file != null)
             {
-                var extension = Path.GetExtension(_file.Name);
+                var extension = ".png";
                 var format = "image/" + extension.Substring(1);
                 var imageFile = await e.RequestImageFileAsync(format, 400, 400);
                 var buffer = new byte[imageFile.Size];

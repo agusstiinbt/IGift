@@ -1,4 +1,6 @@
-﻿using IGift.Application.Interfaces.Files;
+﻿using IGift.Application.Enums;
+using IGift.Application.Interfaces.Files;
+using IGift.Application.Models;
 using IGift.Application.Requests.Files.ProfilePicture;
 using IGift.Application.Responses.Files;
 using IGift.Infrastructure.Data;
@@ -48,11 +50,21 @@ namespace IGift.Infrastructure.Services.Files
 
         public async Task<IResult> SaveProfilePictureAsync(ProfilePictureUpload request)
         {
+            //Si estamos subiendo una foto de perfil entonces el nombre debe ser el IdUser
+            //TODO esto de acá arriba lo estamos haciendo porque si mandamos el archivo desde el cliente con un fileName = al IdUSer entonces el nombre del archivo va a ser muy largo porque Los IdUser son largos. Fijarse si podemos cambiar el tamaño de los Id de los usuarios por un int mejor
+
+            if (request.UploadRequest.UploadType == UploadType.ProfilePicture)
+            {
+                request.UploadRequest.FileName = request.IdUser;
+            }
+
             var response = await _uploadService.UploadAsync(request.UploadRequest, true);
             if (!string.IsNullOrEmpty(response))
             {
-                var result = await _dbContext.ProfilePicture.Where(x => x.IdUser == request.IdUser).FirstAsync();
-                result.Url = response;
+                var newProfilePicture = new ProfilePicture { FileType = "image/png", IdUser = request.IdUser, UploadDate = DateTime.Now, Url = response };
+
+                await _dbContext.ProfilePicture.AddAsync(newProfilePicture);
+                await _dbContext.SaveChangesAsync();
                 return await Result.SuccessAsync();
             }
             return await Result.FailAsync();
