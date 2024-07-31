@@ -1,7 +1,7 @@
 ﻿using Client.Infrastructure.Authentication;
 using System.Security.Claims;
 
-namespace IGift.Client.Layouts.Chat.ToolBar
+namespace IGift.Client.Pages.Communication.Chat.Components
 {
     public partial class ChatProfileToggle
     {

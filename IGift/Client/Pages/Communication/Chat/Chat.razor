@@ -1,36 +1,23 @@
-﻿@inherits LayoutComponentBase
+﻿@page "/Chat"
+@attribute [Authorize]
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
-<MudPopoverProvider />
+<MudLayout>
 
-
-<MudLayout Style="height:100vh;background-color:#181A20">
-
-    <BarraHerramientasChat />
-
-    <MudAppBar Elevation="1">
+    <MudToolBar Style="background-color:#181A20">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor" Target="_blank" />
-    </MudAppBar>
+    </MudToolBar>
 
-    <MudDrawer @bind-Open="@_open" Elevation="1">
+    <MudDrawer Style="background-color:transparent" @bind-Open="@_open" Elevation="1">
 
         <ChatDrawer />
 
     </MudDrawer>
 
 
-    <MudMainContent Class="pt-16 px-16">
-        <MudMainContent>
+    <MudMainContent Class="pt-16 px-16"  Style="background-color:white">
 
-            @Body
-
-            <ScrollToTop />
-
-        </MudMainContent>
     </MudMainContent>
 
 
@@ -45,3 +32,5 @@
         _open = !_open;
     }
 }
+
+

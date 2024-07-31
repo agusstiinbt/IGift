@@ -1,4 +1,4 @@
-﻿namespace IGift.Client.Pages.Communication.ChatFolder
+﻿namespace IGift.Client.Pages.Communication.Chat
 {
     public partial class Chat
     {
