@@ -6,21 +6,25 @@
 
     <MudDivider Class="my-2" />
 
-    <MudText Typo="Typo.h6" Class="px-4">Mensajes</MudText>
+    <MudText Style=@EstiloBotones Typo="Typo.h6" Class="px-4">Mensajes</MudText>
     <MudDivider Class="my-2" />
 
-    <MudNavLink Href="/dashboard">Usuario 1</MudNavLink>
-    <MudNavLink Href="/servers">Usuario 2</MudNavLink>
-    <MudNavLink Href="/billing" Disabled="true">Usuario 3</MudNavLink>
+    <MudNavLink Style=@EstiloBotones Href="/dashboard">Usuario 1</MudNavLink>
+    <MudNavLink Style=@EstiloBotones Href="/servers">Usuario 2</MudNavLink>
+    <MudNavLink Style=@EstiloBotones Href ="/billing" >Usuario 3</MudNavLink>
 
 
     <MudNavGroup Title="No leídos(1)" Icon="@Icons.Material.Filled.Email" Expanded="false">
-        <MudNavLink Href="/users">Usuario 4</MudNavLink>
-        <MudNavLink Href="/security">Usuario 5</MudNavLink>
+        <MudNavLink Style=@EstiloBotones Href="/users">Usuario 4</MudNavLink>
+        <MudNavLink Style=@EstiloBotones Href ="/security">Usuario 5</MudNavLink>
     </MudNavGroup>
 
 
-    <MudNavLink Href="/about">About</MudNavLink>
+    <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
 
 </MudNavMenu>
+
+@code {
+    private string EstiloBotones = "color:#848E9C";
+}
 
