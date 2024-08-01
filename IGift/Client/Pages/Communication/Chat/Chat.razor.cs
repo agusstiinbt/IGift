@@ -6,5 +6,11 @@
         {
 
         }
+
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    //await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");//TODO implementar
+        //}
+
     }
 }

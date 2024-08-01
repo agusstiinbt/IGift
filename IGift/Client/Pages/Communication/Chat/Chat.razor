@@ -1,7 +1,7 @@
 ﻿@page "/Chat"
 @attribute [Authorize]
 
-<MudLayout>
+<MudLayout Style="height:100vh;">
 
     @* Barra herramientas superior con boton para abrir "barra de herramientas deslizable" *@
     <MudToolBar Style="background-color:#181A20">
@@ -10,7 +10,6 @@
         <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Primary" />
     </MudToolBar>
 
-
     @* Barra de herramientas deslizable *@
     <MudDrawer Style="background-color:transparent" @bind-Open="@_open" Elevation="1">
 
@@ -18,28 +17,36 @@
 
     </MudDrawer>
 
-
     @* En este contenedor tendremos todo lo que corresponde al "Chat" *@
-    <MudMainContent Style="background-color:red">
 
-        <MudToolBar Style="background-color:orangered">
-            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"/>
-            <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Primary" />
-        </MudToolBar>
+    <MudMainContent>
 
-        <MudContainer Fixed="true">
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
 
+            <MudPaper Style="background: url('/img/fondopantalla.png') no-repeat center center; background-size: cover;position: relative;  opacity:0.6;" Height="720px" Width="100%" Square="true" Class="mud-theme-primary">
 
+                <MudToolBar Style="width:100%;background-color:lightslategrey;" Class="align-self-start">
 
-            <MudPaper Height="400px" Width="100%" Square="true" Class="mud-theme-primary">
+                    <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
+                        <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
+                            <MudImage Src="images/jonny.jpg" />
+                        </MudAvatar>
+                    </MudBadge>
+                    @* <MudFab Label="@Iniciales" Style="@background" /> *@
+
+                    <MudSpacer />
+                    <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
+                </MudToolBar>
 
                 <h1>Hola mundo</h1>
 
-            </MudPaper>
-        </MudContainer>
-    </MudMainContent>
 
+            </MudPaper>
+
+
+        </MudContainer>
+
+    </MudMainContent>
 
 </MudLayout>
 
