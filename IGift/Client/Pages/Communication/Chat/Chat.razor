@@ -21,9 +21,9 @@
 
     <MudMainContent>
 
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-grow-1 flex-row">
 
-            <MudPaper Style="background: url('/img/fondopantalla.png') no-repeat center center; background-size: cover;position: relative;  opacity:0.6;" Height="720px" Width="100%" Square="true" Class="mud-theme-primary">
+            <MudPaper Style="background: url('/img/fondopantalla.png') no-repeat center center; background-size: cover;position: relative;  opacity:0.6;" Width="100%" Square="true">
 
                 <MudToolBar Style="width:100%;background-color:lightslategrey;" Class="align-self-start">
 
@@ -38,7 +38,18 @@
                     <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
                 </MudToolBar>
 
-                <h1>Hola mundo</h1>
+                @* Mensajes *@
+                <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+
+
+                    @*
+                    ATENCIÓN!!!!: revisar el siguiente lnk para determinar cómo poner lños mensajes en la izquierda o derecha según sea mensajes de uno o del otro usuario:
+                    https://mudblazor.com/utilities/justify-content#start
+                    *@
+
+                    <MudText Typo="Typo.body2" Style=" padding: 15px;border-radius: 5px;margin-top:5px">Message</MudText>
+
+                </div>
 
 
             </MudPaper>
