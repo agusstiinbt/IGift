@@ -4,6 +4,9 @@ using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Chat.Service
 {
+    /// <summary>
+    /// Esta 
+    /// </summary>
     public interface IChatService
     {
         //Task<Result<IEnumerable<ChatUserResponse>>> GetChatUsersAsync(string userId);
@@ -12,4 +15,10 @@ namespace IGift.Application.Interfaces.Chat.Service
 
         //Task<Result<IEnumerable<ChatHistoryResponse>>> GetChatHistoryAsync(string userId, string contactId);
     }
+
+    /*
+     
+     
+     
+     */
 }
