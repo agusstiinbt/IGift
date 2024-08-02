@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 using Client.Infrastructure.Services.Interceptor;
-using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.SignalR.Client;
 using IGift.Client.Extensions;
 using System.Security.Claims;
