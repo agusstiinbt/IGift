@@ -1,24 +1,11 @@
-﻿using IGift.Application.Models;
-using IGift.Application.Responses.Chat;
+﻿using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Chat.Service
 {
-    /// <summary>
-    /// Esta 
-    /// </summary>
     public interface IChatService
     {
-        //Task<Result<IEnumerable<ChatUserResponse>>> GetChatUsersAsync(string userId);
-
-        //Task<IResult> SaveMessageAsync(Chat<IChatUser> message);
-
-        //Task<Result<IEnumerable<ChatHistoryResponse>>> GetChatHistoryAsync(string userId, string contactId);
+        Task<IResult> SaveMessage<TUser>(ChatHistory<TUser> chatHistory, string userId) where TUser : IChatUser;
     }
 
-    /*
-     
-     
-     
-     */
 }
