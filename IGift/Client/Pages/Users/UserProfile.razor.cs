@@ -10,8 +10,6 @@ namespace IGift.Client.Pages.Users
 {
     public partial class UserProfile
     {
-        [Inject] private ILocalStorageService _localStorage { get; set; }
-
         private ProfilePictureUpload _picture { get; set; } = new();
 
         private string IdUser { get; set; } = string.Empty;

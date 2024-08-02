@@ -15,6 +15,15 @@
 
             public const string ReceiveMessage = "ReceiveMessage";
             public const string ReceiveChatNotification = "ReceiveChatNotification";
+
+            public const string ReceiveRegenerateTokens = "RegenerateTokens";
+
+            public const string LogoutUsersByRole = "LogoutUsersByRole";
+
+            public const string PingRequest = "PingRequestAsync";
+            public const string PingResponse = "PingResponseAsync";
+
+
         }
 
         public static class Role

@@ -1,7 +1,11 @@
-﻿namespace IGift.Client.Pages.Communication.Chat
+﻿using Microsoft.AspNetCore.Components;
+
+namespace IGift.Client.Pages.Communication.Chat
 {
     public partial class Chat
     {
+        [Parameter] public string CId { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
 
