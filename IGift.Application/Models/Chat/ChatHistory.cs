@@ -1,10 +1,5 @@
 ﻿using IGift.Application.Interfaces;
 using IGift.Application.Interfaces.Chat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IGift.Application.Models.Chat
 {
