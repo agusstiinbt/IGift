@@ -38,7 +38,8 @@ namespace IGift.Infrastructure.Data
             //
             base.OnModelCreating(builder);
 
-            //No confundir la construcción de este código con el siguiente entre Notification y IGiftUser. Son distintos por la relacion que hay entre ellos:
+            //No confundir la construcción de este código con el siguiente entre Notification y IGiftUser. Son distintos por l
+            //relacion que hay entre ellos:
             builder.Entity<ProfilePicture>()
                 .HasOne<IGiftUser>()
                 .WithOne(u => u.ProfilePictureDataUrl)

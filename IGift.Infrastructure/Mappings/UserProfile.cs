@@ -8,7 +8,7 @@ namespace IGift.Infrastructure.Mappings
     {
         public UserProfile()
         {
-            CreateMap<IGiftUser, UserResponse>();
+            CreateMap<IGiftUser, UserResponse>().ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.ProfilePictureDataUrl.Url));
         }
     }
 }

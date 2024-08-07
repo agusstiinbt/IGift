@@ -26,6 +26,11 @@ namespace IGift.Infrastructure.Services.Files
             _uploadService = uploadService;
         }
 
+        /// <summary>
+        /// Devuelve la informacion de foto de perfil del IdUser
+        /// </summary>
+        /// <param name="IdUser"></param>
+        /// <returns></returns>
         public async Task<IResult<ProfilePictureResponse>> GetByUserIdAsync(string IdUser)
         {
             var response = await _dbContext.ProfilePicture.Where(x => x.IdUser == IdUser).FirstAsync();
@@ -48,6 +53,11 @@ namespace IGift.Infrastructure.Services.Files
             return Result<ProfilePictureResponse>.Success(profilePicture);
         }
 
+        /// <summary>
+        /// Guarda una foto de perfil en una carpeta del servidor y en el caso de sea de un nuevo usuario se crea la informacion en la bbdd
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<IResult> SaveProfilePictureAsync(ProfilePictureUpload request)
         {
             //Si estamos subiendo una foto de perfil entonces el nombre debe ser el IdUser
@@ -58,15 +68,24 @@ namespace IGift.Infrastructure.Services.Files
                 request.UploadRequest.FileName = request.IdUser;
             }
 
+            //Las fotos de perfil siempre las pisamos, es decir eliminamos la anterior
             var response = await _uploadService.UploadAsync(request.UploadRequest, true);
+
             if (!string.IsNullOrEmpty(response))
             {
                 var newProfilePicture = new ProfilePicture { FileType = "image/png", IdUser = request.IdUser, UploadDate = DateTime.Now, Url = response };
 
-                await _dbContext.ProfilePicture.AddAsync(newProfilePicture);
-                await _dbContext.SaveChangesAsync();
+                var exists = await _dbContext.ProfilePicture.AnyAsync(x => x.IdUser == request.IdUser);
+                //Si no existe una foto de perfil con el IdUser del 'request' entonces creamos una nueva fila
+                if (!exists)
+                {
+                    await _dbContext.ProfilePicture.AddAsync(newProfilePicture);
+                    await _dbContext.SaveChangesAsync();
+                }
+
                 return await Result.SuccessAsync();
             }
+
             return await Result.FailAsync();
         }
     }

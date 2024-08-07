@@ -8,6 +8,12 @@ namespace IGift.Application.Interfaces.Files
     /// </summary>
     public interface IUploadService//TODO implementar
     {
+        /// <summary>
+        /// Guarda un archivo de cualquier tipo en una carpeta del servidor.
+        /// </summary>
+        /// <param name="request">Información para procesar el guardado</param>
+        /// <param name="ReplaceFile">En caso de ser true se elimina la foto con el mismo nombre y se guarda una nueva</param>
+        /// <returns></returns>
         Task<string> UploadAsync(UploadRequest request,bool ReplaceFile);
     }
 }

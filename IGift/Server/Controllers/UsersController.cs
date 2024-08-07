@@ -1,5 +1,4 @@
-﻿using IGift.Shared.Wrapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IGift.Application.Interfaces.Identity;
 using IGift.Shared;
@@ -19,7 +18,6 @@ namespace IGift.Server.Controllers
             _userService = userService;
         }
 
-        #region Get
 
         [HttpGet("GetAll")]
         [Authorize(Roles = AppConstants.Role.AdministratorRole)]
@@ -29,11 +27,11 @@ namespace IGift.Server.Controllers
             return Ok(users);
         }
 
-        [HttpGet("GetById")]
-        [Authorize(Roles = AppConstants.Role.AdministratorRole)]
-        public async Task<ActionResult<Result>> GetById(string id)
+        [HttpPost("GetById")]
+        //[Authorize(Roles = AppConstants.Role.AdministratorRole)]
+        public async Task<ActionResult> GetById(UserByIdRequest request)
         {
-            return Ok(await _userService.GetByIdAsync(id));
+            return Ok(await _userService.GetByIdAsync(request.UserId));
         }
 
         [HttpGet("GetRolesFromUserId")]
@@ -44,11 +42,9 @@ namespace IGift.Server.Controllers
         }
 
 
-        #endregion
 
-        #region Post
         [HttpPost("Register")]
-        public async Task<ActionResult<Result>> Register(UserCreateRequest m)
+        public async Task<ActionResult> Register(UserCreateRequest m)
         {
             return Ok(await _userService.RegisterAsync(m));
         }
@@ -72,6 +68,5 @@ namespace IGift.Server.Controllers
             return Ok(await _userService.UpdateRolesAsync(request));
         }
 
-        #endregion 
     }
 }

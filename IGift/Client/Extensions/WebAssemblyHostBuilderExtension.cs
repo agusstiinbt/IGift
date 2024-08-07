@@ -13,6 +13,7 @@ using System.Globalization;
 using Client.Infrastructure.Services.Notification;
 using Client.Infrastructure.Services.Requests;
 using IGift.Client.Infrastructure.Services.Files;
+using IGift.Client.Infrastructure.Services.Communication.Chat;
 
 namespace IGift.Client.Extensions
 {
@@ -57,6 +58,7 @@ namespace IGift.Client.Extensions
             .AddScoped<INotificationService, NotificationService>()
             .AddScoped<IPeticionesService, PeticionesService>()
             .AddScoped<IProfilePicture, ProfilePictureService>()
+            .AddScoped<IChatService, ChatService>()
 
             .AddAuthorizationCore()
 
