@@ -1,12 +1,10 @@
-﻿using IGift.Application.Interfaces;
-using IGift.Application.Interfaces.Chat.Service;
-using IGift.Application.Models.Chat;
+﻿using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace IGift.Infrastructure.Services.Chat
+namespace IGift.Client.Infrastructure.Services.Communication.Chat
 {
     public class ChatService : IChatService
     {
@@ -18,13 +16,13 @@ namespace IGift.Infrastructure.Services.Chat
             _key = Encoding.UTF8.GetBytes(key);
             _path = path;
         }
-        public async Task<IResult> SaveMessage<TUser>(ChatHistory<TUser> chatHistory, string userId) where TUser : IChatUser
+        public async Task<IResult> SaveMessage(ChatHistory chat)
         {
             var iv = GenerateIV();
-            var encryptedUserId = Encrypt(userId, _key, iv);
+            var encryptedUserId = Encrypt(chat.FromUserId, _key, iv);
             var filePath = Path.Combine(_path, $"{Convert.ToBase64String(encryptedUserId)}.txt");
 
-            var serializedMessage = JsonConvert.SerializeObject(chatHistory);
+            var serializedMessage = JsonConvert.SerializeObject(chat);
             var encryptedMessage = Encrypt(serializedMessage, _key, iv);
 
             using (var stream = new FileStream(filePath, FileMode.Append))

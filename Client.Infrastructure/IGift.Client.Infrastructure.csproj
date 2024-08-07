@@ -26,4 +26,8 @@
 		<ProjectReference Include="..\IGift\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Services\Communication\Email\" />
+	</ItemGroup>
+
 </Project>

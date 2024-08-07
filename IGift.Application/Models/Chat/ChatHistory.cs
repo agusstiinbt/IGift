@@ -1,9 +1,6 @@
-﻿using IGift.Application.Interfaces;
-using IGift.Application.Interfaces.Chat;
-
-namespace IGift.Application.Models.Chat
+﻿namespace IGift.Application.Models.Chat
 {
-    public class ChatHistory<TUser> : IChatHistory<TUser> where TUser : IChatUser
+    public class ChatHistory
     {
         public long Id { get; set; }
         public string FromUserId { get; set; }
