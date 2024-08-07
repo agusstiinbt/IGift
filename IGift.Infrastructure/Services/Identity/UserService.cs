@@ -73,14 +73,14 @@ namespace IGift.Infrastructure.Services.Identity
 
         public async Task<IResult<UserResponse>> GetByIdAsync(string id)
         {
-            var response = await _userManager.FindByIdAsync(id).;
+            //var response = await _userManager.FindByIdAsync(id).;
 
-            if (response != null)
-            {
-                var result = _mapper.Map<UserResponse>(response);
-                result.Url = response.ProfilePictureDataUrl.Url;
-                return await Result<UserResponse>.SuccessAsync(result);
-            }
+            //if (response != null)
+            //{
+            //    var result = _mapper.Map<UserResponse>(response);
+            //    result.Url = response.ProfilePictureDataUrl.Url;
+            //    return await Result<UserResponse>.SuccessAsync(result);
+            //}
             return await Result<UserResponse>.FailAsync();
         }
 

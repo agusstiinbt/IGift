@@ -69,11 +69,11 @@ namespace IGift.Infrastructure.Services.Files
             }
 
             //Las fotos de perfil siempre las pisamos, es decir eliminamos la anterior
-            var response = await _uploadService.UploadAsync(request.UploadRequest, true);
+            var pathResponse = await _uploadService.UploadAsync(request.UploadRequest, true);
 
-            if (!string.IsNullOrEmpty(response))
+            if (!string.IsNullOrEmpty(pathResponse))
             {
-                var newProfilePicture = new ProfilePicture { FileType = "image/png", IdUser = request.IdUser, UploadDate = DateTime.Now, Url = response };
+                var newProfilePicture = new ProfilePicture { FileType = "image/png", IdUser = request.IdUser, UploadDate = DateTime.Now, Url = pathResponse };
 
                 var exists = await _dbContext.ProfilePicture.AnyAsync(x => x.IdUser == request.IdUser);
                 //Si no existe una foto de perfil con el IdUser del 'request' entonces creamos una nueva fila
@@ -82,6 +82,12 @@ namespace IGift.Infrastructure.Services.Files
                     await _dbContext.ProfilePicture.AddAsync(newProfilePicture);
                     await _dbContext.SaveChangesAsync();
                 }
+
+                var user = await _dbContext.Users.Where(x => x.Id == request.IdUser).FirstAsync();
+
+                user.ProfilePictureDataUrl = pathResponse;
+
+                await _dbContext.SaveChangesAsync();
 
                 return await Result.SuccessAsync();
             }

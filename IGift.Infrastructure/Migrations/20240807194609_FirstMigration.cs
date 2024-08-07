@@ -41,9 +41,9 @@ namespace IGift.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Activo = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(128)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageDataURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -80,8 +80,8 @@ namespace IGift.Infrastructure.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfilePictureDataUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
@@ -247,6 +247,28 @@ namespace IGift.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProfilePicture",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdUser = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProfilePicture", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProfilePicture_Users_IdUser",
+                        column: x => x.IdUser,
+                        principalSchema: "Identity",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserClaims",
                 schema: "Identity",
                 columns: table => new
@@ -335,6 +357,12 @@ namespace IGift.Infrastructure.Migrations
                 column: "IdUser");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProfilePicture_IdUser",
+                table: "ProfilePicture",
+                column: "IdUser",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
                 schema: "Identity",
                 table: "RoleClaims",
@@ -399,6 +427,9 @@ namespace IGift.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "Pedidos",
                 schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "ProfilePicture");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",

@@ -61,7 +61,6 @@ namespace IGift.Infrastructure.Migrations
             modelBuilder.Entity("IGift.Application.Models.ProfilePicture", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FileType")
@@ -385,6 +384,9 @@ namespace IGift.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfilePictureDataUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
@@ -507,7 +509,7 @@ namespace IGift.Infrastructure.Migrations
             modelBuilder.Entity("IGift.Application.Models.ProfilePicture", b =>
                 {
                     b.HasOne("IGift.Infrastructure.Models.IGiftUser", null)
-                        .WithOne("ProfilePictureDataUrl")
+                        .WithOne()
                         .HasForeignKey("IGift.Application.Models.ProfilePicture", "IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -600,8 +602,6 @@ namespace IGift.Infrastructure.Migrations
                     b.Navigation("Notifications");
 
                     b.Navigation("Pedidos");
-
-                    b.Navigation("ProfilePictureDataUrl");
                 });
 #pragma warning restore 612, 618
         }

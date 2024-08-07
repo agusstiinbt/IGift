@@ -10,7 +10,8 @@ namespace IGift.Infrastructure.Models
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
 
-        public ProfilePicture? ProfilePictureDataUrl { get; set; }
+        //public ProfilePicture? ProfilePictureDataUrl { get; set; }
+        public string? ProfilePictureDataUrl { get; set; }
 
 
         public string? RefreshToken { get; set; }

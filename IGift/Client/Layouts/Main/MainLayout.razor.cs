@@ -66,6 +66,11 @@ namespace IGift.Client.Layouts.Main
             _interceptor.RegisterEvent();
         }
 
+
+        /// <summary>
+        /// Inicializamos todas las conexiones de tipo Hub
+        /// </summary>
+        /// <returns></returns>
         private async Task InitializeHub()
         {
             var currentUserId = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;

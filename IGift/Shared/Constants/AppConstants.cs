@@ -2,6 +2,8 @@
 {
     public static class AppConstants
     {
+
+
         public static class SignalR
         {
             public const string HubUrl = "/signalRHub";
@@ -117,7 +119,13 @@
                 public static string IdUser = "idUser";
             }
 
-            //podemos tener constantes que utilicemos también en el servidor entonces además de Local y para eso debemos tener una clase Server. 
+            public static class Server
+            {
+                /// <summary>
+                /// ESTO SOLO DEBE USARSE EN EL SEEDER
+                /// </summary>
+                public static string ProfilePicture = "Files\\Images\\ProfilePictures\\";
+            }
         }
 
         public static string AdminEmail = "agusstiinbt@gmail.com";

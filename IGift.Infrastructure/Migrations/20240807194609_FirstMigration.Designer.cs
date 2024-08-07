@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IGift.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240718151027_NameChanging")]
-    partial class NameChanging
+    [Migration("20240807194609_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,32 @@ namespace IGift.Infrastructure.Migrations
                     b.HasIndex("IdUser");
 
                     b.ToTable("Notification");
+                });
+
+            modelBuilder.Entity("IGift.Application.Models.ProfilePicture", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FileType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdUser")
+                        .IsUnique();
+
+                    b.ToTable("ProfilePicture");
                 });
 
             modelBuilder.Entity("IGift.Domain.Entities.Contract", b =>
@@ -479,6 +505,15 @@ namespace IGift.Infrastructure.Migrations
                     b.HasOne("IGift.Infrastructure.Models.IGiftUser", null)
                         .WithMany("Notifications")
                         .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IGift.Application.Models.ProfilePicture", b =>
+                {
+                    b.HasOne("IGift.Infrastructure.Models.IGiftUser", null)
+                        .WithOne()
+                        .HasForeignKey("IGift.Application.Models.ProfilePicture", "IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

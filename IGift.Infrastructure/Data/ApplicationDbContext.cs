@@ -38,12 +38,21 @@ namespace IGift.Infrastructure.Data
             //
             base.OnModelCreating(builder);
 
-            //No confundir la construcción de este código con el siguiente entre Notification y IGiftUser. Son distintos por l
-            //relacion que hay entre ellos:
+            // Configurar la clave primaria de ProfilePicture
+            builder.Entity<ProfilePicture>()
+                .HasKey(p => p.Id);
+
+            // Configurar la relación uno a uno entre IGiftUser y ProfilePicture
             builder.Entity<ProfilePicture>()
                 .HasOne<IGiftUser>()
-                .WithOne(u => u.ProfilePictureDataUrl)
-                .HasForeignKey<ProfilePicture>(p => p.IdUser);
+                .WithOne()
+                .HasForeignKey<ProfilePicture>(p => p.IdUser)
+                .IsRequired();
+
+            // Asegurar que IdUser es único en la tabla ProfilePicture
+            builder.Entity<ProfilePicture>()
+                .HasIndex(p => p.IdUser)
+                .IsUnique();
 
             //No confundir la construcción de este código con el anterior entre ProfilePicture y IGiftUser. Son distintos por la relacion que hay entre ellos:
             builder.Entity<Notification>()

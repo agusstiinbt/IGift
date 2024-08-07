@@ -3,6 +3,7 @@ using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Infrastructure
 {
@@ -65,7 +66,12 @@ namespace IGift.Infrastructure
                       await _userManager.CreateAsync(superUser, AppConstants.DefaultPassword);
                       var UserCreatedWithId = await _userManager.FindByEmailAsync(superUser.Email);
 
+                      UserCreatedWithId.ProfilePictureDataUrl = "Files\\Images\\ProfilePictures" + UserCreatedWithId.Id;
+
                       await _userManager.AddToRoleAsync(UserCreatedWithId, admin);
+
+                      await _context.SaveChangesAsync();
+
                   }
 
                   //TODO esto sirve para agregar los claims al usuario superUser. Para implementarlo primero debemos borrar el superUsuario de la base de datos.
@@ -118,6 +124,10 @@ namespace IGift.Infrastructure
                     await _userManager.CreateAsync(basicUser, AppConstants.DefaultPassword);
                     var UserCreatedWithId = await _userManager.FindByEmailAsync(basicUser.Email);
                     await _userManager.AddToRoleAsync(UserCreatedWithId, AppConstants.Role.BasicRole);
+
+                    UserCreatedWithId.ProfilePictureDataUrl = "Files\\Images\\ProfilePictures" + UserCreatedWithId.Id;
+
+                    await _context.SaveChangesAsync();
                 }
 
             }).GetAwaiter().GetResult();
