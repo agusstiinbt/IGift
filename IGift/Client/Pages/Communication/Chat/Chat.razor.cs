@@ -1,19 +1,15 @@
 ﻿using IGift.Application.Models.Chat;
-using IGift.Application.Requests.Identity.Users;
 using IGift.Client.Extensions;
-using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Security.Claims;
-using System.Security.Cryptography;
 
 namespace IGift.Client.Pages.Communication.Chat
 {
     public partial class Chat
     {
-        [Inject] private IChatService _chatService { get; set; }
+      //  [Inject] private IChatService _chatService { get; set; }
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
 
