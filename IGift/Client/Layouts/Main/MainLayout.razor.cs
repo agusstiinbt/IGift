@@ -152,8 +152,7 @@ namespace IGift.Client.Layouts.Main
 
             await _hubConnection.SendAsync(AppConstants.SignalR.OnConnect, currentUserId);
 
-            _snack.Add(string.Format("Bienvenido ", nombre), Severity.Success);
-
+            _snack.Add("Bienvenido " + nombre, Severity.Success);//TODO cada vez que se refresca la página se muetra y solo debe ejecutarse una sola vez, fijarse cómo podemos solucionarlo
         }
     }
 }
