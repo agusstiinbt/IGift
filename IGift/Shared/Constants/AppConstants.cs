@@ -113,6 +113,7 @@
                 public static string Preference = "clientPreference";
 
                 public static string AuthToken = "authToken";
+                public static string Access_Token = "access_token";
                 public static string RefreshToken = "refreshToken";
                 public static string UserImageURL = "userImageURL";
                 public static string ExpiryTime = "expiryTime";

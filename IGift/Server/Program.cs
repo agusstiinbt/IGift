@@ -21,6 +21,10 @@ using IGift.Application.Interfaces.Files;
 using IGift.Infrastructure.Services.Files;
 using IGift.Application.Requests.Notifications.Query;
 using Serilog;
+using System.Net;
+using Newtonsoft.Json;
+using IGift.Shared.Wrapper;
+using IGift.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,7 +85,67 @@ builder.Services
         ValidAudience = builder.Configuration["JwtAudience"],
         ClockSkew = TimeSpan.Zero//Para más información sobre esto leer el README
     };
-});
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query[AppConstants.StorageConstants.Local.Access_Token];
+
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(AppConstants.SignalR.HubUrl))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        },
+        OnAuthenticationFailed = c =>
+        {
+            if (c.Exception is SecurityTokenExpiredException)
+            {
+                c.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                c.Response.ContentType = "application/json";
+                var result = JsonConvert.SerializeObject(Result.Fail("The token is expired"));
+                return c.Response.WriteAsync(result);
+            }
+            else
+            {
+#if DEBUG
+                c.NoResult();
+                c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                c.Response.ContentType = "text/plain";
+                return c.Response.WriteAsync(c.Exception.ToString());
+#else
+                                c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                                c.Response.ContentType = "application/json";
+                                var result = JsonConvert.SerializeObject(Result.Fail(localizer["An unhandled error has occurred."]));
+                                return c.Response.WriteAsync(result);
+#endif
+            }
+        },
+        OnChallenge = context =>
+        {
+            context.HandleResponse();
+            if (!context.Response.HasStarted)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                context.Response.ContentType = "application/json";
+                var result = JsonConvert.SerializeObject(Result.Fail("You are not Authorized."));
+                return context.Response.WriteAsync(result);
+            }
+
+            return Task.CompletedTask;
+        },
+        OnForbidden = context =>
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            context.Response.ContentType = "application/json";
+            var result = JsonConvert.SerializeObject(Result.Fail("You are not authorized to access this resource."));
+            return context.Response.WriteAsync(result);
+        }
+    };
+});//TODO estudiar esto
+//TODO debemos agregar por acá el AddAuthorization de blazorHero para los permisos/roles
 
 //Repositories
 builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
@@ -115,9 +179,11 @@ options.AddDefaultPolicy(
 builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
 builder.Services.AddHangfireServer();
 
+//SignalR
+builder.Services.AddSignalR();
+
+
 //MediatR
-
-
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllNotificationQuery).Assembly));
 
 var app = builder.Build();
@@ -178,5 +244,8 @@ app.UseMiddleware<MyMiddleware>();
 
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
+//SignalR
+app.MapHub<SignalRHub>(AppConstants.SignalR.HubUrl);
 
 app.Run();
