@@ -23,9 +23,8 @@ namespace IGift.Client.Layouts.Main
 
         protected override async Task OnInitializedAsync()
         {
-
-            var state = AuthenticationState.Result;
-            if (state.User.Identity!.IsAuthenticated)
+            var authState = await AuthenticationState;
+            if (authState.User.Identity!.IsAuthenticated)
             {
                 await _authService.Disconnect(DotNetObjectReference.Create(this));
                 ActivateHttpInterceptor();
