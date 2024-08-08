@@ -42,27 +42,28 @@ namespace IGift.Client.Pages.Communication.Chat
         protected override async Task OnInitializedAsync()
         {
             _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
-            //if (_hubConnection.State == HubConnectionState.Disconnected{
-            //    await _hubConnection.StartAsync();
-            //}
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+            {
+                await _hubConnection.StartAsync();
+            }
 
-            //_hubConnection.On<ChatHistory>(AppConstants.SignalR.ReceiveMessage, async (chatHistory, userName) =>
-            //{
-            //    if ((ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId) || (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId))
-            //    {
-            //        if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
-            //        {
-            //            _messages.Add(new ChatHistory { Message = chatHistory.Message, Date = chatHistory.Date, FromUserImageUrl = CurrentUserImageUrl });
-            //            await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
-            //        }
-            //        else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
-            //        {
-            //            _messages.Add(new ChatHistory { Message = chatHistory.Message, Date = chatHistory.Date, FromUserImageUrl = ChatImageUrl });
-            //        }
-            //        //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
-            //        StateHasChanged();
-            //    }
-            //});
+            _hubConnection.On<ChatHistory, string>(AppConstants.SignalR.ReceiveMessage, async (chatHistory, userName) =>
+            {
+                if ((ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId) || (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId))
+                {
+                    if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
+                    {
+                        _messages.Add(new ChatHistory { Message = chatHistory.Message, Date = chatHistory.Date, FromUserImageUrl = CurrentUserImageUrl });
+                        await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
+                    }
+                    else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
+                    {
+                        _messages.Add(new ChatHistory { Message = chatHistory.Message, Date = chatHistory.Date, FromUserImageUrl = ChatImageUrl });
+                    }
+                    //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
+                    StateHasChanged();
+                }
+            });
             //await GetUsersAsync();
             var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
             CurrentUserId = state.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
