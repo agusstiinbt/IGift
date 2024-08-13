@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Models.Chat;
+using IGift.Application.Requests.Identity.Users;
 using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared;
@@ -56,6 +57,13 @@ namespace IGift.Client.Pages.Communication.Chat
                 await _hubConnection.StartAsync();
             }
 
+            //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
+            _hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
+            {
+                // var connectedUser= userli
+            });
+
+
             _hubConnection.On<ChatHistory, string>(AppConstants.SignalR.ReceiveMessage, async (chatHistory, userName) =>
             {
                 if ((ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId) || (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId))
@@ -87,6 +95,11 @@ namespace IGift.Client.Pages.Communication.Chat
             await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
         }
 
+        /// <summary>
+        /// Trae el chat del userID, en el caso de no existir un chat entonces creará uno nuevo.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         private async Task LoadUserChat(string userId)
         {
             _open = false;

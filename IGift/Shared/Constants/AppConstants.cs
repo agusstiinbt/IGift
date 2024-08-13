@@ -28,9 +28,14 @@
             public const string OnChangeRolePermissions = "OnChangeRolePermissions";
             public const string LogoutUsersByRole = "LogoutUsersByRole";
 
+            /// <summary>
+            /// Envía la petición para dejar a un usuario online/offline
+            /// </summary>
             public const string PingRequest = "PingRequestAsync";
+            /// <summary>
+            /// Recibe la petición para dejar a un usuario online/offline
+            /// </summary>
             public const string PingResponse = "PingResponseAsync";
-
         }
 
         public static class Role

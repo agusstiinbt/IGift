@@ -148,7 +148,7 @@ namespace IGift.Client.Layouts.Main
             {
                 await _hubConnection.SendAsync(AppConstants.SignalR.PingResponse, currentUserId, userName);
 
-            });//TODO estudiar qué hace este
+            });
 
             await _hubConnection.SendAsync(AppConstants.SignalR.OnConnect, currentUserId);
 

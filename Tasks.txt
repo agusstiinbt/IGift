@@ -10,3 +10,46 @@
 		generar un smart contract que genere una tarjeta de regalo ficticia.
 
 3) El paso siguiente debería de ser cambiar el servicio de guardado de imágenes en la computadora por un servicio en la Nube como Azure o AWS
+
+
+
+Pasos para hacer el chat:
+
+1) Tener una peticion de un usuario cargada y que se vea en la pantalla
+
+2) Que el usuario José pueda visualizarla y poner comprar
+
+3) El método de comprar debe enviar una notificación a Agustín. Esa notificación (snackBar) al hacer click se debe dirigir al chat/UserId 
+Existe un método en blazor Hero que hacía eso al hacer click en uan notificacion. Buscarlo
+
+4) Al cargar el usuario Id en la página de chat.razor se debe ejecutar un método que busque un archivo con el chat id del usuario en cuestión 
+si no existe entonces se creará uno nuevo en el caso de que exista entonces se deberá de cargar dentro de la vista
+
+5) La parte visual del chat que es para enviar mensajes no debe aparecer hasta que por lo menos se haya cargado con algun valor el ChatId
+
+6) Cuando se haya cargado el chat Id ahí debe verse la parte del chat correspondiente para enviar mensajes con la foto de perfil del otro
+usuario 
+
+7) Enviar un hola mundo y que ese mensaje se ponga en el archivo de texto
+
+8) Ese hola mundo debe guardarse como toda una clase ChatHistoryResponse en el archivo de texto en la ubicación que deseamos
+
+9) Una vez que se haya guardado, enviar varios mensajes a la vez para que se vayan guardando esto debería de tener una cola de espera de 
+mensajes.
+
+10) Una vez que se implemente la cola de mensajes en espera para ser guardados entonces debemos corroborrar que se carguen todos los mensajes
+al actualizar la página
+
+11) Implementar la función para que automáticamente que se envían los mensajes se debe mostrar en el chat (capaz sea mejor primero mostrarlo
+en el chat y luego guardarlo en el archivo. Preguntarle a chatGpt eso)
+
+12) Luego debemos hacer lo mismo desde la perspectiva del otro usuario es decir que pueda recibir en tiempo real las notificaciones del chat
+y visualizar los mensajes del otro usuario.
+
+13) Enviar mensajes desde Jose  a Agustin y visceversa
+
+14) Hasta acá debe funcionar toda la parte de signalR de notificaciones de un mensaje de chat, hasta recibir mensaje y visualizarlo en 
+tiempo real
+
+15) Empezar lógica para encriptar y desencriptar mensajes
+

@@ -10,7 +10,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
     {
         public async Task<IResult<List<ChatHistory>>> GetChatHistoryByIdAsync(string UserID)
         {
-            throw new NotImplementedException();
+            
         }
 
         //private readonly byte[] _key;
@@ -23,6 +23,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         //}
         public async Task<IResult> SaveMessage(ChatHistory chat)
         {
+
             //var iv = GenerateIV();
             //var encryptedUserId = Encrypt(chat.FromUserId, _key, iv);
             //var filePath = Path.Combine(_path, $"{Convert.ToBase64String(encryptedUserId)}.txt");
