@@ -3,7 +3,6 @@ using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
@@ -88,7 +87,6 @@ namespace IGift.Client.Pages.Communication.Chat
             await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
         }
 
-
         private async Task LoadUserChat(string userId)
         {
             _open = false;
@@ -102,10 +100,35 @@ namespace IGift.Client.Pages.Communication.Chat
                 ChatImageUrl = contact.Url;
                 _nav.NavigateTo(AppConstants.Routes.Chat + "/" + ChatId);
                 _messages = new();
-                var historyResponse = await _chatService.SaveMessage();
-
+                var historyResponse = await _chatService.GetChatHistoryByIdAsync(ChatId);
+                if (historyResponse.Succeeded)
+                {
+                    _messages = historyResponse.Data.ToList();
+                }
+                else
+                {
+                    foreach (var message in historyResponse.Messages)
+                    {
+                        _snack.Add(message, Severity.Error);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var message in response.Messages)
+                {
+                    _snack.Add(message, Severity.Error);
+                }
             }
         }
+
+        //TODO terminar de implementar
+
+        /// <summary>
+        /// Este método se encarga de traernos todos los chats que tenemos pendientes y no han sido aún eliminados
+        /// </summary>
+        /// <returns></returns>
+        private async Task GetUsersAsync() { }
 
         private async Task OnKeyPressInChat(KeyboardEventArgs e)
         {
