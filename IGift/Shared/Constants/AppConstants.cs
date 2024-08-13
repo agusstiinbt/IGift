@@ -2,10 +2,9 @@
 {
     public static class AppConstants
     {
-
-
         public static class SignalR
         {
+
             public const string HubUrl = "/signalRHub";
 
             public const string SendUpdateDashboard = "UpdateDashboardAsync";
@@ -31,7 +30,6 @@
 
             public const string PingRequest = "PingRequestAsync";
             public const string PingResponse = "PingResponseAsync";
-
 
         }
 

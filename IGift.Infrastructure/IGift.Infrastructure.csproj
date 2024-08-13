@@ -21,4 +21,5 @@
 	  <ProjectReference Include="..\IGift.Domain\IGift.Domain.csproj" />
 	  <ProjectReference Include="..\IGift\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
+	
 </Project>
