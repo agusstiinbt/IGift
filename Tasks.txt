@@ -16,7 +16,7 @@
 Pasos para hacer el chat:
 
 
-2) Que el usuario José pueda visualizarla y poner comprar
+2)La notificación debe ocurrir en tiempo real
 
 3) El método de comprar debe enviar una notificación a Agustín. Esa notificación (snackBar) al hacer click se debe dirigir al chat/UserId 
 Existe un método en blazor Hero que hacía eso al hacer click en uan notificacion. Buscarlo
