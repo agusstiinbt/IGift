@@ -10,7 +10,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
     {
         public async Task<IResult<List<ChatHistory>>> GetChatHistoryByIdAsync(string UserID)
         {
-            
+            return null;
         }
 
         //private readonly byte[] _key;

@@ -1,6 +1,7 @@
 ﻿using Client.Infrastructure.Services.Requests;
-using IGift.Application.Requests.Peticiones.Pedidos.Query;
+using IGift.Application.Requests.Peticiones.Query;
 using IGift.Application.Responses.Pedidos;
+using IGift.Client.Infrastructure.Services.CarritoDeCompras;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -10,6 +11,7 @@ namespace IGift.Client.Pages.Peticiones.Componentes
     {
         //TODO limpiar código que no se esté utilizando
         [Inject] IPeticionesService _peticiones { get; set; }
+        [Inject] ICarritoComprasService _carritoService { get; set; }
 
         private IEnumerable<PeticionesResponse> _pagedData;
         private MudTable<PeticionesResponse> _table;
@@ -55,9 +57,9 @@ namespace IGift.Client.Pages.Peticiones.Componentes
 
         }
 
-        private void AgregarAlCarrito()
+        private async Task AgregarAlCarrito(PeticionesResponse p)
         {
-
+            await _carritoService.GuardarEnCarritoDeCompras(p);
         }
 
         private async Task<TableData<PeticionesResponse>> GetData(TableState state, CancellationToken cancellationToken)

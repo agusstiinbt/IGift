@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IGift.Application.Requests.Peticiones.Pedidos.Command;
+using IGift.Application.Requests.Peticiones.Command;
 using IGift.Domain.Entities;
 
 namespace IGift.Infrastructure.Mappings
@@ -9,7 +9,7 @@ namespace IGift.Infrastructure.Mappings
 
         public GiftProfile()
         {
-            CreateMap<Peticiones, AddPeticionesCommand>();
+            CreateMap<Peticiones, AddEditPeticionesCommand>();
         }
     }
 }

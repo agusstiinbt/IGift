@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using IGift.Application.Models;
-using IGift.Application.Responses.Chat;
+using IGift.Application.Responses.Notification;
 
 namespace IGift.Infrastructure.Mappings
 {

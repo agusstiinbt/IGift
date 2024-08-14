@@ -1,5 +1,5 @@
 ﻿using Client.Infrastructure.Services.Notification;
-using IGift.Application.Responses.Chat;
+using IGift.Application.Responses.Notification;
 using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Layouts.Main.ToolBar

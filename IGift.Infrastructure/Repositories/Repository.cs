@@ -17,9 +17,9 @@ namespace IGift.Infrastructure.Repositories
 
         public async Task<T> AddAsync(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
-            return entity;
+                await _context.Set<T>().AddAsync(entity);
+                await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+                return entity;
         }
 
         public async Task<Task> DeleteAsync(T entity)
@@ -47,8 +47,7 @@ namespace IGift.Infrastructure.Repositories
 
         public async Task UpdateAsync(T entity)
         {
-
-            T exist = _context.Set<T>().Find(entity.Id);
+            T exist = _context.Set<T>().Find(entity.Id)!;
             _context.Entry(exist).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
         }

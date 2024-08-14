@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Models;
-using IGift.Application.Responses.Chat;
+using IGift.Application.Responses.Notification;
 using IGift.Shared.Wrapper;
 using MediatR;
 

@@ -22,6 +22,7 @@
 
 	<ItemGroup>
 		<Folder Include="Requests\Notifications\Command\" />
+		<Folder Include="Responses\Chat\" />
 		<Folder Include="Responses\Identity\Token\" />
 	</ItemGroup>
 

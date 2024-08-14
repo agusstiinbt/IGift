@@ -15,7 +15,6 @@
 
 Pasos para hacer el chat:
 
-1) Tener una peticion de un usuario cargada y que se vea en la pantalla
 
 2) Que el usuario José pueda visualizarla y poner comprar
 

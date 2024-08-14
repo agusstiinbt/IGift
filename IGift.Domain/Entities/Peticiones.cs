@@ -1,4 +1,5 @@
 ﻿using IGift.Domain.Contracts;
+using System.Runtime.CompilerServices;
 
 namespace IGift.Domain.Entities
 {
@@ -8,6 +9,9 @@ namespace IGift.Domain.Entities
         public string Descripcion { get; set; } = string.Empty;
         public int Monto { get; set; }
         public required string Moneda { get; set; }
-
+        /// <summary>
+        /// Esta propiedad indica si se ha comprado o no la peticion
+        /// </summary>
+        public bool Finalizado { get; set; } = false;
     }
 }

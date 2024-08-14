@@ -12,7 +12,7 @@ namespace IGift.Application.Requests.LocalesAdheridos.Command
     public class AddEditLocalAdheridoCommand : IRequest<IResult>
     {
         /// <summary>
-        /// Si se envía igual a 0(cero) significa que estamos editando un local
+        /// Si se envía igual a 0(cero) significa que estamos editando un registro
         /// </summary>
         public int Id { get; set; }
         [Required]

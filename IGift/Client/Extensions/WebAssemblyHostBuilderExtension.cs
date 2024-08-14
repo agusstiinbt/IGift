@@ -14,6 +14,7 @@ using Client.Infrastructure.Services.Notification;
 using Client.Infrastructure.Services.Requests;
 using IGift.Client.Infrastructure.Services.Files;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
+using IGift.Client.Infrastructure.Services.CarritoDeCompras;
 
 namespace IGift.Client.Extensions
 {
@@ -59,6 +60,7 @@ namespace IGift.Client.Extensions
             .AddScoped<IPeticionesService, PeticionesService>()
             .AddScoped<IProfilePicture, ProfilePictureService>()
             .AddScoped<IChatService, ChatService>()
+            .AddScoped<ICarritoComprasService, CarritoComprasService>()
 
             .AddAuthorizationCore()
 
