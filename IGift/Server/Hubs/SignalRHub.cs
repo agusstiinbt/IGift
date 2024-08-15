@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Models.Chat;
+using IGift.Application.Responses.Pedidos;
 using IGift.Shared;
 using Microsoft.AspNetCore.SignalR;
 
@@ -19,6 +20,11 @@ namespace IGift.Server.Hubs
         public async Task ChatNotificationAsync(string message, string receiverUserId, string senderUserId)
         {
             await Clients.User(receiverUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotification, message, receiverUserId, senderUserId);
+        }
+
+        public async Task SendCarritoComprasNotificationAsync(IEnumerable<PeticionesResponse> lista)
+        {
+            await Clients.User()
         }
 
         //public async Task SendMessageAsync(Chat chat, string userName)

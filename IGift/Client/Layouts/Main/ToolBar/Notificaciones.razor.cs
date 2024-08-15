@@ -1,12 +1,16 @@
 ﻿using Client.Infrastructure.Services.Notification;
 using IGift.Application.Responses.Notification;
+using IGift.Client.Extensions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class Notificaciones
     {
         [Inject] INotificationService _notificationService { get; set; }
+
+        [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
         private List<NotificationResponse> list { get; set; } = new();
 
@@ -23,6 +27,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
                 _notifications = list.Count;
             }
             _visible = _notifications == 0 ? false : true;
+            await InitializeHub();
         }
 
         private void ToggleOpen()
@@ -32,5 +37,19 @@ namespace IGift.Client.Layouts.Main.ToolBar
             else
                 _open = true;
         }
+
+        private async Task InitializeHub()
+        {
+            //Esta clase Notificaciones.razor debería de recibir como cascading parameter el HubConnection
+
+            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+            {
+                await _hubConnection.StartAsync();
+            }
+
+        }
     }
+
 }

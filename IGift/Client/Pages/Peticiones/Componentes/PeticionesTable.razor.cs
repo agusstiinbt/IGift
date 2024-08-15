@@ -1,8 +1,11 @@
 ﻿using Client.Infrastructure.Services.Requests;
 using IGift.Application.Requests.Peticiones.Query;
 using IGift.Application.Responses.Pedidos;
+using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;
+using IGift.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
 
 namespace IGift.Client.Pages.Peticiones.Componentes
@@ -12,6 +15,8 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         //TODO limpiar código que no se esté utilizando
         [Inject] IPeticionesService _peticiones { get; set; }
         [Inject] ICarritoComprasService _carritoService { get; set; }
+
+        [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
         private IEnumerable<PeticionesResponse> _pagedData;
         private MudTable<PeticionesResponse> _table;
@@ -27,6 +32,16 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         private string EstiloBotonVenta { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "USDT";
+
+        protected override async Task OnInitializedAsync()
+        {
+            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+            {
+                await _hubConnection.StartAsync();
+            }
+        }
 
         private void SeleccionarBoton(string boton)
         {
@@ -60,6 +75,8 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         private async Task AgregarAlCarrito(PeticionesResponse p)
         {
             await _carritoService.GuardarEnCarritoDeCompras(p);
+            await _hubConnection.SendAsync(AppConstants.SignalR.SendCarritoComprasNotificationAsync, _pagedData);
+
         }
 
         private async Task<TableData<PeticionesResponse>> GetData(TableState state, CancellationToken cancellationToken)

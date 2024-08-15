@@ -16,6 +16,9 @@
             public const string ReceiveChatNotification = "ReceiveChatNotification";
             public const string SendChatNotification = "ChatNotificationAsync";
 
+            public const string ReceiveCarritoComprasNotification = "ReceiveCarritoComprasNotification";
+            public const string SendCarritoComprasNotificationAsync = "SendCarritoComprasNotificationAsync";
+
             public const string ReceiveMessage = "ReceiveMessage";
             public const string SendMessage = "SendMessageAsync";
 

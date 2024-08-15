@@ -79,7 +79,7 @@ namespace IGift.Client.Pages.Communication.Chat
                     }
                     //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
                     StateHasChanged();
-                }
+                };
             });
             //await GetUsersAsync(); Esto se usaría para traer todos los chats que tenemos 
 
