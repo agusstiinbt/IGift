@@ -14,15 +14,14 @@ namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class CarritoCompras
     {
-
         [Inject] IShopCart _carritoCompras { get; set; }
 
-        private List<AddEditPeticionesCommand> list { get; set; } = new();
+        private List<PeticionesResponse> list { get; set; } = new();
 
         [CascadingParameter] public HubConnection _hubConnection { get; set; }
 
 
-        private int _peticiones { get; set; } = 0;
+        private int _peticiones { get; set; }
         public bool _open;
         private bool _visible { get; set; }
 
@@ -56,18 +55,14 @@ namespace IGift.Client.Layouts.Main.ToolBar
                 await _hubConnection.StartAsync();
             }
 
-            _hubConnection.On<ICollection<PeticionesResponse>, string>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, async (lista, Id) =>
+            _hubConnection.On<ICollection<PeticionesResponse>>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, async (lista) =>
             {
                 //TODO es necesario enviar a esta subscripcion el Id si ya lo estamos localizando desde la clase signalR
                 var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
-
-                if (idUser == Id)
-                {
-                    _peticiones = lista.Count;
-                   // list = lista.ToList();
-                    _snack.Add("Peticion agregada al carrito", Severity.Success);
-                    //  StateHasChanged();// TODO agregar esto?
-                }
+                list = lista.ToList();
+                _peticiones++;
+                await InvokeAsync(StateHasChanged);
+                _snack.Add("Peticion agregada al carrito", Severity.Success);
             });
         }
     }

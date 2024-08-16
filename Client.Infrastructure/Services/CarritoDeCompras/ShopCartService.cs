@@ -24,16 +24,9 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
             var carrito = await GetPeticiones();
 
             var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
-            var command = new AddEditPeticionesCommand()
-            {
-                Id = string.Empty,
-                IdUser = idUser!,
-                Descripcion = p.Descripcion,
-                Monto = p.Monto,
-                Moneda = p.Moneda
-            };
+           
 
-            carrito!.Add(command);
+            carrito!.Add(p);
 
             var json = JsonSerializer.Serialize(carrito);
 
@@ -42,33 +35,33 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
             return await Result.SuccessAsync();
         }
 
-        public async Task<IResult<List<AddEditPeticionesCommand>>> GetShopCartAsync()
+        public async Task<IResult<List<PeticionesResponse>>> GetShopCartAsync()
         {
             var response = await GetPeticiones();
 
-            return await Result<List<AddEditPeticionesCommand>>.SuccessAsync(response);
+            return await Result<List<PeticionesResponse>>.SuccessAsync(response);
         }
 
         /// <summary>
         /// Lee la lista existene de 'carrito' en el local storage. Si hay algo en 'carrito' devuelve una lista deserializada. Si esta vacío, devuelve una lista nueva.
         /// </summary>
         /// <returns>Una lista de AddPeticionesCommand</returns>
-        private async Task<List<AddEditPeticionesCommand>> GetPeticiones()
+        private async Task<List<PeticionesResponse>> GetPeticiones()
         {
             // Leer la lista existente de 'carrito'
             var json = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.ShopCart);
 
-            List<AddEditPeticionesCommand> carrito;
+            List<PeticionesResponse> carrito;
 
             if (!string.IsNullOrEmpty(json))
             {
                 // Si hay algo en 'carrito', deserializarlo a una lista 
-                carrito = JsonSerializer.Deserialize<List<AddEditPeticionesCommand>>(json);
+                carrito = JsonSerializer.Deserialize<List<PeticionesResponse>>(json);
             }
             else
             {
                 // Si 'carrito' está vacío, inicializar una nueva lista
-                carrito = new List<AddEditPeticionesCommand>();
+                carrito = new List<PeticionesResponse>();
             }
 
             return carrito!;

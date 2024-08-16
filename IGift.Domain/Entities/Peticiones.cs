@@ -5,6 +5,9 @@ namespace IGift.Domain.Entities
 {
     public class Peticiones : AuditableEntity<string>
     {
+        /// <summary>
+        /// Id del usuario creador
+        /// </summary>
         public string IdUser { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
         public int Monto { get; set; }
