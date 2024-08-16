@@ -1,6 +1,5 @@
 ﻿using IGift.Application.Responses.Pedidos;
 using IGift.Shared.Wrapper;
-using IGift.Application.Requests.Peticiones.Command;
 using IGift.Shared;
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
@@ -23,16 +22,16 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
         {
             var carrito = await GetPeticiones();
 
-            var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
-           
+            if (!carrito.Any(x => x.Id == p.Id))
+            {
+                carrito!.Add(p);
+                var json = JsonSerializer.Serialize(carrito);
 
-            carrito!.Add(p);
+                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.ShopCart, json);
 
-            var json = JsonSerializer.Serialize(carrito);
-
-            await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.ShopCart, json);
-
-            return await Result.SuccessAsync();
+                return await Result.SuccessAsync();
+            }
+            return await Result.FailAsync("Ya se posee esa petición en el carrito de compras");
         }
 
         public async Task<IResult<List<PeticionesResponse>>> GetShopCartAsync()

@@ -76,8 +76,15 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         {
             //TODO esto debería de ser un parámetro desde arriba para no invocarlo todo el tiempo
             var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
-            await _carritoService.SaveShopCartAsync(p);
-            await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, _pagedData, idUser);
+            var response = await _carritoService.SaveShopCartAsync(p);
+            if (response.Succeeded)
+            {
+                await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, _pagedData, idUser);
+            }
+            else
+            {
+                _snack.Add(response.Messages.FirstOrDefault());
+            }
         }
 
         private async Task<TableData<PeticionesResponse>> GetData(TableState state, CancellationToken cancellationToken)

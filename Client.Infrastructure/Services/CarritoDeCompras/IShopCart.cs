@@ -7,7 +7,7 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
     public interface IShopCart
     {
         /// <summary>
-        /// Guarda las peticiones a comprar en el carrito de compras del local storage
+        /// Guarda las peticiones a comprar en el carrito de compras del local storage. No acepta duplicados
         /// </summary>
         /// <returns></returns>
         Task<IResult> SaveShopCartAsync(PeticionesResponse p);
@@ -17,6 +17,5 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
         /// </summary>
         /// <returns></returns>
         Task<IResult<List<PeticionesResponse>>> GetShopCartAsync();
-
     }
 }

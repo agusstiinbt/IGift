@@ -8,6 +8,18 @@
 </MudPaper>
 
 <div>
+
+    <div class="shopping-cart-container">
+        <span class="has-badge" data-count="4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="shopping-cart-icon" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"></path>
+            </svg>
+        </span>
+    </div>
+
+
+
     <MudBadge Color="Color.Error" Visible=@_visible Content=@_peticiones Overlap="true" Bordered="true" Class="mx-6 my-4">
         <MudIcon @onclick="ToggleOpen" Icon="@Icons.Material.Filled.ShoppingCart" Color="Color.Warning" />
     </MudBadge>
@@ -29,3 +41,39 @@
         </MudPaper>
     </MudPopover>
 </div>
+
+
+<style>
+
+    .shopping-cart-container {
+        position: relative;
+        display: inline-block;
+        font-size: 24px;
+    }
+
+    .has-badge[data-count]:after {
+        position: absolute;
+        right: -10%;
+        top: -10%;
+        content: attr(data-count);
+        font-size: 0.7em;
+        background: #d32f2f;
+        color: white;
+        width: 18px;
+        height: 18px;
+        text-align: center;
+        line-height: 18px;
+        border-radius: 50%;
+        border: 1px solid white;
+    }
+
+    .fa-stack {
+        font-size: 1.2em;
+    }
+
+    .fa-shopping-cart {
+        font-size: 1.5em;
+        color: #FFA000;
+    }
+
+</style>

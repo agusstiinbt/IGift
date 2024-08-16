@@ -6,7 +6,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class BarraHerramientasConectado
     {
-
         [Parameter]
         public string userName { get; set; }
 
@@ -14,7 +13,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
         private string _estiloBotones { get; set; }
 
         [Parameter] public HubConnection _hubConnection { get; set; }
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -50,6 +48,5 @@ namespace IGift.Client.Layouts.Main.ToolBar
         }
 
         bool _expanded;
-
     }
 }

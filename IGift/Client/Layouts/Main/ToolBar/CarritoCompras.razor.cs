@@ -1,8 +1,4 @@
-﻿using Client.Infrastructure.Services.Notification;
-using IGift.Application.Requests.LocalesAdheridos.Command;
-using IGift.Application.Requests.Peticiones.Command;
-using IGift.Application.Responses.Notification;
-using IGift.Application.Responses.Pedidos;
+﻿using IGift.Application.Responses.Pedidos;
 using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;
 using IGift.Shared;
@@ -16,13 +12,12 @@ namespace IGift.Client.Layouts.Main.ToolBar
     {
         [Inject] IShopCart _carritoCompras { get; set; }
 
-        private List<PeticionesResponse> list { get; set; } = new();
-
         [CascadingParameter] public HubConnection _hubConnection { get; set; }
 
+        private List<PeticionesResponse> list { get; set; } = new();
 
         private int _peticiones { get; set; }
-        public bool _open;
+        public bool _open { get; set; }
         private bool _visible { get; set; }
 
         protected async override Task OnInitializedAsync()
@@ -59,10 +54,13 @@ namespace IGift.Client.Layouts.Main.ToolBar
             {
                 //TODO es necesario enviar a esta subscripcion el Id si ya lo estamos localizando desde la clase signalR
                 var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
+
+                // Ejecutar el cambio de estado en el contexto de la IU
+
                 list = lista.ToList();
-                _peticiones++;
-                await InvokeAsync(StateHasChanged);
+                _peticiones = list.Count;
                 _snack.Add("Peticion agregada al carrito", Severity.Success);
+                await InvokeAsync(StateHasChanged);//Esto tiene que estar siempre porque dentro de un 'on' no se detecta un cambio en el UI
             });
         }
     }
