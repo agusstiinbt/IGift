@@ -14,11 +14,11 @@ namespace IGift.Client.Pages.Peticiones.Componentes
     {
         //TODO limpiar código que no se esté utilizando
         [Inject] IPeticionesService _peticiones { get; set; }
-        [Inject] ICarritoComprasService _carritoService { get; set; }
+        [Inject] IShopCart _carritoService { get; set; }
 
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
-        private IEnumerable<PeticionesResponse> _pagedData;
+        private ICollection<PeticionesResponse> _pagedData;
         private MudTable<PeticionesResponse> _table;
 
         private int _totalItems;
@@ -74,9 +74,10 @@ namespace IGift.Client.Pages.Peticiones.Componentes
 
         private async Task AgregarAlCarrito(PeticionesResponse p)
         {
-            await _carritoService.GuardarEnCarritoDeCompras(p);
-            await _hubConnection.SendAsync(AppConstants.SignalR.SendCarritoComprasNotificationAsync, _pagedData);
-
+            //TODO esto debería de ser un parámetro desde arriba para no invocarlo todo el tiempo
+            var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
+            await _carritoService.SaveShopCartAsync(p);
+            await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, _pagedData, idUser);
         }
 
         private async Task<TableData<PeticionesResponse>> GetData(TableState state, CancellationToken cancellationToken)

@@ -60,7 +60,7 @@ namespace IGift.Client.Extensions
             .AddScoped<IPeticionesService, PeticionesService>()
             .AddScoped<IProfilePicture, ProfilePictureService>()
             .AddScoped<IChatService, ChatService>()
-            .AddScoped<ICarritoComprasService, CarritoComprasService>()
+            .AddScoped<IShopCart, ShopCartService>()
 
             .AddAuthorizationCore()
 

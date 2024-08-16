@@ -1,18 +1,24 @@
 ﻿using IGift.Application.Models.Chat;
-using IGift.Application.Requests.Identity.Users;
-using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
+using IGift.Client.Extensions;
 using System.Security.Claims;
 
 namespace IGift.Client.Pages.Communication.Chat
 {
     public partial class Chat
     {
+        private bool _open = false;
+
+        private void ToggleDrawer()
+        {
+            _open = !_open;
+        }
+
         [Inject] private IChatService _chatService { get; set; }
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
@@ -135,13 +141,11 @@ namespace IGift.Client.Pages.Communication.Chat
             }
         }
 
-        //TODO terminar de implementar
-
         /// <summary>
         /// Este método se encarga de traernos todos los chats que tenemos pendientes y no han sido aún eliminados
         /// </summary>
         /// <returns></returns>
-        private async Task GetUsersAsync() { }
+        private async Task GetUsersAsync() { }//TODO terminar de implementar
 
         private async Task OnKeyPressInChat(KeyboardEventArgs e)
         {

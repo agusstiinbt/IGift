@@ -8,18 +8,18 @@ using System.Text.Json;
 
 namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
 {
-    public class CarritoComprasService : ICarritoComprasService
+    public class ShopCartService : IShopCart
     {
         private readonly ILocalStorageService _localStorage;
         private readonly IJSRuntime _js;
 
-        public CarritoComprasService(ILocalStorageService localStorage, IJSRuntime js)
+        public ShopCartService(ILocalStorageService localStorage, IJSRuntime js)
         {
             _localStorage = localStorage;
             _js = js;
         }
 
-        public async Task<IResult> GuardarEnCarritoDeCompras(PeticionesResponse p)
+        public async Task<IResult> SaveShopCartAsync(PeticionesResponse p)
         {
             var carrito = await GetPeticiones();
 
@@ -42,7 +42,7 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
             return await Result.SuccessAsync();
         }
 
-        public async Task<IResult<List<AddEditPeticionesCommand>>> ObtenerCarritoDePeticiones()
+        public async Task<IResult<List<AddEditPeticionesCommand>>> GetShopCartAsync()
         {
             var response = await GetPeticiones();
 

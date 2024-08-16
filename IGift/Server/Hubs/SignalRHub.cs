@@ -22,9 +22,9 @@ namespace IGift.Server.Hubs
             await Clients.User(receiverUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotification, message, receiverUserId, senderUserId);
         }
 
-        public async Task SendCarritoComprasNotificationAsync(IEnumerable<PeticionesResponse> lista)
+        public async Task SendShopCartNotificationAsync(ICollection<PeticionesResponse> lista, string UserId)
         {
-            await Clients.User()
+            await Clients.User(UserId).SendAsync(AppConstants.SignalR.ReceiveShopCartNotificationAsync, lista);
         }
 
         //public async Task SendMessageAsync(Chat chat, string userName)

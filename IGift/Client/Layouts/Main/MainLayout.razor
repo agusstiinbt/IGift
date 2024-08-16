@@ -7,9 +7,13 @@
 
 <MudLayout Style="height:100vh;overflow:auto;background-color:#181A20">
 
-    <BarraHerramientasPrincipal />
-    @Body
-    <ScrollToTop />
+    <CascadingValue Value="_hubConnection">
+        <BarraHerramientasPrincipal />
+        @Body
+        <ScrollToTop />
+    </CascadingValue>
+
+
 
 </MudLayout>
 

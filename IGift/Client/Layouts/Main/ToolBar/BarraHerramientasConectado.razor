@@ -1,58 +1,28 @@
-﻿<MudPaper Elevation="0">
-    <MudToolBar Style="background-color:#181A20">
+﻿<CascadingValue Value="_hubConnection">
 
-        <MudButton Style=@_estiloBotones>Ofertas</MudButton>
-        <MudButton Href=@AppConstants.Routes.Chat Style=@_estiloBotones>Chat</MudButton>
-        <MudButton Href=@AppConstants.Routes.Peticiones Style=@_estiloBotones> Peticiones</MudButton>
-        <MudButton Style=@_estiloBotones>Electrodomésticos</MudButton>
-        <MudButton Style=@_estiloBotones>Historial</MudButton>
-        <MudButton Style=@_estiloBotones>Ayuda</MudButton>
-        <MudButton Style=@_estiloBotones>Ofertas grandes</MudButton>
+    <MudPaper Elevation="0">
+        <MudToolBar Style="background-color:#181A20">
 
-        <MudSpacer />
+            <MudButton Style=@_estiloBotones>Ofertas</MudButton>
+            <MudButton Href=@AppConstants.Routes.Chat Style=@_estiloBotones>Chat</MudButton>
+            <MudButton Href=@AppConstants.Routes.Peticiones Style=@_estiloBotones> Peticiones</MudButton>
+            <MudButton Style=@_estiloBotones>Electrodomésticos</MudButton>
+            <MudButton Style=@_estiloBotones>Historial</MudButton>
+            <MudButton Style=@_estiloBotones>Ayuda</MudButton>
+            <MudButton Style=@_estiloBotones>Ofertas grandes</MudButton>
 
-        <TogglePerfil userName=@userName />
+            <MudSpacer />
 
-        <Notificaciones />
+            <TogglePerfil userName=@userName />
 
-        <CarritoCompras />
+            <Notificaciones />
 
-    </MudToolBar>
-</MudPaper>
+            <CarritoCompras />
 
-
-@code {
-
-    [CascadingParameter]
-    private string _estiloBotones { get; set; }
+        </MudToolBar>
+    </MudPaper>
 
 
-    public bool _open;
+</CascadingValue>
 
-    public void ToggleOpen()
-    {
-        if (_open)
-            _open = false;
-        else
-            _open = true;
-    }
 
-    private string MenuStyle = "visibility:collapse";
-    private void ShowMenu()
-    {
-        if (!string.IsNullOrEmpty(MenuStyle))
-        {
-            MenuStyle = string.Empty;
-        }
-        else
-        {
-            MenuStyle = "visibility:collapse";
-        }
-    }
-
-    bool _expanded;
-
-    [Parameter]
-    public string userName { get; set; }
-
-}

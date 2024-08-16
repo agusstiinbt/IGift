@@ -4,7 +4,7 @@
 
     <Authorized>
         <CascadingValue Value="EstiloBotones">
-            <BarraHerramientasConectado userName="@NombreUsuario" />
+            <BarraHerramientasConectado _hubConnection="@_hubConnection" userName="@NombreUsuario" />
         </CascadingValue>
     </Authorized>
 
@@ -15,10 +15,3 @@
     </NotAuthorized>
 
 </AuthorizeView>
-
-
-@code {
-    [CascadingParameter]
-    public string EstiloBotones { get; set; } = "color:#FFCC09";
-}
-
