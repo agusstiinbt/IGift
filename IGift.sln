@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{BBE49071-3520-4699-9FB7-4A0CC60DE015}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGIFT.Server.Shared", "IGIFT.Server.Shared\IGIFT.Server.Shared\IGIFT.Server.Shared.csproj", "{B9000EF0-96F0-4189-B4C0-FF66E8B59C62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{50F642F9-A1BA-4457-9C27-BC0873F9DF53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50F642F9-A1BA-4457-9C27-BC0873F9DF53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50F642F9-A1BA-4457-9C27-BC0873F9DF53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9000EF0-96F0-4189-B4C0-FF66E8B59C62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9000EF0-96F0-4189-B4C0-FF66E8B59C62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9000EF0-96F0-4189-B4C0-FF66E8B59C62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9000EF0-96F0-4189-B4C0-FF66E8B59C62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{5294BF51-CD4F-4022-B2B9-42E897FE6039} = {9AAC30CA-20D6-4646-BC4F-EEC21733CA4B}
 		{0779165B-14D8-4E48-8D39-8124BE26DE6D} = {9AAC30CA-20D6-4646-BC4F-EEC21733CA4B}
 		{BBE49071-3520-4699-9FB7-4A0CC60DE015} = {9AAC30CA-20D6-4646-BC4F-EEC21733CA4B}
+		{B9000EF0-96F0-4189-B4C0-FF66E8B59C62} = {54D39454-5B00-4121-A669-3A0A856B7D2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11B6A31C-FCB0-452F-95A7-8227D7146A07}

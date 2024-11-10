@@ -1,10 +1,12 @@
 ﻿using IGift.Application.Requests.Peticiones.Command;
 using IGift.Application.Requests.Peticiones.Query;
-using IGift.Server.Controllers.Base;
+using IGIFT.Server.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class PeticionesController : BaseApiController<PeticionesController>
@@ -23,6 +25,5 @@ namespace IGift.Server.Controllers
             var response = await _mediator.Send(query);
             return Ok(response);
         }
-
     }
 }

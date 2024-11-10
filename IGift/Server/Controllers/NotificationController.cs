@@ -1,5 +1,5 @@
 ﻿using IGift.Application.Requests.Notifications.Query;
-using IGift.Server.Controllers.Base;
+using IGIFT.Server.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers

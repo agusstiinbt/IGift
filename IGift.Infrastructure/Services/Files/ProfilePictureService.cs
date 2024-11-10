@@ -95,4 +95,4 @@ namespace IGift.Infrastructure.Services.Files
             return await Result.FailAsync();
         }
     }
-}
+}  

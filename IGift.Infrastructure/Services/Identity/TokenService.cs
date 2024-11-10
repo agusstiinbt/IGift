@@ -64,7 +64,7 @@ namespace IGift.Infrastructure.Services.Identity
             await _userManager.UpdateAsync(user);
 
             //TODO implementar la imagen url
-            var response = new UserLoginResponse { Token = token, RefreshToken = user.RefreshToken};
+            var response = new UserLoginResponse { Token = token, RefreshToken = user.RefreshToken };
 
             return await Result<UserLoginResponse>.SuccessAsync(response);
         }

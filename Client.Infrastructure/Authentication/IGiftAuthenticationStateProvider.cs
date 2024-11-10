@@ -126,3 +126,4 @@ namespace Client.Infrastructure.Authentication
         }
     }
 }
+

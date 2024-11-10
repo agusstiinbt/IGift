@@ -3,7 +3,6 @@ using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Infrastructure
 {

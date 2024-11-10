@@ -7,6 +7,10 @@
     <UserSecretsId>IGift.Server-2a66541c-bcd3-4649-9785-513a84c7ed8b</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\Base\BaseApiController.cs" />
+  </ItemGroup>
+
 	
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.8.12" />
@@ -25,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\IGift.Domain\IGift.Domain.csproj" />
     <ProjectReference Include="..\..\IGift.Infrastructure\IGift.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\IGIFT.Server.Shared\IGIFT.Server.Shared\IGIFT.Server.Shared.csproj" />
     <ProjectReference Include="..\Client\IGift.Client.csproj" />
     <ProjectReference Include="..\Shared\IGift.Shared.csproj" />
   </ItemGroup>
@@ -41,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Base\" />
     <Folder Include="Files\Images\ProfilePictures\" />
   </ItemGroup>
 
