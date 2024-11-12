@@ -17,7 +17,12 @@ namespace IGIFT.Server.Shared
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddFor
+            //Siempre que avancemos con estas cosas decirle a chatGPT que estamos siempre trabajando con una arquitectura de microservicios donde habrá luego una api gateway 
+            services.AddForwarding(_configuration);
+            services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "Resources";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)

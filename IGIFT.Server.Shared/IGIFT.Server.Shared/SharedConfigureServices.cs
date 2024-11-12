@@ -9,7 +9,7 @@ namespace IGIFT.Server.Shared
 {
     public static class SharedConfigureServices
     {
-
+        //TODO ELIMINAR?
         public static void ConfigureServices(IServiceCollection services)
         {
             // Configuración común de servicios
