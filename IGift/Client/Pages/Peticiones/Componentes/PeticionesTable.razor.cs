@@ -97,7 +97,6 @@ namespace IGift.Client.Pages.Peticiones.Componentes
             return new TableData<PeticionesResponse> { TotalItems = _totalItems, Items = _pagedData };
         }
 
-
         private async Task LoadData(int pageNumber, int pageSize, TableState state)
         {
             //TODO implementar el ordenamiento
