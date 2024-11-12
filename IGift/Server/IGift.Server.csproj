@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\Base\BaseApiController.cs" />
+    <Compile Remove="Controllers\LocalesAdheridosController.cs" />
   </ItemGroup>
 
 	
