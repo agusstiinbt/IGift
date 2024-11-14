@@ -76,5 +76,10 @@ namespace IGIFT.Server.Shared
             };
             return services;
         }
+
+        internal static IServiceCollection AddSerialization(this IServiceCollection services)
+        {
+            return null;
+        }
     }
 }
