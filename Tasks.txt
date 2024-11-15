@@ -1,3 +1,7 @@
+Hasta que podamos comprar las 2 memorias ram de 32 gb cada una debemos ocuparnos del front. Hacer un buen disenio porque nos deben llamar
+entre otras cosas por nuestra capacidad de trabajar con Blazor
+
+
 Hacer una estructura de microservicios con cada controller distinto e implementar la logica de RabbitMQ. Al instalar el disco nuevo 
 
 Fijarse qué base de datos conviene más segun el tipo de datos que vamos a manejar en cada controller, es decir por ejemplo el tokenController
