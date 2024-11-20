@@ -61,4 +61,53 @@ namespace IGift.Application.Serialization.JsonConverters
             writer.WriteStringValue(timespanFormatted);
         }
     }
+
+
+    #region Documentacion ejemplo
+
+    /*
+        POST /api/tasks
+        Content-Type: application/json
+
+        {
+          "name": "Fix bug",
+          "estimatedTime": "invalid_format"
+        }
+     
+         Respuesta:
+            HTTP/1.1 400 Bad Request
+        Content-Type: application/json
+
+        {
+          "title": "One or more validation errors occurred.",
+          "status": 400,
+          "errors": {
+            "estimatedTime": [
+              "Input timespan is not in an expected format : expected d.hh:mm:ss.fff. Please retrieve this key as a string and parse manually."
+            ]
+          }
+        }
+    
+
+            POST /api/tasks
+        Content-Type: application/json
+
+        {
+          "name": "Write documentation",
+          "estimatedTime": "1.04:30:00.000"
+        }
+
+         Respuesta:
+
+            HTTP/1.1 201 Created
+        Content-Type: application/json
+
+        {
+          "id": "5d85b1ff-2a4b-4bc1-9f79-2f3e6d6cd2df",
+          "name": "Write documentation",
+          "estimatedTime": "1.04:30:00.000"
+        }
+
+     */
+    #endregion
 }
