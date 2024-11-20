@@ -66,6 +66,8 @@ namespace IGift.Application.Serialization.JsonConverters
     #region Documentacion ejemplo
 
     /*
+        Revisar TaskController!!!:
+
         POST /api/tasks
         Content-Type: application/json
 
