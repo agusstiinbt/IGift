@@ -2,6 +2,9 @@
 
 namespace IGift.Application.Interfaces.Serialization.Options
 {
+    /// <summary>
+    /// Interfaz que define las opciones para System.Text.Json
+    /// </summary>
     public interface IJsonSerializerOptions
     {
         /// <summary>

@@ -1,7 +1,12 @@
-﻿namespace IGift.Application.Interfaces.Serialization.Settings
+﻿using Newtonsoft.Json;
+
+namespace IGift.Application.Interfaces.Serialization.Settings
 {
     public interface IJsonSerializerSettings
     {
-        public IJsonSerializerSettings JsonSerializerSettings { get; }
+        /// <summary>
+        /// Settings for <see cref="Newtonsoft.Json"/>.
+        /// </summary>
+        public JsonSerializerSettings JsonSerializerSettings { get; }
     }
 }

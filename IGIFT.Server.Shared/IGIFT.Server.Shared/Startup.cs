@@ -23,6 +23,7 @@ namespace IGIFT.Server.Shared
             {
                 options.ResourcesPath = "Resources";
             });
+            services.AddSerialization(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)
