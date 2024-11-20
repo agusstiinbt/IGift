@@ -1,14 +1,18 @@
 ﻿using System.Net;
 using System.Text.Json.Serialization;
 using IGift.Application.AppConfiguration;
+using IGift.Application.Interfaces;
 using IGift.Application.Interfaces.Serialization.Options;
 using IGift.Application.Interfaces.Serialization.Settings;
 using IGift.Application.Serialization;
 using IGift.Application.Serialization.JsonConverters;
 using IGift.Application.Serialization.Serializers;
 using IGift.Application.Serialization.Settings;
+using IGift.Infrastructure;
+using IGift.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -100,7 +104,7 @@ namespace IGIFT.Server.Shared
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        internal static IServiceCollection AddSerialization(this IServiceCollection services, IConfiguration configuration) 
+        internal static IServiceCollection AddSerialization(this IServiceCollection services, IConfiguration configuration)
         {
             // Obtener el nombre del servicio. Permite identificar y aplicar reglas particulares por microservicio.
             var serviceName = configuration["ServiceName"];
@@ -139,5 +143,57 @@ namespace IGIFT.Server.Shared
 
             return services;
         }
+
+        internal static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+        {
+            var serviceName = configuration["ServiceName"];
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                // Obtener la cadena de conexión basada en el servicio
+                var connectionStringKey = $"{serviceName}_ConnectionString";
+                var connectionString = configuration.GetConnectionString(connectionStringKey);
+
+                if (string.IsNullOrWhiteSpace(connectionString))
+                {
+                    throw new InvalidOperationException($"No connection string found for service: {serviceName}");
+                }
+
+                // Configurar el proveedor de base de datos según el servicio
+                switch (serviceName.ToLower())
+                {
+                    case "mysqlservice":
+                        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                        break;
+
+                    case "oracleservice":
+                        options.UseOracle(connectionString);
+                        break;
+
+                    case "mongoservice":
+                        throw new NotSupportedException("MongoDB is not directly supported by EF Core. Use an external MongoDB library.");
+
+                    case "postgresqlservice":
+                        options.UseNpgsql(connectionString);
+                        break;
+
+                    case "sqlserverservice":
+                        options.UseSqlServer(connectionString);
+                        break;
+
+                    default:
+                        throw new InvalidOperationException($"Unsupported database provider for service: {serviceName}");
+                }
+            });
+
+            // Solo agregar DatabaseSeeder si se usa SQL Server
+            if (serviceName.ToLower() == "sqlserverservice")
+            {
+                services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
+            }
+
+            return services;
+        }
+
     }
 }
