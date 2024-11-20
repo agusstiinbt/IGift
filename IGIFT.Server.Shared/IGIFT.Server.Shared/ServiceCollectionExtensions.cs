@@ -100,7 +100,7 @@ namespace IGIFT.Server.Shared
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        internal static IServiceCollection AddSerialization(this IServiceCollection services, IConfiguration configuration)
+        internal static IServiceCollection AddSerialization(this IServiceCollection services, IConfiguration configuration) 
         {
             // Obtener el nombre del servicio. Permite identificar y aplicar reglas particulares por microservicio.
             var serviceName = configuration["ServiceName"];
@@ -108,6 +108,8 @@ namespace IGIFT.Server.Shared
             // Configura System.Text.Json para manejar serialización y deserialización, incluyendo soporte para tipos personalizados como TimeSpan.
             services.AddScoped<IJsonSerializerOptions, SystemTextJsonOptions>().Configure<SystemTextJsonOptions>(options =>
             {
+
+                //TimeSpan es algo que no esta soportado por la libreria text.json por eso es que se crea timespanjsonconverter
                 if (!options.JsonSerializerOptions.Converters.Any(c => c.GetType() == typeof(TimespanJsonConverter)))
                     options.JsonSerializerOptions.Converters.Add(new TimespanJsonConverter());
 
