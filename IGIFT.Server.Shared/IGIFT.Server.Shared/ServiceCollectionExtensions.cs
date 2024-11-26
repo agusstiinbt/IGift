@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using IGift.Application.AppConfiguration;
 using IGift.Application.Interfaces;
+using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Interfaces.Serialization.Options;
 using IGift.Application.Interfaces.Serialization.Settings;
 using IGift.Application.Serialization;
@@ -10,6 +11,7 @@ using IGift.Application.Serialization.Serializers;
 using IGift.Application.Serialization.Settings;
 using IGift.Infrastructure;
 using IGift.Infrastructure.Data;
+using IGift.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -195,5 +197,12 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
+        
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        {
+            return services
+                           .AddTransient(typeof(IRepository<,>), typeof(Repository<,>))
+                           .AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+        }
     }
 }
