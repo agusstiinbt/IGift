@@ -26,6 +26,20 @@ namespace IGIFT.Server.Shared
             services.AddSerialization(_configuration);
             services.AddDatabase(_configuration);
 
+
+            #region A utilizar en un posible futuro
+            //En el caso de que trabajemos con preferencias de lenguaje y eso:
+            //services.AddScoped<ServerPreferenceManager>();
+
+            //En el caso de que tengamos una clase especifica para traducir elementos segun el lenguaje que seleccionemos. Creo que MudBlazor ya tiene por default una herramienta parecida pero si queremos agregar lenguajes deberiamos de utilizar esto:
+            //services.AddServerLocalization();
+
+            services.AddIdentity(_configuration);
+
+            #endregion
+
+
+
             services.AddRepositories();
 
         }

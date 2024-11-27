@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using IGift.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
+using IGift.Infrastructure.Models;
 
 namespace IGIFT.Server.Shared
 {
@@ -195,6 +197,26 @@ namespace IGIFT.Server.Shared
                 services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
             }
 
+            return services;
+        }
+
+        internal static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
+        {
+            var serviceName = configuration.GetValue<string>("ServiceName");
+            if (serviceName == "AuthService")
+            {
+                services.AddIdentity<IGiftUser, IGiftRole>(options =>
+                {
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.User.RequireUniqueEmail = true;
+                })
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddDefaultTokenProviders();
+            }
             return services;
         }
 
