@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories;
-using IGift.Domain.Entities;
 using IGift.Shared.Wrapper;
 using MediatR;
 
