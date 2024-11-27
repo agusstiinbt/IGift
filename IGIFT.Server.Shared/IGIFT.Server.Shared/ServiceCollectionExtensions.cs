@@ -197,11 +197,12 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
-        
+
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             return services
                            .AddTransient(typeof(IRepository<,>), typeof(Repository<,>))
+                           .AddTransient<IPeticionesRepository, IPeticionesRepository>()
                            .AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
         }
     }
