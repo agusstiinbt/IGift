@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace IGift.Infrastructure.Repositories
 {
-    class PeticionesRepository : IPeticionesRepository
+    public class PeticionesRepository : IPeticionesRepository
     {
         private readonly IRepository<Peticiones, string> _repository;
 

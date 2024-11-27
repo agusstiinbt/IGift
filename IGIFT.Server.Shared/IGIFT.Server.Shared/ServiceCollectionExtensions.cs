@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using IGift.Infrastructure.Repositories;
 
 namespace IGIFT.Server.Shared
 {
@@ -202,7 +203,7 @@ namespace IGIFT.Server.Shared
         {
             return services
                            .AddTransient(typeof(IRepository<,>), typeof(Repository<,>))
-                           .AddTransient<IPeticionesRepository, IPeticionesRepository>()
+                           .AddTransient<IPeticionesRepository, PeticionesRepository>()
                            .AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
         }
     }
