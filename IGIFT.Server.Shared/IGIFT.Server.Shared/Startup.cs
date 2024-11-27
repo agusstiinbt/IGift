@@ -17,6 +17,10 @@ namespace IGIFT.Server.Shared
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var serviceName = _configuration.GetValue<string>("ServiceName");
+
+
             //Siempre que avancemos con estas cosas decirle a chatGPT que estamos siempre trabajando con una arquitectura de microservicios donde habrá luego una api gateway 
             services.AddForwarding(_configuration);
             services.AddLocalization(options =>
@@ -34,9 +38,16 @@ namespace IGIFT.Server.Shared
             //En el caso de que tengamos una clase especifica para traducir elementos segun el lenguaje que seleccionemos. Creo que MudBlazor ya tiene por default una herramienta parecida pero si queremos agregar lenguajes deberiamos de utilizar esto:
             //services.AddServerLocalization();
 
-            services.AddIdentity(_configuration);
 
             #endregion
+
+
+            if (serviceName == "AuthService")
+            {
+                services.AddIdentity(_configuration);
+                services.AddJwtAuthentication(_configuration);
+            }
+
 
 
 

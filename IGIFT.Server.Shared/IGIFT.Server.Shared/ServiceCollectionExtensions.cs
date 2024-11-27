@@ -21,6 +21,10 @@ using Serilog;
 using IGift.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using IGift.Infrastructure.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using IGift.Shared;
+using System.Text;
 
 namespace IGIFT.Server.Shared
 {
@@ -202,25 +206,107 @@ namespace IGIFT.Server.Shared
 
         internal static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
         {
-            var serviceName = configuration.GetValue<string>("ServiceName");
-            if (serviceName == "AuthService")
+            services.AddIdentity<IGiftUser, IGiftRole>(options =>
             {
-                services.AddIdentity<IGiftUser, IGiftRole>(options =>
-                {
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.User.RequireUniqueEmail = true;
-                })
-               .AddEntityFrameworkStores<ApplicationDbContext>()
-               .AddDefaultTokenProviders();
-            }
+                options.Password.RequiredLength = 6;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.User.RequireUniqueEmail = true;
+            })
+           .AddEntityFrameworkStores<ApplicationDbContext>()
+           .AddDefaultTokenProviders();
+
             return services;
         }
+        internal static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+            .AddAuthentication(authentication =>
+            {
+                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
 
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSecurityKey"]!)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidIssuer = configuration["JwtIssuer"],
+                    ValidAudience = configuration["JwtAudience"],
+                    ClockSkew = TimeSpan.Zero//Para más información sobre esto leer el README
+                };
 
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query[AppConstants.StorageConstants.Local.Access_Token];
+
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(AppConstants.SignalR.HubUrl))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = c =>
+                    {
+                        if (c.Exception is SecurityTokenExpiredException)
+                        {
+                            c.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            c.Response.ContentType = "application/json";
+                            var result = JsonConvert.SerializeObject(Result.Fail("The token is expired"));
+                            return c.Response.WriteAsync(result);
+                        }
+                        else
+                        {
+#if DEBUG
+                            c.NoResult();
+                            c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            c.Response.ContentType = "text/plain";
+                            return c.Response.WriteAsync(c.Exception.ToString());
+#else
+                                        c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                                        c.Response.ContentType = "application/json";
+                                        var result = JsonConvert.SerializeObject(Result.Fail(localizer["An unhandled error has occurred."]));
+                                        return c.Response.WriteAsync(result);
+#endif
+                        }
+                    },
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+                        if (!context.Response.HasStarted)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            context.Response.ContentType = "application/json";
+                            var result = JsonConvert.SerializeObject(Result.Fail("You are not Authorized."));
+                            return context.Response.WriteAsync(result);
+                        }
+
+                        return Task.CompletedTask;
+                    },
+                    OnForbidden = context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                        context.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject(Result.Fail("You are not authorized to access this resource."));
+                        return context.Response.WriteAsync(result);
+                    }
+                };
+            });//TODO estudiar esto
+               //TODO debemos agregar por acá el AddAuthorization de blazorHero para los permisos/roles
+            return services;
+        }
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             return services
