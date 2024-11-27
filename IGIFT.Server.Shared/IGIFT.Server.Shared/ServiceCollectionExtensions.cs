@@ -18,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using IGift.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using IGift.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

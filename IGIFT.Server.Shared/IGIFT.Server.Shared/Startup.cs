@@ -32,6 +32,7 @@ namespace IGIFT.Server.Shared
 
 
             #region A utilizar en un posible futuro
+
             //En el caso de que trabajemos con preferencias de lenguaje y eso:
             //services.AddScoped<ServerPreferenceManager>();
 
@@ -48,7 +49,14 @@ namespace IGIFT.Server.Shared
                 services.AddJwtAuthentication(_configuration);
             }
 
+            if (serviceName == "ChatService")
+            {
+                services.AddSignalR();
+            }
 
+
+            //TODO estudiar el siguiente services:
+            //services.AddApplicationLayer();
 
 
             services.AddRepositories();
