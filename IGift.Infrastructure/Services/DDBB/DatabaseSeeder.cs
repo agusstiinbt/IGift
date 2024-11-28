@@ -1,10 +1,10 @@
-﻿using IGift.Application.Interfaces;
+﻿using IGift.Application.Interfaces.DDBB;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared;
 using Microsoft.AspNetCore.Identity;
 
-namespace IGift.Infrastructure
+namespace IGift.Infrastructure.Services.DDBB
 {
     public class DatabaseSeeder : IDatabaseSeeder
     {

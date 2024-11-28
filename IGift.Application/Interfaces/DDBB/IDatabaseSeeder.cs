@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Interfaces
+﻿namespace IGift.Application.Interfaces.DDBB
 {
     public interface IDatabaseSeeder
     {

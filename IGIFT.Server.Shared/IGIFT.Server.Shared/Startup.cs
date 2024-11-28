@@ -42,7 +42,6 @@ namespace IGIFT.Server.Shared
 
             #endregion
 
-
             if (serviceName == "AuthService")
             {
                 services.AddIdentity(_configuration);
@@ -54,13 +53,12 @@ namespace IGIFT.Server.Shared
                 services.AddSignalR();
             }
 
+            services.AddApplicationLayer();
 
-            //TODO estudiar el siguiente services:
-            //services.AddApplicationLayer();
+            services.AddApplicationServices();
 
 
             services.AddRepositories();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)

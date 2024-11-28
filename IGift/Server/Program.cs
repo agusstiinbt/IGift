@@ -7,8 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using IGift.Application.Interfaces.Identity;
 using IGift.Infrastructure.Services.Identity;
-using IGift.Application.Interfaces;
-using IGift.Infrastructure;
 using IGift.Server.Middleware;
 using IGift.Application.Interfaces.IMailService;
 using IGift.Infrastructure.Services.Mail;
@@ -25,6 +23,8 @@ using System.Net;
 using Newtonsoft.Json;
 using IGift.Shared.Wrapper;
 using IGift.Server.Hubs;
+using IGift.Infrastructure.Services.DDBB;
+using IGift.Application.Interfaces.DDBB;
 
 var builder = WebApplication.CreateBuilder(args);
 

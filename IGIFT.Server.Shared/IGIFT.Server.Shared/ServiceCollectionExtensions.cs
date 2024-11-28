@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json.Serialization;
 using IGift.Application.AppConfiguration;
-using IGift.Application.Interfaces;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Interfaces.Serialization.Options;
 using IGift.Application.Interfaces.Serialization.Settings;
@@ -9,7 +8,6 @@ using IGift.Application.Serialization;
 using IGift.Application.Serialization.JsonConverters;
 using IGift.Application.Serialization.Serializers;
 using IGift.Application.Serialization.Settings;
-using IGift.Infrastructure;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +22,21 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using IGift.Shared;
 using System.Text;
+using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using IGift.Shared.Wrapper;
+using MediatR;
+using FluentValidation;
+using IGift.Infrastructure.Services.MediatR;
+using IGift.Application.Interfaces.Identity;
+using IGift.Infrastructure.Services.Identity;
+using IGift.Infrastructure.Services.Files;
+using IGift.Application.Interfaces.Files;
+using IGift.Application.Interfaces.IMailService;
+using IGift.Infrastructure.Services.Mail;
+using IGift.Infrastructure.Services.DDBB;
+using IGift.Application.Interfaces.DDBB;
 
 namespace IGIFT.Server.Shared
 {
@@ -306,12 +319,61 @@ namespace IGIFT.Server.Shared
                //TODO debemos agregar por acá el AddAuthorization de blazorHero para los permisos/roles
             return services;
         }
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        internal static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             return services
                            .AddTransient(typeof(IRepository<,>), typeof(Repository<,>))
                            .AddTransient<IPeticionesRepository, PeticionesRepository>()
                            .AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+        }
+
+        /// <summary>
+        /// Este método es ideal para registrar los componentes básicos y servicios transversales de la capa de la aplicación que se refieren más a la infraestructura o comportamiento común. NO debería contener servicios de negocio específicos
+        /// </summary>
+        /// <param name="services"></param>
+        internal static void AddApplicationLayer(this IServiceCollection services)
+        {
+            //Aunque todos los microservicios utilicen AutoMapper, lo importante es que cada uno registre únicamente los perfiles relevantes para su ámbito. Aquí es donde usar Assembly.GetExecutingAssembly() sigue siendo útil porque asegura que solo se carguen los perfiles que pertenecen al ensamblado actual, sin riesgo de conflictos ni sobrecarga.
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
+            //Esta sintaxis le dice a MediatR que registre automáticamente todos los handlers (commands, queries, etc.) y pipeline behaviors que estén definidos en el ensamblado especificado.
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+
+            //IPipeline... es una interfaz de MediatR que permite interceptar las solicitudes (queries o commands) antes o después de que lleguen a sus respectivos handlers. Esto es útil para implementar comportamientos transversales, como validaciones, logging, manejo de transacciones, etc.
+            //Si un microservicio no usa validaciones, por ejemplo, puedes omitir
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        }
+
+        /// <summary>
+        /// Este método es el lugar adecuado para registrar servicios específicos de la lógica de negocio, que representan el comportamiento central de tu aplicación, como el manejo de productos, cuentas, usuarios, etc. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        internal static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        {
+            #region Files
+            services.AddTransient<IProfilePicture, ProfilePictureService>();
+            services.AddTransient<IUploadService, UploadService>();
+            #endregion
+
+            #region Identity
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserService, UserService>();
+            #endregion
+
+            #region Mail
+            services.AddTransient<IMailService, MailService>();
+            #endregion
+
+            #region DDBB
+            services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
+            #endregion
+
+            return services;
         }
     }
 }
