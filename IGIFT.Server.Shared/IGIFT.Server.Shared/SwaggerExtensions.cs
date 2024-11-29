@@ -65,5 +65,4 @@ namespace IGIFT.Server.Shared
             return services;
         }
     }
-
 }
