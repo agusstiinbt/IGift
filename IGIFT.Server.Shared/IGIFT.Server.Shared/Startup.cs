@@ -63,7 +63,7 @@ namespace IGIFT.Server.Shared
             #region TODOs
 
             //TODO AddSharedInfraestructure
-
+            //TODO estudiar par que es el metodo addhangifire y en nuestro caso con la estructura de microservicios. AddHangfireServer tambien
             //TODO generar ejemplos para utilizar  services.AddExtendedAttributesUnitOfWork
             //TODO:
             //        Prueba el Swagger de cada microservicio
