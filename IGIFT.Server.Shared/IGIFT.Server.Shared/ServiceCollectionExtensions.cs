@@ -377,6 +377,15 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
+        internal static IServerSideBlazorBuilder AddSharedInfraestructure(this IServiceCollection, IConfiguration configuration)
+        {
+            //services.AddTransient<IDateTimeService, SystemDateTimeService>();
+            //services.Configure<MailConfiguration>(configuration.GetSection("MailConfiguration"));
+            //services.AddTransient<IMailService, SMTPMailService>();
+            //return services;
+            throw new NotImplementedException();
+        }
+
         internal static void RegisterSwagger(this IServiceCollection services)
         {
             throw new NotImplementedException();

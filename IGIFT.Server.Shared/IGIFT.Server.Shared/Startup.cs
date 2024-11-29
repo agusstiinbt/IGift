@@ -59,8 +59,11 @@ namespace IGIFT.Server.Shared
 
             services.AddRepositories();
 
+
+
             #region TODOs
 
+            //TODO AddSharedInfraestructure
 
             //TODO generar ejemplos para utilizar  services.AddExtendedAttributesUnitOfWork
             //TODO:
