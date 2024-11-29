@@ -377,7 +377,7 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
-        internal static IServerSideBlazorBuilder AddSharedInfraestructure(this IServiceCollection, IConfiguration configuration)
+        internal static IServerSideBlazorBuilder AddSharedInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
             //services.AddTransient<IDateTimeService, SystemDateTimeService>();
             //services.Configure<MailConfiguration>(configuration.GetSection("MailConfiguration"));
@@ -386,9 +386,18 @@ namespace IGIFT.Server.Shared
             throw new NotImplementedException();
         }
 
-        internal static void RegisterSwagger(this IServiceCollection services)
+        internal static IServiceCollection RegisterSwagger(this IServiceCollection services)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// AddInfrastructureMappings es simplemente una forma de centralizar la configuración de AutoMapper y no tiene necesidad de devolver IServiceCollection como los demás métodos de extensión en el IServiceCollection.
+        /// </summary>
+        /// <param name="services"></param>
+        internal static void AddInfrastructureMappings(this IServiceCollection services)
+        {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
     }
 }

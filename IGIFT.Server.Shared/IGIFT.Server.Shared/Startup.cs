@@ -59,8 +59,7 @@ namespace IGIFT.Server.Shared
 
             services.AddRepositories();
 
-
-
+            services.AddInfrastructureMappings();
             #region TODOs
 
             //TODO AddSharedInfraestructure
