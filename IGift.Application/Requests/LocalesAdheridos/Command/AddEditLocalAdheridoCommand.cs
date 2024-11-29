@@ -61,7 +61,7 @@ namespace IGift.Application.Requests.LocalesAdheridos.Command
                     local.ImageDataURL = await _uploadService.UploadAsync(uploadRequest, false);
                 }
                 await _unitOfWork.Repository<LocalAdherido>().AddAsync(local);
-                return await Result.SuccessAsync();
+                return await _unitOfWork.Commit("Local agregado con éxito", cancellationToken);
             }
 
             //si no, entonces modificamos el local con el id correspondiente

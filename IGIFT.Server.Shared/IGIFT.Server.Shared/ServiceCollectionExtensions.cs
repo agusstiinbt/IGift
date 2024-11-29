@@ -37,6 +37,7 @@ using IGift.Application.Interfaces.IMailService;
 using IGift.Infrastructure.Services.Mail;
 using IGift.Infrastructure.Services.DDBB;
 using IGift.Application.Interfaces.DDBB;
+using Microsoft.OpenApi.Models;
 
 namespace IGIFT.Server.Shared
 {
@@ -374,6 +375,11 @@ namespace IGIFT.Server.Shared
             #endregion
 
             return services;
+        }
+
+        internal static void RegisterSwagger(this IServiceCollection services)
+        {
+            throw new NotImplementedException();
         }
     }
 }

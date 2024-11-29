@@ -19,8 +19,6 @@ namespace IGIFT.Server.Shared
             services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
             services.AddTransient<IUploadService, UploadService>();
             services.AddSwaggerGen();
-
         }
-
     }
 }

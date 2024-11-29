@@ -1,7 +1,8 @@
 ﻿using IGift.Application.Interfaces.Repositories;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using IGift.Shared.Wrapper;
+using LazyCache;
 using System.Collections;
 
 namespace IGift.Infrastructure.Repositories
@@ -11,20 +12,36 @@ namespace IGift.Infrastructure.Repositories
         private readonly ApplicationDbContext _context;
         private Hashtable _repositories;
         private bool disposed;
+        private readonly IAppCache _cache;
+
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public Task<int> Commit(CancellationToken cancellationToken)
+        public async Task<IResult> Commit(string mensajeExito, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            int affectedRows = await _context.SaveChangesAsync(cancellationToken);
+
+            if (affectedRows > 0)
+            {
+                return await Result.SuccessAsync(mensajeExito);
+            }
+            else
+            {
+                return await Result.FailAsync("No changes were made to the database.");
+            }
         }
 
-        public Task<int> CommitAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys)
+        public async Task<int> CommitAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys)
         {
-            throw new NotImplementedException();
+            var result = await _context.SaveChangesAsync(cancellationToken);
+            foreach (var cacheKey in cacheKeys)
+            {
+                _cache.Remove(cacheKey);
+            }
+            return result;
         }
 
         //TODO averiguar quién está llamando al dispose y cómo lo hace
@@ -69,7 +86,8 @@ namespace IGift.Infrastructure.Repositories
 
         public Task Rollback()
         {
-            throw new NotImplementedException();
+            _context.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+            return Task.CompletedTask;
         }
     }
 }

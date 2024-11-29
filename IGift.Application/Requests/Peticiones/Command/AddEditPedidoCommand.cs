@@ -44,7 +44,7 @@ namespace IGift.Application.Requests.Peticiones.Command
             if (string.IsNullOrEmpty(request.Id))
             {
                 await _unitOfWork.Repository<Domain.Entities.Peticiones>().AddAsync(pedido);
-                return await Result.SuccessAsync("Pedido agregado con éxito");
+                return await _unitOfWork.Commit("Pedido agregado con éxito", cancellationToken);
             }
             else
             {

@@ -1,7 +1,4 @@
-﻿using System.Runtime.ConstrainedExecution;
-using IGift.Domain.Contracts;
-using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
+﻿using IGift.Domain.Contracts;
 
 namespace IGift.Application.Interfaces.Repositories
 {

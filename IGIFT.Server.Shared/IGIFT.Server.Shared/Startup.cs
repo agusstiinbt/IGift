@@ -57,8 +57,28 @@ namespace IGIFT.Server.Shared
 
             services.AddApplicationServices();
 
-
             services.AddRepositories();
+
+            #region TODOs
+
+
+            //TODO generar ejemplos para utilizar  services.AddExtendedAttributesUnitOfWork
+            //TODO:
+            //        Prueba el Swagger de cada microservicio
+            //        Una vez configurado, puedes acceder a las direcciones Swagger de cada microservicio:
+            //        http://localhost:5001/swagger/index.html (SQL Server)
+            //        http://localhost:5002/swagger/index.html (Oracle)
+            //        http://localhost:5003/swagger/index.html (MongoDB)
+            //        http://localhost:5004/swagger/index.html (PostgreSQL)
+            //        http://localhost:5005/swagger/index.html (MySQL)
+
+            //TODO este metodo de registerswagger queda sin utilizarse por ahora. Mas adelante al implementar el api gateway es posible que lo podamos utilizar para integrarlo con los demas metodo de register swagger de los otros microservicios. Preguntar a ChatGPT
+            //services.RegisterSwagger();
+
+            //TODO nos quedaria agregar el AddServerStorage pero no sabemos para que sirve
+
+            #endregion
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)

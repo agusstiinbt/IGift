@@ -1,12 +1,13 @@
 ﻿using IGift.Domain.Contracts;
+using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Repositories
 {
-    public interface IUnitOfWork<TId>:IDisposable
+    public interface IUnitOfWork<TId> : IDisposable
     {
         IRepository<T, TId> Repository<T>() where T : AuditableEntity<TId>;
 
-        Task<int> Commit(CancellationToken cancellationToken);
+        Task<IResult> Commit(string mensajeExito, CancellationToken cancellationToken);
 
         Task<int> CommitAndRemoveCache(CancellationToken cancellationToken, params string[] cacheKeys);
 

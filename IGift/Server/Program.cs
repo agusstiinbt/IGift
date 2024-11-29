@@ -25,6 +25,7 @@ using IGift.Shared.Wrapper;
 using IGift.Server.Hubs;
 using IGift.Infrastructure.Services.DDBB;
 using IGift.Application.Interfaces.DDBB;
+using IGIFT.Server.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +42,9 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog(); // Usa Serilog en lugar del logger predeterminado
 
 // Add services to the container.
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerForMicroservice("IGift.SqlServerService");
+
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -216,7 +219,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "IGift.SqlServerService API v1");
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
