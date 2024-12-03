@@ -23,9 +23,9 @@ using System.Net;
 using Newtonsoft.Json;
 using IGift.Shared.Wrapper;
 using IGift.Server.Hubs;
-using IGift.Infrastructure.Services.DDBB;
-using IGift.Application.Interfaces.DDBB;
 using IGIFT.Server.Shared;
+using IGift.Application.Interfaces.DDBB.Sql;
+using IGift.Infrastructure.Services.DDBB.Sql;
 
 var builder = WebApplication.CreateBuilder(args);
 
