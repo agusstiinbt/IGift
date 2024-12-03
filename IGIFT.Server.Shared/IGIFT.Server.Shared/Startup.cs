@@ -18,7 +18,7 @@ namespace IGIFT.Server.Shared
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var serviceName = _configuration.GetValue<string>("ServiceName");
+            var serviceName = _configuration.GetValue<string>("ServiceName")!;
 
 
             //Siempre que avancemos con estas cosas decirle a chatGPT que estamos siempre trabajando con una arquitectura de microservicios donde habrá luego una api gateway 
@@ -62,6 +62,8 @@ namespace IGIFT.Server.Shared
             services.AddInfrastructureMappings();
 
             services.AddRazorPages();
+
+            services.AddSwaggerForMicroservice(serviceName);
 
             #region TODOs
 

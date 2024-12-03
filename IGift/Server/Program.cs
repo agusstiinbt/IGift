@@ -42,7 +42,6 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog(); // Usa Serilog en lugar del logger predeterminado
 
 // Add services to the container.
-builder.Services.AddSwaggerForMicroservice("IGift.SqlServerService");
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

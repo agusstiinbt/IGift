@@ -38,6 +38,7 @@ using IGift.Infrastructure.Serialization;
 using IGift.Infrastructure.Serialization.Settings;
 using IGift.Infrastructure.Serialization.Serializers;
 using IGift.Infrastructure.Serialization.JsonConverters;
+using IGIFT.Server.Shared.Redis;
 
 namespace IGIFT.Server.Shared
 {
@@ -394,11 +395,6 @@ namespace IGIFT.Server.Shared
             throw new NotImplementedException();
         }
 
-        internal static IServiceCollection RegisterSwagger(this IServiceCollection services)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// AddInfrastructureMappings es simplemente una forma de centralizar la configuración de AutoMapper y no tiene necesidad de devolver IServiceCollection como los demás métodos de extensión en el IServiceCollection.
         /// </summary>
@@ -411,17 +407,24 @@ namespace IGIFT.Server.Shared
 
         public static IServiceCollection AddSharedRedisConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");
+            //var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");
 
-            if (string.IsNullOrEmpty(redisConnectionString))
-            {
-                throw new Exception("Redis connection string not configured.");
-            }
+            //if (string.IsNullOrEmpty(redisConnectionString))
+            //{
+            //    throw new Exception("Redis connection string not configured.");
+            //}
 
+            //services.AddSingleton<IConnectionMultiplexer>(sp =>
+            //    ConnectionMultiplexer.Connect(redisConnectionString));
+
+            //return services;
+
+
+            var redisConfig = configuration.GetSection("Redis").Get<RedisOptions>();
             services.AddSingleton<IConnectionMultiplexer>(sp =>
-                ConnectionMultiplexer.Connect(redisConnectionString));
-
+                    ConnectionMultiplexer.Connect(redisConfig.ConnectionString));
             return services;
         }
+
     }
 }

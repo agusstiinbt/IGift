@@ -2,8 +2,7 @@
 {
     public interface IRedisCacheService
     {
-        Task<T?> GetAsync<T>(string key);
-        Task SetAsync<T>(string key, T value, TimeSpan? expiry = null);
+        Task<T?> GetOrAddAsync<T>(string key, Func<Task<T>> fetchFunc, TimeSpan? expiry = null);
         Task RemoveAsync(string key);
     }
 }
