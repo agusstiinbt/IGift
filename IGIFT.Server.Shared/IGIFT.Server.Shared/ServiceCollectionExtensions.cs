@@ -4,10 +4,6 @@ using IGift.Application.AppConfiguration;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Interfaces.Serialization.Options;
 using IGift.Application.Interfaces.Serialization.Settings;
-using IGift.Application.Serialization;
-using IGift.Application.Serialization.JsonConverters;
-using IGift.Application.Serialization.Serializers;
-using IGift.Application.Serialization.Settings;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -35,9 +31,13 @@ using IGift.Infrastructure.Services.Files;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.IMailService;
 using IGift.Infrastructure.Services.Mail;
-using IGift.Infrastructure.Services.DDBB;
-using IGift.Application.Interfaces.DDBB;
-using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
+using IGift.Application.Interfaces.DDBB.Sql;
+using IGift.Infrastructure.Services.DDBB.Sql;
+using IGift.Infrastructure.Serialization;
+using IGift.Infrastructure.Serialization.Settings;
+using IGift.Infrastructure.Serialization.Serializers;
+using IGift.Infrastructure.Serialization.JsonConverters;
 
 namespace IGIFT.Server.Shared
 {
@@ -160,8 +160,16 @@ namespace IGIFT.Server.Shared
             // Configura Newtonsoft.Json para proporcionar flexibilidad en la configuración de serialización si es necesario.
             services.AddScoped<IJsonSerializerSettings, NewtonsoftJsonSettings>();
 
-            // Registro del serializador principal
-            services.AddScoped<IJsonSerializer, SystemTextJsonSerializer>(); //Puede cambiarse en el caso de utilizar un microservice u otro.
+            // Registro del serializador principal. Dependiendo del microservice segun su nombre se podra usar uno o el otro
+
+            if (serviceName == "ServiceName")
+            {
+                services.AddScoped<IJsonSerializer, SystemTextJsonSerializer>(); //Puede cambiarse en el caso de utilizar un microservice u otro.
+            }
+            else
+            {
+                services.AddScoped<IJsonSerializer, NewtonSoftJsonSerializer>();
+            }
 
             return services;
         }
@@ -398,6 +406,22 @@ namespace IGIFT.Server.Shared
         internal static void AddInfrastructureMappings(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        }
+
+
+        public static IServiceCollection AddSharedRedisConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");
+
+            if (string.IsNullOrEmpty(redisConnectionString))
+            {
+                throw new Exception("Redis connection string not configured.");
+            }
+
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+                ConnectionMultiplexer.Connect(redisConnectionString));
+
+            return services;
         }
     }
 }

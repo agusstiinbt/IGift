@@ -60,6 +60,9 @@ namespace IGIFT.Server.Shared
             services.AddRepositories();
 
             services.AddInfrastructureMappings();
+
+            services.AddRazorPages();
+
             #region TODOs
 
             //TODO AddSharedInfraestructure
