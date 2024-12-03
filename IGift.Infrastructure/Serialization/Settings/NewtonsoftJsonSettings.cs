@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Interfaces.Serialization.Settings;
 using Newtonsoft.Json;
 
-namespace IGift.Application.Serialization.Settings
+namespace IGift.Infrastructure.Serialization.Settings
 {
     public class NewtonsoftJsonSettings : IJsonSerializerSettings
     {

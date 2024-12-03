@@ -2,7 +2,7 @@
 using IGift.Application.Interfaces.Serialization.Options;
 using Microsoft.Extensions.Options;
 
-namespace IGift.Application.Serialization.Serializers
+namespace IGift.Infrastructure.Serialization.Serializers
 {
     /// <summary>
     /// Implementacion que se puede especificar si usar System.Text.Json

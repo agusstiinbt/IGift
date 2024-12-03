@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace IGift.Application.Serialization.JsonConverters
+namespace IGift.Infrastructure.Serialization.JsonConverters
 {
     /// <summary>
     /// La clase TimeSpanJsonConverter es un convertidor personalizado para manejar la serialización y deserialización de objetos de tipo TimeSpan en formato JSON, utilizando un formato específico: Days.Hours:Minutes:Seconds. Sin este convertidor, la representación predeterminada de un TimeSpan en JSON puede ser poco intuitiva o variar dependiendo de la biblioteca de serialización. Para APIs que exponen duraciones como parte de sus respuestaas o consumen duraciones en sus solicitudes.

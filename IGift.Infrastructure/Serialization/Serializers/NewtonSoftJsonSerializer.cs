@@ -3,7 +3,7 @@ using IGift.Application.Serialization.Settings;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace IGift.Application.Serialization.Serializers
+namespace IGift.Infrastructure.Serialization.Serializers
 {  /// <summary>
    /// Implementacion que se puede especificar si usar Newtonsoft.Json
    /// </summary>

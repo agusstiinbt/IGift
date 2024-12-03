@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using IGift.Application.Interfaces.Serialization.Options;
 
-namespace IGift.Application.Serialization
+namespace IGift.Infrastructure.Serialization
 {
     /// <summary>
     /// Encapsula las configuraciones que System.Text.Json usará para serializar y deserializar
