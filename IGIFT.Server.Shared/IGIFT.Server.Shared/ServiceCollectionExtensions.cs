@@ -425,6 +425,5 @@ namespace IGIFT.Server.Shared
                     ConnectionMultiplexer.Connect(redisConfig.ConnectionString));
             return services;
         }
-
     }
 }
