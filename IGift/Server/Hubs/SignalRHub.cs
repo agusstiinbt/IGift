@@ -1,6 +1,6 @@
 ﻿using IGift.Application.Models.Chat;
 using IGift.Application.Responses.Pedidos;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.SignalR;
 
 namespace IGift.Server.Hubs

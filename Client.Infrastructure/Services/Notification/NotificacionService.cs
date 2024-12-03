@@ -2,7 +2,7 @@
 using Client.Infrastructure.Extensions;
 using IGift.Application.Requests.Notifications.Query;
 using IGift.Application.Responses.Notification;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using System.Net.Http.Json;
 
@@ -12,7 +12,6 @@ namespace Client.Infrastructure.Services.Notification
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
-
 
         public NotificationService(HttpClient httpClient, ILocalStorageService localStorage)
         {
@@ -33,6 +32,5 @@ namespace Client.Infrastructure.Services.Notification
             var result = await response.ToResult<IEnumerable<NotificationResponse>>();
             return result;
         }
-
     }
 }

@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Identity;
 using IGift.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using IGift.Shared;
 using System.Text;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
@@ -39,6 +38,7 @@ using IGift.Infrastructure.Serialization.Settings;
 using IGift.Infrastructure.Serialization.Serializers;
 using IGift.Infrastructure.Serialization.JsonConverters;
 using IGIFT.Server.Shared.Redis;
+using IGift.Shared.Constants;
 
 namespace IGIFT.Server.Shared
 {

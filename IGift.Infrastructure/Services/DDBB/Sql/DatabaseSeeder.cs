@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Interfaces.DDBB.Sql;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Identity;
 
 namespace IGift.Infrastructure.Services.DDBB.Sql
@@ -52,7 +52,7 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
                   {
                       FirstName = "Agustin",
                       LastName = "Esposito",
-                      Email = AppConstants.AdminEmail,
+                      Email = AppConstants.StorageConstants.Server.AdminEmail,
                       UserName = "agusstiinbt",
                       EmailConfirmed = true,
                       PhoneNumberConfirmed = true,
@@ -62,7 +62,7 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
                   var superUserInDb = await _userManager.FindByEmailAsync(superUser.Email);
                   if (superUserInDb == null)
                   {
-                      await _userManager.CreateAsync(superUser, AppConstants.DefaultPassword);
+                      await _userManager.CreateAsync(superUser, AppConstants.StorageConstants.Server.DefaultPassword);
                       var UserCreatedWithId = await _userManager.FindByEmailAsync(superUser.Email);
 
                       UserCreatedWithId.ProfilePictureDataUrl = "Files\\Images\\ProfilePictures" + UserCreatedWithId.Id;
@@ -109,7 +109,7 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
                 {
                     FirstName = "Jose",
                     LastName = "Esposito",
-                    Email = AppConstants.BasicEmail,
+                    Email = AppConstants.StorageConstants.Server.BasicEmail,
                     UserName = "joseespositoing",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
@@ -120,7 +120,7 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
                 var basicUserInDb = await _userManager.FindByEmailAsync(basicUser.Email);
                 if (basicUserInDb == null)
                 {
-                    await _userManager.CreateAsync(basicUser, AppConstants.DefaultPassword);
+                    await _userManager.CreateAsync(basicUser, AppConstants.StorageConstants.Server.DefaultPassword);
                     var UserCreatedWithId = await _userManager.FindByEmailAsync(basicUser.Email);
                     await _userManager.AddToRoleAsync(UserCreatedWithId, AppConstants.Role.BasicRole);
 

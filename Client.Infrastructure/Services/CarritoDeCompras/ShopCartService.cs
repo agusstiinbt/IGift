@@ -1,6 +1,6 @@
 ﻿using IGift.Application.Responses.Pedidos;
 using IGift.Shared.Wrapper;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Blazored.LocalStorage;
 using Microsoft.JSInterop;
 using System.Text.Json;

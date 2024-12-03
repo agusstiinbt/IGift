@@ -1,17 +1,16 @@
-﻿using Blazored.LocalStorage;
-using Client.Infrastructure.Authentication;
-using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Json;
-using IGift.Shared.Wrapper;
-using Client.Infrastructure.Extensions;
-using IGift.Shared;
-using Microsoft.JSInterop;
-using static IGift.Shared.AppConstants.Controllers;
-using MudBlazor;
+﻿using System.Net.Http.Json;
+using Blazored.LocalStorage;
 using IGift.Application.Requests.Identity.Users;
-using IGift.Application.Requests.Identity.Token;
+using IGift.Shared.Wrapper;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
+using MudBlazor;
+using IGift.Shared.Constants;
+using Client.Infrastructure.Extensions;
 using IGift.Application.Responses.Identity.Users;
-
+using Client.Infrastructure.Authentication;
+using static IGift.Shared.Constants.AppConstants.Controllers;
+using IGift.Application.Requests.Identity.Token;
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
     public class AuthService : IAuthService
@@ -39,7 +38,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(TokenController.LogIn, loginModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.TokenController.LogIn, loginModel);
             var result = await response.ToResult<UserLoginResponse>();
 
             if (result.Succeeded)

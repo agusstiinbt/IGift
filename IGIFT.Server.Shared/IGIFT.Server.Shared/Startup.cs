@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IGift.Shared.Constants;
+using IGift.Shared.Constants;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -85,7 +87,6 @@ namespace IGIFT.Server.Shared
             //TODO nos quedaria agregar el AddServerStorage pero no sabemos para que sirve
 
             #endregion
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)

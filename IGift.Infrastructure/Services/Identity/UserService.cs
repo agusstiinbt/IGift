@@ -9,7 +9,7 @@ using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Application.Responses.Users;
 using IGift.Infrastructure.Models;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -193,7 +193,7 @@ namespace IGift.Infrastructure.Services.Identity
         public async Task<IResult> UpdateRolesAsync(UpdateUserRolesRequest request)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
-            if (user.Email == AppConstants.AdminEmail)
+            if (user.Email == AppConstants.StorageConstants.Server.AdminEmail)
             {
                 return await Result.FailAsync("No se permite cambiar el rol a este usuario");
             }

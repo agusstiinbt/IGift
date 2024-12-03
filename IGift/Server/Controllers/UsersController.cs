@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IGift.Application.Interfaces.Identity;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Requests.Identity.Password;
 

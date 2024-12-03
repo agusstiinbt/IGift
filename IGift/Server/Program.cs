@@ -11,7 +11,7 @@ using IGift.Server.Middleware;
 using IGift.Application.Interfaces.IMailService;
 using IGift.Infrastructure.Services.Mail;
 using Hangfire;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using HangfireBasicAuthenticationFilter;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Infrastructure.Repositories;
@@ -235,8 +235,8 @@ app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
     {
         new HangfireCustomBasicAuthenticationFilter
         {
-            User =AppConstants.AdminEmail,
-            Pass = AppConstants.DefaultPassword
+            User =AppConstants.StorageConstants.Server.AdminEmail,
+            Pass = AppConstants.StorageConstants.Server.DefaultPassword
         }
     }
 });

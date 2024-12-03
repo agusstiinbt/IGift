@@ -1,5 +1,5 @@
 ﻿using Blazored.LocalStorage;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 

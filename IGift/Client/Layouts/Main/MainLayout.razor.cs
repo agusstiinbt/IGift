@@ -1,5 +1,5 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

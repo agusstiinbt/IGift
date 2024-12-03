@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Net.Http.Headers;
 using Toolbelt.Blazor;
-using IGift.Shared;
+using IGift.Shared.Constants;
 
 namespace Client.Infrastructure.Services.Interceptor
 {

@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Constants\Controllers\**" />
+	  <EmbeddedResource Remove="Constants\Controllers\**" />
+	  <None Remove="Constants\Controllers\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 		<PackageReference Include="FluentValidation" Version="11.11.0" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />

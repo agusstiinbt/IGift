@@ -1,5 +1,5 @@
 ﻿using IGift.Application.Interfaces.Serialization.Options;
-using IGift.Application.Serialization.Settings;
+using IGift.Infrastructure.Serialization.Settings;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 

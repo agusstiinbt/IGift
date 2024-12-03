@@ -1,7 +1,7 @@
 ﻿using Client.Infrastructure.Extensions;
 using IGift.Application.Requests.Peticiones.Query;
 using IGift.Application.Responses.Pedidos;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using System.Net.Http.Json;
 

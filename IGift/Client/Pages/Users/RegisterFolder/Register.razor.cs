@@ -1,7 +1,7 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
 using Client.Infrastructure.Services.Interceptor;
 using IGift.Application.Requests.Identity.Users;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Pages.Users.RegisterFolder

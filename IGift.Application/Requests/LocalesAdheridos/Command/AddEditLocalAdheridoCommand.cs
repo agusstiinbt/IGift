@@ -3,7 +3,7 @@ using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Requests.Files;
 using IGift.Domain.Entities;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +17,7 @@ namespace IGift.Application.Requests.LocalesAdheridos.Command
         public int Id { get; set; }
         [Required]
         public string Nombre { get; set; } = string.Empty;
-        public string CreatedBy { get; set; } = AppConstants.AdminEmail;
+        public string CreatedBy { get; set; } = AppConstants.StorageConstants.Server.AdminEmail;
         public string Descripcion { get; set; } = string.Empty;
         public string ImageDataURL { get; set; } = string.Empty;
         public UploadRequest UploadRequest { get; set; }

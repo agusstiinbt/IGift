@@ -3,7 +3,7 @@ using IGift.Application.Requests.Peticiones.Query;
 using IGift.Application.Responses.Pedidos;
 using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;

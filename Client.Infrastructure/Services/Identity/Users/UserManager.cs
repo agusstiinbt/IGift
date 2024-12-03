@@ -1,7 +1,7 @@
 ﻿using Client.Infrastructure.Extensions;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
@@ -32,6 +32,5 @@ namespace Client.Infrastructure.Services.Identity.Users
             var response = await _http.GetAsync(AppConstants.Controllers.Users.GetAll);
             return await response.ToResult<List<UserResponse>>();
         }
-
     }
 }

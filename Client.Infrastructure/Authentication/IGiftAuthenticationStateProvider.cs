@@ -1,5 +1,5 @@
 ﻿using Blazored.LocalStorage;
-using IGift.Shared;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
