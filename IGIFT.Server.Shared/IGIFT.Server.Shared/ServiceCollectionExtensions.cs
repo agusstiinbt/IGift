@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using IGift.Application.AppConfiguration;
+using IGift.Application.Interfaces.Dates;
 using IGift.Application.Interfaces.DDBB.Sql;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
@@ -18,6 +19,7 @@ using IGift.Infrastructure.Serialization;
 using IGift.Infrastructure.Serialization.JsonConverters;
 using IGift.Infrastructure.Serialization.Serializers;
 using IGift.Infrastructure.Serialization.Settings;
+using IGift.Infrastructure.Services.Dates;
 using IGift.Infrastructure.Services.DDBB.Sql;
 using IGift.Infrastructure.Services.Files;
 using IGift.Infrastructure.Services.Identity;
@@ -386,13 +388,13 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
-        internal static IServerSideBlazorBuilder AddSharedInfraestructure(this IServiceCollection services, IConfiguration configuration)
+        internal static IServiceCollection AddSharedInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddTransient<IDateTimeService, SystemDateTimeService>();
+            services.AddTransient<IDateTimeService, SystemDateTimeService>();
+            //TODO se usa aqui el Options Pattern
             //services.Configure<MailConfiguration>(configuration.GetSection("MailConfiguration"));
             //services.AddTransient<IMailService, SMTPMailService>();
-            //return services;
-            throw new NotImplementedException();
+            return services;
         }
 
         /// <summary>
