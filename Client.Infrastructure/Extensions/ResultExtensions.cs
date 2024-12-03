@@ -1,6 +1,6 @@
-﻿using IGift.Shared.Wrapper;
+﻿using System.Net.Http.Json;
 using System.Text.Json;
-using System.Net.Http.Json;
+using IGift.Shared.Wrapper;
 
 namespace Client.Infrastructure.Extensions
 {

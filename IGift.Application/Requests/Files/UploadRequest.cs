@@ -1,5 +1,5 @@
-﻿using IGift.Application.Enums;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using IGift.Application.Enums;
 
 namespace IGift.Application.Requests.Files
 {

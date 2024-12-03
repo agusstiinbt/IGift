@@ -1,12 +1,12 @@
-﻿using IGift.Application.Models.Chat;
+﻿using System.Security.Claims;
+using IGift.Application.Models.Chat;
+using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared.Constants;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
-using IGift.Client.Extensions;
-using System.Security.Claims;
 
 namespace IGift.Client.Pages.Communication.Chat
 {

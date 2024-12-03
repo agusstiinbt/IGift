@@ -1,10 +1,8 @@
-﻿using Blazored.LocalStorage;
+﻿using System.Security.Claims;
 using Client.Infrastructure.Authentication;
 using IGift.Application.Requests.Files;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using System.Security.Claims;
 using IGift.Application.Requests.Files.ProfilePicture;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace IGift.Client.Pages.Users
 {

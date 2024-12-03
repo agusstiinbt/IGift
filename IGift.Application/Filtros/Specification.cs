@@ -1,6 +1,6 @@
-﻿using IGift.Application.Extensions;
+﻿using System.Linq.Expressions;
+using IGift.Application.Extensions;
 using IGift.Domain.Contracts;
-using System.Linq.Expressions;
 
 namespace IGift.Application.Filtros
 {

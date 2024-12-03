@@ -1,5 +1,4 @@
 ﻿using IGift.Domain.Contracts;
-using System.Runtime.CompilerServices;
 
 namespace IGift.Domain.Entities
 {

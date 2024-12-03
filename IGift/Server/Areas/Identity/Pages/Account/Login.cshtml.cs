@@ -3,7 +3,6 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
-using IGift.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,7 @@ namespace IGift.Server.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-       
+
         [BindProperty]
         public InputModel Input { get; set; }
 

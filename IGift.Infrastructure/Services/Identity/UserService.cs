@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using System.Text.Encodings.Web;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Hangfire;
 using IGift.Application.Interfaces.Identity;
@@ -14,8 +16,6 @@ using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
-using System.Text.Encodings.Web;
 
 namespace IGift.Infrastructure.Services.Identity
 {

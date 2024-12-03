@@ -1,9 +1,9 @@
-﻿using Blazored.LocalStorage;
-using IGift.Shared.Constants;
-using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using Blazored.LocalStorage;
+using IGift.Shared.Constants;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Client.Infrastructure.Authentication
 {

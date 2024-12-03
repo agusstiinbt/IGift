@@ -1,10 +1,10 @@
 ﻿using IGift.Application.Interfaces.IMailService;
 using IGift.Application.Requests.Identity.Email;
-using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MimeKit;
 
 namespace IGift.Infrastructure.Services.Mail
 {
@@ -46,7 +46,7 @@ namespace IGift.Infrastructure.Services.Mail
             }
             catch (Exception e)
             {
-                _logger.LogError("Servicio de correo: "+e.Message, e);
+                _logger.LogError("Servicio de correo: " + e.Message, e);
             }
         }
     }

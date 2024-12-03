@@ -1,9 +1,9 @@
-﻿using Client.Infrastructure.Services.Identity.Authentication;
+﻿using System.Net.Http.Headers;
+using Client.Infrastructure.Services.Identity.Authentication;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.Net.Http.Headers;
 using Toolbelt.Blazor;
-using IGift.Shared.Constants;
 
 namespace Client.Infrastructure.Services.Interceptor
 {

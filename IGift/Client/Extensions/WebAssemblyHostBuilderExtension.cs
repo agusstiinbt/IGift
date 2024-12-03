@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using MudBlazor;
-using MudBlazor.Services;
+﻿using System.Globalization;
+using Blazored.LocalStorage;
 using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Services.Identity.Authentication;
 using Client.Infrastructure.Services.Identity.Users;
-using Microsoft.AspNetCore.Components.Authorization;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Client.Infrastructure.Services.Interceptor;
-using Blazored.LocalStorage;
-using System.Globalization;
 using Client.Infrastructure.Services.Notification;
 using Client.Infrastructure.Services.Requests;
-using IGift.Client.Infrastructure.Services.Files;
-using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;
+using IGift.Client.Infrastructure.Services.Communication.Chat;
+using IGift.Client.Infrastructure.Services.Files;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
+using MudBlazor.Services;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace IGift.Client.Extensions
 {

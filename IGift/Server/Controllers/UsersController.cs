@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using IGift.Application.Interfaces.Identity;
-using IGift.Shared.Constants;
-using IGift.Application.Requests.Identity.Users;
+﻿using IGift.Application.Interfaces.Identity;
 using IGift.Application.Requests.Identity.Password;
+using IGift.Application.Requests.Identity.Users;
+using IGift.Shared.Constants;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
 {

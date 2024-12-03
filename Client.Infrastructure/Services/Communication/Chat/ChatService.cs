@@ -1,8 +1,5 @@
 ﻿using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
-using Newtonsoft.Json;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace IGift.Client.Infrastructure.Services.Communication.Chat
 {

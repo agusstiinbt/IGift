@@ -1,6 +1,6 @@
-﻿using IGift.Shared.Wrapper;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+using IGift.Shared.Wrapper;
 
 namespace IGift.Server.Middleware
 {

@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace IGift.Application.Responses.Files
+﻿namespace IGift.Application.Responses.Files
 {
     public class ProfilePictureResponse
     {

@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using Client.Infrastructure.Services.Interceptor;
+﻿using Client.Infrastructure.Services.Interceptor;
+using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Shared
 {

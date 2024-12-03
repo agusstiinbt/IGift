@@ -1,10 +1,10 @@
-﻿using Client.Infrastructure.Extensions;
+﻿using System.Net.Http.Json;
+using Client.Infrastructure.Extensions;
 using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.JSInterop;
-using System.Net.Http.Json;
 
 namespace Client.Infrastructure.Services.Identity.Users
 {

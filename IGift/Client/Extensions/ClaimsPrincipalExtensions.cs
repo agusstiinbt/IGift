@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace IGift.Client.Extensions
+﻿namespace IGift.Client.Extensions
 {
     internal static class ClaimsPrincipalExtensions
     {

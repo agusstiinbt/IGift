@@ -1,5 +1,4 @@
 ﻿using IGift.Application.Requests.Files;
-using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Files
 {
@@ -14,6 +13,6 @@ namespace IGift.Application.Interfaces.Files
         /// <param name="request">Información para procesar el guardado</param>
         /// <param name="ReplaceFile">En caso de ser true se elimina la foto con el mismo nombre y se guarda una nueva</param>
         /// <returns></returns>
-        Task<string> UploadAsync(UploadRequest request,bool ReplaceFile);
+        Task<string> UploadAsync(UploadRequest request, bool ReplaceFile);
     }
 }

@@ -1,12 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
+using IGift.Application.Extensions;
+using IGift.Application.Filtros.Locales;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Responses.LocalAdherido;
 using IGift.Domain.Entities;
 using IGift.Shared.Wrapper;
 using MediatR;
-using System.Linq.Expressions;
-using IGift.Application.Filtros.Locales;
-using IGift.Application.Extensions;
 
 namespace IGift.Application.Requests.LocalesAdheridos.Query
 {

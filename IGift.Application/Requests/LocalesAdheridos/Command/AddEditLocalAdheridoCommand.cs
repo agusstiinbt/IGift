@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Requests.Files;
@@ -6,7 +7,6 @@ using IGift.Domain.Entities;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 namespace IGift.Application.Requests.LocalesAdheridos.Command
 {
     public class AddEditLocalAdheridoCommand : IRequest<IResult>

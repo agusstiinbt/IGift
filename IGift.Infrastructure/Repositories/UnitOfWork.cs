@@ -1,9 +1,9 @@
-﻿using IGift.Application.Interfaces.Repositories;
+﻿using System.Collections;
+using IGift.Application.Interfaces.Repositories;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
 using IGift.Shared.Wrapper;
 using LazyCache;
-using System.Collections;
 
 namespace IGift.Infrastructure.Repositories
 {

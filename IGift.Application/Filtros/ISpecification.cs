@@ -1,5 +1,5 @@
-﻿using IGift.Domain.Contracts;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using IGift.Domain.Contracts;
 
 namespace IGift.Application.Filtros
 {

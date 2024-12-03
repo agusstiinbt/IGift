@@ -1,13 +1,13 @@
-﻿using Client.Infrastructure.Services.Identity.Authentication;
+﻿using System.Security.Claims;
+using Client.Infrastructure.Services.Identity.Authentication;
+using Client.Infrastructure.Services.Interceptor;
+using IGift.Client.Extensions;
 using IGift.Shared.Constants;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
 using MudBlazor;
-using Client.Infrastructure.Services.Interceptor;
-using Microsoft.AspNetCore.SignalR.Client;
-using IGift.Client.Extensions;
-using System.Security.Claims;
 
 namespace IGift.Client.Layouts.Main
 {

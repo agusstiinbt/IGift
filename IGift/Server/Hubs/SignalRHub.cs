@@ -1,5 +1,4 @@
-﻿using IGift.Application.Models.Chat;
-using IGift.Application.Responses.Pedidos;
+﻿using IGift.Application.Responses.Pedidos;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.SignalR;
 

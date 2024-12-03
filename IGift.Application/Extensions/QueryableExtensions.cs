@@ -1,6 +1,6 @@
-﻿using IGift.Domain.Contracts;
+﻿using IGift.Application.Filtros;
+using IGift.Domain.Contracts;
 using IGift.Shared.Wrapper;
-using IGift.Application.Filtros;
 using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Application.Extensions

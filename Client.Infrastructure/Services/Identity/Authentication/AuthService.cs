@@ -1,16 +1,16 @@
 ﻿using System.Net.Http.Json;
 using Blazored.LocalStorage;
+using Client.Infrastructure.Authentication;
+using Client.Infrastructure.Extensions;
+using IGift.Application.Requests.Identity.Token;
 using IGift.Application.Requests.Identity.Users;
+using IGift.Application.Responses.Identity.Users;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using MudBlazor;
-using IGift.Shared.Constants;
-using Client.Infrastructure.Extensions;
-using IGift.Application.Responses.Identity.Users;
-using Client.Infrastructure.Authentication;
 using static IGift.Shared.Constants.AppConstants.Controllers;
-using IGift.Application.Requests.Identity.Token;
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
     public class AuthService : IAuthService

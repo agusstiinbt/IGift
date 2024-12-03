@@ -1,16 +1,16 @@
-﻿using IGift.Infrastructure.Models;
-using IGift.Shared.Wrapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using IGift.Application.Interfaces.Identity;
-using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Requests.Identity.Token;
+using IGift.Application.Requests.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
+using IGift.Infrastructure.Models;
+using IGift.Shared.Wrapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IGift.Infrastructure.Services.Identity
 {
