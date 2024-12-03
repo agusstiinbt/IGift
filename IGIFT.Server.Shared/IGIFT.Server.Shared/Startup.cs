@@ -66,8 +66,7 @@ namespace IGIFT.Server.Shared
 
             #region TODOs
 
-            //TODO AddSharedInfraestructure
-            //TODO estudiar par que es el metodo addhangifire y en nuestro caso con la estructura de microservicios. AddHangfireServer tambien
+            //TODO  addhangifire se usa para guardar tareas de segundo plano y se deberia usar redis y guarda la info de la microservice api gateway.
             //TODO generar ejemplos para utilizar  services.AddExtendedAttributesUnitOfWork
             //TODO:
             //        Prueba el Swagger de cada microservicio
