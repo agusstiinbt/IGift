@@ -2,9 +2,9 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using IGift.Application.Interfaces.Identity;
 using IGift.Application.CQRS.Identity.Token;
 using IGift.Application.CQRS.Identity.Users;
+using IGift.Application.Interfaces.Identity;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;

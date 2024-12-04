@@ -1,6 +1,6 @@
-﻿using IGift.Application.Interfaces.Identity;
-using IGift.Application.CQRS.Identity.Password;
+﻿using IGift.Application.CQRS.Identity.Password;
 using IGift.Application.CQRS.Identity.Users;
+using IGift.Application.Interfaces.Identity;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

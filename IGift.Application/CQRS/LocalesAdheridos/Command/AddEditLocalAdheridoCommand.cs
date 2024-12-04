@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using IGift.Application.CQRS.Files;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Repositories;
-using IGift.Application.CQRS.Files;
 using IGift.Domain.Entities;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;

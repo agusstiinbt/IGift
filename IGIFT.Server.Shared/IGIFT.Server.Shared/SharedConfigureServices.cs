@@ -1,6 +1,6 @@
-﻿using IGift.Application.Interfaces.Files;
+﻿using IGift.Application.CQRS.LocalesAdheridos.Query;
+using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Repositories;
-using IGift.Application.CQRS.LocalesAdheridos.Query;
 using IGift.Infrastructure.Repositories;
 using IGift.Infrastructure.Services.Files;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,6 +1,6 @@
-﻿using IGift.Application.Interfaces.Identity;
-using IGift.Application.CQRS.Identity.Token;
+﻿using IGift.Application.CQRS.Identity.Token;
 using IGift.Application.CQRS.Identity.Users;
+using IGift.Application.Interfaces.Identity;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Mvc;
