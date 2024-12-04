@@ -1,4 +1,4 @@
-﻿using IGift.Application.Requests.LocalesAdheridos.Query;
+﻿using IGift.Application.CQRS.LocalesAdheridos.Query;
 using IGIFT.Server.Shared;
 using Microsoft.AspNetCore.Mvc;
 

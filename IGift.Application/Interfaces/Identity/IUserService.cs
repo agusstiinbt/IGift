@@ -1,5 +1,5 @@
-﻿using IGift.Application.Requests.Identity.Password;
-using IGift.Application.Requests.Identity.Users;
+﻿using IGift.Application.CQRS.Identity.Password;
+using IGift.Application.CQRS.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Application.Responses.Users;
 using IGift.Shared.Wrapper;

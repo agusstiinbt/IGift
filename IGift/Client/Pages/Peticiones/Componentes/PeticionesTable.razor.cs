@@ -1,5 +1,5 @@
 ﻿using Client.Infrastructure.Services.Requests;
-using IGift.Application.Requests.Peticiones.Query;
+using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Pedidos;
 using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;

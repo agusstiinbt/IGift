@@ -1,6 +1,6 @@
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Repositories;
-using IGift.Application.Requests.LocalesAdheridos.Query;
+using IGift.Application.CQRS.LocalesAdheridos.Query;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Repositories;
 using IGift.Infrastructure.Services.Files;

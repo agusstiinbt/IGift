@@ -7,7 +7,7 @@ using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Interfaces.IMailService;
 using IGift.Application.Interfaces.Repositories;
-using IGift.Application.Requests.Notifications.Query;
+using IGift.Application.CQRS.Notifications.Query;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Infrastructure.Repositories;

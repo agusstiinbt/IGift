@@ -1,4 +1,4 @@
-﻿using IGift.Application.Requests.Identity.Email;
+﻿using IGift.Application.CQRS.Identity.Email;
 
 namespace IGift.Application.Interfaces.IMailService
 {

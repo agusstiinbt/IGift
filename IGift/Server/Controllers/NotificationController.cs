@@ -1,4 +1,4 @@
-﻿using IGift.Application.Requests.Notifications.Query;
+﻿using IGift.Application.CQRS.Notifications.Query;
 using IGIFT.Server.Shared;
 using Microsoft.AspNetCore.Mvc;
 

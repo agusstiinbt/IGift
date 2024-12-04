@@ -1,5 +1,5 @@
 ﻿using IGift.Application.Interfaces.Files;
-using IGift.Application.Requests.Files.ProfilePicture;
+using IGift.Application.CQRS.Files.ProfilePicture;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers

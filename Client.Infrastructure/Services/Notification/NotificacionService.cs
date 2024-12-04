@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using Client.Infrastructure.Extensions;
-using IGift.Application.Requests.Notifications.Query;
+using IGift.Application.CQRS.Notifications.Query;
 using IGift.Application.Responses.Notification;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;

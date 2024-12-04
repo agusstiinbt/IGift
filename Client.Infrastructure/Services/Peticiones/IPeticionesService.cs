@@ -1,4 +1,4 @@
-﻿using IGift.Application.Requests.Peticiones.Query;
+﻿using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Pedidos;
 using IGift.Shared.Wrapper;
 

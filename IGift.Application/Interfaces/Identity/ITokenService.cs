@@ -1,5 +1,5 @@
-﻿using IGift.Application.Requests.Identity.Token;
-using IGift.Application.Requests.Identity.Users;
+﻿using IGift.Application.CQRS.Identity.Token;
+using IGift.Application.CQRS.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Shared.Wrapper;
 namespace IGift.Application.Interfaces.Identity

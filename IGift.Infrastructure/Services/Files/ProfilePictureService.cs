@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Enums;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Models;
-using IGift.Application.Requests.Files.ProfilePicture;
+using IGift.Application.CQRS.Files.ProfilePicture;
 using IGift.Application.Responses.Files;
 using IGift.Infrastructure.Data;
 using IGift.Shared.Wrapper;

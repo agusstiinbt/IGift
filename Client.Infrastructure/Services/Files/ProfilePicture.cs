@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Client.Infrastructure.Extensions;
-using IGift.Application.Requests.Files.ProfilePicture;
+using IGift.Application.CQRS.Files.ProfilePicture;
 using IGift.Application.Responses.Files;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;

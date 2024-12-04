@@ -1,6 +1,6 @@
 ﻿using IGift.Application.Extensions;
 using IGift.Application.Interfaces.Files;
-using IGift.Application.Requests.Files;
+using IGift.Application.CQRS.Files;
 using Microsoft.Extensions.Logging;
 
 namespace IGift.Infrastructure.Services.Files

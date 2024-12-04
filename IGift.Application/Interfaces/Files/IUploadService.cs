@@ -1,4 +1,4 @@
-﻿using IGift.Application.Requests.Files;
+﻿using IGift.Application.CQRS.Files;
 
 namespace IGift.Application.Interfaces.Files
 {
