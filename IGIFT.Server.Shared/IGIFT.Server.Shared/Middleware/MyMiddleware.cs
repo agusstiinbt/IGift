@@ -1,8 +1,9 @@
 ﻿using System.Net;
 using System.Text.Json;
 using IGift.Shared.Wrapper;
+using Microsoft.AspNetCore.Http;
 
-namespace IGift.Server.Middleware
+namespace IGIFT.Server.Shared.Middleware
 {
     public class MyMiddleware
     {
@@ -38,6 +39,7 @@ namespace IGift.Server.Middleware
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;
                 }
+                //TODO JsonSerializer esta usando actualmente system.text.json. Deberiamos de tener la interfaz en el constructor y segun el tipo de microservicio que use una o la otra. Podriamos resolverlo teniendo dos middlewares uno con una interfaz y otro con otra.
                 var result = JsonSerializer.Serialize(responseModel);
                 await response.WriteAsync(result);
             }

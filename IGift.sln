@@ -37,11 +37,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{BBE49071-3520-4699-9FB7-4A0CC60DE015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGIFT.Server.Shared", "IGIFT.Server.Shared\IGIFT.Server.Shared\IGIFT.Server.Shared.csproj", "{B9000EF0-96F0-4189-B4C0-FF66E8B59C62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGIFT.Server.Shared", "IGIFT.Server.Shared\IGIFT.Server.Shared\IGIFT.Server.Shared.csproj", "{B9000EF0-96F0-4189-B4C0-FF66E8B59C62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGIFT.Server.Files", "IGIFT.Server.Files\IGIFT.Server.Files.csproj", "{C5F49492-29E3-4016-A3CB-4052A92A5391}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGIFT.Server.Files", "IGIFT.Server.Files\IGIFT.Server.Files.csproj", "{C5F49492-29E3-4016-A3CB-4052A92A5391}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGIFT.Server.LocalesAdheridos", "IGIFT.Server.LocalesAdheridos\IGIFT.Server.LocalesAdheridos.csproj", "{D2CC7F79-DA8C-4827-9401-58E166617345}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGIFT.Server.LocalesAdheridos", "IGIFT.Server.LocalesAdheridos\IGIFT.Server.LocalesAdheridos.csproj", "{D2CC7F79-DA8C-4827-9401-58E166617345}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

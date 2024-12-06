@@ -66,8 +66,6 @@ namespace IGIFT.Server.Shared
             //          },
             var serviceName = configuration.GetValue<string>("ServiceName"); // Variable que identifica cada microservicio
 
-
-
             var applicationSettingsConfiguration = configuration.GetSection(nameof(AppConfiguration));
 
             var config = applicationSettingsConfiguration.Get<AppConfiguration>();

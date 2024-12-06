@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IGIFT.Server.Shared.Middleware;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -87,7 +88,15 @@ namespace IGIFT.Server.Shared
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)
         {
+            app.UseForwarding(_configuration);
 
+            app.UseExceptionHandling(env);
+
+            app.UseHttpsRedirection();
+
+            app.UseMiddleware<MyMiddleware>();
+
+            app.UseStaticFiles();
         }
     }
 }

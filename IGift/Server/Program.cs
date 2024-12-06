@@ -16,7 +16,6 @@ using IGift.Infrastructure.Services.Files;
 using IGift.Infrastructure.Services.Identity;
 using IGift.Infrastructure.Services.Mail;
 using IGift.Server.Hubs;
-using IGift.Server.Middleware;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -241,9 +240,6 @@ app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
 });
 
 app.MapRazorPages();
-
-app.UseMiddleware<MyMiddleware>();
-
 
 app.MapControllers();
 app.MapFallbackToFile("index.html");

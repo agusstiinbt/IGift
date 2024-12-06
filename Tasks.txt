@@ -1,3 +1,9 @@
+Documentar bien para que sirve cada uno de los metodos que tenemos tanto en el configure services como en el configure app.
+Crear un nuevo chat en chatgpt explicandole nuestra arquitectura y que tendremos 5 microservicios, una api gateway, y 6 bbdd contando redis.
+Luego si necesitamos actualizar las versiones de .net core, sabremos como reemplazar cada cosa sabien ahora para que servian porque estan bien 
+documentadas
+
+
 Hasta que podamos comprar las 2 memorias ram de 32 gb cada una debemos ocuparnos del front. Hacer un buen disenio porque nos deben llamar
 entre otras cosas por nuestra capacidad de trabajar con Blazor
 
