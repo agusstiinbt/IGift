@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using Hangfire;
 using IGift.Application.AppConfiguration;
 using IGift.Application.Interfaces.Dates;
 using IGift.Application.Interfaces.DDBB.Sql;
@@ -39,6 +41,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Cmp;
 using Serilog;
 using StackExchange.Redis;
 
@@ -47,7 +50,7 @@ namespace IGIFT.Server.Shared
     internal static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// AddForwarding es una configuración que permite que la aplicación trabaje correctamente detrás de un proxy (como un balanceador de carga o una API Gateway), que es común en arquitecturas de microservicios. 
+        /// Este método configura servicios necesarios para que la aplicación pueda manejar solicitudes provenientes de un proxy o balanceador de carga. Está pensado para sistemas distribuidos donde los microservicios pueden estar detrás de proxies SSL (como NGINX o AWS ALB). Además, establece configuraciones de CORS específicas para cada microservicio.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
@@ -95,6 +98,11 @@ namespace IGIFT.Server.Shared
                     }
                 });
 
+
+                #region Resumen
+                //Configura la política CORS(Cross-Origin Resource Sharing).
+                //Permite o restringe el acceso de clientes de diferentes orígenes(URLs):
+                #endregion
                 services.AddCors(options =>
                 {
                     options.AddDefaultPolicy(

@@ -22,6 +22,12 @@ namespace IGIFT.Server.Shared
             return app;
         }
 
+        /// <summary>
+        /// Habilita el uso de las configuraciones definidas en AddForwarding durante el pipeline de procesamiento de solicitudes HTTP. Es el punto en el que se aplican efectivamente las políticas de proxy y CORS en tiempo de ejecución.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         internal static IApplicationBuilder UseForwarding(this IApplicationBuilder app, IConfiguration configuration)
         {
             AppConfiguration config = GetApplicationSettings(configuration);

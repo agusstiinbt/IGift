@@ -21,15 +21,19 @@ namespace IGIFT.Server.Shared
 
             var serviceName = _configuration.GetValue<string>("ServiceName")!;
 
-            //Siempre que avancemos con estas cosas decirle a chatGPT que estamos siempre trabajando con una arquitectura de microservicios donde habrá luego una api gateway 
             services.AddForwarding(_configuration);
+
+            #region Resumen
+            //configura la localización en la aplicación. Este método es parte de las funcionalidades de .NET Core para soportar aplicaciones multilingües o que manejan textos específicos según la cultura o idioma del usuario.
+            #endregion
             services.AddLocalization(options =>
             {
-                options.ResourcesPath = "Resources";
+                //options.ResourcesPath = "Resources";
             });
-            services.AddSerialization(_configuration);
-            services.AddDatabase(_configuration);
 
+            services.AddSerialization(_configuration);
+
+            services.AddDatabase(_configuration);
 
             #region A utilizar en un posible futuro
 
@@ -86,6 +90,8 @@ namespace IGIFT.Server.Shared
             #endregion
         }
 
+
+        //Si hacemos una configuracion por microServicios dentro de ConfigureServices, entonces no necesitaremos hacerlo aqui en Configure
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)
         {
             app.UseForwarding(_configuration);
