@@ -1,8 +1,10 @@
 ﻿using IGift.Application.OptionsPattern;
+using IGIFT.Server.Shared.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using IGift.Shared.Constants;
 
 namespace IGIFT.Server.Shared
 {
@@ -39,6 +41,17 @@ namespace IGIFT.Server.Shared
             return app;
         }
 
+        internal static IApplicationBuilder UseEndpoints(this IApplicationBuilder app, string serviceName)
+        => app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapRazorPages(); // Maneja páginas Razor
+            endpoints.MapControllers(); // Maneja controladores (API o MVC)
+            endpoints.MapFallbackToFile("index.html"); // Sirve un archivo predeterminado si no se encuentra otro endpoint
+            if (serviceName == "serviceNameDeChats")
+            {
+                endpoints.MapHub<SignalRHub>(AppConstants.SignalR.HubUrl); // Configura un hub de SignalR.Aplicar solo a microservicios que utilicen SignalR
+            }
+        });
 
         #region Private Methods
         private static AppConfiguration GetApplicationSettings(IConfiguration configuration)

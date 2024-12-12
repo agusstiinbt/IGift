@@ -1,8 +1,10 @@
 ﻿using IGIFT.Server.Shared.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Localization;
 
 namespace IGIFT.Server.Shared
@@ -94,6 +96,9 @@ namespace IGIFT.Server.Shared
         //Si hacemos una configuracion por microServicios dentro de ConfigureServices, entonces no necesitaremos hacerlo aqui en Configure
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)
         {
+
+            var serviceName = _configuration.GetValue<string>("ServiceName")!;
+
             app.UseForwarding(_configuration);
 
             app.UseExceptionHandling(env);
@@ -103,6 +108,24 @@ namespace IGIFT.Server.Shared
             app.UseMiddleware<MyMiddleware>();
 
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Files")),
+                RequestPath = new PathString("/Files")
+            });
+
+            //Se puede utilizar para obtener la cultura segun la localizacion de tu ip
+            //app.UseRequestLocalizationByCulture();
+
+            app.UseRouting();
+
+            if (serviceName == "AuthService")
+            {
+                app.UseAuthentication();
+                app.UseAuthorization();
+            }
+
         }
     }
 }
