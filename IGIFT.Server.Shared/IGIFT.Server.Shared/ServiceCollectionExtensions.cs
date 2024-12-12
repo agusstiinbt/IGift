@@ -1,11 +1,8 @@
 ﻿using System.Net;
 using System.Reflection;
-using System.Security.Policy;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
-using Hangfire;
-using IGift.Application.AppConfiguration;
 using IGift.Application.Interfaces.Dates;
 using IGift.Application.Interfaces.DDBB.Sql;
 using IGift.Application.Interfaces.Files;
@@ -41,7 +38,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Cmp;
 using Serilog;
 using StackExchange.Redis;
 

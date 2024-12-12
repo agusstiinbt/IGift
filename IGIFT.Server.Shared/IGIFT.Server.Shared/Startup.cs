@@ -35,7 +35,7 @@ namespace IGIFT.Server.Shared
 
             services.AddDatabase(_configuration);
 
-            #region A utilizar en un posible futuro
+            #region A utilizar en un posible futuro para los lenguajes
 
             //En el caso de que trabajemos con preferencias de lenguaje y eso:
             //services.AddScoped<ServerPreferenceManager>();

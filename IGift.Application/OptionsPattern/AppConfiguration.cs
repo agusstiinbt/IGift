@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.AppConfiguration
+﻿namespace IGift.Application.OptionsPattern
 {
     public class AppConfiguration
     {
