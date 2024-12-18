@@ -1,4 +1,6 @@
-﻿namespace IGift.Shared.Constants
+﻿using System.Net.NetworkInformation;
+
+namespace IGift.Shared.Constants
 {
     public static partial class AppConstants
     {
@@ -14,6 +16,9 @@
                 public static string AdminEmail = "agusstiinbt@gmail.com";
                 public static string BasicEmail = "joseespositoing@gmail.com";
                 public static string DefaultPassword = "Zx2555@@";
+
+                public static string AuthService = "AuthService";
+                public static string ChatService = "ChatService";
             }
         }
     }
