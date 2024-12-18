@@ -3,11 +3,12 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using IGift.Application.Interfaces.Communication.Chat;
+using IGift.Application.Interfaces.Communication.Mail;
 using IGift.Application.Interfaces.Dates;
 using IGift.Application.Interfaces.DDBB.Sql;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
-using IGift.Application.Interfaces.IMailService;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Interfaces.Serialization.Options;
 using IGift.Application.Interfaces.Serialization.Settings;
@@ -24,7 +25,7 @@ using IGift.Infrastructure.Services.DDBB.Sql;
 using IGift.Infrastructure.Services.Files;
 using IGift.Infrastructure.Services.Identity;
 using IGift.Infrastructure.Services.Mail;
-using IGift.Infrastructure.Services.MediatR;
+using IGift.Infrastructure.Services.Communication;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using IGIFT.Server.Shared.Redis;
@@ -41,6 +42,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
 using StackExchange.Redis;
+using IGift.Infrastructure.Services.Validators;
 
 namespace IGIFT.Server.Shared
 {
@@ -388,26 +390,25 @@ namespace IGIFT.Server.Shared
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        internal static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        internal static IServiceCollection AddApplicationServices(this IServiceCollection services, string serverName)
         {
-            #region Files
-            services.AddTransient<IProfilePicture, ProfilePictureService>();
-            services.AddTransient<IUploadService, UploadService>();
-            #endregion
+            switch (serverName)
+            {
+                case "AuthService":
+                    services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
+                    services.AddTransient<ITokenService, TokenService>();
+                    services.AddTransient<IUserService, UserService>();
+                    break;
+                case "ChatService":
+                    services.AddTransient<IMailService, MailService>();
+                    services.AddTransient<IChatService, ChatService>();
+                    services.AddTransient<IProfilePicture, ProfilePictureService>();
+                    services.AddTransient<IUploadService, UploadService>();
+                    break;
 
-            #region Identity
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IUserService, UserService>();
-            #endregion
-
-            #region Mail
-            services.AddTransient<IMailService, MailService>();
-            #endregion
-
-            #region DDBB
-            services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
-            #endregion
-
+                default:
+                    break;
+            }
             return services;
         }
 

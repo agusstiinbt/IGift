@@ -1,5 +1,5 @@
 ﻿using IGift.Application.CQRS.Identity.Email;
-using IGift.Application.Interfaces.IMailService;
+using IGift.Application.Interfaces.Communication.Mail;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;

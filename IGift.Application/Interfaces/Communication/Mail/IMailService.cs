@@ -1,6 +1,6 @@
 ﻿using IGift.Application.CQRS.Identity.Email;
 
-namespace IGift.Application.Interfaces.IMailService
+namespace IGift.Application.Interfaces.Communication.Mail
 {
     public interface IMailService
     {

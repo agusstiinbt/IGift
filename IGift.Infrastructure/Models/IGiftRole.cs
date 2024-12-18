@@ -12,7 +12,6 @@ namespace IGift.Infrastructure.Models
         public DateTime? LastModifiedOn { get; set; }
         public virtual ICollection<IGiftRoleClaim> RoleClaims { get; set; }
 
-
         public IGiftRole() : base()
         {
             RoleClaims = new HashSet<IGiftRoleClaim>();

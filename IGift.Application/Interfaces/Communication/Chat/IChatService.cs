@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
 
-namespace IGift.Client.Infrastructure.Services.Communication.Chat
+namespace IGift.Application.Interfaces.Communication.Chat
 {
     public interface IChatService
     {

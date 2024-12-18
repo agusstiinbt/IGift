@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Interfaces.IMailService
+﻿namespace IGift.Application.Interfaces.Communication.Mail
 {
     public class MailConfiguration
     {

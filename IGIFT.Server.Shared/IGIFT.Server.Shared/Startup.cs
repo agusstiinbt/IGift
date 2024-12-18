@@ -21,7 +21,7 @@ namespace IGIFT.Server.Shared
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var serviceName = _configuration.GetValue<string>("ServiceName")!;
+            var serverName = _configuration.GetValue<string>("ServiceName")!;
 
             services.AddForwarding(_configuration);
 
@@ -35,7 +35,10 @@ namespace IGIFT.Server.Shared
 
             services.AddSerialization(_configuration);
 
-            services.AddDatabase(_configuration);
+            if (serverName != "ApiGateWay")
+            {
+                services.AddDatabase(_configuration);
+            }
 
             #region A utilizar en un posible futuro para los lenguajes
 
@@ -48,25 +51,30 @@ namespace IGIFT.Server.Shared
 
             #endregion
 
-            if (serviceName == "ApiGateWay")
+            if (serverName == "ApiGateWay")
             {
                 services.AddJwtAuthentication(_configuration);
             }
 
 
-            if (serviceName == "AuthService")
+            if (serverName == "AuthService")
             {
                 services.AddIdentity(_configuration);
             }
 
-            if (serviceName == "ChatService")
+            if (serverName == "ChatService")
             {
                 services.AddSignalR();
             }
 
+            #region Servicios comunes para todas las apis
             services.AddApplicationLayer();
 
-            services.AddApplicationServices();
+
+            #endregion
+
+
+            services.AddApplicationServices(serverName);
 
             services.AddRepositories();
 
@@ -74,7 +82,7 @@ namespace IGIFT.Server.Shared
 
             services.AddRazorPages();
 
-            services.AddSwaggerForMicroservice(serviceName);
+            services.AddSwaggerForMicroservice(serverName);
 
             #region TODOs
 

@@ -1,7 +1,13 @@
-﻿using IGift.Application.Models.Chat;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using IGift.Application.Interfaces.Communication.Chat;
+using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
 
-namespace IGift.Client.Infrastructure.Services.Communication.Chat
+namespace IGift.Infrastructure.Services.Communication
 {
     public class ChatService : IChatService
     {

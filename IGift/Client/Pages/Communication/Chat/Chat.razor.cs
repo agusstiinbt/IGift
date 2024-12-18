@@ -19,7 +19,7 @@ namespace IGift.Client.Pages.Communication.Chat
             _open = !_open;
         }
 
-        [Inject] private IChatService _chatService { get; set; }
+        [Inject] private IChatManager _chatService { get; set; }
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
         /// <summary>
@@ -112,25 +112,25 @@ namespace IGift.Client.Pages.Communication.Chat
             var response = await _userManager.GetUserById(userId);
             if (response.Succeeded)
             {
-                var contact = response.Data;
-                ChatId = contact.Id;
-                ChatFullName = contact.FirstName + " " + contact.LastName;
-                ChatUserName = contact.FirstName;
-                ChatImageUrl = contact.Url;
-                _nav.NavigateTo(AppConstants.Routes.Chat + "/" + ChatId);
-                _messages = new();
-                var historyResponse = await _chatService.GetChatHistoryByIdAsync(ChatId);
-                if (historyResponse.Succeeded)
-                {
-                    _messages = historyResponse.Data.ToList();
-                }
-                else
-                {
-                    foreach (var message in historyResponse.Messages)
-                    {
-                        _snack.Add(message, Severity.Error);
-                    }
-                }
+                //var contact = response.Data;
+                //ChatId = contact.Id;
+                //ChatFullName = contact.FirstName + " " + contact.LastName;
+                //ChatUserName = contact.FirstName;
+                //ChatImageUrl = contact.Url;
+                //_nav.NavigateTo(AppConstants.Routes.Chat + "/" + ChatId);
+                //_messages = new();
+                //var historyResponse =// await _chatService.GetChatHistoryByIdAsync(ChatId);
+                //if (historyResponse.Succeeded)
+                //{
+                //    _messages = historyResponse.Data.ToList();
+                //}
+                //else
+                //{
+                //    foreach (var message in historyResponse.Messages)
+                //    {
+                //        _snack.Add(message, Severity.Error);
+                //    }
+                //}
             }
             else
             {
@@ -167,24 +167,24 @@ namespace IGift.Client.Pages.Communication.Chat
                     Date = DateTime.Now
                 };
 
-                var response = await _chatService.SaveMessage(chatHistory);
-                if (response.Succeeded)
-                {
-                    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-                    var user = state.User;
-                    //CurrentUserId = user.GetUserId();
-                    //chatHistory.FromUserId = CurrentUserId;
-                    //var userName = $"{user.GetFirstName()} {user.GetLastName()}";
-                    //await HubConnection.SendAsync(ApplicationConstants.SignalR.SendMessage, chatHistory, userName);
-                    //CurrentMessage = string.Empty;
-                }
-                else
-                {
-                    foreach (var message in response.Messages)
-                    {
-                        // _snackBar.Add(message, Severity.Error);
-                    }
-                }
+                //var response = await _chatService.SaveMessage(chatHistory);
+                //if (response.Succeeded)
+                //{
+                //    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+                //    var user = state.User;
+                //    //CurrentUserId = user.GetUserId();
+                //    //chatHistory.FromUserId = CurrentUserId;
+                //    //var userName = $"{user.GetFirstName()} {user.GetLastName()}";
+                //    //await HubConnection.SendAsync(ApplicationConstants.SignalR.SendMessage, chatHistory, userName);
+                //    //CurrentMessage = string.Empty;
+                //}
+                //else
+                //{
+                //    foreach (var message in response.Messages)
+                //    {
+                //        // _snackBar.Add(message, Severity.Error);
+                //    }
+                //}
             }
         }
     }

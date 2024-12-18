@@ -1,8 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace IGift.Infrastructure.Services.MediatR
+namespace IGift.Infrastructure.Services.Validators
 {
+    /// <summary>
+    /// El objetivo principal de esta clase es validar una solicitud antes de que sea procesada por su manejador correspondiente
+    /// </summary>
+    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TResponse"></typeparam>
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : notnull
     {
@@ -64,7 +69,7 @@ namespace IGift.Infrastructure.Services.MediatR
 
 
 //Ejemplo bien hecho:
-//    public class GetProductQuery : IRequest<ProductDto>
+//public class GetProductQuery : IRequest<ProductDto>
 //{
 //    public int ProductId { get; set; }
 //}
