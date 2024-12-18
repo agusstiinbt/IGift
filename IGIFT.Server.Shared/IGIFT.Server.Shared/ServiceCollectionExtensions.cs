@@ -11,6 +11,7 @@ using IGift.Application.Interfaces.IMailService;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Interfaces.Serialization.Options;
 using IGift.Application.Interfaces.Serialization.Settings;
+using IGift.Application.OptionsPattern;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Infrastructure.Repositories;
@@ -179,6 +180,14 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
+        /// <summary>
+        /// Debe ser omitido por el ApiGateWay
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         internal static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var serviceName = configuration["ServiceName"];
@@ -230,6 +239,12 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
+        /// <summary>
+        /// Configura usuarios, roles, tokens y demas datos. Debe estar exclusivamente en el AuthService, ya que este es el responsable de gestionar usuarios, roles y datos relacionados con la autenticación
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         internal static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentity<IGiftUser, IGiftRole>(options =>
@@ -246,6 +261,12 @@ namespace IGIFT.Server.Shared
 
             return services;
         }
+        /// <summary>
+        ///Solo debe ser implementado por el ApiGateWay El middleware de autenticación JWT (AddJwtAuthentication) es necesario únicamente en servidores que reciben y procesan solicitudes entrantes con un token JWT. Este middleware valida el token, comprueba su firma, y carga los claims en el contexto de seguridad de ASP.NET.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         internal static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services

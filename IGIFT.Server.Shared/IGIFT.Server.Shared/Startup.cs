@@ -48,10 +48,15 @@ namespace IGIFT.Server.Shared
 
             #endregion
 
+            if (serviceName == "ApiGateWay")
+            {
+                services.AddJwtAuthentication(_configuration);
+            }
+
+
             if (serviceName == "AuthService")
             {
                 services.AddIdentity(_configuration);
-                services.AddJwtAuthentication(_configuration);
             }
 
             if (serviceName == "ChatService")
@@ -125,6 +130,9 @@ namespace IGIFT.Server.Shared
                 app.UseAuthentication();
                 app.UseAuthorization();
             }
+
+            app.UseEndpoints(serviceName);
+
 
         }
     }
