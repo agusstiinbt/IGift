@@ -29,6 +29,7 @@ using IGift.Infrastructure.Services.Mail;
 using IGift.Infrastructure.Services.Validators;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
+using IGIFT.Server.Shared.Constants;
 using IGIFT.Server.Shared.Redis;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -394,12 +395,12 @@ namespace IGIFT.Server.Shared
         {
             switch (serverName)
             {
-                case "AuthService":
+                case ServerNames.AuthService:
                     services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
                     services.AddTransient<ITokenService, TokenService>();
                     services.AddTransient<IUserService, UserService>();
                     break;
-                case "ChatService":
+                case ServerNames.ChatService:
                     services.AddTransient<IMailService, MailService>();
                     services.AddTransient<IChatService, ChatService>();
                     services.AddTransient<IProfilePicture, ProfilePictureService>();

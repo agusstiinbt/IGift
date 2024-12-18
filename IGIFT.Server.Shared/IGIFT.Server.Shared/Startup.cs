@@ -1,4 +1,5 @@
-﻿using IGIFT.Server.Shared.Middleware;
+﻿using IGIFT.Server.Shared.Constants;
+using IGIFT.Server.Shared.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +22,7 @@ namespace IGIFT.Server.Shared
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var serverName = _configuration.GetValue<string>("ServiceName")!;
+            var name = _configuration.GetValue<string>("ServiceName")!;
 
             services.AddForwarding(_configuration);
 
@@ -35,7 +36,7 @@ namespace IGIFT.Server.Shared
 
             services.AddSerialization(_configuration);
 
-            if (serverName != "ApiGateWay")
+            if (name != ServerNames.ApiGateway)
             {
                 services.AddDatabase(_configuration);
             }
@@ -51,18 +52,18 @@ namespace IGIFT.Server.Shared
 
             #endregion
 
-            if (serverName == "ApiGateWay")
+            if (name == ServerNames.ApiGateway)
             {
                 services.AddJwtAuthentication(_configuration);
             }
 
 
-            if (serverName == "AuthService")
+            if (name == ServerNames.AuthService)
             {
                 services.AddIdentity(_configuration);
             }
 
-            if (serverName == "ChatService")
+            if (name == ServerNames.ChatService)
             {
                 services.AddSignalR();
             }
@@ -74,7 +75,7 @@ namespace IGIFT.Server.Shared
             #endregion
 
 
-            services.AddApplicationServices(serverName);
+            services.AddApplicationServices(name);
 
             services.AddRepositories();
 
@@ -82,7 +83,7 @@ namespace IGIFT.Server.Shared
 
             services.AddRazorPages();
 
-            services.AddSwaggerForMicroservice(serverName);
+            services.AddSwaggerForMicroservice(name);
 
             #region TODOs
 
@@ -133,7 +134,7 @@ namespace IGIFT.Server.Shared
 
             app.UseRouting();
 
-            if (serviceName == "AuthService")
+            if (serviceName == ServerNames.AuthService)
             {
                 app.UseAuthentication();
                 app.UseAuthorization();
