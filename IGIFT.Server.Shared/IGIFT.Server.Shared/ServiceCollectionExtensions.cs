@@ -29,7 +29,6 @@ using IGift.Infrastructure.Services.Mail;
 using IGift.Infrastructure.Services.Validators;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
-using IGIFT.Server.Shared.Constants;
 using IGIFT.Server.Shared.Redis;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -299,7 +298,7 @@ namespace IGIFT.Server.Shared
                 {
                     OnMessageReceived = context =>
                     {
-                        var accessToken = context.Request.Query[AppConstants.StorageConstants.Local.Access_Token];
+                        var accessToken = context.Request.Query[AppConstants.Local.Access_Token];
 
                         var path = context.HttpContext.Request.Path;
                         if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(AppConstants.SignalR.HubUrl))
@@ -395,12 +394,12 @@ namespace IGIFT.Server.Shared
         {
             switch (serverName)
             {
-                case ServerNames.AuthService:
+                case AppConstants.Server.AuthService:
                     services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
                     services.AddTransient<ITokenService, TokenService>();
                     services.AddTransient<IUserService, UserService>();
                     break;
-                case ServerNames.ChatService:
+                case AppConstants.Server.ChatService:
                     services.AddTransient<IMailService, MailService>();
                     services.AddTransient<IChatService, ChatService>();
                     services.AddTransient<IProfilePicture, ProfilePictureService>();

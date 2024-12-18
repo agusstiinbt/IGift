@@ -193,7 +193,7 @@ namespace IGift.Infrastructure.Services.Identity
         public async Task<IResult> UpdateRolesAsync(UpdateUserRolesRequest request)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
-            if (user.Email == AppConstants.StorageConstants.Server.AdminEmail)
+            if (user.Email == AppConstants.Server.AdminEmail)
             {
                 return await Result.FailAsync("No se permite cambiar el rol a este usuario");
             }

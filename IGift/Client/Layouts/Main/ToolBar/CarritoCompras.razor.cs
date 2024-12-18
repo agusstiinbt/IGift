@@ -53,7 +53,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
             _hubConnection.On<ICollection<PeticionesResponse>>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, async (lista) =>
             {
                 //TODO es necesario enviar a esta subscripcion el Id si ya lo estamos localizando desde la clase signalR
-                var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
+                var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
 
                 // Ejecutar el cambio de estado en el contexto de la IU
 

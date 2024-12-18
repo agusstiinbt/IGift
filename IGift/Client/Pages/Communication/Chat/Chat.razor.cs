@@ -92,7 +92,7 @@ namespace IGift.Client.Pages.Communication.Chat
             var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
             CurrentUserId = state.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
-            CurrentUserImageUrl = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.UserImageURL);
+            CurrentUserImageUrl = await _localStorage.GetItemAsync<string>(AppConstants.Local.UserImageURL);
 
             if (!string.IsNullOrEmpty(ChatId))
             {

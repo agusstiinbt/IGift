@@ -14,7 +14,7 @@ namespace IGift.Client.Extensions
                 hubConnection = new HubConnectionBuilder()
                                   .WithUrl(navigationManager.ToAbsoluteUri(AppConstants.SignalR.HubUrl), options =>
                                   {
-                                      options.AccessTokenProvider = async () => (await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.AuthToken));
+                                      options.AccessTokenProvider = async () => (await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken));
                                   })
                                   .WithAutomaticReconnect()
                                   .Build();

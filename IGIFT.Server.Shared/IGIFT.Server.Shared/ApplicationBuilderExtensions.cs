@@ -46,9 +46,10 @@ namespace IGIFT.Server.Shared
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", typeof(Program).Assembly.GetName().Name);
-                options.RoutePrefix = "swagger";
-                options.DisplayRequestDuration();
+                //TODO Corregir esto segun microservicios, esta fallando el Program
+                //options.SwaggerEndpoint("/swagger/v1/swagger.json", typeof(Program).Assembly.GetName().Name);
+                //options.RoutePrefix = "swagger";
+                //options.DisplayRequestDuration();
             });
         }
 

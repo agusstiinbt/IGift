@@ -75,7 +75,7 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         private async Task AgregarAlCarrito(PeticionesResponse p)
         {
             //TODO esto debería de ser un parámetro desde arriba para no invocarlo todo el tiempo
-            var idUser = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.IdUser);
+            var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
             var response = await _carritoService.SaveShopCartAsync(p);
             if (response.Succeeded)
             {

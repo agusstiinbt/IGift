@@ -17,7 +17,7 @@ namespace IGift.Application.CQRS.LocalesAdheridos.Command
         public int Id { get; set; }
         [Required]
         public string Nombre { get; set; } = string.Empty;
-        public string CreatedBy { get; set; } = AppConstants.StorageConstants.Server.AdminEmail;
+        public string CreatedBy { get; set; } = AppConstants.Server.AdminEmail;
         public string Descripcion { get; set; } = string.Empty;
         public string ImageDataURL { get; set; } = string.Empty;
         public UploadRequest UploadRequest { get; set; }

@@ -90,7 +90,7 @@ builder.Services
     {
         OnMessageReceived = context =>
         {
-            var accessToken = context.Request.Query[AppConstants.StorageConstants.Local.Access_Token];
+            var accessToken = context.Request.Query[AppConstants.Local.Access_Token];
 
             var path = context.HttpContext.Request.Path;
             if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(AppConstants.SignalR.HubUrl))
@@ -233,8 +233,8 @@ app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
     {
         new HangfireCustomBasicAuthenticationFilter
         {
-            User =AppConstants.StorageConstants.Server.AdminEmail,
-            Pass = AppConstants.StorageConstants.Server.DefaultPassword
+            User =AppConstants.Server.AdminEmail,
+            Pass = AppConstants.Server.DefaultPassword
         }
     }
 });

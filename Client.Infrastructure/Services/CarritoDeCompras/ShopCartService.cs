@@ -27,7 +27,7 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
                 carrito!.Add(p);
                 var json = JsonSerializer.Serialize(carrito);
 
-                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.ShopCart, json);
+                await _localStorage.SetItemAsync(AppConstants.Local.ShopCart, json);
 
                 return await Result.SuccessAsync();
             }
@@ -48,7 +48,7 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
         private async Task<List<PeticionesResponse>> GetPeticiones()
         {
             // Leer la lista existente de 'carrito'
-            var json = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.ShopCart);
+            var json = await _localStorage.GetItemAsync<string>(AppConstants.Local.ShopCart);
 
             List<PeticionesResponse> carrito;
 

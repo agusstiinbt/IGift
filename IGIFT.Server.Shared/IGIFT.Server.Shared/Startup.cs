@@ -1,4 +1,4 @@
-﻿using IGIFT.Server.Shared.Constants;
+﻿using IGift.Shared.Constants;
 using IGIFT.Server.Shared.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +36,7 @@ namespace IGIFT.Server.Shared
 
             services.AddSerialization(_configuration);
 
-            if (name != ServerNames.ApiGateway)
+            if (name != AppConstants.Server.ApiGateway)
             {
                 services.AddDatabase(_configuration);
             }
@@ -52,18 +52,18 @@ namespace IGIFT.Server.Shared
 
             #endregion
 
-            if (name == ServerNames.ApiGateway)
+            if (name == AppConstants.Server.ApiGateway)
             {
                 services.AddJwtAuthentication(_configuration);
             }
 
 
-            if (name == ServerNames.AuthService)
+            if (name == AppConstants.Server.AuthService)
             {
                 services.AddIdentity(_configuration);
             }
 
-            if (name == ServerNames.ChatService)
+            if (name == AppConstants.Server.ChatService)
             {
                 services.AddSignalR();
             }
@@ -134,7 +134,7 @@ namespace IGIFT.Server.Shared
 
             app.UseRouting();
 
-            if (serviceName == ServerNames.AuthService)
+            if (serviceName == AppConstants.Server.AuthService)
             {
                 app.UseAuthentication();
                 app.UseAuthorization();

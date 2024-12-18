@@ -49,9 +49,9 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 var idUser = result!.Data.IdUser;
 
                 //gurdamos cada propiedad en el cliente
-                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.AuthToken, token);
-                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.RefreshToken, refreshToken);
-                await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.IdUser, idUser);
+                await _localStorage.SetItemAsync(AppConstants.Local.AuthToken, token);
+                await _localStorage.SetItemAsync(AppConstants.Local.RefreshToken, refreshToken);
+                await _localStorage.SetItemAsync(AppConstants.Local.IdUser, idUser);
 
 
                 //preparamos los headers con el token correcto
@@ -80,7 +80,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<string> TryRefreshToken()
         {
-            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
+            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
             if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
 
             //var authState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync(); es lo mismo
@@ -104,8 +104,8 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<string> RefreshToken()
         {
-            var token = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.AuthToken);
-            var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.RefreshToken);
+            var token = await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken);
+            var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
 
             //TODO fijarse si usar postasync o postasjsonasync
             var response = await _httpClient.PostAsJsonAsync(TokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
@@ -119,8 +119,8 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             token = result.Data.Token;
             refreshToken = result.Data.RefreshToken;
 
-            await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.AuthToken, token);
-            await _localStorage.SetItemAsync(AppConstants.StorageConstants.Local.RefreshToken, refreshToken);
+            await _localStorage.SetItemAsync(AppConstants.Local.AuthToken, token);
+            await _localStorage.SetItemAsync(AppConstants.Local.RefreshToken, refreshToken);
 
 
             await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();

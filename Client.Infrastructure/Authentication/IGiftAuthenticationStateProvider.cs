@@ -34,10 +34,10 @@ namespace Client.Infrastructure.Authentication
         /// </summary>
         public async Task MarkUserAsLoggedOut()
         {
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.AuthToken);
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.RefreshToken);
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.UserImageURL);
-            await _localStorage.RemoveItemAsync(AppConstants.StorageConstants.Local.IdUser);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
 
             _httpClient.DefaultRequestHeaders.Authorization = null;
 
@@ -52,7 +52,7 @@ namespace Client.Infrastructure.Authentication
         /// <returns></returns>
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var savedToken = await _localStorage.GetItemAsync<string>(AppConstants.StorageConstants.Local.AuthToken);
+            var savedToken = await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken);
 
             if (string.IsNullOrWhiteSpace(savedToken))
             {
