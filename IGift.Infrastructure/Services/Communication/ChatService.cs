@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IGift.Application.Interfaces.Communication.Chat;
+﻿using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
 

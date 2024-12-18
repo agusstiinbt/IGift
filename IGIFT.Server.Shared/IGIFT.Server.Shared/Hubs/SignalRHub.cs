@@ -1,6 +1,6 @@
 ﻿using IGift.Application.Responses.Pedidos;
-using Microsoft.AspNetCore.SignalR;
 using IGift.Shared.Constants;
+using Microsoft.AspNetCore.SignalR;
 
 namespace IGIFT.Server.Shared.Hubs
 {

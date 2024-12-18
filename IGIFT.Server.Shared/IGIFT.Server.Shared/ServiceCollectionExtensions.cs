@@ -20,12 +20,13 @@ using IGift.Infrastructure.Serialization;
 using IGift.Infrastructure.Serialization.JsonConverters;
 using IGift.Infrastructure.Serialization.Serializers;
 using IGift.Infrastructure.Serialization.Settings;
+using IGift.Infrastructure.Services.Communication;
 using IGift.Infrastructure.Services.Dates;
 using IGift.Infrastructure.Services.DDBB.Sql;
 using IGift.Infrastructure.Services.Files;
 using IGift.Infrastructure.Services.Identity;
 using IGift.Infrastructure.Services.Mail;
-using IGift.Infrastructure.Services.Communication;
+using IGift.Infrastructure.Services.Validators;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using IGIFT.Server.Shared.Redis;
@@ -42,7 +43,6 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
 using StackExchange.Redis;
-using IGift.Infrastructure.Services.Validators;
 
 namespace IGIFT.Server.Shared
 {

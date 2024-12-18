@@ -1,10 +1,10 @@
 ﻿using IGift.Application.OptionsPattern;
+using IGift.Shared.Constants;
 using IGIFT.Server.Shared.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using IGift.Shared.Constants;
 
 namespace IGIFT.Server.Shared
 {
