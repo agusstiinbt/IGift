@@ -83,8 +83,7 @@ namespace IGIFT.Server.Shared
 
             services.AddRazorPages();
 
-            services.AddSwagger(name);
-            services.RegisterSwagger();
+            services.AddCentralizeSwagger(name);
 
             #region TODOs
 
