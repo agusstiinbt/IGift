@@ -155,7 +155,7 @@ builder.Services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMailService, MailService>();
-builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
+builder.Services.AddScoped<IDatabaseSeeder, SQLDatabaseSeeder>();
 builder.Services.AddScoped<IUploadService, UploadService>();
 builder.Services.AddScoped<IProfilePicture, ProfilePictureService>();
 

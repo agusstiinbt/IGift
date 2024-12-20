@@ -13,8 +13,17 @@
             public static string BasicEmail = "joseespositoing@gmail.com";
             public static string DefaultPassword = "Zx2555@@";
 
+            /// <summary>
+            /// Este servidor se conecta a SqlServer
+            /// </summary>
             public const string AuthService = "AuthService";
+            /// <summary>
+            /// Este servidor se conecta a MongoDB
+            /// </summary>
             public const string ChatService = "ChatService";
+
+
+            
             public const string ApiGateway = "ApiGateway";
         }
     }

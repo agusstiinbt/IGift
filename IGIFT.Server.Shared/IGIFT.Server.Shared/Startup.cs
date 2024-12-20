@@ -55,8 +55,8 @@ namespace IGIFT.Server.Shared
             if (name == AppConstants.Server.ApiGateway)
             {
                 services.AddJwtAuthentication(_configuration);
+                services.AddCentralizeSwagger();
             }
-
 
             if (name == AppConstants.Server.AuthService)
             {
@@ -83,7 +83,6 @@ namespace IGIFT.Server.Shared
 
             services.AddRazorPages();
 
-            services.AddCentralizeSwagger(name);
 
             #region TODOs
 
@@ -133,7 +132,7 @@ namespace IGIFT.Server.Shared
 
             app.UseEndpoints(serviceName);
 
-
+            app.
         }
     }
 }

@@ -8,7 +8,7 @@ namespace IGIFT.Server.Shared
     /// </summary>
     public static class SwaggerExtensions
     {
-        public static IServiceCollection AddCentralizeSwagger(this IServiceCollection services, string serviceName)
+        public static IServiceCollection AddCentralizeSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {

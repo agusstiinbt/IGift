@@ -1,9 +1,11 @@
-﻿using IGift.Application.OptionsPattern;
+﻿using IGift.Application.Interfaces.DDBB.Sql;
+using IGift.Application.OptionsPattern;
 using IGift.Shared.Constants;
 using IGIFT.Server.Shared.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace IGIFT.Server.Shared
@@ -64,6 +66,26 @@ namespace IGIFT.Server.Shared
                 endpoints.MapHub<SignalRHub>(AppConstants.SignalR.HubUrl); // Configura un hub de SignalR.Aplicar solo a microservicios que utilicen SignalR
             }
         });
+
+        /// <summary>
+        /// Este metodo tiene como propósito ejecutar tareas de inicialización al inicio de la aplicación, como poblar la base de datos con datos iniciales (usuarios administradores, configuraciones básicas, etc.). 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="_configuration"></param>
+        /// <returns></returns>
+        internal static IApplicationBuilder Initialize(this IApplicationBuilder app, Microsoft.Extensions.Configuration.IConfiguration _configuration)
+        {
+            using var serviceScope = app.ApplicationServices.CreateScope();
+
+            var initializers = serviceScope.ServiceProvider.GetServices<IDatabaseSeeder>();
+
+            foreach (var initializer in initializers)
+            {
+                initializer.Initialize();
+            }
+
+            return app;
+        }
 
         #region Private Methods
         private static AppConfiguration GetApplicationSettings(IConfiguration configuration)

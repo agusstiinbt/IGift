@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IGift.Infrastructure.Services.DDBB.Sql
 {
-    public class DatabaseSeeder : IDatabaseSeeder
+    public class SQLDatabaseSeeder : IDatabaseSeeder
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IGiftUser> _userManager;
         private readonly RoleManager<IGiftRole> _roleManager;
 
-        public DatabaseSeeder(ApplicationDbContext context, UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager)
+        public SQLDatabaseSeeder(ApplicationDbContext context, UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
@@ -131,5 +131,38 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
 
             }).GetAwaiter().GetResult();
         }
+    }
+
+    public class OracleDatabaseSeeder : IDatabaseSeeder
+    {
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class MongoDBDatabaseSeeder : IDatabaseSeeder
+    {
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class PostgreSQLDatabaseSeeder : IDatabaseSeeder
+    {
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class MySqlDatabaseSeeder : IDatabaseSeeder
+    {
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

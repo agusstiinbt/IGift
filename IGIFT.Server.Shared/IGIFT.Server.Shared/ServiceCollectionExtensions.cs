@@ -208,21 +208,29 @@ namespace IGIFT.Server.Shared
                 {
                     case "mysqlservice":
                         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                        services.AddTransient<IDatabaseSeeder, MySqlDatabaseSeeder>();
+
                         break;
 
                     case "oracleservice":
                         options.UseOracle(connectionString);
+                        services.AddTransient<IDatabaseSeeder, OracleDatabaseSeeder>();
+
                         break;
 
-                    case "mongoservice":
-                        throw new NotSupportedException("MongoDB is not directly supported by EF Core. Use an external MongoDB library.");
-
-                    case "postgresqlservice":
+                    case AppConstants.Server.ChatService:
+                        services.AddTransient<IDatabaseSeeder, MongoDBDatabaseSeeder>();
+                        //throw new NotSupportedException("MongoDB is not directly supported by EF Core. Use an external MongoDB library.");
+                        break;
+                    case "postgresqlservice"://TODO pensar en el nombre para el servidor que usara esta BBDD
                         options.UseNpgsql(connectionString);
+                        services.AddTransient<IDatabaseSeeder, PostgreSQLDatabaseSeeder>();
+
                         break;
 
-                    case "sqlserverservice":
+                    case AppConstants.Server.AuthService:
                         options.UseSqlServer(connectionString);
+                        services.AddTransient<IDatabaseSeeder, SQLDatabaseSeeder>();
                         break;
 
                     default:
@@ -230,11 +238,7 @@ namespace IGIFT.Server.Shared
                 }
             });
 
-            // Solo agregar DatabaseSeeder si se usa SQL Server
-            if (serviceName.ToLower() == "sqlserverservice")
-            {
-                services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
-            }
+          
 
             return services;
         }
@@ -390,7 +394,7 @@ namespace IGIFT.Server.Shared
             switch (serverName)
             {
                 case AppConstants.Server.AuthService:
-                    services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
+                    services.AddTransient<IDatabaseSeeder, SQLDatabaseSeeder>();
                     services.AddTransient<ITokenService, TokenService>();
                     services.AddTransient<IUserService, UserService>();
                     break;
