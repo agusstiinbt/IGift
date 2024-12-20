@@ -8,31 +8,45 @@ namespace IGIFT.Server.Shared
     /// </summary>
     public static class SwaggerExtensions
     {
-        public static IServiceCollection AddSwaggerForMicroservice(this IServiceCollection services, string serviceName)
+        public static IServiceCollection AddSwagger(this IServiceCollection services, string serviceName)
         {
             services.AddSwaggerGen(c =>
             {
+                //TODO agregar el siguiente codigo en todos los microservicios dentro del propertyGroup para que esto funcione:
+                //TODO de pasoo reemplazar todos los server por servers 6.0
+                //< GenerateDocumentationFile > true </ GenerateDocumentationFile >
+                //< NoWarn >$(NoWarn); 1591 </ NoWarn >
+
+
+                // Incluir comentarios XML de todos los ensamblados
+                var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    if (!assembly.IsDynamic)
+                    {
+                        var xmlFile = $"{assembly.GetName().Name}.xml";
+                        var xmlPath = Path.Combine(baseDirectory, xmlFile);
+                        if (File.Exists(xmlPath))
+                        {
+                            c.IncludeXmlComments(xmlPath);
+                        }
+                    }
+                }
+
+                // Documento unificado para la API Gateway
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = $"{serviceName} API",
                     Version = "v1",
-                    Description = $"API documentation for the {serviceName} microservice.",
-                    Contact = new OpenApiContact
+                    Title = "API Gateway - Centralized Swagger",
+                    Description = "This Swagger UI provides a unified view of all endpoints available through the API Gateway.",
+                    License = new OpenApiLicense
                     {
-                        Name = "IGift Team",
-                        Email = "support@igift.com"
+                        Name = "MIT License",
+                        Url = new Uri("https://opensource.org/licenses/MIT")
                     }
                 });
 
-                // Incluye comentarios XML (si existen)
-                var xmlFile = $"{serviceName}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                if (File.Exists(xmlPath))
-                {
-                    c.IncludeXmlComments(xmlPath);
-                }
-
-                // Configuración de seguridad para JWT (si aplica)
+                // Definición de seguridad para autenticación JWT
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -40,26 +54,26 @@ namespace IGIFT.Server.Shared
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    Description = "Enter 'Bearer {your token}' to authenticate."
+                    Description = "Input your Bearer token in this format - Bearer {your token here} to access this API",
                 });
 
+                // Requisito de seguridad para todos los endpoints
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
                 {
-                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "Bearer",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header,
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer",
+                            },
+                            Scheme = "Bearer",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                        }, new List<string>()
                     },
-                    new List<string>()
-                }
-            });
+                });
             });
 
             return services;

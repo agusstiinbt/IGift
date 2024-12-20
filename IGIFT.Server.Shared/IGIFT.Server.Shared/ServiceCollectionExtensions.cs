@@ -127,7 +127,6 @@ namespace IGIFT.Server.Shared
             };
             return services;
         }
-
         /// <summary>
         /// Configura interfaces para que se puedan usar implmemtancion de System.Text.Json o Newtonsoft.Json 
         /// </summary>
@@ -181,7 +180,6 @@ namespace IGIFT.Server.Shared
 
             return services;
         }
-
         /// <summary>
         /// Debe ser omitido por el ApiGateWay
         /// </summary>
@@ -240,7 +238,6 @@ namespace IGIFT.Server.Shared
 
             return services;
         }
-
         /// <summary>
         /// Configura usuarios, roles, tokens y demas datos. Debe estar exclusivamente en el AuthService, ya que este es el responsable de gestionar usuarios, roles y datos relacionados con la autenticación
         /// </summary>
@@ -363,7 +360,6 @@ namespace IGIFT.Server.Shared
                            .AddTransient<IPeticionesRepository, PeticionesRepository>()
                            .AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
         }
-
         /// <summary>
         /// Este método es ideal para registrar los componentes básicos y servicios transversales de la capa de la aplicación que se refieren más a la infraestructura o comportamiento común. NO debería contener servicios de negocio específicos
         /// </summary>
@@ -384,7 +380,6 @@ namespace IGIFT.Server.Shared
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
-
         /// <summary>
         /// Este método es el lugar adecuado para registrar servicios específicos de la lógica de negocio, que representan el comportamiento central de tu aplicación, como el manejo de productos, cuentas, usuarios, etc. 
         /// </summary>
@@ -411,7 +406,6 @@ namespace IGIFT.Server.Shared
             }
             return services;
         }
-
         internal static IServiceCollection AddSharedInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IDateTimeService, SystemDateTimeService>();
@@ -420,7 +414,6 @@ namespace IGIFT.Server.Shared
             //services.AddTransient<IMailService, SMTPMailService>();
             return services;
         }
-
         /// <summary>
         /// AddInfrastructureMappings es simplemente una forma de centralizar la configuración de AutoMapper y no tiene necesidad de devolver IServiceCollection como los demás métodos de extensión en el IServiceCollection.
         /// </summary>
@@ -429,8 +422,6 @@ namespace IGIFT.Server.Shared
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
-
-
         public static IServiceCollection AddSharedRedisConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             //var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");

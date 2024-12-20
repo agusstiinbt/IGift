@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>IGift.Server-2a66541c-bcd3-4649-9785-513a84c7ed8b</UserSecretsId>
+
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>$(NoWarn);1591</NoWarn>
+	  
   </PropertyGroup>
 
   <ItemGroup>
