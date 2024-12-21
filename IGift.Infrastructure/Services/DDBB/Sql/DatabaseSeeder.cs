@@ -133,36 +133,9 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
         }
     }
 
-    public class OracleDatabaseSeeder : IDatabaseSeeder
-    {
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-    }
 
-    public class MongoDBDatabaseSeeder : IDatabaseSeeder
-    {
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-    }
 
-    public class PostgreSQLDatabaseSeeder : IDatabaseSeeder
-    {
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
-    }
 
-    public class MySqlDatabaseSeeder : IDatabaseSeeder
-    {
-        public void Initialize()
-        {
-            throw new NotImplementedException();
-        }
 
-    }
+
 }

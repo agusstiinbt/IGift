@@ -12,7 +12,6 @@ namespace IGIFT.Server.Shared
 {
     internal static class ApplicationBuilderExtensions
     {
-
         internal static IApplicationBuilder UseExceptionHandling(
            this IApplicationBuilder app,
            IWebHostEnvironment env)

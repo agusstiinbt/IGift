@@ -23,7 +23,7 @@
             public const string ChatService = "ChatService";
 
 
-            
+
             public const string ApiGateway = "ApiGateway";
         }
     }

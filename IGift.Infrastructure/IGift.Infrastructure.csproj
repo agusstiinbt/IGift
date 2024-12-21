@@ -28,11 +28,5 @@
 	  <ProjectReference Include="..\IGift.Domain\IGift.Domain.csproj" />
 	  <ProjectReference Include="..\IGift\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Services\DDBB\MySql\" />
-	  <Folder Include="Services\DDBB\Oracle\" />
-	  <Folder Include="Services\DDBB\PostgreSqL\" />
-	</ItemGroup>
 	
 </Project>
