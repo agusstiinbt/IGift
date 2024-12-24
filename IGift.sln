@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGift.Shared", "IGift\Share
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadmeFiles", "ReadmeFiles", "{3E6B7197-3E30-4A2A-8025-9BEE862A1C0D}"
 	ProjectSection(SolutionItems) = preProject
+		AboutBBDD.txt = AboutBBDD.txt
 		Readme.txt = Readme.txt
 		Tasks.txt = Tasks.txt
 	EndProjectSection

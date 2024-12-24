@@ -1,3 +1,6 @@
+
+Datos importantes:
+
 AspNetRoleClaims: Almacena los claims asociados a cada rol en tu aplicación. Los claims son afirmaciones sobre el usuario, como permisos o roles.
 AspNetRoles: Almacena los roles de usuario en tu aplicación. Los roles agrupan usuarios que comparten permisos o responsabilidades comunes.
 AspNetUserClaims: Almacena los claims asociados a cada usuario en tu aplicación. Estos claims pueden contener información adicional sobre el usuario, como su nombre, correo electrónico, etc.

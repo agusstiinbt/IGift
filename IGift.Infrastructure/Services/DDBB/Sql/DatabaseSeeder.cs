@@ -132,10 +132,4 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
             }).GetAwaiter().GetResult();
         }
     }
-
-
-
-
-
-
 }
