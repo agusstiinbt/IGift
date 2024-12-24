@@ -1,4 +1,3 @@
-
 Datos importantes:
 
 AspNetRoleClaims: Almacena los claims asociados a cada rol en tu aplicación. Los claims son afirmaciones sobre el usuario, como permisos o roles.
@@ -15,7 +14,6 @@ PersistedGrants: Utilizada para almacenar tokens OAuth 2.0 y datos relacionados 
 
 
 ¿Cómo trabajamos en la aplicación?
-
 
 La lógica tratamos de dejarla siempre en el código C# antes que en la base de datos.
 
