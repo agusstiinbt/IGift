@@ -149,6 +149,7 @@ builder.Services
 
 //Repositories
 builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+builder.Services.AddTransient(typeof(IUnitOfWork2<>), typeof(UnitOfWork2<>));
 builder.Services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
 
 //Scopes

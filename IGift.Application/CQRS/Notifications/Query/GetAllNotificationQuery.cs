@@ -12,10 +12,10 @@ namespace IGift.Application.CQRS.Notifications.Query
     internal class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, IResult<IEnumerable<NotificationResponse>>>
     {
         //Acá ponemos un int porque sabemos que nuestras notificaciones tienen un Int
-        private readonly IUnitOfWor2k<int> _unitOfWork;
+        private readonly IUnitOfWork2<int> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetAllNotificationQueryHandler(IUnitOfWor2k<int> unitOfWork, IMapper mapper)
+        public GetAllNotificationQueryHandler(IUnitOfWork2<int> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

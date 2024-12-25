@@ -12,6 +12,9 @@ namespace IGift.Infrastructure.Data
         {
         }
 
+
+        #region DBSets
+
         public DbSet<GiftCard> GiftCards { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<LocalAdherido> LocalesAdheridos { get; set; }
@@ -19,6 +22,8 @@ namespace IGift.Infrastructure.Data
         public DbSet<Notification> Notification { get; set; }
         public DbSet<ProfilePicture> ProfilePicture { get; set; }
         public DbSet<OperacionesIntercambio> OperacionesIntercambio { get; set; }
+
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

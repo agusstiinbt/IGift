@@ -14,7 +14,7 @@ namespace IGift.Application.Interfaces.Repositories
         Task Rollback();
     }
 
-    public interface IUnitOfWor2k<TId> : IDisposable
+    public interface IUnitOfWork2<TId> : IDisposable
     {
         IRepository<T, TId> Repository<T>() where T : Entity<TId>;
 
