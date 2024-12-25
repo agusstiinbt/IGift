@@ -18,6 +18,7 @@ namespace IGift.Infrastructure.Data
         public DbSet<Peticiones> Pedidos { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<ProfilePicture> ProfilePicture { get; set; }
+        public DbSet<OperacionesIntercambio> OperacionesIntercambio { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -55,6 +56,7 @@ namespace IGift.Infrastructure.Data
                 .IsUnique();
 
             //No confundir la construcción de este código con el anterior entre ProfilePicture y IGiftUser. Son distintos por la relacion que hay entre ellos:
+
             builder.Entity<Notification>()
            .HasOne<IGiftUser>()
            .WithMany(u => u.Notifications)
@@ -64,6 +66,44 @@ namespace IGift.Infrastructure.Data
            .HasOne<IGiftUser>()
            .WithMany(u => u.Pedidos)
            .HasForeignKey(p => p.IdUser);
+
+
+            #region Casos Particular
+            // En este caso tenemos el caso donde clases que tienen siepre 2 o + usuarios. Y un usario tiene una coleccion de esa clase
+
+            #region OperacionesIntercambio
+
+            builder.Entity<OperacionesIntercambio>()
+                .HasOne<IGiftUser>()
+                .WithMany(x => x.OperacionesIntercambios)
+                .HasForeignKey(p => p.IdUser1)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<OperacionesIntercambio>()
+              .HasOne<IGiftUser>()
+              .WithMany(x => x.OperacionesIntercambios)
+              .HasForeignKey(p => p.IdUser2)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            #endregion
+
+            #region Contracts
+
+            builder.Entity<Contract>()
+               .HasOne<IGiftUser>()
+               .WithMany(x => x.Contratos)
+               .HasForeignKey(p => p.IdUser1)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Contract>()
+              .HasOne<IGiftUser>()
+              .WithMany(x => x.Contratos)
+              .HasForeignKey(p => p.IdUser2)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            #endregion
+
+            #endregion
 
             builder.Entity<Peticiones>(entity =>
             {

@@ -24,5 +24,4 @@ namespace IGift.Infrastructure.Models
             Group = roleClaimGroup;
         }
     }
-
 }

@@ -19,10 +19,10 @@ namespace IGift.Application.CQRS.Peticiones.Query
 
     internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, IResult<PaginatedResult<PeticionesResponse>>>
     {
-        private readonly IUnitOfWork<string> _unitOfWork;
+        private readonly IUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetAllPeticionesQueryHandler(IUnitOfWork<string> unitOfWork, IMapper mapper)
+        public GetAllPeticionesQueryHandler(IUnitOfWork<int> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

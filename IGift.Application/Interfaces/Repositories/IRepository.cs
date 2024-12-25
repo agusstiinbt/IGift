@@ -2,7 +2,6 @@
 
 namespace IGift.Application.Interfaces.Repositories
 {
-
     public interface IRepository<T, in TId> where T : class, IEntity<TId>
     {
         IQueryable<T> Entities { get; }
@@ -19,8 +18,6 @@ namespace IGift.Application.Interfaces.Repositories
 
         Task<Task> DeleteAsync(T entity);
     }
-
-
     //    ¿Cuándo sería mejor usar directamente el DbContext?
     //Aunque el patrón repositorio es útil, hay casos en los que puedes optar por trabajar directamente con el DbContext:
 

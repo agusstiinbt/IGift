@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IGift.Infrastructure.Models
 {
-    public class IGiftUser : IdentityUser<string?>, IAuditableEntity<string?>
+    public class IGiftUser : IdentityUser<string>, IAuditableEntity<string>
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
@@ -25,8 +25,10 @@ namespace IGift.Infrastructure.Models
 
         public bool IsActive { get; set; }
 
-        public List<Notification> Notifications { get; set; } = new List<Notification>() { };
-        public List<Peticiones> Pedidos { get; set; } = new List<Peticiones>() { };
+        public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<Peticiones> Pedidos { get; set; }
+        public virtual ICollection<Contract> Contratos { get; set; }
+        public virtual ICollection<OperacionesIntercambio> OperacionesIntercambios { get; set; }
 
         //TODO implementar para el chat?
         public IGiftUser()

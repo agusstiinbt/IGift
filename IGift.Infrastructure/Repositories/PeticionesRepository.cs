@@ -7,14 +7,14 @@ namespace IGift.Infrastructure.Repositories
 {
     public class PeticionesRepository : IPeticionesRepository
     {
-        private readonly IRepository<Peticiones, string> _repository;
+        private readonly IRepository<Peticiones, int> _repository;
 
-        public PeticionesRepository(IRepository<Peticiones, string> repository)
+        public PeticionesRepository(IRepository<Peticiones, int> repository)
         {
             _repository = repository;
         }
 
-        public async Task<bool> IsBrandUsed(string id)
+        public async Task<bool> IsBrandUsed(int id)
         {
             return await _repository.Entities.AsNoTracking().AnyAsync(x => x.Id == id);
         }

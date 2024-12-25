@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using MediatR;
 
@@ -11,7 +12,7 @@ namespace IGift.Application.CQRS.Peticiones.Command
         /// Si se envía igual a 0(cero) significa que estamos editando un registro
         /// </summary>
 
-        public string? Id { get; set; }
+        public int Id { get; set; } = 0;
         public string IdUser { get; set; }
         public string Descripcion { get; set; }
         public int Monto { get; set; }
@@ -20,10 +21,10 @@ namespace IGift.Application.CQRS.Peticiones.Command
     }
     internal class AddPedidoCommandHandler : IRequestHandler<AddEditPeticionesCommand, IResult>
     {
-        private readonly IUnitOfWork<string> _unitOfWork;
+        private readonly IUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AddPedidoCommandHandler(IUnitOfWork<string> unitOfWork, IMapper mapper)
+        public AddPedidoCommandHandler(IUnitOfWork<int> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -39,11 +40,12 @@ namespace IGift.Application.CQRS.Peticiones.Command
                 Monto = request.Monto,
                 CreatedBy = "Agustin Esposito",
                 CreatedOn = DateTime.Now,
-                LastModifiedOn = DateTime.Now
+                LastModifiedOn = DateTime.Now,
+                LastModifiedBy = AppConstants.Server.AdminEmail,
             };
-            if (string.IsNullOrEmpty(request.Id))
+            if (request.Id == 0)
             {
-                await _unitOfWork.Repository<Domain.Entities.Peticiones>().AddAsync(pedido);
+                var result = await _unitOfWork.Repository<Domain.Entities.Peticiones>().AddAsync(pedido);
                 return await _unitOfWork.Commit("Pedido agregado con éxito", cancellationToken);
             }
             else
@@ -58,4 +60,5 @@ namespace IGift.Application.CQRS.Peticiones.Command
             }
         }
     }
+
 }

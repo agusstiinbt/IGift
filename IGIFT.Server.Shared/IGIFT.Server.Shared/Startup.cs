@@ -132,7 +132,7 @@ namespace IGIFT.Server.Shared
 
             app.UseEndpoints(serviceName);
 
-            app.
+            app.ConfigureSwagger();
         }
     }
 }

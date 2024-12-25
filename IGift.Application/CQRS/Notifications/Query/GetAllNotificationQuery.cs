@@ -12,10 +12,10 @@ namespace IGift.Application.CQRS.Notifications.Query
     internal class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, IResult<IEnumerable<NotificationResponse>>>
     {
         //Acá ponemos un int porque sabemos que nuestras notificaciones tienen un Int
-        private readonly IUnitOfWork<string> _unitOfWork;
+        private readonly IUnitOfWor2k<int> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetAllNotificationQueryHandler(IUnitOfWork<string> unitOfWork, IMapper mapper)
+        public GetAllNotificationQueryHandler(IUnitOfWor2k<int> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -23,6 +23,7 @@ namespace IGift.Application.CQRS.Notifications.Query
 
         public async Task<IResult<IEnumerable<NotificationResponse>>> Handle(GetAllNotificationQuery request, CancellationToken cancellationToken)
         {
+            //TODO fijarse si este response trae algo porque hicimos un cambio en el paradigma de unit of work para clases que no tiene AuditableEntity ni IAuditableEntity
             var response = await _unitOfWork.Repository<Notification>().GetAllAsync();
             var lista = new List<NotificationResponse>();
             //TODO modificar y hacer algun tipo de mapeo
