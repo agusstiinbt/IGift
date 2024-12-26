@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using MediatR;

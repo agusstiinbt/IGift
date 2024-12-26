@@ -1,4 +1,5 @@
-﻿using IGift.Application.Interfaces.Repositories;
+﻿using IGift.Application.Interfaces.Repositories.Generic.Auditable;
+using IGift.Application.Interfaces.Repositories.NonGeneric.Peticiones;
 using IGift.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;

@@ -9,6 +9,5 @@ namespace IGift.Application.Models
         public string Message { get; set; } = string.Empty;
         public DateTime DateTime { get; set; }
         public TypeNotification Type { get; set; }
-        public int Id { get; set; }
     }
 }

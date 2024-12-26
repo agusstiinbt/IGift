@@ -1,6 +1,6 @@
 ﻿using IGift.Domain.Contracts;
 
-namespace IGift.Application.Interfaces.Repositories
+namespace IGift.Application.Interfaces.Repositories.Generic.Auditable
 {
     public interface IRepository<T, in TId> where T : class, IEntity<TId>
     {

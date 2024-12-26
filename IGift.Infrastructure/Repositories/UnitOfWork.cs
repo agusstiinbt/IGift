@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Interfaces.Repositories.Generic.Auditable;
+using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
 using IGift.Shared.Wrapper;
@@ -148,23 +150,32 @@ namespace IGift.Infrastructure.Repositories
             disposed = true;
         }
 
-        public IRepository<T, TId> Repository<T>() where T : Entity<TId>
+        public IRepository2<T, TId> Repository<T>() where T : Entity<TId>
         {
             if (_repositories == null)
                 _repositories = new Hashtable();
 
             var type = typeof(T).Name;
 
-            if (!_repositories.ContainsKey(type))
+            try
             {
-                var repositoryType = typeof(Repository<,>);
+                if (!_repositories.ContainsKey(type))
+                {
+                    var repositoryType = typeof(Repository2<,>);
 
-                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
+                    var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
 
-                _repositories.Add(type, repositoryInstance);
+                    _repositories.Add(type, repositoryInstance);
+                }
             }
+            catch (Exception e)
+            {
 
-            return (IRepository<T, TId>)_repositories[type];
+                throw;
+            }
+           
+
+            return (IRepository2<T, TId>)_repositories[type];
         }
 
         public Task Rollback()

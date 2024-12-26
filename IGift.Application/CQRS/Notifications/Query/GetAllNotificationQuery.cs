@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Application.Models;
 using IGift.Application.Responses.Notification;
 using IGift.Shared.Wrapper;
@@ -7,7 +7,7 @@ using MediatR;
 
 namespace IGift.Application.CQRS.Notifications.Query
 {
-    public record GetAllNotificationQuery(string Id) : IRequest<IResult<IEnumerable<NotificationResponse>>>;
+    public record GetAllNotificationQuery(int Id) : IRequest<IResult<IEnumerable<NotificationResponse>>>;
 
     internal class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, IResult<IEnumerable<NotificationResponse>>>
     {
@@ -26,7 +26,8 @@ namespace IGift.Application.CQRS.Notifications.Query
             //TODO fijarse si este response trae algo porque hicimos un cambio en el paradigma de unit of work para clases que no tiene AuditableEntity ni IAuditableEntity
             var response = await _unitOfWork.Repository<Notification>().GetAllAsync();
             var lista = new List<NotificationResponse>();
-            //TODO modificar y hacer algun tipo de mapeo
+
+            ////TODO modificar y hacer algun tipo de mapeo
             foreach (var item in response)
             {
                 lista.Add(new NotificationResponse
@@ -39,8 +40,8 @@ namespace IGift.Application.CQRS.Notifications.Query
 
             //TODO implementar el mapeo aquí
             //var result = _mapper.Map<List<NotificationResponse>>(response);
-
-            return await Result<IEnumerable<NotificationResponse>>.SuccessAsync(lista);
+            //return result;
+            return null;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using IGift.Application.Interfaces.Repositories;
+﻿using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
 
@@ -9,6 +9,55 @@ namespace IGift.Infrastructure.Repositories
         private readonly ApplicationDbContext _context;
 
         public Repository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IQueryable<T> Entities => _context.Set<T>();
+
+        public async Task<T> AddAsync(T entity)
+        {
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            return entity;
+        }
+
+        public async Task<Task> DeleteAsync(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            return Task.CompletedTask;
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await Task.FromResult(_context.Set<T>().AsEnumerable());
+        }
+
+        public async Task<T> GetByIdAsync(TId id)
+        {
+            return await _context!.Set<T>().FindAsync(id);
+        }
+
+        public Task<IEnumerable<T>> GetPagedResponseAsync(int pageNumber, int pageSize)
+        {
+            //TODO utilizar?
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            T exist = _context.Set<T>().Find(entity.Id)!;
+            _context.Entry(exist).CurrentValues.SetValues(entity);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public class Repository2<T, TId> : IRepository2<T, TId> where T : Entity<TId>
+    {
+        private readonly ApplicationDbContext _context;
+
+        public Repository2(ApplicationDbContext context)
         {
             _context = context;
         }

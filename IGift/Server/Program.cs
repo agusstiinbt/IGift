@@ -8,6 +8,8 @@ using IGift.Application.Interfaces.DDBB.Sql;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Interfaces.Repositories.Generic.Auditable;
+using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Infrastructure.Repositories;
@@ -26,6 +28,7 @@ using Newtonsoft.Json;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSwaggerGen();
 
 //TODO fijarse como vamos a usar los logs
 //serilog
@@ -150,7 +153,9 @@ builder.Services
 //Repositories
 builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 builder.Services.AddTransient(typeof(IUnitOfWork2<>), typeof(UnitOfWork2<>));
+
 builder.Services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
+builder.Services.AddTransient(typeof(IRepository2<,>), typeof(Repository2<,>));
 
 //Scopes
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -216,11 +221,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-//app.UseSwagger();
-//app.UseSwaggerUI(c =>
-//{
-//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "IGift.SqlServerService API v1");
-//});
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();

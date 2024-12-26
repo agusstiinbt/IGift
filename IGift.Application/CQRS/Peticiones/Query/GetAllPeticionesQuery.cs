@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using AutoMapper;
 using IGift.Application.Extensions;
 using IGift.Application.Filtros.Pedidos;
-using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Application.Responses.Pedidos;
 using IGift.Shared.Wrapper;
 using MediatR;

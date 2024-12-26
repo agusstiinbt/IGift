@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Interfaces\Repositories\IRepository2.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\IGift.Domain\IGift.Domain.csproj" />
 		<ProjectReference Include="..\IGift\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
@@ -25,6 +29,10 @@
 		<Folder Include="CQRS\Notifications\Command\" />
 		<Folder Include="Responses\Chat\" />
 		<Folder Include="Responses\Identity\Token\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Interfaces\Repositories\Generic\NonAuditable\IRepository2.cs" />
 	</ItemGroup>
 
 </Project>

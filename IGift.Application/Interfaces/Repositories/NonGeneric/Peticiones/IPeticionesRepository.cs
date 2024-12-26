@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Interfaces.Repositories
+﻿namespace IGift.Application.Interfaces.Repositories.NonGeneric.Peticiones
 {
     public interface IPeticionesRepository
     {
