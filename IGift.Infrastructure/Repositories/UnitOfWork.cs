@@ -173,7 +173,7 @@ namespace IGift.Infrastructure.Repositories
 
                 throw;
             }
-           
+
 
             return (IRepository2<T, TId>)_repositories[type];
         }
