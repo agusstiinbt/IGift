@@ -26,13 +26,13 @@ namespace IGIFT.Server.Shared
 
             services.AddForwarding(_configuration);
 
-            #region Resumen
+            #region Preferecias de lenguaje 
             //configura la localización en la aplicación. Este método es parte de las funcionalidades de .NET Core para soportar aplicaciones multilingües o que manejan textos específicos según la cultura o idioma del usuario.
+            ////services.AddLocalization(options =>
+            ////{
+            ////    options.ResourcesPath = "Resources";
+            ////});
             #endregion
-            services.AddLocalization(options =>
-            {
-                //options.ResourcesPath = "Resources";
-            });
 
             services.AddSerialization(_configuration);
 
@@ -63,8 +63,9 @@ namespace IGIFT.Server.Shared
                 services.AddIdentity(_configuration);
             }
 
-            if (name == AppConstants.Server.ChatService)
+            if (name == AppConstants.Server.CommunicationService)
             {
+                services.AddSharedInfraestructure(_configuration);
                 services.AddSignalR();
             }
 
@@ -79,28 +80,27 @@ namespace IGIFT.Server.Shared
 
             services.AddRepositories();
 
+            //TODO fijarse si deberia de estar dentro de algun en particular o suelto
             services.AddInfrastructureMappings();
 
             services.AddRazorPages();
 
 
             #region TODOs
-
-            //TODO  addhangifire se usa para guardar tareas de segundo plano y se deberia usar redis y guarda la info de la microservice api gateway.
+            //TODO fijarse el metodo addcontrollers y addvalidators. Deberia el addcontrollers estar en algun lugar particular o suelto? Y fijarse como funcionaria el addvalidators porque dependeria de quein estaria usando el controllers para que tome el assembly si es usado
+            //TODO  addhangifire se usa para guardar tareas de segundo plano y se deberia usar redis y guarda la info de la microservice api gateway.  y hangfireserver?
             //TODO generar ejemplos para utilizar  services.AddExtendedAttributesUnitOfWork
 
+            //TODO services.adlazycache fijarse quien debria de usarlo en el caso deque lo usemos tambien con redis
 
-
-            //TODO nos quedaria agregar el AddServerStorage pero no sabemos para que sirve
+            //TODO nos quedaria agregar el AddServerStorage pero no sabemos para que nos serviria
 
             #endregion
         }
 
-
         //Si hacemos una configuracion por microServicios dentro de ConfigureServices, entonces no necesitaremos hacerlo aqui en Configure
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)
         {
-
             var serviceName = _configuration.GetValue<string>("ServiceName")!;
 
             app.UseForwarding(_configuration);

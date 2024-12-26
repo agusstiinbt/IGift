@@ -223,7 +223,7 @@ namespace IGIFT.Server.Shared
 
                         break;
 
-                    case AppConstants.Server.ChatService:
+                    case AppConstants.Server.CommunicationService:
                         services.AddTransient<IDatabaseSeeder, MongoDBDatabaseSeeder>();
                         //throw new NotSupportedException("MongoDB is not directly supported by EF Core. Use an external MongoDB library.");
                         break;
@@ -403,7 +403,7 @@ namespace IGIFT.Server.Shared
                     services.AddTransient<ITokenService, TokenService>();
                     services.AddTransient<IUserService, UserService>();
                     break;
-                case AppConstants.Server.ChatService:
+                case AppConstants.Server.CommunicationService:
                     services.AddTransient<IMailService, MailService>();
                     services.AddTransient<IChatService, ChatService>();
                     services.AddTransient<IProfilePicture, ProfilePictureService>();
@@ -415,6 +415,7 @@ namespace IGIFT.Server.Shared
             }
             return services;
         }
+
         internal static IServiceCollection AddSharedInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IDateTimeService, SystemDateTimeService>();

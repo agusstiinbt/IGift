@@ -20,7 +20,7 @@
             /// <summary>
             /// Este servidor se conecta a MongoDB
             /// </summary>
-            public const string ChatService = "ChatService";
+            public const string CommunicationService = "CommunicationService";
 
 
             public const string ApiGateway = "ApiGateway";

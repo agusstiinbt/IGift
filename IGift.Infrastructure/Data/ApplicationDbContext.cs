@@ -12,7 +12,6 @@ namespace IGift.Infrastructure.Data
         {
         }
 
-
         #region DBSets
 
         public DbSet<GiftCard> GiftCards { get; set; }
