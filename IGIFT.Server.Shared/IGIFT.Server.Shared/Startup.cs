@@ -56,6 +56,7 @@ namespace IGIFT.Server.Shared
             {
                 services.AddJwtAuthentication(_configuration);
                 services.AddCentralizeSwagger();
+                services.AddControllers();
             }
 
             if (name == AppConstants.Server.AuthService)

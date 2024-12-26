@@ -4,8 +4,6 @@ namespace IGift.Server.Controllers.Pruebas
 {
 
     //Este controlador sirve como prueba para entender como funciona la clase TimespanJsonConverter.cs
-
-
     [ApiController]
     [Route("api/[controller]")]
     public class TaskController : ControllerBase
