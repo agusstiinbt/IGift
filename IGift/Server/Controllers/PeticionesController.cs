@@ -22,8 +22,7 @@ namespace IGift.Server.Controllers
         [HttpPost]
         public async Task<ActionResult> GetAll(GetAllPeticionesQuery query)
         {
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            return Ok(await _mediator.Send(query));
         }
     }
 }

@@ -23,8 +23,7 @@ namespace IGift.Server.Controllers
         [Authorize(Roles = AppConstants.Role.AdministratorRole)]
         public async Task<ActionResult> GetAll()
         {
-            var users = await _userService.GetAllAsync();
-            return Ok(users);
+            return Ok(await _userService.GetAllAsync());
         }
 
         [HttpPost("GetById")]
@@ -51,8 +50,7 @@ namespace IGift.Server.Controllers
         [HttpPost("ForgotPassword")]
         public async Task<ActionResult> ForgotPasswordAsync(ForgotPasswordRequest request)
         {
-            var origin = Request.Headers["origin"];
-            return Ok(await _userService.ForgotPasswordAsync(request, origin));
+            return Ok(await _userService.ForgotPasswordAsync(request, Request.Headers["origin"]!));
         }
 
         [HttpPost("ChangeUserStatus")]
@@ -66,6 +64,5 @@ namespace IGift.Server.Controllers
         {
             return Ok(await _userService.UpdateRolesAsync(request));
         }
-
     }
 }

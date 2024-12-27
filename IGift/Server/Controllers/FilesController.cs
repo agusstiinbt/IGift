@@ -18,8 +18,7 @@ namespace IGift.Server.Controllers
         [HttpPost("GetProfilePictureById")]
         public async Task<ActionResult> GetProfilePictureAsync(ProfilePictureById p)
         {
-            var response = await _profileService.GetByUserIdAsync(p.Id);
-            return Ok(response);
+            return Ok(await _profileService.GetByUserIdAsync(p.Id));
         }
 
         [HttpPost("UploadProfilePicture")]

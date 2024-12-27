@@ -27,8 +27,7 @@ namespace IGift.Server.Controllers
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<Result>> RefreshToken(TokenRequest t)
         {
-            var response = await _tokenService.RefreshUserToken(t);
-            return Ok(response);
+            return Ok(await _tokenService.RefreshUserToken(t));
         }
     }
 }
