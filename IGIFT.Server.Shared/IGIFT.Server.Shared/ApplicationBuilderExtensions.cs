@@ -12,15 +12,20 @@ namespace IGIFT.Server.Shared
 {
     internal static class ApplicationBuilderExtensions
     {
+        /// <summary>
+        /// Middleware personalizado que configura el manejo de excepciones en una aplicación ASP.NET Core. Su propósito principal es determinar cómo deben manejarse y mostrarse las excepciones según el entorno (desarrollo, producción, etc.) Si estamos en un ambiente de desarrollo ejecutamos un middleware de net core, sino nuestros personalizados como MyMiddleware
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <returns></returns>
         internal static IApplicationBuilder UseExceptionHandling(
            this IApplicationBuilder app,
            IWebHostEnvironment env)
         {
-
+            //Si no es desarrollo entonces ejecutamos MyMiddleware
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //TODO que mas podria ir en este metodo?
             }
             return app;
         }
