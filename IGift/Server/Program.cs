@@ -190,7 +190,9 @@ builder.Services.AddSignalR();
 
 
 //MediatR
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllNotificationQuery).Assembly));
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblyContaining<GetAllNotificationQuery>());
+
 
 var app = builder.Build();
 

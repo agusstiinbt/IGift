@@ -20,7 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllLocalAdheridoQuery).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllLocalAdheridoQuery>());
 
 //Mapeo
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

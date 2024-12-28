@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using IGift.Application.CQRS.Notifications.Query;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Communication.Mail;
 using IGift.Application.Interfaces.Dates;
@@ -14,6 +15,7 @@ using IGift.Application.Interfaces.Repositories.NonGeneric.Peticiones;
 using IGift.Application.Interfaces.Serialization.Options;
 using IGift.Application.Interfaces.Serialization.Settings;
 using IGift.Application.OptionsPattern;
+using IGift.Application.Validators;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Infrastructure.Repositories;
@@ -73,9 +75,7 @@ namespace IGIFT.Server.Shared
             //          },
             var serviceName = configuration.GetValue<string>("ServiceName"); // Variable que identifica cada microservicio
 
-            var applicationSettingsConfiguration = configuration.GetSection(nameof(AppConfiguration));
-
-            var config = applicationSettingsConfiguration.Get<AppConfiguration>();
+            AppConfiguration config = GetApplicationSettings(configuration);
 
             if (config!.BehindSSLProxy)
             {
@@ -381,12 +381,12 @@ namespace IGIFT.Server.Shared
 
             //Esta sintaxis le dice a MediatR que registre automáticamente todos los handlers (commands, queries, etc.) y pipeline behaviors que estén definidos en el ensamblado especificado.
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllNotificationQuery>());
 
 
             //IPipeline... es una interfaz de MediatR que permite interceptar las solicitudes (queries o commands) antes o después de que lleguen a sus respectivos handlers. Esto es útil para implementar comportamientos transversales, como validaciones, logging, manejo de transacciones, etc.
             //Si un microservicio no usa validaciones, por ejemplo, puedes omitir
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssemblyContaining<AddEditProductCommandValidator>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
         /// <summary>
@@ -451,6 +451,12 @@ namespace IGIFT.Server.Shared
             services.AddSingleton<IConnectionMultiplexer>(sp =>
                     ConnectionMultiplexer.Connect(redisConfig.ConnectionString));
             return services;
+        }
+
+        private static AppConfiguration GetApplicationSettings(IConfiguration configuration)
+        {
+            var applicationSettingsConfiguration = configuration.GetSection(nameof(AppConfiguration));
+            return applicationSettingsConfiguration.Get<AppConfiguration>();
         }
     }
 }
