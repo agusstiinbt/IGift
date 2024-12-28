@@ -83,7 +83,7 @@ namespace IGift.Infrastructure.Services.Identity
                 return await Result<UserLoginResponse>.FailAsync("Email no encontrado.");
             }
 
-            //TODO: Dejar esto para decidir más adelante si lo usamos o no
+            //  Dejar esto para decidir más adelante si lo usamos o no
             //if (!user.IsActive) 
             //{
             //    return await Result<LoginResponse>.FailAsync("User no activo.Contacte al administrador.");

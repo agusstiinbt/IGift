@@ -107,7 +107,6 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             var token = await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken);
             var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
 
-            //TODO fijarse si usar postasync o postasjsonasync
             var response = await _httpClient.PostAsJsonAsync(TokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
             var result = await response.ToResult<UserLoginResponse>();
 

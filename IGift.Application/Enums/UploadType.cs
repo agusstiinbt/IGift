@@ -17,11 +17,12 @@ namespace IGift.Application.Enums
         /// </summary>
         [Description(@"Images\ProfilePictures")]
         ProfilePicture,
-        /// <summary>
-        /// Todo tipo de documentos
-        /// </summary>
-        [Description(@"Documents")]//TODO luego se puede separar entre pdf, excel, etc?
-        Document,
+        [Description(@"Documents\PDF")]
+        DocumentPDF,
+        [Description(@"Documents\Excel")]
+        DocumentExcel,
+        [Description(@"Documents\Txt")]
+        DocumentTxt,
         /// <summary>
         /// Imágenes solamente de los locales adheridos
         /// </summary>

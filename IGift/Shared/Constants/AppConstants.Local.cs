@@ -4,8 +4,6 @@
     {
         public static class Local
         {
-            public static string Preference = "clientPreference";//TODO eliminar?
-
             public static string ShopCart = "shopCart";
             public static string AuthToken = "authToken";
             public static string Access_Token = "access_token";

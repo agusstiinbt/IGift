@@ -30,8 +30,6 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 
-//TODO fijarse como vamos a usar los logs
-//serilog
 var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 var logFilePath = Path.Combine(desktopPath, "app-logs.txt");
 
@@ -148,7 +146,6 @@ builder.Services
         }
     };
 });//TODO estudiar esto
-//TODO debemos agregar por acá el AddAuthorization de blazorHero para los permisos/roles
 
 //Repositories
 builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));

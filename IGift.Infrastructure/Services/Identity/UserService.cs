@@ -53,8 +53,8 @@ namespace IGift.Infrastructure.Services.Identity
 
         public async Task<IResult<string>> ConfirmEmailAsync(string userId, string code)
         {
-            //TODO para esto hay que leer la documentación de microsoft. NO basarse en el código de blazorHero 
-            return null;
+            // para esto hay que leer la documentación de microsoft. NO basarse en el código de blazorHero 
+            throw new NotImplementedException();
         }
 
         public async Task<string> ExportToExcelAsync(string searchString = "")

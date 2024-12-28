@@ -19,14 +19,14 @@ namespace IGift.Infrastructure.Repositories
         public async Task<T> AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            await _context.SaveChangesAsync();
             return entity;
         }
 
         public async Task<Task> DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero en esta clase en todos los metodos
             return Task.CompletedTask;
         }
 
@@ -42,7 +42,6 @@ namespace IGift.Infrastructure.Repositories
 
         public Task<IEnumerable<T>> GetPagedResponseAsync(int pageNumber, int pageSize)
         {
-            //TODO utilizar?
             throw new NotImplementedException();
         }
 
@@ -68,14 +67,14 @@ namespace IGift.Infrastructure.Repositories
         public async Task<T> AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            await _context.SaveChangesAsync();
             return entity;
         }
 
         public async Task<Task> DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();//TODO fijarse si usar o no el cache remove que tiene blazorHero
+            await _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 

@@ -108,8 +108,6 @@ namespace IGift.Client.Layouts.Main
                     if (!string.IsNullOrEmpty(token))
                     {
                         _snack.Add("Token refrescado", Severity.Success);
-                        //TODO en el codigo de blazor hero tenian el código siguiente, fijarse si no es necesario descomentarlo, creo que no:
-                        //   _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     }
                 }
                 catch (Exception e)

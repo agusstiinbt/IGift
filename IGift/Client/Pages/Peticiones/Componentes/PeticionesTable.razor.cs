@@ -12,7 +12,6 @@ namespace IGift.Client.Pages.Peticiones.Componentes
 {
     public partial class PeticionesTable
     {
-        //TODO limpiar código que no se esté utilizando
         [Inject] IPeticionesService _peticiones { get; set; }
         [Inject] IShopCart _carritoService { get; set; }
 
