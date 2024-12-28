@@ -18,5 +18,10 @@
         /// configura la URL base de la aplicación, útil para CORS y otros escenarios donde se necesita conocer la URL.
         /// </summary>
         public string ApplicationUrl { get; set; }
+
+        /// <summary>
+        /// Nombre del servidor
+        /// </summary>
+        public string ServiceName { get; set; }
     }
 }

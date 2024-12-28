@@ -1,4 +1,5 @@
-﻿using IGift.Shared.Constants;
+﻿using IGift.Application.OptionsPattern;
+using IGift.Shared.Constants;
 using IGIFT.Server.Shared.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -88,7 +89,7 @@ namespace IGIFT.Server.Shared
 
 
             #region TODOs
-            //TODO fijarse el metodo addcontrollers y addvalidators. Deberia el addcontrollers estar en algun lugar particular o suelto? Y fijarse como funcionaria el addvalidators porque dependeria de quein estaria usando el controllers para que tome el assembly si es usado
+
             //TODO  addhangifire se usa para guardar tareas de segundo plano y se deberia usar redis y guarda la info de la microservice api gateway.  y hangfireserver?
             //TODO generar ejemplos para utilizar  services.AddExtendedAttributesUnitOfWork
 
@@ -102,7 +103,8 @@ namespace IGIFT.Server.Shared
         //Si hacemos una configuracion por microServicios dentro de ConfigureServices, entonces no necesitaremos hacerlo aqui en Configure
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IStringLocalizer<Startup> localizer)
         {
-            var serviceName = _configuration.GetValue<string>("ServiceName")!;
+
+            AppConfiguration config = ServerManager.GetApplicationSettings(_configuration);
 
             app.UseForwarding(_configuration);
 
@@ -125,15 +127,19 @@ namespace IGIFT.Server.Shared
 
             app.UseRouting();
 
-            if (serviceName == AppConstants.Server.AuthService)
+            if (config.ServiceName == AppConstants.Server.AuthService)
             {
                 app.UseAuthentication();
                 app.UseAuthorization();
             }
 
-            app.UseEndpoints(serviceName);
+            app.UseEndpoints(config.ServiceName);
 
             app.ConfigureSwagger();
+
+
+            app.Initialize(_configuration);
+
         }
     }
 }

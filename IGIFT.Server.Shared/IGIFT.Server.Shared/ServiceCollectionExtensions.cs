@@ -75,7 +75,7 @@ namespace IGIFT.Server.Shared
             //          },
             var serviceName = configuration.GetValue<string>("ServiceName"); // Variable que identifica cada microservicio
 
-            AppConfiguration config = GetApplicationSettings(configuration);
+            AppConfiguration config = ServerManager.GetApplicationSettings(configuration);
 
             if (config!.BehindSSLProxy)
             {
@@ -453,10 +453,7 @@ namespace IGIFT.Server.Shared
             return services;
         }
 
-        private static AppConfiguration GetApplicationSettings(IConfiguration configuration)
-        {
-            var applicationSettingsConfiguration = configuration.GetSection(nameof(AppConfiguration));
-            return applicationSettingsConfiguration.Get<AppConfiguration>();
-        }
+
     }
+
 }

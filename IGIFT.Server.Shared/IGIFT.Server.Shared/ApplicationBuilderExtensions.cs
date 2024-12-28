@@ -33,7 +33,7 @@ namespace IGIFT.Server.Shared
         /// <returns></returns>
         internal static IApplicationBuilder UseForwarding(this IApplicationBuilder app, IConfiguration configuration)
         {
-            AppConfiguration config = GetApplicationSettings(configuration);
+            AppConfiguration config = ServerManager.GetApplicationSettings(configuration);
             if (config.BehindSSLProxy)
             {
                 app.UseCors();
@@ -72,7 +72,7 @@ namespace IGIFT.Server.Shared
         /// <param name="app"></param>
         /// <param name="_configuration"></param>
         /// <returns></returns>
-        internal static IApplicationBuilder Initialize(this IApplicationBuilder app, Microsoft.Extensions.Configuration.IConfiguration _configuration)
+        internal static IApplicationBuilder Initialize(this IApplicationBuilder app, IConfiguration _configuration)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
 
@@ -85,14 +85,5 @@ namespace IGIFT.Server.Shared
 
             return app;
         }
-
-        #region Private Methods
-        private static AppConfiguration GetApplicationSettings(IConfiguration configuration)
-        {
-            var applicationSettingsConfiguration = configuration.GetSection(nameof(AppConfiguration));
-            return applicationSettingsConfiguration.Get<AppConfiguration>();
-        }
-
-        #endregion
     }
 }
