@@ -10,17 +10,15 @@ namespace IGift.Client.Layouts.Main.ToolBar
     {
         private string NombreUsuario { get; set; }
 
-        public string EstiloBotones { get; set; } = "color:#FFCC09";
-
+        public readonly string EstiloBotones = "color:#FFCC09";
 
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
-
 
         protected override async Task OnInitializedAsync()
         {
             var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
             var user = state.User;
-            if (state != null && user.Identity.IsAuthenticated)
+            if (state != null && user.Identity!.IsAuthenticated)
             {
                 NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
             }

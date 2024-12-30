@@ -4,6 +4,8 @@
     {
         public static class Local
         {
+            public static readonly string BackgroundColor = "#181A20";
+
             public static string ShopCart = "shopCart";
             public static string AuthToken = "authToken";
             public static string Access_Token = "access_token";
