@@ -1,31 +1,70 @@
-﻿<MudPaper Elevation="25" Style="background-color:#D4A054; display: flex; justify-content: center; align-items: center;">
-   
+﻿<MudPaper Elevation="25" Style="background-color:#D19D52; display: flex; justify-content: center; align-items: center;">
+
     <MudToolBar Style="display: flex; align-items: center; width: 100%; height: auto;">
         <!-- Contenedor para los botones centrales -->
         <div style="flex-grow: 1; display: flex; justify-content: center;">
 
-            @foreach (var item in lista)
+            @foreach (var item in AppConstants.Local.listaDesconectado.Order())
             {
-                href = "/" + item;
-                <MudButton Href="@href" Style="@_estiloBotones">@item</MudButton>
+                if (item == "Categorias")
+                {
+                    <MudPaper Class="mud-p-4" Elevation="0" Outlined="true" Style="border:none;background-color:transparent; text-align: center;">
+                        <!-- Elemento que activa el menú al pasar el mouse -->
+                        <MudText Typo="Typo.h6"
+                                 @onmouseenter="ShowPopover"
+                                 Style="cursor: pointer; padding: 10px 20px; display: inline-block; background-color: transparent;">
+                            Categorías
+                        </MudText>
+
+                        <!-- Popover para el menú -->
+                        <MudPopover Style="background-color:#D19D52" Open="_isPopoverOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.BottomRight">
+                            <MudList T="string">
+                                @foreach (string item in AppConstants.Local.listaCategorias)
+                                {
+                                    <MudListItem>@item</MudListItem>
+                                }
+                            </MudList>
+                        </MudPopover>
+                    </MudPaper>
+                }
+                else
+                {
+                    href = "/" + item;
+                    <MudButton Href="@href" Style="@_estiloBotones">@item</MudButton>
+                }
+
             }
 
         </div>
 
         <!-- Botones finales -->
-        <MudButton Href="@AppConstants.Routes.Register" Variant="Variant.Filled" Style="color:black;background-color:#FCD535; margin-left: 8px;">Registrarse</MudButton>
-        <MudButton Href="@AppConstants.Routes.Login" Style="color:white;background-color:#2B3139; margin-left: 8px;">Iniciar sesión</MudButton>
-   
+        <MudButton Href="@AppConstants.Routes.Register" Style="color:black;background-color:#D4A054; margin-left: 8px;" Variant="Variant.Filled">Registrarse</MudButton>
+        <MudButton Href="@AppConstants.Routes.Login" Style="color:white;background-color:#D4A054; margin-left: 8px;" Variant="Variant.Filled">Iniciar sesión</MudButton>
+
     </MudToolBar>
 </MudPaper>
 
 
-
 @code {
+
+    #region RestoDelCodigo
+
     [CascadingParameter]
     private string _estiloBotones { get; set; }
-
     private string href { get; set; }
-    //TODO esto va a estar en una bbdd
-    public List<string> lista = new List<string>() { "Ofertas", "Peticiones", "Categorias", "Electrodomesticos", "Historial", "Ayuda" };
+    #endregion
+
+    #region Codigo para el PopOver
+
+    private bool _isPopoverOpen = false;
+
+    private void ShowPopover() =>
+        _isPopoverOpen = !_isPopoverOpen;
+
+    // private void HidePopover() =>
+    //     _isPopoverOpen = false;
+
+
+    #endregion
+
 }

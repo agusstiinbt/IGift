@@ -13,6 +13,16 @@
             public static string UserImageURL = "userImageURL";
             public static string ExpiryTime = "expiryTime";
             public static string IdUser = "idUser";
+
+            //TODO esto va a estar en una bbdd
+            #region A reemplazar con BBDD
+
+            public static List<string> listaDesconectado = new List<string>() { "Ofertas", "Peticiones", "Categorias", "Electrodomesticos", "Historial", "Ayuda" };
+
+            public static List<string> listaConectado = new List<string>() { "Ofertas", "Chat", "Peticiones", "Electrodomesticos", "Historial", "Ayuda", "Ofertas Grandes" };
+
+            public static List<string> listaCategorias = new List<string>() { "Vehiculos", "Inmuebles", "Supermercado", "Tecnologia", "Compra internacional", "Hogar y Muebles", "Electrodomesticos", "Servicios", "Salud y Belleza" };
+            #endregion
         }
     }
 }

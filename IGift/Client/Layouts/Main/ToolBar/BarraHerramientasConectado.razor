@@ -1,18 +1,15 @@
 ﻿<CascadingValue Value="_hubConnection">
 
     <MudPaper Elevation="25" Style="background-color:#D4A054; display: flex; justify-content: center; align-items: center;">
-        
+
         <MudToolBar Style="display: flex; align-items: center; width: 100%; height: auto;">
 
             <!-- Contenedor para los botones centrales -->
-            @foreach (var item in lista)
+            @foreach (var item in AppConstants.Local.listaConectado.Order())
             {
                 href = "/" + item;
-
-                <MudButton Href=href Style=@_estiloBotones>Ofertas</MudButton>
+                <MudButton Href=href Style=@_estiloBotones>@item</MudButton>
             }
-
-
 
             <!-- Botones finales -->
             <TogglePerfil userName=@userName />

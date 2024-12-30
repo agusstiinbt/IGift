@@ -14,11 +14,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         [Parameter] public HubConnection _hubConnection { get; set; }
 
-        //TODO esto va a estar en una bbdd
-        public List<string> lista = new List<string>() { "Ofertas", "Chat", "Peticiones", "Electrodomesticos", "Historial", "Ayuda", "Ofertas Grandes" };
         private string href { get; set; }
-
-
 
         protected override async Task OnInitializedAsync()
         {
