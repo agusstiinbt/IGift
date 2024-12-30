@@ -31,4 +31,8 @@
 		<ProjectReference Include="..\Shared\IGift.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Pages\Communication\Email\Components\" />
+	</ItemGroup>
+
 </Project>

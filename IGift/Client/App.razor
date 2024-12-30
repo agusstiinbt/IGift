@@ -1,26 +1,34 @@
 ﻿@* Cuando se coloca el componente CascadingAuthenticationState en la jerarquía de componentes de Blazor, automáticamente proporciona el estado de autenticación actual a todos los componentes secundarios que lo soliciten mediante inyección de dependencias. *@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
+
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(IGift.Client.Layouts.Main.MainLayout)">
+
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+
                 <NotAuthorized>
-                    @if (context.User.Identity?.IsAuthenticated != true)
+                    @if (context.User.Identity?.IsAuthenticated == false)
                     {
                         <RedirectToLogin />
                     }
                     else
                     {
-                        <p role="alert">You are not authorized to access this resource.</p>
+                        <p role="alert">No esta autorizado para visualizar este contenido.</p>
                     }
                 </NotAuthorized>
+
             </AuthorizeRouteView>
+
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+
         </Found>
+
         <NotFound>
             <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(IGift.Client.Layouts.Main.MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <h1>Sorry, there's nothing at this address.</h1>
             </LayoutView>
         </NotFound>
+
     </Router>
 </CascadingAuthenticationState>

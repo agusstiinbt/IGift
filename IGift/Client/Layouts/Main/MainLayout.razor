@@ -5,7 +5,7 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout Style="height:100vh;overflow:auto;background-color:#181A20">
+<MudLayout Style="@Style">
 
     <CascadingValue Value="_hubConnection">
         <BarraHerramientasPrincipal />
@@ -13,11 +13,9 @@
         <ScrollToTop />
     </CascadingValue>
 
-
-
 </MudLayout>
 
 @code {
-    public string BackgroundColor = "#181A20";
+    public string Style = "height:100vh;overflow:auto;background-color:#181A20";
 }
 

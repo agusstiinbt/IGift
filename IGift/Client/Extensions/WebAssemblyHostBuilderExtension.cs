@@ -23,7 +23,6 @@ namespace IGift.Client.Extensions
         private const string ClientName = "IGift.ServerAPI";
         public static WebAssemblyHostBuilder AddRootComponents(this WebAssemblyHostBuilder builder)
         {
-
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
             return builder;
