@@ -1,18 +1,20 @@
 ﻿<CascadingValue Value="_hubConnection">
 
-    <MudPaper Elevation="0">
-        <MudToolBar Style="background-color:#181A20">
+    <MudPaper Elevation="25" Style="background-color:#D4A054; display: flex; justify-content: center; align-items: center;">
+        
+        <MudToolBar Style="display: flex; align-items: center; width: 100%; height: auto;">
 
-            <MudButton Style=@_estiloBotones>Ofertas</MudButton>
-            <MudButton Href=@AppConstants.Routes.Chat Style=@_estiloBotones>Chat</MudButton>
-            <MudButton Href=@AppConstants.Routes.Peticiones Style=@_estiloBotones> Peticiones</MudButton>
-            <MudButton Style=@_estiloBotones>Electrodomésticos</MudButton>
-            <MudButton Style=@_estiloBotones>Historial</MudButton>
-            <MudButton Style=@_estiloBotones>Ayuda</MudButton>
-            <MudButton Style=@_estiloBotones>Ofertas grandes</MudButton>
+            <!-- Contenedor para los botones centrales -->
+            @foreach (var item in lista)
+            {
+                href = "/" + item;
 
-            <MudSpacer />
+                <MudButton Href=href Style=@_estiloBotones>Ofertas</MudButton>
+            }
 
+
+
+            <!-- Botones finales -->
             <TogglePerfil userName=@userName />
 
             <Notificaciones />
@@ -20,6 +22,7 @@
             <CarritoCompras />
 
         </MudToolBar>
+
     </MudPaper>
 
 </CascadingValue>

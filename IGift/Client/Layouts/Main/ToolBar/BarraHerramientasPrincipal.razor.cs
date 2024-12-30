@@ -10,7 +10,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
     {
         private string NombreUsuario { get; set; }
 
-        public readonly string EstiloBotones = "color:#FFCC09";
+        public readonly string EstiloBotones = "color:black";
 
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
