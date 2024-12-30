@@ -1,0 +1,30 @@
+﻿<MudPaper Class="mud-p-4" Elevation="0" Outlined="true" Style="border:none;background-color:transparent; text-align: center;">
+    <!-- Elemento que activa el menú al pasar el mouse -->
+    <MudText Typo="Typo.h6"
+             @onmouseenter="ShowPopover"
+             Style="cursor: pointer; padding: 10px 20px; display: inline-block; background-color: transparent;">
+        Categorías
+    </MudText>
+
+    <!-- Popover para el menú -->
+    <MudPopover Style="background-color:#D19D52" Open="_isPopoverOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.BottomRight">
+        <MudList T="string">
+            @foreach (string item in AppConstants.Local.listaCategorias)
+            {
+                <MudListItem>@item</MudListItem>
+            }
+        </MudList>
+    </MudPopover>
+</MudPaper>
+@code {
+
+    private bool _isPopoverOpen = false;
+
+    private void ShowPopover() =>
+        _isPopoverOpen = !_isPopoverOpen;
+
+    // private void HidePopover() =>
+    //     _isPopoverOpen = false;
+
+}
+

@@ -7,8 +7,15 @@
             <!-- Contenedor para los botones centrales -->
             @foreach (var item in AppConstants.Local.listaConectado.Order())
             {
-                href = "/" + item;
-                <MudButton Href=href Style=@_estiloBotones>@item</MudButton>
+                if (item == "Categorias")
+                {
+                    <PopOverCategorias />
+                }
+                else
+                {
+                    href = "/" + item;
+                    <MudButton Href="@href" Style="@_estiloBotones">@item</MudButton>
+                }
             }
 
             <!-- Botones finales -->
