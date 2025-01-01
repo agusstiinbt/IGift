@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories.Generic.Auditable;
-using IGift.Application.Responses.Pedidos;
+using IGift.Application.Responses.Peticiones;
 using IGift.Shared.Wrapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

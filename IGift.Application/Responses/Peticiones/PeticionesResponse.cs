@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Responses.Pedidos
+﻿namespace IGift.Application.Responses.Peticiones
 {
     public class PeticionesResponse
     {

@@ -1,6 +1,6 @@
 ﻿using Client.Infrastructure.Services.Requests;
 using IGift.Application.CQRS.Peticiones.Query;
-using IGift.Application.Responses.Pedidos;
+using IGift.Application.Responses.Peticiones;
 using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;
 using IGift.Shared.Constants;

@@ -1,4 +1,4 @@
-﻿using IGift.Application.Responses.Pedidos;
+﻿using IGift.Application.Responses.Peticiones;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
