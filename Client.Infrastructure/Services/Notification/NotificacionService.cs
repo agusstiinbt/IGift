@@ -21,9 +21,9 @@ namespace Client.Infrastructure.Services.Notification
 
         public async Task<IResult<IEnumerable<NotificationResponse>>> GetAll()
         {
-            var idUser = Convert.ToInt32(await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser));
+            var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
 
-            var query = new GetAllNotificationQuery(idUser);
+            var query = new GetAllNotificationQuery(idUser!);
 
             var url = AppConstants.Controllers.NotificationController.GetAll;
 
