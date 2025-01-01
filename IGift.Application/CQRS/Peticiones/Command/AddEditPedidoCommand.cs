@@ -40,7 +40,7 @@ namespace IGift.Application.CQRS.Peticiones.Command
                 CreatedOn = DateTime.Now,
                 LastModifiedOn = DateTime.Now,
                 LastModifiedBy = AppConstants.Server.AdminEmail,
-                Categoria="Por ahora vacio"
+                Categoria = "Por ahora vacio"
             };
             if (request.Id == 0)
             {

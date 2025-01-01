@@ -4,7 +4,6 @@ using IGift.Application.Responses.Pedidos;
 using IGift.Shared.Wrapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace IGift.Application.CQRS.Peticiones.Query
 {
