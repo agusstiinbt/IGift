@@ -21,7 +21,6 @@
 
             public static List<string> listaConectado = new List<string>() { "Ofertas", "Categorias", "Chat", "Peticiones", "Electrodomesticos", "Historial", "Ayuda", "Ofertas Grandes" };
 
-            public static List<string> listaCategorias = new List<string>() { "Vehiculos", "Inmuebles", "Supermercado", "Tecnologia", "Compra internacional", "Hogar y Muebles", "Electrodomesticos", "Servicios", "Salud y Belleza" };
             #endregion
         }
     }

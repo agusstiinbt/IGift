@@ -9,9 +9,7 @@ namespace IGift.Client.Pages.Users
     public partial class UserProfile
     {
         private ProfilePictureUpload _picture { get; set; } = new();
-
         private string IdUser { get; set; } = string.Empty;
-
         private string Nombre { get; set; }
         private string Apellido { get; set; }
         private string Iniciales { get; set; }
@@ -25,7 +23,6 @@ namespace IGift.Client.Pages.Users
         IList<IBrowserFile> _files = new List<IBrowserFile>();
 
         private IBrowserFile _file;
-
         protected override async Task OnInitializedAsync()
         {
             var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
