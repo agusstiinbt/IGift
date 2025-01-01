@@ -12,7 +12,8 @@ using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
-using IGift.Infrastructure.Repositories;
+using IGift.Infrastructure.Repositories.Generic.Auditable;
+using IGift.Infrastructure.Repositories.Generic.NonAuditable;
 using IGift.Infrastructure.Services.DDBB.Sql;
 using IGift.Infrastructure.Services.Files;
 using IGift.Infrastructure.Services.Identity;
@@ -148,11 +149,11 @@ builder.Services
 });//TODO estudiar esto
 
 //Repositories
-builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-builder.Services.AddTransient(typeof(IUnitOfWork2<>), typeof(UnitOfWork2<>));
+builder.Services.AddTransient(typeof(IAuditableUnitOfWork<>), typeof(AuditableUnitOfWork<>));
+builder.Services.AddTransient(typeof(INonAuditableUnitOfWork<>), typeof(NonAuditableUnitOfWork<>));
 
-builder.Services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
-builder.Services.AddTransient(typeof(IRepository2<,>), typeof(Repository2<,>));
+builder.Services.AddTransient(typeof(IAuditableRepository<,>), typeof(AuditableRepository<,>));
+builder.Services.AddTransient(typeof(INonAuditableRepository<,>), typeof(NonAuditableRepository<,>));
 
 //Scopes
 builder.Services.AddScoped<ITokenService, TokenService>();
