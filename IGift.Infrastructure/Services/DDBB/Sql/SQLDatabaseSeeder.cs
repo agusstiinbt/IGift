@@ -65,7 +65,7 @@ namespace IGift.Infrastructure.Services.DDBB.Sql
                       await _userManager.CreateAsync(superUser, AppConstants.Server.DefaultPassword);
                       var UserCreatedWithId = await _userManager.FindByEmailAsync(superUser.Email);
 
-                      UserCreatedWithId.ProfilePictureDataUrl = "Files\\Images\\ProfilePictures" + UserCreatedWithId.Id;
+                      UserCreatedWithId!.ProfilePictureDataUrl = "Files\\Images\\ProfilePictures" + UserCreatedWithId.Id;
 
                       await _userManager.AddToRoleAsync(UserCreatedWithId, admin);
 
