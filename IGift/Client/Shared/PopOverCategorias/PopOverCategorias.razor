@@ -7,18 +7,12 @@
     <!-- Popover para el menú -->
     <MudPopover Style="background-color:#D19D52" Open="_isPopoverOpen" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.BottomRight">
         <MudList T="string">
-            @*  @foreach (string item in IGift.Application.Enums.EnumCategoria)
+            @foreach (var item in categoriaList)
             {
-                <MudListItem>@item</MudListItem>
-            } *@
+                <MudListItem>@item.Descripcion</MudListItem>
+            }
         </MudList>
     </MudPopover>
 
 </MudPaper>
-@code {
-    private bool _isPopoverOpen = false;
-
-    private void ShowPopover() =>
-        _isPopoverOpen = !_isPopoverOpen;
-}
 
