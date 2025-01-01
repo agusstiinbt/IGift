@@ -1,4 +1,6 @@
 ﻿@page "/Peticiones"
+@page "/Peticiones/{Categoria}"
+
 
 <AuthorizeView>
 
@@ -12,4 +14,11 @@
 
 </AuthorizeView>
 
-<PeticionesTable/>
+<PeticionesTable />
+
+
+@code {
+    [Parameter]
+    public string Categoria { get; set; }
+
+}

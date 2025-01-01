@@ -101,7 +101,7 @@ namespace IGift.Client.Pages.Peticiones.Componentes
             //TODO implementar el ordenamiento
             // public GetAllPeticionesQuery(int pageNumber, int pageSize, string searchString, string[] orderBy)
 
-            var request = new GetAllPeticionesQuery { PageNumber = pageNumber, PageSize = pageSize, SearchString = _searchString };
+            var request = new GetAllPeticionesQuery { PageNumber = pageNumber, PageSize = pageSize, Descripcion = _searchString };
             var response = await _peticiones.GetAll(request);
             if (response.Succeeded)
             {

@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadmeFiles", "ReadmeFiles", "{3E6B7197-3E30-4A2A-8025-9BEE862A1C0D}"
 	ProjectSection(SolutionItems) = preProject
 		AboutBBDD.txt = AboutBBDD.txt
+		Migrations.txt = Migrations.txt
 		Readme.txt = Readme.txt
 		Tasks.txt = Tasks.txt
 	EndProjectSection

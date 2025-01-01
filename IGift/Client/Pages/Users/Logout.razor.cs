@@ -14,7 +14,7 @@ namespace IGift.Client.Pages.Users
         {
             await AuthService.Logout();
             _interceptor.DisposeEvent();
-            _nav.NavigateTo(AppConstants.Routes.Login);
+            _nav.NavigateTo(AppConstants.Routes.Home);
         }
     }
 }
