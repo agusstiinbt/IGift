@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IGift.Application.Extensions;
 using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Application.Responses.Peticiones;
 using IGift.Shared.Wrapper;
@@ -10,7 +11,7 @@ namespace IGift.Application.CQRS.Peticiones.Query
     /// <summary>
     /// Con esta clase podemos buscar peticiones segun las propiedades que le carguemos
     /// </summary>
-    public class GetAllPeticionesQuery : IRequest<IResult<IEnumerable<PeticionesResponse>>>
+    public class GetAllPeticionesQuery : IRequest<IResult<PaginatedResult<PeticionesResponse>>>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -20,7 +21,7 @@ namespace IGift.Application.CQRS.Peticiones.Query
         public string Categoria { get; set; } = string.Empty;
     }
 
-    internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, IResult<IEnumerable<PeticionesResponse>>>
+    internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, IResult<PaginatedResult<PeticionesResponse>>>
     {
         private readonly IAuditableUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
@@ -31,7 +32,7 @@ namespace IGift.Application.CQRS.Peticiones.Query
             _mapper = mapper;
         }
 
-        public async Task<IResult<IEnumerable<PeticionesResponse>>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
+        public async Task<IResult<PaginatedResult<PeticionesResponse>>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
         {
             var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMapByQuery<PeticionesResponse>(_mapper);
 
@@ -44,8 +45,9 @@ namespace IGift.Application.CQRS.Peticiones.Query
             if (request.Monto != 0)
                 query = query.Where(x => x.Monto == request.Monto);
 
-            var response = await query.ToListAsync();
-            return await Result<IEnumerable<PeticionesResponse>>.SuccessAsync(response);
+            var response = await query.ToPaginatedListAsync(0, 0);
+
+            return await Result<PaginatedResult<PeticionesResponse>>.SuccessAsync(response);
 
 
             //IEnumerable<Domain.Entities.Peticiones> response;

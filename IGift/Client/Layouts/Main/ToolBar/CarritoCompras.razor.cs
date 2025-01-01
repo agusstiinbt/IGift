@@ -10,8 +10,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class CarritoCompras
     {
-        [Inject] IShopCart _carritoCompras { get; set; }
-
         [CascadingParameter] public HubConnection _hubConnection { get; set; }
 
         private List<PeticionesResponse> list { get; set; } = new();
@@ -22,7 +20,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         protected async override Task OnInitializedAsync()
         {
-            var result = await _carritoCompras.GetShopCartAsync();
+            var result = await _shopCartService.GetShopCartAsync();
             if (result.Succeeded)
             {
                 list = result.Data;

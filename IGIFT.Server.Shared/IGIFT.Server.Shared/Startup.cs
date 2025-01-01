@@ -111,7 +111,7 @@ namespace IGIFT.Server.Shared
             app.UseExceptionHandling(env);
 
             app.UseHttpsRedirection();
-
+            //Segun el tipo de servidor hay que variar...
             app.UseMiddleware<MyMiddleware>();
 
             app.UseStaticFiles();

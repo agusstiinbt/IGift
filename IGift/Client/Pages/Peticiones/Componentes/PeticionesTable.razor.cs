@@ -13,8 +13,6 @@ namespace IGift.Client.Pages.Peticiones.Componentes
     public partial class PeticionesTable
     {
         [Inject] IPeticionesService _peticiones { get; set; }
-        [Inject] IShopCart _carritoService { get; set; }
-
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
         private ICollection<PeticionesResponse> _pagedData;
@@ -75,7 +73,7 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         {
             //TODO esto debería de ser un parámetro desde arriba para no invocarlo todo el tiempo
             var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
-            var response = await _carritoService.SaveShopCartAsync(p);
+            var response = await _shopCartService.SaveShopCartAsync(p);
             if (response.Succeeded)
             {
                 await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, _pagedData, idUser);

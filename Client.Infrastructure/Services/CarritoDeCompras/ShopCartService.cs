@@ -47,7 +47,6 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
         /// <returns>Una lista de AddPeticionesCommand</returns>
         private async Task<List<PeticionesResponse>> GetPeticiones()
         {
-            // Leer la lista existente de 'carrito'
             var json = await _localStorage.GetItemAsync<string>(AppConstants.Local.ShopCart);
 
             List<PeticionesResponse> carrito;
@@ -64,6 +63,12 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
             }
 
             return carrito!;
+            // Leer la lista existente de 'carrito'
+        }
+
+        public async Task ClearCache()
+        {
+            await _localStorage.ClearAsync();
         }
     }
 }

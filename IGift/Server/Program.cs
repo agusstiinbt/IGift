@@ -21,6 +21,7 @@ using IGift.Infrastructure.Services.Mail;
 using IGift.Server.Hubs;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
+using IGIFT.Server.Shared.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -241,6 +242,7 @@ app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
         }
     }
 });
+app.UseMiddleware<MyMiddleware>();
 
 app.MapRazorPages();
 

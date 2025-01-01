@@ -45,17 +45,19 @@
 
 
 @using IGift.Application.Request
-@using IGift.Application.Responses.Pedidos
 @using IGift.Application.CQRS.Identity
+@using IGift.Application.Responses.Peticiones;
+
 
 
 @inject NavigationManager _nav;
 @inject ISnackbar _snack;
 
-
+@using IGift.Client.Infrastructure.Services.CarritoDeCompras
 @using global::Client.Infrastructure.Services.Identity.Users
 @using global::IGift.Client.Infrastructure.Services.Files
 
+@inject IShopCart _shopCartService;
 @inject IUserManager _userManager;
 @inject AuthenticationStateProvider _authenticationStateProvider;
 @inject IProfilePicture _profileService
