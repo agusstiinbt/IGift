@@ -4,7 +4,7 @@ using IGift.Domain.Contracts;
 
 namespace IGift.Application.Interfaces.Repositories.Generic.Auditable
 {
-    public interface IRepository<T, in TId> where T : class, IEntity<TId>
+    public interface IAuditableRepository<T, in TId> where T : class, IEntity<TId>
     {
         IQueryable<T> query { get; }
 
@@ -18,7 +18,7 @@ namespace IGift.Application.Interfaces.Repositories.Generic.Auditable
 
         Task UpdateAsync(T entity);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
-        Task<IQueryable<TDto>> FindAndMappingByQuery<TDto>(IMapper mapper) where TDto : class;
+        Task<IQueryable<TDto>> FindAndMapByQuery<TDto>(IMapper mapper) where TDto : class;
 
         Task<Task> DeleteAsync(T entity);
     }

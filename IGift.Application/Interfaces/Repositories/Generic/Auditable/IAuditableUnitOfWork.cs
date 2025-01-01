@@ -1,11 +1,11 @@
 ﻿using IGift.Domain.Contracts;
 using IGift.Shared.Wrapper;
 
-namespace IGift.Application.Interfaces.Repositories.Generic.NonAuditable
+namespace IGift.Application.Interfaces.Repositories.Generic.Auditable
 {
-    public interface IUnitOfWork2<TId> : IDisposable
+    public interface IAuditableUnitOfWork<TId> : IDisposable
     {
-        IRepository2<T, TId> Repository<T>() where T : Entity<TId>;
+        IAuditableRepository<T, TId> Repository<T>() where T : AuditableEntity<TId>;
 
         Task<IResult> Commit(string mensajeExito, CancellationToken cancellationToken);
 
