@@ -1,17 +1,18 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using IGift.Application.Interfaces.Repositories.Generic.Auditable;
+using IGift.Application.Interfaces.Repositories;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace IGift.Infrastructure.Repositories
+namespace IGift.Infrastructure.Repositories.Generic.NonAuditable
 {
-    public class Repository<T, TId> : IRepository<T, TId> where T : AuditableEntity<TId>
+    public class NonAuditableRepository<T, TId> : INonAuditableRepository<T, TId> where T : Entity<TId>
     {
         private readonly ApplicationDbContext _context;
 
-        public Repository(ApplicationDbContext context)
+        public NonAuditableRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -48,13 +49,7 @@ namespace IGift.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await Task.FromResult(_context.Set<T>().Where(predicate).AsEnumerable());
-        }
-        public async Task<IQueryable<TDto>> FindAndMappingByQuery<TDto>(IMapper mapper) where TDto : class
-        {
-            return await Task.FromResult(query.ProjectTo<TDto>(mapper.ConfigurationProvider));
-        }
+        => await Task.FromResult(_context.Set<T>().Where(predicate).AsEnumerable());
 
         public async Task UpdateAsync(T entity)
         {
@@ -63,5 +58,11 @@ namespace IGift.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<TDto>> GetAllMapAsync<TDto>(IMapper mapper) where TDto : class
+            => await query.ProjectTo<TDto>(mapper.ConfigurationProvider).ToListAsync();
+
+        public async Task<IQueryable<TDto>> FindAndMapByQuery<TDto>(IMapper mapper) where TDto : class
+            => await Task.FromResult(query.ProjectTo<TDto>(mapper.ConfigurationProvider));
     }
+
 }

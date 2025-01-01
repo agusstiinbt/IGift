@@ -1,21 +1,19 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
 
-namespace IGift.Infrastructure.Repositories
+namespace IGift.Infrastructure.Repositories.Generic.Auditable
 {
-    public class Repository2<T, TId> : IRepository2<T, TId> where T : Entity<TId>
+    public class AuditableRepository<T, TId> : IAuditableRepository<T, TId> where T : AuditableEntity<TId>
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public Repository2(ApplicationDbContext context, IMapper mapper)
+        public AuditableRepository(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public IQueryable<T> query => _context.Set<T>();
@@ -53,9 +51,9 @@ namespace IGift.Infrastructure.Repositories
         {
             return await Task.FromResult(_context.Set<T>().Where(predicate).AsEnumerable());
         }
-        public async Task<IQueryable<TDto>> FindByQuery<TDto>() where TDto : class
+        public async Task<IQueryable<TDto>> FindAndMapByQuery<TDto>(IMapper mapper) where TDto : class
         {
-            return query.ProjectTo<TDto>(_mapper.ConfigurationProvider);
+            return await Task.FromResult(query.ProjectTo<TDto>(mapper.ConfigurationProvider));
         }
 
         public async Task UpdateAsync(T entity)
@@ -64,6 +62,6 @@ namespace IGift.Infrastructure.Repositories
             _context.Entry(exist).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
         }
-    }
 
+    }
 }

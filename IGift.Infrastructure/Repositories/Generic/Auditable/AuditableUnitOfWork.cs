@@ -1,21 +1,20 @@
 ﻿using System.Collections;
-using IGift.Application.Interfaces.Repositories;
-using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
+using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
 using IGift.Shared.Wrapper;
 using LazyCache;
 
-namespace IGift.Infrastructure.Repositories
+namespace IGift.Infrastructure.Repositories.Generic.Auditable
 {
-    public class UnitOfWork2<TId> : IUnitOfWork2<TId>
+    public class AuditableUnitOfWork<TId> : IAuditableUnitOfWork<TId>
     {
         private readonly ApplicationDbContext _context;
         private Hashtable _repositories;
         private bool disposed;
         private readonly IAppCache _cache;
 
-        public UnitOfWork2(ApplicationDbContext context)
+        public AuditableUnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -65,32 +64,22 @@ namespace IGift.Infrastructure.Repositories
             disposed = true;
         }
 
-        public IRepository2<T, TId> Repository<T>() where T : Entity<TId>
+        public IAuditableRepository<T, TId> Repository<T>() where T : AuditableEntity<TId>
         {
             if (_repositories == null)
                 _repositories = new Hashtable();
 
             var type = typeof(T).Name;
 
-            try
+            if (!_repositories.ContainsKey(type))
             {
-                if (!_repositories.ContainsKey(type))
-                {
-                    var repositoryType = typeof(Repository2<,>);
+                var repositoryType = typeof(AuditableRepository<,>);
 
-                    var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
-
-                    _repositories.Add(type, repositoryInstance);
-                }
+                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
+                _repositories.Add(type, repositoryInstance);
+                return (IAuditableRepository<T, TId>)_repositories[type];
             }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-
-
-            return (IRepository2<T, TId>)_repositories[type];
+            return null;
         }
 
         public Task Rollback()

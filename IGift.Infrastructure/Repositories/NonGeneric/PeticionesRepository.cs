@@ -4,13 +4,13 @@ using IGift.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
-namespace IGift.Infrastructure.Repositories
+namespace IGift.Infrastructure.Repositories.NonGeneric
 {
     public class PeticionesRepository : IPeticionesRepository
     {
-        private readonly IRepository<Peticiones, int> _repository;
+        private readonly IAuditableRepository<Peticiones, int> _repository;
 
-        public PeticionesRepository(IRepository<Peticiones, int> repository)
+        public PeticionesRepository(IAuditableRepository<Peticiones, int> repository)
         {
             _repository = repository;
         }
