@@ -19,13 +19,13 @@ namespace IGift.Client.Infrastructure.Services.Files
         public async Task<IResult<ProfilePictureResponse>> GetByIdAsync(string Id)
         {
             var request = new ProfilePictureById { Id = Id };
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.FilesController.GetProfilePictureById, request);
+            var response = await _httpClient.PostAsJsonAsync(ConstFilesController.GetProfilePictureById, request);
             return await response.ToResult<ProfilePictureResponse>();
         }
 
         public async Task<IResult> UploadAsync(ProfilePictureUpload file)
         {
-            var response = await _httpClient.PostAsJsonAsync(AppConstants.Controllers.FilesController.UploadProfilePicture, file);
+            var response = await _httpClient.PostAsJsonAsync(ConstFilesController.UploadProfilePicture, file);
             return await response.ToResult();
         }
     }

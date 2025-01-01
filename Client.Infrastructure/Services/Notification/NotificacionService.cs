@@ -25,7 +25,7 @@ namespace Client.Infrastructure.Services.Notification
 
             var query = new GetAllNotificationQuery(idUser!);
 
-            var url = AppConstants.Controllers.NotificationController.GetAll;
+            var url = ConstNotificationController.GetAll;
 
             var response = await _httpClient.PostAsJsonAsync(url, query);
             var result = await response.ToResult<IEnumerable<NotificationResponse>>();

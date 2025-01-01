@@ -18,7 +18,7 @@ namespace Client.Infrastructure.Services.Requests
 
         public async Task<IResult<PaginatedResult<PeticionesResponse>>> GetAll(GetAllPeticionesQuery request)
         {
-            var response = await _http.PostAsJsonAsync(AppConstants.Controllers.PeticionesController.GetAll, request);
+            var response = await _http.PostAsJsonAsync(ConstPeticionesController.GetAll, request);
             var result = await response.ToResult<PaginatedResult<PeticionesResponse>>();
             return result;
         }
