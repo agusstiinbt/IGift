@@ -25,10 +25,10 @@ namespace IGift.Application.CQRS.LocalesAdheridos.Query
     }
     internal class GetAllLocalAdheridoQueryHandler : IRequestHandler<GetAllLocalAdheridoQuery, IResult<PaginatedResult<LocalAdheridoResponse>>>
     {
-        private readonly IUnitOfWork<int> _unitOfWork;
+        private readonly IAuditableUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetAllLocalAdheridoQueryHandler(IUnitOfWork<int> unitOfWork, IMapper mapper)
+        public GetAllLocalAdheridoQueryHandler(IAuditableUnitOfWork<int> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

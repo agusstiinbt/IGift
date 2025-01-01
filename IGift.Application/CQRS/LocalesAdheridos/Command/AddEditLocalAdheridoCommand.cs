@@ -26,10 +26,10 @@ namespace IGift.Application.CQRS.LocalesAdheridos.Command
     internal class AddEditLocalAdheridoCommandHandler : IRequestHandler<AddEditLocalAdheridoCommand, IResult>
     {
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork<int> _unitOfWork;
+        private readonly IAuditableUnitOfWork<int> _unitOfWork;
         private readonly IUploadService _uploadService;
 
-        public AddEditLocalAdheridoCommandHandler(IMapper mapper, IUnitOfWork<int> unitOfWork, IUploadService uploadService)
+        public AddEditLocalAdheridoCommandHandler(IMapper mapper, IAuditableUnitOfWork<int> unitOfWork, IUploadService uploadService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;

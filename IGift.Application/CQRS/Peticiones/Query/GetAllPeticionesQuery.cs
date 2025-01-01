@@ -22,10 +22,10 @@ namespace IGift.Application.CQRS.Peticiones.Query
 
     internal class GetAllPeticionesQueryHandler : IRequestHandler<GetAllPeticionesQuery, IResult<IEnumerable<PeticionesResponse>>>
     {
-        private readonly IUnitOfWork<int> _unitOfWork;
+        private readonly IAuditableUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetAllPeticionesQueryHandler(IUnitOfWork<int> unitOfWork, IMapper mapper)
+        public GetAllPeticionesQueryHandler(IAuditableUnitOfWork<int> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -33,7 +33,7 @@ namespace IGift.Application.CQRS.Peticiones.Query
 
         public async Task<IResult<IEnumerable<PeticionesResponse>>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
         {
-            var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMappingByQuery<PeticionesResponse>(_mapper);
+            var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMapByQuery<PeticionesResponse>(_mapper);
 
             if (!string.IsNullOrEmpty(request.Descripcion))
                 query = query.Where(x => x.Descripcion == request.Descripcion);

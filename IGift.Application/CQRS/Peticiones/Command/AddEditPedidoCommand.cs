@@ -19,10 +19,10 @@ namespace IGift.Application.CQRS.Peticiones.Command
     }
     internal class AddPedidoCommandHandler : IRequestHandler<AddEditPeticionesCommand, IResult>
     {
-        private readonly IUnitOfWork<int> _unitOfWork;
+        private readonly IAuditableUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AddPedidoCommandHandler(IUnitOfWork<int> unitOfWork, IMapper mapper)
+        public AddPedidoCommandHandler(IAuditableUnitOfWork<int> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
