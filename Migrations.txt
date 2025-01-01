@@ -1,0 +1,3 @@
+Para hacer migraciones desde el servidor de bbdd sql server usar el siguiente comando
+
+dotnet ef migrations add InitialMigration --project "C:\Users\Intel\Source\Repos\IGift\IGift.Infrastructure\IGift.Infrastructure.csproj"
