@@ -1,7 +1,7 @@
 using IGift.Application.CQRS.LocalesAdheridos.Query;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Repositories.Generic.Auditable;
-using IGift.Infrastructure.Repositories;
+using IGift.Infrastructure.Repositories.Generic.Auditable;
 using IGift.Infrastructure.Services.Files;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,8 +29,8 @@ builder.Services.AddTransient<IUploadService, UploadService>();
 
 
 //Repositories
-builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-builder.Services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
+builder.Services.AddTransient(typeof(IAuditableUnitOfWork<>), typeof(AuditableUnitOfWork<>));
+builder.Services.AddTransient(typeof(IAuditableRepository<,>), typeof(AuditableRepository<,>));
 
 var app = builder.Build();
 

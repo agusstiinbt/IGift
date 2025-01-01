@@ -18,7 +18,8 @@ using IGift.Application.OptionsPattern;
 using IGift.Application.Validators;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
-using IGift.Infrastructure.Repositories;
+using IGift.Infrastructure.Repositories.Generic.Auditable;
+using IGift.Infrastructure.Repositories.NonGeneric;
 using IGift.Infrastructure.Serialization;
 using IGift.Infrastructure.Serialization.JsonConverters;
 using IGift.Infrastructure.Serialization.Serializers;
@@ -365,9 +366,9 @@ namespace IGIFT.Server.Shared
         internal static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             return services
-                           .AddTransient(typeof(IRepository<,>), typeof(Repository<,>))
+                           .AddTransient(typeof(IAuditableRepository<,>), typeof(AuditableRepository<,>))
                            .AddTransient<IPeticionesRepository, PeticionesRepository>()
-                           .AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+                           .AddTransient(typeof(IAuditableUnitOfWork<>), typeof(AuditableUnitOfWork<>));
         }
         /// <summary>
         /// Este método es ideal para registrar los componentes básicos y servicios transversales de la capa de la aplicación que se refieren más a la infraestructura o comportamiento común. NO debería contener servicios de negocio específicos

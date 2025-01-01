@@ -32,7 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Interfaces\Repositories\Generic\NonAuditable\IRepository2.cs" />
+	  <None Include="Interfaces\Repositories\Generic\NonAuditable\INonAuditableRepository.cs" />
 	</ItemGroup>
 
 </Project>
