@@ -47,12 +47,12 @@ namespace IGift.Application.CQRS.LocalesAdheridos.Query
             if (!string.IsNullOrEmpty(request.SearchString))
             {
                 var filtro = new LocalesFilter(request.SearchString);
-                var response = await _unitOfWork.Repository<LocalAdherido>().Entities.Specify(filtro).Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+                var response = await _unitOfWork.Repository<LocalAdherido>().query.Specify(filtro).Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
                 return await Result<PaginatedResult<LocalAdheridoResponse>>.SuccessAsync(response);
             }
             else
             {
-                var response = await _unitOfWork.Repository<LocalAdherido>().Entities.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+                var response = await _unitOfWork.Repository<LocalAdherido>().query.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
                 return await Result<PaginatedResult<LocalAdheridoResponse>>.SuccessAsync(response);
             }
         }

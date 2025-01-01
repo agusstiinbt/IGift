@@ -11,13 +11,11 @@ namespace IGift.Application.CQRS.Peticiones.Command
         /// <summary>
         /// Si se envía igual a 0(cero) significa que estamos editando un registro
         /// </summary>
-
         public int Id { get; set; } = 0;
         public string IdUser { get; set; }
         public string Descripcion { get; set; }
         public int Monto { get; set; }
         public string Moneda { get; set; }
-
     }
     internal class AddPedidoCommandHandler : IRequestHandler<AddEditPeticionesCommand, IResult>
     {
@@ -42,6 +40,7 @@ namespace IGift.Application.CQRS.Peticiones.Command
                 CreatedOn = DateTime.Now,
                 LastModifiedOn = DateTime.Now,
                 LastModifiedBy = AppConstants.Server.AdminEmail,
+                Categoria="Por ahora vacio"
             };
             if (request.Id == 0)
             {
@@ -60,5 +59,4 @@ namespace IGift.Application.CQRS.Peticiones.Command
             }
         }
     }
-
 }

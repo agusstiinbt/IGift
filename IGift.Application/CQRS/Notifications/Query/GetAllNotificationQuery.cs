@@ -7,7 +7,7 @@ using MediatR;
 
 namespace IGift.Application.CQRS.Notifications.Query
 {
-    public record GetAllNotificationQuery(int Id) : IRequest<IResult<IEnumerable<NotificationResponse>>>;
+    public record GetAllNotificationQuery(string Id) : IRequest<IResult<IEnumerable<NotificationResponse>>>;
 
     internal class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, IResult<IEnumerable<NotificationResponse>>>
     {
@@ -24,7 +24,8 @@ namespace IGift.Application.CQRS.Notifications.Query
         public async Task<IResult<IEnumerable<NotificationResponse>>> Handle(GetAllNotificationQuery request, CancellationToken cancellationToken)
         {
             //TODO fijarse si este response trae algo porque hicimos un cambio en el paradigma de unit of work para clases que no tiene AuditableEntity ni IAuditableEntity
-            var response = await _unitOfWork.Repository<Notification>().GetAllAsync();
+
+            var response = await _unitOfWork.Repository<Notification>().FindAsync(x => x.IdUser == request.Id);
             var lista = new List<NotificationResponse>();
 
             ////TODO modificar y hacer algun tipo de mapeo
