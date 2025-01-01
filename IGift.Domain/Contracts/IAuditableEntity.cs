@@ -30,9 +30,9 @@
     public abstract class AuditableEntity<TId> : IAuditableEntity<TId>
     {
         public TId Id { get; set; }
-        public required string CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? LastModifiedOn { get; set; }
-        public required string LastModifiedBy { get; set; }
+        public string LastModifiedBy { get; set; }
     }
 }
