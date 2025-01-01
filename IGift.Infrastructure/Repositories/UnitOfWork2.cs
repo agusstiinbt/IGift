@@ -1,5 +1,6 @@
 ﻿using System.Collections;
-using IGift.Application.Interfaces.Repositories.Generic.Auditable;
+using IGift.Application.Interfaces.Repositories;
+using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
 using IGift.Shared.Wrapper;
@@ -7,14 +8,14 @@ using LazyCache;
 
 namespace IGift.Infrastructure.Repositories
 {
-    public class UnitOfWork<TId> : IUnitOfWork<TId>
+    public class UnitOfWork2<TId> : IUnitOfWork2<TId>
     {
         private readonly ApplicationDbContext _context;
         private Hashtable _repositories;
         private bool disposed;
         private readonly IAppCache _cache;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork2(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -64,22 +65,32 @@ namespace IGift.Infrastructure.Repositories
             disposed = true;
         }
 
-        public IRepository<T, TId> Repository<T>() where T : AuditableEntity<TId>
+        public IRepository2<T, TId> Repository<T>() where T : Entity<TId>
         {
             if (_repositories == null)
                 _repositories = new Hashtable();
 
             var type = typeof(T).Name;
 
-            if (!_repositories.ContainsKey(type))
+            try
             {
-                var repositoryType = typeof(Repository<,>);
+                if (!_repositories.ContainsKey(type))
+                {
+                    var repositoryType = typeof(Repository2<,>);
 
-                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
-                _repositories.Add(type, repositoryInstance);
-                return (IRepository<T, TId>)_repositories[type];
+                    var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
+
+                    _repositories.Add(type, repositoryInstance);
+                }
             }
-            return null;
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
+
+            return (IRepository2<T, TId>)_repositories[type];
         }
 
         public Task Rollback()
