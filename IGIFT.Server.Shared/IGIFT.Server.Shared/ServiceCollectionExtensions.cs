@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
-using IGift.Application.CQRS.Notifications.Query;
+using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Communication.Mail;
 using IGift.Application.Interfaces.Dates;
@@ -381,7 +381,7 @@ namespace IGIFT.Server.Shared
 
             //Esta sintaxis le dice a MediatR que registre automáticamente todos los handlers (commands, queries, etc.) y pipeline behaviors que estén definidos en el ensamblado especificado.
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllNotificationQuery>());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllPeticionesQuery>());
 
 
             //IPipeline... es una interfaz de MediatR que permite interceptar las solicitudes (queries o commands) antes o después de que lleguen a sus respectivos handlers. Esto es útil para implementar comportamientos transversales, como validaciones, logging, manejo de transacciones, etc.
