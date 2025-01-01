@@ -1,10 +1,12 @@
-﻿using IGift.Domain.Contracts;
+﻿using System.Linq.Expressions;
+using AutoMapper;
+using IGift.Domain.Contracts;
 
 namespace IGift.Application.Interfaces.Repositories.Generic.Auditable
 {
     public interface IRepository<T, in TId> where T : class, IEntity<TId>
     {
-        IQueryable<T> Entities { get; }
+        IQueryable<T> query { get; }
 
         Task<T> GetByIdAsync(TId id);
 
@@ -15,6 +17,8 @@ namespace IGift.Application.Interfaces.Repositories.Generic.Auditable
         Task<T> AddAsync(T entity);
 
         Task UpdateAsync(T entity);
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<IQueryable<TDto>> FindAndMappingByQuery<TDto>(IMapper mapper) where TDto : class;
 
         Task<Task> DeleteAsync(T entity);
     }

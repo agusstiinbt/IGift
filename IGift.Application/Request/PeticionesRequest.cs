@@ -1,6 +1,9 @@
-﻿namespace IGift.Application.Responses.Pedidos
+﻿namespace IGift.Application.Request
 {
-    public class PeticionesResponse
+    /// <summary>
+    /// Peticiones que se guardar en el local storage.
+    /// </summary>
+    public class PeticionesRequest
     {
         public int Id { get; set; }
         public string Descripcion { get; set; } = string.Empty;

@@ -1,14 +1,13 @@
-﻿namespace IGift.Application.Models
+﻿using IGift.Domain.Contracts;
+
+namespace IGift.Application.Models
 {
     /// <summary>
     /// Guardar en Oracle.
     /// </summary>
-    public class OperacionesIntercambio
+    public class OperacionesIntercambio : Entity<int>
     {
-        public int Id { get; set; }
         public DateTime CreatedOn { get; set; }
-        public DateTime LastModifiedOn { get; set; }
-
         public required int IdGiftCard { get; set; }
         public required int IdSmartContract { get; set; }
         public required string IdUser1 { get; set; }

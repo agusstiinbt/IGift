@@ -1,10 +1,11 @@
-﻿using IGift.Domain.Contracts;
+﻿using System.Linq.Expressions;
+using IGift.Domain.Contracts;
 
 namespace IGift.Application.Interfaces.Repositories
 {
     public interface IRepository2<T, in TId> where T : class, IEntity<TId>
     {
-        IQueryable<T> Entities { get; }
+        IQueryable<T> query { get; }
 
         Task<T> GetByIdAsync(TId id);
 
@@ -15,6 +16,8 @@ namespace IGift.Application.Interfaces.Repositories
         Task<T> AddAsync(T entity);
 
         Task UpdateAsync(T entity);
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<IQueryable<TDto>> FindByQuery<TDto>() where TDto : class;
 
         Task<Task> DeleteAsync(T entity);
     }
