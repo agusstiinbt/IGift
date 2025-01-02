@@ -4,16 +4,16 @@
         <!-- Contenedor para los botones centrales -->
         <div style="flex-grow: 1; display: flex; justify-content: center;">
 
-            @foreach (var item in AppConstants.Local.listaDesconectado.Order())
+            @foreach (var item in listaDesconectado)
             {
-                if (item == "Categorias")
+                if (item.Descripcion == "Categorias")
                 {
                     <PopOverCategorias />
                 }
                 else
                 {
                     href = "/" + item;
-                    <MudButton Href="@href" Style="@_estiloBotones">@item</MudButton>
+                    <MudButton Href="@href" Style="@_estiloBotones">@item.Descripcion</MudButton>
                 }
             }
 
@@ -31,4 +31,13 @@
     [CascadingParameter]
     private string _estiloBotones { get; set; }
     private string href { get; set; }
+
+    private List<TitulosDesconectadoResponse> listaDesconectado = new List<TitulosDesconectadoResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await _titulosService.GetAllTitulosDesconectado();
+        if (response.Succeeded)
+            listaDesconectado = response.Data.ToList();
+    }
 }

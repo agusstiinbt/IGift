@@ -7,16 +7,16 @@
             <!-- Contenedor para los botones centrales -->
             <div style="flex-grow: 1; display: flex; justify-content: center;">
 
-                @foreach (var item in AppConstants.Local.listaConectado.Order())
+                @foreach (var item in titulosConectado)
                 {
-                    if (item == "Categorias")
+                    if (item.Descripcion == "Categorias")
                     {
                         <PopOverCategorias />
                     }
                     else
                     {
                         href = "/" + item;
-                        <MudButton Href="@href" Style="@_estiloBotones">@item</MudButton>
+                        <MudButton Href="@href" Style="@_estiloBotones">@item.Descripcion</MudButton>
                     }
                 }
             </div>

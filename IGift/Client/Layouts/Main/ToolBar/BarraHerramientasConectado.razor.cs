@@ -1,4 +1,5 @@
 ﻿using Client.Infrastructure.Authentication;
+using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -15,10 +16,19 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         [Parameter] public HubConnection _hubConnection { get; set; }
 
+
+        private List<TitulosConectadoResponse> titulosConectado = new List<TitulosConectadoResponse>();
+
+
         private string href { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            var response = await _titulosService.GetAllTitulosConectado();
+            if (response.Succeeded)
+                titulosConectado = response.Data.ToList();
+
+
             if (string.IsNullOrEmpty(userName))
             {
                 var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();

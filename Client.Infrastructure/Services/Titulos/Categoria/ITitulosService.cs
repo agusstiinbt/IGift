@@ -1,6 +1,4 @@
-﻿using IGift.Application.CQRS.Titulos.Titulos.Conectado.Query;
-using IGift.Application.CQRS.Titulos.Titulos.Desconectado.Query;
-using IGift.Application.Responses.Titulos.Categoria;
+﻿using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Application.Responses.Titulos.Desconectado;
 using IGift.Shared.Wrapper;
