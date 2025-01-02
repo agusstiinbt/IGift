@@ -1,17 +1,20 @@
-﻿
-<EditForm Model="loginModel" OnValidSubmit="HandleLoginForm">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+﻿<MudPaper Class="pa-4 mud-height-full" Style="background-color:#C3D0E3">
 
-    <div class="form-group">
-        <label for="email">Email</label>
-        <InputText Id="email" Class="form-control" @bind-Value="loginModel.Email" />
-        <ValidationMessage For="@(() => loginModel.Email)" />
-    </div>
-    <div class="form-group">
-        <label for="password">Contraseña</label>
-        <InputText Id="password" type="password" Class="form-control;" @bind-Value="loginModel.Password" />
-        <ValidationMessage For="@(() => loginModel.Password)" />
-    </div>
-    <button type="submit" class="btn btn-primary">Continuar</button>
-</EditForm>
+    <EditForm Model="loginModel" OnValidSubmit="HandleLoginForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <InputText Id="email" Class="form-control" @bind-Value="loginModel.Email" />
+            <ValidationMessage For="@(() => loginModel.Email)" />
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <InputText Id="password" type="password" Class="form-control;" @bind-Value="loginModel.Password" />
+            <ValidationMessage For="@(() => loginModel.Password)" />
+        </div>
+        <button type="submit" class="btn btn-primary">Continuar</button>
+    </EditForm>
+
+</MudPaper>

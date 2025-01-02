@@ -21,7 +21,7 @@ namespace IGift.Application.CQRS.Categoria.Query
 
         public async Task<IResult<IEnumerable<CategoriaResponse>>> Handle(GetAllCategoriaQuery request, CancellationToken cancellationToken)
         {
-            var response = await _unitOfWork.Repository<Models.Categoria>().GetAllMapAsync<CategoriaResponse>(_mapper);
+            var response = await _unitOfWork.Repository<Models.Titulos.Categoria>().GetAllMapAsync<CategoriaResponse>(_mapper);
             return await Result<IEnumerable<CategoriaResponse>>.SuccessAsync(response);
         }
     }

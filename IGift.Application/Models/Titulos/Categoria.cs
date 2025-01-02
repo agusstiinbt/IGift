@@ -1,6 +1,6 @@
 ﻿using IGift.Domain.Contracts;
 
-namespace IGift.Application.Models
+namespace IGift.Application.Models.Titulos
 {
     public class Categoria : Entity<int>
     {

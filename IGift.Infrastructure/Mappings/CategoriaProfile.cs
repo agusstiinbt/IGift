@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IGift.Application.Models;
+using IGift.Application.Models.Titulos;
 using IGift.Application.Responses.Categoria;
 
 namespace IGift.Infrastructure.Mappings

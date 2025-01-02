@@ -5,18 +5,21 @@
         <MudToolBar Style="display: flex; align-items: center; width: 100%; height: auto;">
 
             <!-- Contenedor para los botones centrales -->
-            @foreach (var item in AppConstants.Local.listaConectado.Order())
-            {
-                if (item == "Categorias")
+            <div style="flex-grow: 1; display: flex; justify-content: center;">
+
+                @foreach (var item in AppConstants.Local.listaConectado.Order())
                 {
-                    <PopOverCategorias />
+                    if (item == "Categorias")
+                    {
+                        <PopOverCategorias />
+                    }
+                    else
+                    {
+                        href = "/" + item;
+                        <MudButton Href="@href" Style="@_estiloBotones">@item</MudButton>
+                    }
                 }
-                else
-                {
-                    href = "/" + item;
-                    <MudButton Href="@href" Style="@_estiloBotones">@item</MudButton>
-                }
-            }
+            </div>
 
             <!-- Botones finales -->
             <TogglePerfil userName=@userName />

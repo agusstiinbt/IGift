@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Models;
+using IGift.Application.Models.Titulos;
 using IGift.Domain.Entities;
 using IGift.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;

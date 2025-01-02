@@ -33,7 +33,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
             }
         }
 
-
         public bool _open;
 
         public void ToggleOpen()
