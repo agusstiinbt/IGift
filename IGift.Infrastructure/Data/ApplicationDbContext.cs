@@ -13,6 +13,8 @@ namespace IGift.Infrastructure.Data
 
         #region DBSets
 
+        public DbSet<TitulosDesconectado> TitulosDesconectados { get; set; }
+        public DbSet<TitulosConectado> TitulosConectados { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<GiftCard> GiftCards { get; set; }
         public DbSet<Contract> Contracts { get; set; }
