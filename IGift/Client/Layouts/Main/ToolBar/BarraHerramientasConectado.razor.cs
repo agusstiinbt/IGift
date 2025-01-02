@@ -1,4 +1,6 @@
-﻿using IGift.Client.Extensions;
+﻿using System.Security.Claims;
+using Client.Infrastructure.Authentication;
+using IGift.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -18,6 +20,11 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         protected override async Task OnInitializedAsync()
         {
+            if (string.IsNullOrEmpty(userName))
+            {
+                var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+                userName = state.User.GetFirstName();
+            }
             _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
 
             if (_hubConnection.State == HubConnectionState.Disconnected)
@@ -25,6 +32,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
                 await _hubConnection.StartAsync();
             }
         }
+
 
         public bool _open;
 

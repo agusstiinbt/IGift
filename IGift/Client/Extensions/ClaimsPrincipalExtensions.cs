@@ -4,20 +4,19 @@ namespace IGift.Client.Extensions
 {
     internal static class ClaimsPrincipalExtensions
     {
-        //TODO implementar
         internal static string GetEmail(this ClaimsPrincipal claimsPrincipal)
-            => claimsPrincipal.FindFirst(ClaimTypes.Email).ToString();
+            => claimsPrincipal.FindFirst(ClaimTypes.Email).Value.ToString();
 
         internal static string GetFirstName(this ClaimsPrincipal claimsPrincipal)
-            => claimsPrincipal.FindFirst(ClaimTypes.Name).ToString();
+            => claimsPrincipal.FindFirst(ClaimTypes.Name).Value.ToString();
 
         internal static string GetLastName(this ClaimsPrincipal claimsPrincipal)
-            => claimsPrincipal.FindFirst(ClaimTypes.Surname).ToString();
+            => claimsPrincipal.FindFirst(ClaimTypes.Surname).Value.ToString();
 
         internal static string GetPhoneNumber(this ClaimsPrincipal claimsPrincipal)
-            => claimsPrincipal.FindFirst(ClaimTypes.MobilePhone).ToString();
+            => claimsPrincipal.FindFirst(ClaimTypes.MobilePhone).Value.ToString();
 
         internal static string GetUserId(this ClaimsPrincipal claimsPrincipal)
-           => claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).ToString();
+           => claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
     }
 }

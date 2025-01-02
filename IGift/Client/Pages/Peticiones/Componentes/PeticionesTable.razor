@@ -11,11 +11,11 @@
                 <MudStack Wrap="Wrap.NoWrap" Spacing="4" Row="true" AlignItems="AlignItems.Start">
 
                     <MudPaper Style="background-color:transparent">
-                        <MudButton OnClick="()=>TipoOperacion(Compra)" Style="@EstiloBotonCompra">Comprar </MudButton>
+                        <MudButton OnClick="()=>TipoOperacion(Compra)" Style="@EstiloBotonComprarPeticion">Comprar peticion </MudButton>
 
-                        <MudButton OnClick="()=>TipoOperacion(Venta)" Style="@EstiloBotonVenta">Vender</MudButton>
+                        <MudButton OnClick="()=>TipoOperacion(Venta)" Style="@EstiloBotonCrear">Crear Peticion</MudButton>
                     </MudPaper>
-
+                    <MudSpacer />
                     <MudButton Style="@GetEstiloBoton("USDT")" OnClick='() => SeleccionarBoton("USDT")'>USDT</MudButton>
                     <MudButton Style="@GetEstiloBoton("BTC")" OnClick='() => SeleccionarBoton("BTC")'>BTC</MudButton>
                     <MudButton Style="@GetEstiloBoton("USDC")" OnClick='() => SeleccionarBoton("USDC")'>USDC</MudButton>

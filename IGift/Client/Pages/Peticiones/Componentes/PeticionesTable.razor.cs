@@ -25,8 +25,8 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
 
-        private string EstiloBotonCompra { get; set; } = "background-color:#2A3038;color:white;";
-        private string EstiloBotonVenta { get; set; } = "color:white;";
+        private string EstiloBotonComprarPeticion { get; set; } = "background-color:#2A3038;color:white;";
+        private string EstiloBotonCrear { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "USDT";
 
@@ -58,13 +58,13 @@ namespace IGift.Client.Pages.Peticiones.Componentes
         {
             if (boton == Compra)
             {
-                EstiloBotonCompra = "background-color:#2A3038;color:white;";
-                EstiloBotonVenta = "color:white;";
+                EstiloBotonComprarPeticion = "background-color:#2A3038;color:white;";
+                EstiloBotonCrear = "color:white;";
             }
             else
             {
-                EstiloBotonVenta = "background-color:#2A3038;color:white;";
-                EstiloBotonCompra = "color:white;";
+                EstiloBotonCrear = "background-color:#2A3038;color:white;";
+                EstiloBotonComprarPeticion = "color:white;";
             }
 
         }
