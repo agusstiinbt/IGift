@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
 using Client.Infrastructure.Extensions;
-using IGift.Application.CQRS.Categoria.Query;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Shared.Constants.Controllers;
 using IGift.Shared.Wrapper;

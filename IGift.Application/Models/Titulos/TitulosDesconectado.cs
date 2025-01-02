@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IGift.Domain.Contracts;
+﻿using IGift.Domain.Contracts;
 
 namespace IGift.Application.Models.Titulos
 {

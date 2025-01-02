@@ -1,6 +1,5 @@
 ﻿using Client.Infrastructure.Services.Identity.Authentication;
 using Client.Infrastructure.Services.Interceptor;
-using IGift.Client.Infrastructure.Services.CarritoDeCompras;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 

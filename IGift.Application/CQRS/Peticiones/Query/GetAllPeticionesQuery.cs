@@ -4,7 +4,6 @@ using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Application.Responses.Peticiones;
 using IGift.Shared.Wrapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Application.CQRS.Peticiones.Query
 {

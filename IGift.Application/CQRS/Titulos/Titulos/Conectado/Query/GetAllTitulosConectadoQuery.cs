@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using IGift.Application.CQRS.Titulos.Titulos.Desconectado.Query;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Application.Responses.Titulos.Desconectado;

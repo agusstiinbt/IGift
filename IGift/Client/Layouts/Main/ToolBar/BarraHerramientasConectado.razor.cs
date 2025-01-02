@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Client.Infrastructure.Authentication;
+﻿using Client.Infrastructure.Authentication;
 using IGift.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
