@@ -4,7 +4,7 @@ using IGift.Application.Responses.Categoria;
 using IGift.Shared.Wrapper;
 using MediatR;
 
-namespace IGift.Application.CQRS.Categoria.Query
+namespace IGift.Application.CQRS.Titulos.Categoria.Query
 {
     public record GetAllCategoriaQuery : IRequest<IResult<IEnumerable<CategoriaResponse>>>;
 

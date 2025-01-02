@@ -1,4 +1,4 @@
-﻿using IGift.Application.CQRS.Categoria.Query;
+﻿using IGift.Application.CQRS.Titulos.Categoria.Query;
 using IGIFT.Server.Shared;
 using Microsoft.AspNetCore.Mvc;
 
