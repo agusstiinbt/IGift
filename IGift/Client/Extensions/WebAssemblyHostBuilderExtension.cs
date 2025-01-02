@@ -7,9 +7,9 @@ using Client.Infrastructure.Services.Interceptor;
 using Client.Infrastructure.Services.Notification;
 using Client.Infrastructure.Services.Requests;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;
-using IGift.Client.Infrastructure.Services.Categoria;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Client.Infrastructure.Services.Files;
+using IGift.Client.Infrastructure.Services.Titulos.Categoria;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -61,7 +61,7 @@ namespace IGift.Client.Extensions
             .AddScoped<IProfilePicture, ProfilePictureService>()
             .AddScoped<IChatManager, ChatManager>()
             .AddScoped<IShopCart, ShopCartService>()
-            .AddScoped<ICategoriaService, CategoriaService>()
+            .AddScoped<ITitulosService, TitulosService>()
 
             .AddAuthorizationCore()
 

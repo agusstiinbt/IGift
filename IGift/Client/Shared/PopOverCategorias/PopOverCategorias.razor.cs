@@ -1,12 +1,12 @@
 ﻿using IGift.Application.Responses.Titulos.Categoria;
-using IGift.Client.Infrastructure.Services.Categoria;
+using IGift.Client.Infrastructure.Services.Titulos.Categoria;
 using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Shared.PopOverCategorias
 {
     public partial class PopOverCategorias
     {
-        [Inject] ICategoriaService _categoriaService { get; set; }
+        [Inject] ITitulosService _categoriaService { get; set; }
 
         private bool _isPopoverOpen = false;
 
@@ -17,7 +17,7 @@ namespace IGift.Client.Shared.PopOverCategorias
 
         protected override async Task OnInitializedAsync()
         {
-            var response = await _categoriaService.GetAll();
+            var response = await _categoriaService.GetAllCategorias();
             if (response.Succeeded)
                 categoriaList = response.Data.ToList();
         }
