@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using IGift.Application.Models.Titulos;
-using IGift.Application.Responses.Categoria;
+using IGift.Application.Responses.Titulos.Categoria;
 
-namespace IGift.Infrastructure.Mappings
+namespace IGift.Infrastructure.Mappings.Titulos
 {
     public class CategoriaProfile : Profile
     {

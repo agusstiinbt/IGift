@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Responses.Categoria
+﻿namespace IGift.Application.Responses.Titulos.Categoria
 {
     public class CategoriaResponse
     {

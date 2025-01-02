@@ -1,4 +1,4 @@
-﻿using IGift.Application.Responses.Categoria;
+﻿using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Client.Infrastructure.Services.Categoria;
 using Microsoft.AspNetCore.Components;
 
