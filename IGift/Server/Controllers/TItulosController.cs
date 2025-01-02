@@ -6,7 +6,7 @@ namespace IGift.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriaController : BaseApiController<CategoriaController>
+    public class TItulosController : BaseApiController<TItulosController>
     {
         [HttpPost]
         public async Task<ActionResult> GetAll(GetAllCategoriaQuery query)

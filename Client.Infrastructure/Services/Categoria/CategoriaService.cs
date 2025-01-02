@@ -19,7 +19,7 @@ namespace IGift.Client.Infrastructure.Services.Categoria
         {
             var query = new GetAllCategoriaQuery();
 
-            var url = ConstCategoriaController.GetAll;
+            var url = TitulosController.GetAllCategorias;
 
             var response = await _httpClient.PostAsJsonAsync(url, query);
 
