@@ -8,7 +8,7 @@
             {
                 if (item.Descripcion == "Categorias")
                 {
-                    <PopOverCategorias />
+                    <PopOverCategorias categoriaList="@listaCategorias" />
                 }
                 else
                 {
@@ -33,11 +33,13 @@
     private string href { get; set; }
 
     private List<TitulosDesconectadoResponse> listaDesconectado = new List<TitulosDesconectadoResponse>();
+    private List<CategoriaResponse> listaCategorias = new List<CategoriaResponse>();
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await _titulosService.GetAllTitulosDesconectado();
-        if (response.Succeeded)
-            listaDesconectado = response.Data.ToList();
+        var response = await _titulosService.LoadDesconectado();
+
+        listaDesconectado = response.Data.Titulos;
+        listaCategorias = response.Data.Categorias;
     }
 }

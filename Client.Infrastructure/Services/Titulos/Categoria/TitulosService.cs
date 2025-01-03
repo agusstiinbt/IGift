@@ -3,6 +3,7 @@ using Client.Infrastructure.Extensions;
 using IGift.Application.CQRS.Titulos.Categoria.Query;
 using IGift.Application.CQRS.Titulos.Titulos.Conectado.Query;
 using IGift.Application.CQRS.Titulos.Titulos.Desconectado.Query;
+using IGift.Application.Responses.Titulos;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Application.Responses.Titulos.Desconectado;
@@ -51,6 +52,15 @@ namespace IGift.Client.Infrastructure.Services.Titulos.Categoria
             var response = await _httpClient.PostAsJsonAsync(url, query);
 
             return await response.ToResult<IEnumerable<TitulosDesconectadoResponse>>();
+        }
+
+        public async Task<IResult<BarraHerramientasDesconectadoResponse>> LoadDesconectado()
+        {
+            var url = TitulosController.GetBarraHerramientasDesconectado;
+
+            var response = await _httpClient.GetAsync(url);
+            //BarraHerramientasDesconectadoResponse
+            return await response.ToResult<BarraHerramientasDesconectadoResponse>();
         }
     }
 }
