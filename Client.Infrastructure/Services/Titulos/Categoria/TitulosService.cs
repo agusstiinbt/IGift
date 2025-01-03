@@ -1,8 +1,5 @@
 ﻿using System.Net.Http.Json;
 using Client.Infrastructure.Extensions;
-using IGift.Application.CQRS.Titulos.Categoria.Query;
-using IGift.Application.CQRS.Titulos.Titulos.Conectado.Query;
-using IGift.Application.CQRS.Titulos.Titulos.Desconectado.Query;
 using IGift.Application.Responses.Titulos;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
