@@ -1,7 +1,6 @@
 ﻿using IGift.Application.Responses.Titulos.Categoria;
-using IGift.Application.Responses.Titulos.Desconectado;
 
-namespace IGift.Application.Responses.Titulos
+namespace IGift.Application.Responses.Titulos.Desconectado
 {
     public class BarraHerramientasDesconectadoResponse
     {

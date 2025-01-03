@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
-using IGift.Application.Responses.Titulos;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Desconectado;
 using IGift.Shared.Wrapper;

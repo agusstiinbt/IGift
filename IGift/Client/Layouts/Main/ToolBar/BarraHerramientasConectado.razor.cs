@@ -1,4 +1,5 @@
 ﻿using Client.Infrastructure.Authentication;
+using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Client.Extensions;
 using Microsoft.AspNetCore.Components;
@@ -18,17 +19,20 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
 
         private List<TitulosConectadoResponse> titulosConectado = new List<TitulosConectadoResponse>();
+        private List<CategoriaResponse> listaCategorias = new List<CategoriaResponse>();
 
 
         private string href { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var response = await _titulosService.GetAllTitulosConectado();
+            var response = await _titulosService.LoadConectado();
             if (response.Succeeded)
-                titulosConectado = response.Data.ToList();
+            {
+                titulosConectado = response.Data.Titulos.ToList();
+                listaCategorias = response.Data.Categorias.ToList();
 
-
+            }
             if (string.IsNullOrEmpty(userName))
             {
                 var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();

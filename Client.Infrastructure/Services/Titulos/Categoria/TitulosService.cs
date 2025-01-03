@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
 using Client.Infrastructure.Extensions;
-using IGift.Application.Responses.Titulos;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Application.Responses.Titulos.Desconectado;
@@ -18,37 +17,10 @@ namespace IGift.Client.Infrastructure.Services.Titulos.Categoria
             _httpClient = httpClient;
         }
 
-        public async Task<IResult<IEnumerable<CategoriaResponse>>> GetAllCategorias()
+        public async Task<IResult<BarraHerramientasConectadoResponse>> LoadConectado()
         {
-            var query = new GetAllCategoriaQuery();
-
-            var url = TitulosController.GetAllCategorias;
-
-            var response = await _httpClient.PostAsJsonAsync(url, query);
-
-            return await response.ToResult<IEnumerable<CategoriaResponse>>();
-        }
-
-        public async Task<IResult<IEnumerable<TitulosConectadoResponse>>> GetAllTitulosConectado()
-        {
-            var query = new GetAllTitulosConectadoQuery();
-
-            var url = TitulosController.GetAllTitulosConectado;
-
-            var response = await _httpClient.PostAsJsonAsync(url, query);
-
-            return await response.ToResult<IEnumerable<TitulosConectadoResponse>>();
-        }
-
-        public async Task<IResult<IEnumerable<TitulosDesconectadoResponse>>> GetAllTitulosDesconectado()
-        {
-            var query = new GetAllTitulosDesconectadoQuery();
-
-            var url = TitulosController.GetAllTitulosDesconectado;
-
-            var response = await _httpClient.PostAsJsonAsync(url, query);
-
-            return await response.ToResult<IEnumerable<TitulosDesconectadoResponse>>();
+            var response = await _httpClient.GetAsync(TitulosController.GetBarraHerramientasConectado);
+            return await response.ToResult<BarraHerramientasConectadoResponse>();
         }
 
         public async Task<IResult<BarraHerramientasDesconectadoResponse>> LoadDesconectado()

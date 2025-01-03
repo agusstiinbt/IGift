@@ -27,7 +27,6 @@
 
 	<ItemGroup>
 		<Folder Include="CQRS\Notifications\Command\" />
-		<Folder Include="CQRS\Titulos\Conectado\" />
 		<Folder Include="Responses\Chat\" />
 		<Folder Include="Responses\Identity\Token\" />
 	</ItemGroup>
