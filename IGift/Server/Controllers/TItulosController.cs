@@ -1,4 +1,5 @@
-﻿using IGIFT.Server.Shared;
+﻿using IGift.Application.CQRS.Titulos.Desconectado;
+using IGIFT.Server.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
