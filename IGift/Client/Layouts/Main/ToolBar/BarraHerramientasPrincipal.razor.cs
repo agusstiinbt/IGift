@@ -22,13 +22,22 @@ namespace IGift.Client.Layouts.Main.ToolBar
             {
                 NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
             }
-
-            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
-
-            if (_hubConnection.State == HubConnectionState.Disconnected)
+            try
             {
-                await _hubConnection.StartAsync();
+                //_hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+
+                //if (_hubConnection.State == HubConnectionState.Disconnected)
+                //{
+                //    await _hubConnection.StartAsync();
+                //}
+
             }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+           
         }
     }
 }
