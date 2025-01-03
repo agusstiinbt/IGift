@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Application.Responses.Titulos.Categoria;
-using IGift.Application.Responses.Titulos.Desconectado;
-using IGift.Application.Responses.Titulos;
+using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Shared.Wrapper;
 using MediatR;
-using IGift.Application.Responses.Titulos.Conectado;
 
 namespace IGift.Application.CQRS.Titulos.Conectado
 {

@@ -1,5 +1,4 @@
-﻿using IGift.Application.Responses.Titulos.Categoria;
-using IGift.Application.Responses.Titulos.Conectado;
+﻿using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Application.Responses.Titulos.Desconectado;
 using IGift.Shared.Wrapper;
 

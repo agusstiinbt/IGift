@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Json;
-using Client.Infrastructure.Extensions;
-using IGift.Application.Responses.Titulos.Categoria;
+﻿using Client.Infrastructure.Extensions;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Application.Responses.Titulos.Desconectado;
 using IGift.Shared.Constants.Controllers;
