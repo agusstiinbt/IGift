@@ -56,10 +56,7 @@ namespace IGift.Client.Infrastructure.Services.Titulos.Categoria
 
         public async Task<IResult<BarraHerramientasDesconectadoResponse>> LoadDesconectado()
         {
-            var url = TitulosController.GetBarraHerramientasDesconectado;
-
-            var response = await _httpClient.GetAsync(url);
-            //BarraHerramientasDesconectadoResponse
+            var response = await _httpClient.GetAsync(TitulosController.GetBarraHerramientasDesconectado);
             return await response.ToResult<BarraHerramientasDesconectadoResponse>();
         }
     }
