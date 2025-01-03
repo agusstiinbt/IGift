@@ -12,18 +12,18 @@ namespace IGift.Server.Controllers
     [ApiController]
     public class TItulosController : BaseApiController<TItulosController>
     {
+        [Obsolete]
         [HttpPost]
         public async Task<ActionResult> GetAll(GetAllCategoriaQuery query)
         {
             return Ok(await _mediator.Send(query));
         }
 
+        [Obsolete]
         [HttpPost("GetAllTitulosConectado")]
-        public async Task<ActionResult> GetAll(GetAllTitulosConectadoQuery query)
-        {
-            return Ok(await _mediator.Send(query));
-        }
+        public async Task<ActionResult> GetAll(GetAllTitulosConectadoQuery query) => Ok(await _mediator.Send(query));
 
+        [Obsolete]
         [HttpPost("GetAllTitulosDesconectado")]
         public async Task<ActionResult> GetAll(GetAllTitulosDesconectadoQuery query)
         {
@@ -34,15 +34,13 @@ namespace IGift.Server.Controllers
         [HttpGet("GetBarraHerramientasDesconectado")]
         public async Task<ActionResult> GetAll()
         {
-            var titulos = await _mediator.Send(new GetAllTitulosDesconectadoQuery());
-            var categorias = await _mediator.Send(new GetAllCategoriaQuery());
+            var response = new BarraHerramientasDesconectadoResponse
+            {
+                Titulos = (await _mediator.Send(new GetAllTitulosDesconectadoQuery())).Data.ToList(),
+                Categorias = (await _mediator.Send(new GetAllCategoriaQuery())).Data.ToList()
+            };
 
-            var response = new BarraHerramientasDesconectadoResponse();
-            response.Titulos = titulos.Data.ToList();
-            response.Categorias = categorias.Data.ToList();
-
-            var result = await Result<BarraHerramientasDesconectadoResponse>.SuccessAsync(response);
-            return Ok(result);
+            return Ok(await Result<BarraHerramientasDesconectadoResponse>.SuccessAsync(response));
         }
     }
 }
