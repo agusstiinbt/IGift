@@ -2,7 +2,7 @@
 using IGift.Application.Responses.Peticiones;
 using IGift.Shared.Wrapper;
 
-namespace Client.Infrastructure.Services.Requests
+namespace IGift.Client.Infrastructure.Services.Peticiones
 {
     public interface IPeticionesService
     {

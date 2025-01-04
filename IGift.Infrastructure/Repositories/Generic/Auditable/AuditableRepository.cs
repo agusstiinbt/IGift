@@ -16,7 +16,7 @@ namespace IGift.Infrastructure.Repositories.Generic.Auditable
             _context = context;
         }
 
-        public IQueryable<T> query => _context.Set<T>();
+        public IQueryable<T> Query => _context.Set<T>();
 
         public async Task<T> AddAsync(T entity)
         {
@@ -53,7 +53,7 @@ namespace IGift.Infrastructure.Repositories.Generic.Auditable
         }
         public async Task<IQueryable<TDto>> FindAndMapByQuery<TDto>(IMapper mapper) where TDto : class
         {
-            return await Task.FromResult(query.ProjectTo<TDto>(mapper.ConfigurationProvider));
+            return await Task.FromResult(Query.ProjectTo<TDto>(mapper.ConfigurationProvider));
         }
 
         public async Task UpdateAsync(T entity)

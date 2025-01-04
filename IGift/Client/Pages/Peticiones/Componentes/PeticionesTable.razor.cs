@@ -1,5 +1,4 @@
-﻿using Client.Infrastructure.Services.Requests;
-using IGift.Application.CQRS.Peticiones.Query;
+﻿using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
@@ -11,7 +10,6 @@ namespace IGift.Client.Pages.Peticiones.Componentes
 {
     public partial class PeticionesTable
     {
-        [Inject] IPeticionesService _peticiones { get; set; }
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
         private ICollection<PeticionesResponse> _pagedData;
@@ -99,7 +97,7 @@ namespace IGift.Client.Pages.Peticiones.Componentes
             // public GetAllPeticionesQuery(int pageNumber, int pageSize, string searchString, string[] orderBy)
 
             var request = new GetAllPeticionesQuery { PageNumber = pageNumber, PageSize = pageSize, Descripcion = _searchString };
-            var response = await _peticiones.GetAll(request);
+            var response = await _peticionesService.GetAll(request);
             if (response.Succeeded)
             {
                 _totalItems = response.Data.TotalCount;

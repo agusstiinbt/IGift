@@ -17,7 +17,7 @@ namespace IGift.Infrastructure.Repositories.NonGeneric
 
         public async Task<bool> IsBrandUsed(int id)
         {
-            return await _repository.query.AsNoTracking().AnyAsync(x => x.Id == id);
+            return await _repository.Query.AsNoTracking().AnyAsync(x => x.Id == id);
         }
     }
 }

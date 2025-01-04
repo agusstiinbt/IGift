@@ -6,7 +6,7 @@ namespace IGift.Application.Interfaces.Repositories.Generic.Auditable
 {
     public interface IAuditableRepository<T, in TId> where T : class, IEntity<TId>
     {
-        IQueryable<T> query { get; }
+        IQueryable<T> Query { get; }
 
         Task<T> GetByIdAsync(TId id);
 
