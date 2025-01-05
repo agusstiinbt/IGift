@@ -1,6 +1,5 @@
 ﻿using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
-using IGift.Domain.Entities;
 using IGift.Shared.Wrapper;
 using MudBlazor;
 
