@@ -3,11 +3,11 @@ using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
 using IGift.Client.Extensions;
+using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
-using IGift.Shared.Constants;
 
 namespace IGift.Client.Pages.Inicio
 {
@@ -131,8 +131,8 @@ namespace IGift.Client.Pages.Inicio
         }
         private async Task OnSearch(string text)
         {
-            TxtBusqueda = text;  
-            await _table.ReloadServerData(); 
+            TxtBusqueda = text;
+            await _table.ReloadServerData();
         }
     }
 }
