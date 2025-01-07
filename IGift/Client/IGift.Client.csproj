@@ -33,6 +33,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Pages\Communication\Email\Components\" />
+	  <Folder Include="Pages\Peticiones\" />
 	</ItemGroup>
 
 </Project>
