@@ -72,23 +72,14 @@ namespace IGift.Infrastructure.Repositories.Generic.NonAuditable
 
             var type = typeof(T).Name;
 
-            try
+            if (!_repositories.ContainsKey(type))
             {
-                if (!_repositories.ContainsKey(type))
-                {
-                    var repositoryType = typeof(NonAuditableRepository<,>);
+                var repositoryType = typeof(NonAuditableRepository<,>);
 
-                    var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
+                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
 
-                    _repositories.Add(type, repositoryInstance);
-                }
+                _repositories.Add(type, repositoryInstance);
             }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-
 
             return (INonAuditableRepository<T, TId>)_repositories[type];
         }

@@ -1,3 +1,120 @@
 ﻿@page "/"
 
+<ContenedorLogoPrincipal />
+
+@*Buscador*@
+<div style="display: grid; place-items: center;">
+    <MudTextField @bind-Value="SearchString"
+                  Clearable="true"
+                  Variant="Variant.Outlined"
+                  Adornment="Adornment.End"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  AdornmentColor="Color.Secondary"
+                  OnAdornmentClick="RealizarBusqueda"
+                  style="width: 750px;" />
+</div>
+
+<AuthorizeView>
+
+    <Authorized>
+        <CascadingValue Value="EstiloBotones">
+            <BarraHerramientasConectado _hubConnection="@_hubConnection" userName="@NombreUsuario" />
+        </CascadingValue>
+    </Authorized>
+
+    <NotAuthorized>
+        <CascadingValue Value="EstiloBotones">
+            <BarraHerramientasDesconectado />
+            <TituloDeslogueado />
+        </CascadingValue>
+    </NotAuthorized>
+
+</AuthorizeView>
+
 <CaruselInicio />
+
+@if (ShowTablePeticiones)
+{
+    <MudPaper Style="background-color:transparent" Class="d-flex justify-center" Elevation="0">
+
+        <MudTable T="PeticionesResponse" Style="background-color:#181A20" ServerData="@(new Func<TableState, CancellationToken, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table">
+            <!-- Aquí puedes agregar las columnas y otras configuraciones del MudTable -->
+
+            <ToolBarContent>
+
+                <MudPaper Style="width:980px;background-color:#181A20;" Elevation="20" Outlined="true">
+
+                    <MudStack Wrap="Wrap.NoWrap" Spacing="4" Row="true" AlignItems="AlignItems.Start">
+
+                        <MudPaper Style="background-color:transparent">
+                            <MudButton OnClick="()=>TipoOperacion(Compra)" Style="@EstiloBotonComprarPeticion">Comprar peticion </MudButton>
+
+                            <MudButton OnClick="()=>TipoOperacion(Venta)" Style="@EstiloBotonCrear">Crear Peticion</MudButton>
+                        </MudPaper>
+                        <MudSpacer />
+                        <MudButton Style="@GetEstiloBoton("USDT")" OnClick='() => SeleccionarBoton("USDT")'>USDT</MudButton>
+                        <MudButton Style="@GetEstiloBoton("BTC")" OnClick='() => SeleccionarBoton("BTC")'>BTC</MudButton>
+                        <MudButton Style="@GetEstiloBoton("USDC")" OnClick='() => SeleccionarBoton("USDC")'>USDC</MudButton>
+                        <MudButton Style="@GetEstiloBoton("ETH")" OnClick='() => SeleccionarBoton("ETH")'>ETH</MudButton>
+                        <MudButton Style="@GetEstiloBoton("TOKENS")" OnClick='() => SeleccionarBoton("TOKENS")'>Tokens</MudButton>
+                        <MudButton Style="@GetEstiloBoton("OTROS")" OnClick='() => SeleccionarBoton("OTROS")'>Otros</MudButton>
+
+                    </MudStack>
+
+                </MudPaper>
+
+            </ToolBarContent>
+
+            <HeaderContent>
+
+                <MudTh><MudTableSortLabel Style="color:white;" T="PeticionesResponse" SortLabel="Descripcion">Descripcion</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel Style="color:white;" T="PeticionesResponse" SortLabel="Moneda">Moneda</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel Style="color:white;" T="PeticionesResponse" SortLabel="Monto">Monto</MudTableSortLabel></MudTh>
+
+            </HeaderContent>
+
+            <RowTemplate>
+
+                <MudTd DataLabel="Name">
+                    <MudHighlighter HighlightedText="@TxtBusqueda" />
+                    <MudText Style="color:white;">@context.Descripcion</MudText>
+                </MudTd>
+
+                <MudTd DataLabel="Brand">
+                    <MudHighlighter HighlightedText="@TxtBusqueda" />
+                    <MudText Style="color:white;">@context.Moneda</MudText>
+                </MudTd>
+
+                <MudTd DataLabel="Brand">
+                    <MudHighlighter HighlightedText="@TxtBusqueda" />
+                    <MudText Style="color:white;">@context.Monto</MudText>
+
+                </MudTd>
+
+                <MudButton OnClick="() => AgregarAlCarrito(context)" Style="background-color:green;color:white;">Comprar @BotonSeleccionado</MudButton>
+
+            </RowTemplate>
+
+        </MudTable>
+
+    </MudPaper>
+}
+
+@code {
+    public bool ShowTablePeticiones { get; set; } = false;
+
+    public string SearchString { get; set; } = string.Empty;
+
+    public async Task RealizarBusqueda()
+    {
+        TxtBusqueda = SearchString;
+
+        if (!ShowTablePeticiones)
+        {
+            ShowTablePeticiones = true;  
+        }
+        else{
+            await OnSearch(TxtBusqueda);
+        }
+    }
+}

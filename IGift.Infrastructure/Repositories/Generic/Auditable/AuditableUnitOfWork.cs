@@ -77,9 +77,8 @@ namespace IGift.Infrastructure.Repositories.Generic.Auditable
 
                 var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T), typeof(TId)), _context);
                 _repositories.Add(type, repositoryInstance);
-                return (IAuditableRepository<T, TId>)_repositories[type];
             }
-            return null;
+            return (IAuditableRepository<T, TId>)_repositories[type];
         }
 
         public Task Rollback()

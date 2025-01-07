@@ -16,10 +16,10 @@ namespace IGift.Client.Infrastructure.Services.Peticiones
             _http = http;
         }
 
-        public async Task<IResult<PaginatedResult<PeticionesResponse>>> GetAll(GetAllPeticionesQuery request)
+        public async Task<PaginatedResult<PeticionesResponse>> GetAll(GetAllPeticionesQuery request)
         {
             var response = await _http.PostAsJsonAsync(ConstPeticionesController.GetAll, request);
-            var result = await response.ToResult<PaginatedResult<PeticionesResponse>>();
+            var result = await response.ToPaginatedResult<PeticionesResponse>();
             return result;
         }
     }

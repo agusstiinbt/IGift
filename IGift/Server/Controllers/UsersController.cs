@@ -18,7 +18,6 @@ namespace IGift.Server.Controllers
             _userService = userService;
         }
 
-
         [HttpGet("GetAll")]
         [Authorize(Roles = AppConstants.Role.AdministratorRole)]
         public async Task<ActionResult> GetAll()
@@ -39,7 +38,6 @@ namespace IGift.Server.Controllers
         {
             return Ok(await _userService.GetRolesAsync(Id));
         }
-
 
         [HttpPost("Register")]
         public async Task<ActionResult> Register(UserCreateRequest m)

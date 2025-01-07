@@ -6,6 +6,6 @@ namespace IGift.Client.Infrastructure.Services.Peticiones
 {
     public interface IPeticionesService
     {
-        Task<IResult<PaginatedResult<PeticionesResponse>>> GetAll(GetAllPeticionesQuery request);
+        Task<PaginatedResult<PeticionesResponse>> GetAll(GetAllPeticionesQuery request);
     }
 }
