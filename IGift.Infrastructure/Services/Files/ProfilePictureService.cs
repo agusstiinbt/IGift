@@ -76,12 +76,20 @@ namespace IGift.Infrastructure.Services.Files
                 var newProfilePicture = new ProfilePicture { FileType = "image/png", IdUser = request.IdUser, UploadDate = DateTime.Now, Url = pathResponse };
 
                 var exists = await _dbContext.ProfilePicture.AnyAsync(x => x.IdUser == request.IdUser);
-                //Si no existe una foto de perfil con el IdUser del 'request' entonces creamos una nueva fila
-                if (!exists)
+                try
                 {
-                    await _dbContext.ProfilePicture.AddAsync(newProfilePicture);
-                    await _dbContext.SaveChangesAsync();
+                    if (!exists)
+                    {
+                        await _dbContext.ProfilePicture.AddAsync(newProfilePicture);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
+                catch (Exception e)
+                {
+                    throw new Exception("Error al subir foto de perfil");
+                }
+                //Si no existe una foto de perfil con el IdUser del 'request' entonces creamos una nueva fila
+
 
                 var user = await _dbContext.Users.Where(x => x.Id == request.IdUser).FirstAsync();
 

@@ -11,6 +11,7 @@
             public static string Login = "/Login";
             public static string Chat = "/Chat";
             public static string Peticiones = "/Peticiones";
+            public static string UserProfile = "/UserProfile";
         }
     }
 }

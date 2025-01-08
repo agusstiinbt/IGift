@@ -34,7 +34,6 @@ namespace IGift.Client.Extensions
             //Servicio de LocalStorage
             b.Services.AddBlazoredLocalStorage();
 
-
             //Servicios MudBlazor
             b.Services.AddMudServices(config =>
             {

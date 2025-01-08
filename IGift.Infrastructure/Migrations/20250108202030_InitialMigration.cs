@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace IGift.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,6 +16,20 @@ namespace IGift.Infrastructure.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "Identity");
+
+            migrationBuilder.CreateTable(
+                name: "Categorias",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdPadre = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categorias", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "LocalesAdheridos",
@@ -53,6 +68,32 @@ namespace IGift.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TitulosConectados",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TitulosConectados", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TitulosDesconectados",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TitulosDesconectados", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,7 +276,6 @@ namespace IGift.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IdGiftCard = table.Column<int>(type: "int", nullable: false),
                     IdSmartContract = table.Column<int>(type: "int", nullable: false),
                     IdUser1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -262,6 +302,7 @@ namespace IGift.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdUser = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Monto = table.Column<int>(type: "int", nullable: false),
                     Moneda = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Finalizado = table.Column<bool>(type: "bit", nullable: false),
@@ -286,7 +327,8 @@ namespace IGift.Infrastructure.Migrations
                 name: "ProfilePicture",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdUser = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -462,6 +504,9 @@ namespace IGift.Infrastructure.Migrations
                 name: "AspNetUserRoles");
 
             migrationBuilder.DropTable(
+                name: "Categorias");
+
+            migrationBuilder.DropTable(
                 name: "Contracts");
 
             migrationBuilder.DropTable(
@@ -483,6 +528,12 @@ namespace IGift.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "RoleClaims",
                 schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "TitulosConectados");
+
+            migrationBuilder.DropTable(
+                name: "TitulosDesconectados");
 
             migrationBuilder.DropTable(
                 name: "UserClaims",

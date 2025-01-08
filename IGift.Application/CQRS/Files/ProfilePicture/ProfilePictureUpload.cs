@@ -7,7 +7,7 @@ namespace IGift.Application.CQRS.Files.ProfilePicture
     /// </summary>
     public class ProfilePictureUpload
     {
-        [JsonPropertyName("imageDataURL")]// Esto lo usamos para que al serializar la propiedad de UploadRequest, las propiedades coincidan todas 
+        [JsonPropertyName("ImageDataURL")]// Esto lo usamos para que al serializar la propiedad de UploadRequest, las propiedades coincidan todas 
         public string ImageDataURL { get; set; } = string.Empty;
 
         [JsonPropertyName("uploadRequest")]

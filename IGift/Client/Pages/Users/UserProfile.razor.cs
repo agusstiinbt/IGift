@@ -3,6 +3,8 @@ using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Files;
 using IGift.Application.CQRS.Files.ProfilePicture;
 using Microsoft.AspNetCore.Components.Forms;
+using IGift.Shared.Constants;
+using MudBlazor;
 
 namespace IGift.Client.Pages.Users
 {
@@ -76,7 +78,12 @@ namespace IGift.Client.Pages.Users
             var response = await _profileService.UploadAsync(_picture);
             if (response.Succeeded)
             {
-                _snack.Add("Foto de perfil modificada correctamente", MudBlazor.Severity.Success); ;
+                await InvokeAsync(() =>
+                {
+                    _snack.Add("Foto de perfil modificada correctamente", MudBlazor.Severity.Success);
+                });
+                await Task.Delay(4000);
+                _nav.NavigateTo(AppConstants.Routes.UserProfile, true);
             }
             else
             {

@@ -18,6 +18,7 @@ namespace IGift.Client.Layouts.Main
 
         private HubConnection _hubConnection;
 
+
         [Inject] private IAuthService _authService { get; set; }
         [Inject] private IHttpInterceptorManager _interceptor { get; set; }
 

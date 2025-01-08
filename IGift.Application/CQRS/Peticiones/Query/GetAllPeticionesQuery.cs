@@ -48,49 +48,38 @@ namespace IGift.Application.CQRS.Peticiones.Query
 
         public async Task<PaginatedResult<PeticionesResponse>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
         {
-            try
+            var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMapByQuery<PeticionesResponse>(_mapper);
+            if (!string.IsNullOrEmpty(request.SearchString))
             {
-                var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMapByQuery<PeticionesResponse>(_mapper);
-                if (!string.IsNullOrEmpty(request.SearchString))
+                Expression<Func<Domain.Entities.Peticiones, PeticionesResponse>> expression = e => new PeticionesResponse
                 {
+                    Descripcion = e.Descripcion,
+                    Moneda = e.Moneda,
+                    Monto = e.Monto,
+                };
 
-                    Expression<Func<Domain.Entities.Peticiones, PeticionesResponse>> expression = e => new PeticionesResponse
-                    {
-                        Descripcion = e.Descripcion,
-                        Moneda = e.Moneda,
-                        Monto = e.Monto,
-                    };
+                var filtro = new PeticionesFilter(request.SearchString);
 
-                    var filtro = new PeticionesFilter(request.SearchString);
+                var response1 = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Query
+               .Specify(filtro)
+                .Select(expression)
+                .ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
-                    var response1 = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Query
-                   .Specify(filtro)
-                    .Select(expression)
-                    .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-                    if (response1.Data.Count > 0)
-                    {
-                        return response1;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(request.Descripcion))
-                    query = query.Where(x => x.Descripcion == request.Descripcion);
-
-                if (!string.IsNullOrEmpty(request.Moneda))
-                    query = query.Where(x => x.Moneda == request.Moneda);
-
-                if (request.Monto != 0)
-                    query = query.Where(x => x.Monto == request.Monto);
-
-                var response = await query.ToPaginatedListAsync(0, 0);
-
-                return response;
-            }
-            catch (Exception e)
-            {
-                throw;
+                return response1;
             }
 
+            if (!string.IsNullOrEmpty(request.Descripcion))
+                query = query.Where(x => x.Descripcion == request.Descripcion);
+
+            if (!string.IsNullOrEmpty(request.Moneda))
+                query = query.Where(x => x.Moneda == request.Moneda);
+
+            if (request.Monto != 0)
+                query = query.Where(x => x.Monto == request.Monto);
+
+            var response = await query.ToPaginatedListAsync(0, 0);
+
+            return response;
         }
     }
 }
