@@ -2,9 +2,8 @@
 using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Files;
 using IGift.Application.CQRS.Files.ProfilePicture;
-using Microsoft.AspNetCore.Components.Forms;
 using IGift.Shared.Constants;
-using MudBlazor;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace IGift.Client.Pages.Users
 {
