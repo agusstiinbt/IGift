@@ -12,13 +12,6 @@ namespace IGift.Application.Interfaces.Repositories
 
         Task<IEnumerable<T>> GetAllAsync();
 
-        /// <summary>
-        /// Este metodo devuelve una coleccion ya mapeada. No hace falta agregar lambdas ya que es para devolver absolutamente todo. Difiere de FindAndMapByQuery
-        /// </summary>
-        /// <typeparam name="TDto"></typeparam>
-        /// <param name="mapper"></param>
-        /// <returns></returns>
-        Task<IEnumerable<TDto>> GetAllMapAsync<TDto>(IMapper mapper) where TDto : class;
 
         Task<IEnumerable<T>> GetPagedResponseAsync(int pageNumber, int pageSize);
 
@@ -33,7 +26,7 @@ namespace IGift.Application.Interfaces.Repositories
         /// <typeparam name="TDto"></typeparam>
         /// <param name="mapper"></param>
         /// <returns>EL query ya mapeado a la entidad correspondiente</returns>
-        Task<IQueryable<TDto>> FindAndMapByQuery<TDto>(IMapper mapper) where TDto : class;
+        Task<IQueryable<TDto>> GetAllMapAsyncQuery<TDto>(IMapper mapper) where TDto : class;
 
         Task<Task> DeleteAsync(T entity);
     }

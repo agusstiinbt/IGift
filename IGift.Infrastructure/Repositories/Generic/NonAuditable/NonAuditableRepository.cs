@@ -58,11 +58,10 @@ namespace IGift.Infrastructure.Repositories.Generic.NonAuditable
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TDto>> GetAllMapAsync<TDto>(IMapper mapper) where TDto : class
-            => await query.ProjectTo<TDto>(mapper.ConfigurationProvider).ToListAsync();
-
-        public async Task<IQueryable<TDto>> FindAndMapByQuery<TDto>(IMapper mapper) where TDto : class
-            => await Task.FromResult(query.ProjectTo<TDto>(mapper.ConfigurationProvider));
+        public async Task<IQueryable<TDto>> GetAllMapAsyncQuery<TDto>(IMapper mapper) where TDto : class
+        {
+            return await Task.FromResult(query.ProjectTo<TDto>(mapper.ConfigurationProvider));
+        }
     }
 
 }

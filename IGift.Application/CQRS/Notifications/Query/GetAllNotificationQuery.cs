@@ -1,13 +1,22 @@
 ﻿using AutoMapper;
+using IGift.Application.Enums;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
 using IGift.Application.Models;
 using IGift.Application.Responses.Notification;
 using IGift.Shared.Wrapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Application.CQRS.Notifications.Query
 {
-    public record GetAllNotificationQuery(string Id) : IRequest<IResult<IEnumerable<NotificationResponse>>>;
+    public class GetAllNotificationQuery : IRequest<IResult<IEnumerable<NotificationResponse>>>
+    {
+        public string IdUser { get; set; } = string.Empty;
+
+        public DateTime? FechaHasta { get; set; } = null;
+
+        public TypeNotification? TypeNotification { get; set; } = null;
+    }
 
     internal class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, IResult<IEnumerable<NotificationResponse>>>
     {
@@ -24,25 +33,18 @@ namespace IGift.Application.CQRS.Notifications.Query
         public async Task<IResult<IEnumerable<NotificationResponse>>> Handle(GetAllNotificationQuery request, CancellationToken cancellationToken)
         {
             //TODO fijarse si este response trae algo porque hicimos un cambio en el paradigma de unit of work para clases que no tiene AuditableEntity ni IAuditableEntity
+            var query = await _unitOfWork.Repository<Notification>().GetAllMapAsyncQuery<NotificationResponse>(_mapper);
 
-            var response = await _unitOfWork.Repository<Notification>().FindAsync(x => x.IdUser == request.Id);
-            var lista = new List<NotificationResponse>();
+            if (!string.IsNullOrEmpty(request.IdUser))//Traemos solamente aquellas notificaciones que corresponda al IdUser pasado
+                query.Where(x => x.UserId == request.IdUser);
 
-            ////TODO modificar y hacer algun tipo de mapeo
-            foreach (var item in response)
-            {
-                lista.Add(new NotificationResponse
-                {
-                    DateTime = item.DateTime,
-                    Message = item.Message,
-                    Type = item.Type
-                });
-            }
+            if (request.FechaHasta != null)
+                query.Where(x => x.DateTime > request.FechaHasta);
 
-            //TODO implementar el mapeo aquí
-            //var result = _mapper.Map<List<NotificationResponse>>(response);
-            //return result;
-            return null;
+            if (request.TypeNotification != null)
+                query.Where(x => x.Type == request.TypeNotification);
+
+            return await Result<IEnumerable<NotificationResponse>>.SuccessAsync(await query.ToListAsync());
         }
     }
 }
