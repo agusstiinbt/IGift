@@ -18,7 +18,6 @@ namespace IGift.Client.Layouts.Main
 
         private HubConnection _hubConnection;
 
-
         [Inject] private IAuthService _authService { get; set; }
         [Inject] private IHttpInterceptorManager _interceptor { get; set; }
 
@@ -29,7 +28,14 @@ namespace IGift.Client.Layouts.Main
             {
                 await _authService.Disconnect(DotNetObjectReference.Create(this));
                 ActivateHttpInterceptor();
-                await InitializeHub();
+                try
+                {
+                    await InitializeHub();
+
+                }
+                catch (Exception e)
+                {
+                }
             }
         }
 
@@ -77,6 +83,8 @@ namespace IGift.Client.Layouts.Main
             var nombre = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
 
             _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+
+            var state = _hubConnection.State;
 
             await _hubConnection.StartAsync();
 

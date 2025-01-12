@@ -4,6 +4,7 @@ using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Shared.Wrapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Application.CQRS.Titulos.Conectado
 {
@@ -22,16 +23,15 @@ namespace IGift.Application.CQRS.Titulos.Conectado
 
         public async Task<IResult<BarraHerramientasConectadoResponse>> Handle(GetBarraConectadoQuery request, CancellationToken cancellationToken)
         {
-            var titulos = await _unitOfWork.Repository<Models.Titulos.TitulosConectado>().GetAllMapAsync<TitulosConectadoResponse>(_mapper);
+            var titulos = await _unitOfWork.Repository<Models.Titulos.TitulosConectado>().GetAllMapAsyncQuery<TitulosConectadoResponse>(_mapper);
 
-            var categorias = await _unitOfWork.Repository<Models.Titulos.Categoria>().GetAllMapAsync<CategoriaResponse>(_mapper);
+            var categorias = await _unitOfWork.Repository<Models.Titulos.Categoria>().GetAllMapAsyncQuery<CategoriaResponse>(_mapper);
 
             var response = new BarraHerramientasConectadoResponse()
             {
-                Titulos = titulos.ToList(),
-                Categorias = categorias.ToList(),
+                Titulos = await titulos.ToListAsync(),
+                Categorias = await categorias.ToListAsync(),
             };
-
             return await Result<BarraHerramientasConectadoResponse>.SuccessAsync(response);
         }
     }

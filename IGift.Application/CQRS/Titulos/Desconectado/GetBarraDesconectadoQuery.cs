@@ -4,6 +4,7 @@ using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Desconectado;
 using IGift.Shared.Wrapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Application.CQRS.Titulos.Desconectado
 {
@@ -22,14 +23,14 @@ namespace IGift.Application.CQRS.Titulos.Desconectado
 
         public async Task<IResult<BarraHerramientasDesconectadoResponse>> Handle(GetBarraDesconectadoQuery request, CancellationToken cancellationToken)
         {
-            var titulos = await _unitOfWork.Repository<Models.Titulos.TitulosDesconectado>().GetAllMapAsync<TitulosDesconectadoResponse>(_mapper);
+            var titulos = await _unitOfWork.Repository<Models.Titulos.TitulosDesconectado>().GetAllMapAsyncQuery<TitulosDesconectadoResponse>(_mapper);
 
-            var categorias = await _unitOfWork.Repository<Models.Titulos.Categoria>().GetAllMapAsync<CategoriaResponse>(_mapper);
+            var categorias = await _unitOfWork.Repository<Models.Titulos.Categoria>().GetAllMapAsyncQuery<CategoriaResponse>(_mapper);
 
             var response = new BarraHerramientasDesconectadoResponse()
             {
-                Titulos = titulos.ToList(),
-                Categorias = categorias.ToList(),
+                Titulos = await titulos.ToListAsync(),
+                Categorias = await categorias.ToListAsync(),
             };
 
             return await Result<BarraHerramientasDesconectadoResponse>.SuccessAsync(response);

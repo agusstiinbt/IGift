@@ -23,7 +23,13 @@ namespace Client.Infrastructure.Services.Notification
         {
             var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
 
-            var query = new GetAllNotificationQuery(idUser!);
+            if (idUser == null)
+                return await Result<IEnumerable<NotificationResponse>>.FailAsync("Error al obtener el usuario correspondiente");
+
+            var query = new GetAllNotificationQuery
+            {
+                IdUser = idUser!
+            };
 
             var url = ConstNotificationController.GetAll;
 

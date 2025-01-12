@@ -48,7 +48,6 @@ namespace IGift.Application.CQRS.Peticiones.Query
 
         public async Task<PaginatedResult<PeticionesResponse>> Handle(GetAllPeticionesQuery request, CancellationToken cancellationToken)
         {
-            var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMapByQuery<PeticionesResponse>(_mapper);
             if (!string.IsNullOrEmpty(request.SearchString))
             {
                 Expression<Func<Domain.Entities.Peticiones, PeticionesResponse>> expression = e => new PeticionesResponse
@@ -67,6 +66,8 @@ namespace IGift.Application.CQRS.Peticiones.Query
 
                 return response1;
             }
+
+            var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMapByQuery<PeticionesResponse>(_mapper);
 
             if (!string.IsNullOrEmpty(request.Descripcion))
                 query = query.Where(x => x.Descripcion == request.Descripcion);
