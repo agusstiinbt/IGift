@@ -4,7 +4,6 @@ using AutoMapper.QueryableExtensions;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Domain.Contracts;
 using IGift.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Infrastructure.Repositories.Generic.NonAuditable
 {
