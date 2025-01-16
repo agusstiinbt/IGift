@@ -73,81 +73,81 @@ builder.Services
         authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
     .AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
     {
-
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]!)),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidIssuer = builder.Configuration["JwtIssuer"],
-        ValidAudience = builder.Configuration["JwtAudience"],
-        ClockSkew = TimeSpan.Zero//Para más información sobre esto leer el README
-    };
-
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            var accessToken = context.Request.Query[AppConstants.Local.Access_Token];
 
-            var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(AppConstants.SignalR.HubUrl))
-            {
-                context.Token = accessToken;
-            }
-            return Task.CompletedTask;
-        },
-        OnAuthenticationFailed = c =>
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]!)),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidIssuer = builder.Configuration["JwtIssuer"],
+            ValidAudience = builder.Configuration["JwtAudience"],
+            ClockSkew = TimeSpan.Zero//Para más información sobre esto leer el README
+        };
+
+        options.Events = new JwtBearerEvents
         {
-            if (c.Exception is SecurityTokenExpiredException)
+            OnMessageReceived = context =>
             {
-                c.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                c.Response.ContentType = "application/json";
-                var result = JsonConvert.SerializeObject(Result.Fail("The token is expired"));
-                return c.Response.WriteAsync(result);
-            }
-            else
+                var accessToken = context.Request.Query[AppConstants.Local.Access_Token];
+
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(AppConstants.SignalR.HubUrl))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            },
+            OnAuthenticationFailed = c =>
             {
+                if (c.Exception is SecurityTokenExpiredException)
+                {
+                    c.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    c.Response.ContentType = "application/json";
+                    var result = JsonConvert.SerializeObject(Result.Fail("The token is expired"));
+                    return c.Response.WriteAsync(result);
+                }
+                else
+                {
 #if DEBUG
-                c.NoResult();
-                c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                c.Response.ContentType = "text/plain";
-                return c.Response.WriteAsync(c.Exception.ToString());
+                    c.NoResult();
+                    c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    c.Response.ContentType = "text/plain";
+                    return c.Response.WriteAsync(c.Exception.ToString());
 #else
                                 c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                                 c.Response.ContentType = "application/json";
                                 var result = JsonConvert.SerializeObject(Result.Fail(localizer["An unhandled error has occurred."]));
                                 return c.Response.WriteAsync(result);
 #endif
-            }
-        },
-        OnChallenge = context =>
-        {
-            context.HandleResponse();
-            if (!context.Response.HasStarted)
+                }
+            },
+            OnChallenge = context =>
             {
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                context.HandleResponse();
+                if (!context.Response.HasStarted)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    context.Response.ContentType = "application/json";
+                    var result = JsonConvert.SerializeObject(Result.Fail("You are not Authorized."));
+                    return context.Response.WriteAsync(result);
+                }
+
+                return Task.CompletedTask;
+            },
+            OnForbidden = context =>
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 context.Response.ContentType = "application/json";
-                var result = JsonConvert.SerializeObject(Result.Fail("You are not Authorized."));
+                var result = JsonConvert.SerializeObject(Result.Fail("You are not authorized to access this resource."));
                 return context.Response.WriteAsync(result);
             }
-
-            return Task.CompletedTask;
-        },
-        OnForbidden = context =>
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            context.Response.ContentType = "application/json";
-            var result = JsonConvert.SerializeObject(Result.Fail("You are not authorized to access this resource."));
-            return context.Response.WriteAsync(result);
-        }
-    };
-});//TODO estudiar esto
+        };
+    });
 
 //Repositories
 builder.Services.AddTransient(typeof(IAuditableUnitOfWork<>), typeof(AuditableUnitOfWork<>));

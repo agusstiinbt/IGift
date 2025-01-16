@@ -31,7 +31,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
             {
                 titulosConectado = response.Data.Titulos.ToList();
                 listaCategorias = response.Data.Categorias.ToList();
-
             }
             if (string.IsNullOrEmpty(userName))
             {

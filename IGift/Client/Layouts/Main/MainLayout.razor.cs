@@ -84,7 +84,6 @@ namespace IGift.Client.Layouts.Main
 
             _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
 
-            var state = _hubConnection.State;
 
             await _hubConnection.StartAsync();
 

@@ -62,8 +62,8 @@ namespace IGift.Client.Pages.Inicio
             }
             catch (Exception e)
             {
-
-                throw e;
+                //TODO estudiar hubconnection y resolver los problemas
+                //throw e;
             }
 
         }

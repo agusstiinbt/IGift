@@ -36,13 +36,13 @@ namespace IGift.Application.CQRS.Notifications.Query
             var query = await _unitOfWork.Repository<Notification>().GetAllMapAsyncQuery<NotificationResponse>(_mapper);
 
             if (!string.IsNullOrEmpty(request.IdUser))//Traemos solamente aquellas notificaciones que corresponda al IdUser pasado
-                query.Where(x => x.UserId == request.IdUser);
+                query = query.Where(x => x.IdUser == request.IdUser);
 
             if (request.FechaHasta != null)
-                query.Where(x => x.DateTime > request.FechaHasta);
+                query = query.Where(x => x.DateTime > request.FechaHasta);
 
             if (request.TypeNotification != null)
-                query.Where(x => x.Type == request.TypeNotification);
+                query = query.Where(x => x.Type == request.TypeNotification);
 
             return await Result<IEnumerable<NotificationResponse>>.SuccessAsync(await query.ToListAsync());
         }

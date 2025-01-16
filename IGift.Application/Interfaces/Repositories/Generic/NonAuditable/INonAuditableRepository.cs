@@ -12,7 +12,6 @@ namespace IGift.Application.Interfaces.Repositories
 
         Task<IEnumerable<T>> GetAllAsync();
 
-
         Task<IEnumerable<T>> GetPagedResponseAsync(int pageNumber, int pageSize);
 
         Task<T> AddAsync(T entity);

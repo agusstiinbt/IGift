@@ -8,10 +8,19 @@
 
                 <MudNavMenu>
 
-                    @foreach (var n in list)
+                    @if (list.Any())
                     {
-                        <MudNavLink Href="/">@n.Message</MudNavLink>
+                        @foreach (var n in list)
+                        {
+                            <MudNavLink Href="/">@n.Message</MudNavLink>
+                        }
                     }
+                    else
+                    {
+                        <MudNavLink Href="/">Por el momento no tienes notificaciones :D</MudNavLink>
+
+                    }
+
 
                 </MudNavMenu>
 
