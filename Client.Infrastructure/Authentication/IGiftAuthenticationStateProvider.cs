@@ -34,10 +34,12 @@ namespace Client.Infrastructure.Authentication
         /// </summary>
         public async Task MarkUserAsLoggedOut()
         {
-            await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
-            await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
-            await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
-            await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
+            await _localStorage.ClearAsync();//en teoria esto liompia todo lo que se encuentra en el local storage
+
+            //await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
+            //await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
+            //await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
+            //await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
 
             _httpClient.DefaultRequestHeaders.Authorization = null;
 
