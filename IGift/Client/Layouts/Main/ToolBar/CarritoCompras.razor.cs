@@ -13,7 +13,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         private List<PeticionesResponse> list { get; set; } = new();
 
-        private int _peticiones { get; set; }
+        private int _peticiones { get; set; } = 0;
         public bool _open { get; set; }
         private bool _visible { get; set; }
 
