@@ -32,19 +32,18 @@ namespace Client.Infrastructure.Authentication
         /// <summary>
         /// Desloguea al usuario dejando el estado de autenticación del usuario vacío y limpia los headers del HTTP
         /// </summary>
-        public async Task MarkUserAsLoggedOut()
+        public void MarkUserAsLoggedOut()
         {
-            await _localStorage.ClearAsync();//en teoria esto liompia todo lo que se encuentra en el local storage
+            //await _localStorage.ClearAsync();//en teoria esto liompia todo lo que se encuentra en el local storage
 
             //await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
             //await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
             //await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
             //await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
 
-            _httpClient.DefaultRequestHeaders.Authorization = null;
-
             var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(anonymousUser));
+
             NotifyAuthenticationStateChanged(authState);
         }
 

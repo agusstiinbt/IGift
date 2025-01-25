@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
-using Client.Infrastructure.Services.Identity.Authentication;
+using IGift.Client.Infrastructure.Services.Identity.Authentication;
+using IGift.Client.Infrastructure.Services.Interceptor;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;

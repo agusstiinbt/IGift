@@ -26,23 +26,32 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         protected override async Task OnInitializedAsync()
         {
-            var response = await _titulosService.LoadConectado();
-            if (response.Succeeded)
+            try
             {
-                titulosConectado = response.Data.Titulos.ToList();
-                listaCategorias = response.Data.Categorias.ToList();
-            }
-            if (string.IsNullOrEmpty(userName))
-            {
-                var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-                userName = state.User.GetFirstName();
-            }
-            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+                var response = await _titulosService.LoadConectado();
+                if (response.Succeeded)
+                {
+                    titulosConectado = response.Data.Titulos.ToList();
+                    listaCategorias = response.Data.Categorias.ToList();
+                }
+                if (string.IsNullOrEmpty(userName))
+                {
+                    var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+                    userName = state.User.GetFirstName();
+                }
+                _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
-            if (_hubConnection.State == HubConnectionState.Disconnected)
-            {
-                await _hubConnection.StartAsync();
+                if (_hubConnection.State == HubConnectionState.Disconnected)
+                {
+                    await _hubConnection.StartAsync();
+                }
             }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
         }
 
         public bool _open;

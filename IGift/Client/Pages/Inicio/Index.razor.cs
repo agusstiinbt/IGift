@@ -15,6 +15,7 @@ namespace IGift.Client.Pages.Inicio
     {
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
+
         [Parameter]
         public string? _Categoria { get; set; }
 
@@ -45,19 +46,22 @@ namespace IGift.Client.Pages.Inicio
 
         protected override async Task OnInitializedAsync()
         {
-            var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-            var user = state.User;
-            if (state != null && user.Identity!.IsAuthenticated)
-            {
-                NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
-            }
+            _interceptor.RegisterEvent();
+
             try
             {
-                _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+                _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
                 if (_hubConnection.State == HubConnectionState.Disconnected)
                 {
                     await _hubConnection.StartAsync();
+                }
+
+                var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+                var user = state.User;
+                if (state != null && user.Identity!.IsAuthenticated)
+                {
+                    NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
                 }
             }
             catch (Exception e)

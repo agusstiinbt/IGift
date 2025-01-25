@@ -1,15 +1,11 @@
-﻿using Client.Infrastructure.Services.Identity.Authentication;
-using IGift.Application.CQRS.Identity.Users;
+﻿using IGift.Application.CQRS.Identity.Users;
 using IGift.Shared.Constants;
-using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace IGift.Client.Pages.Users.RegisterFolder.Usuarios
 {
     public partial class RegisterBody
     {
-        [Inject] private IAuthService _authService { get; set; }
-
         private UserCreateRequest _user { get; set; } = new UserCreateRequest();
         private bool passwordIsShow;
         private InputType PasswordInput = InputType.Password;

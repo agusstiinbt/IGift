@@ -42,7 +42,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
         {
             //Esta clase Notificaciones.razor debería de recibir como cascading parameter el HubConnection
 
-            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
             if (_hubConnection.State == HubConnectionState.Disconnected)
             {

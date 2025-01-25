@@ -1,6 +1,6 @@
 ﻿using Toolbelt.Blazor;
 
-namespace Client.Infrastructure.Services.Interceptor
+namespace IGift.Client.Infrastructure.Services.Interceptor
 {
     public interface IHttpInterceptorManager
     {

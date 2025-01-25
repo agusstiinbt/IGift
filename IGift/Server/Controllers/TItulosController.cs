@@ -9,7 +9,6 @@ namespace IGift.Server.Controllers
     [ApiController]
     public class TItulosController : BaseApiController<TItulosController>
     {
-
         [HttpGet("GetBarraHerramientasConectado")]
         public async Task<ActionResult> GetAllConectado()
         {

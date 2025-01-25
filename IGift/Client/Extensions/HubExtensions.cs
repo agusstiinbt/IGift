@@ -7,17 +7,18 @@ namespace IGift.Client.Extensions
 {
     public static class HubExtensions
     {
-        public static HubConnection TryInitialize(this HubConnection hubConnection, NavigationManager navigationManager, ILocalStorageService _localStorage)
+        public static async Task<HubConnection> TryInitialize(this HubConnection hubConnection, NavigationManager navigationManager, ILocalStorageService _localStorage)
         {
             if (hubConnection == null)
             {
+                await Task.FromResult(
                 hubConnection = new HubConnectionBuilder()
                                   .WithUrl(navigationManager.ToAbsoluteUri(AppConstants.SignalR.HubUrl), options =>
                                   {
                                       options.AccessTokenProvider = async () => (await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken));
                                   })
                                   .WithAutomaticReconnect()
-                                  .Build();
+                                  .Build());
             }
             return hubConnection;
         }

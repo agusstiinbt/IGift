@@ -2,7 +2,7 @@
 using IGift.Shared.Wrapper;
 using Microsoft.JSInterop;
 
-namespace Client.Infrastructure.Services.Identity.Authentication
+namespace IGift.Client.Infrastructure.Services.Identity.Authentication
 {
     public interface IAuthService
     {

@@ -1,6 +1,5 @@
-﻿using System.Security.Claims;
-using Client.Infrastructure.Services.Identity.Authentication;
-using Client.Infrastructure.Services.Interceptor;
+﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
@@ -18,9 +17,6 @@ namespace IGift.Client.Layouts.Main
 
         private HubConnection _hubConnection;
 
-        [Inject] private IAuthService _authService { get; set; }
-        [Inject] private IHttpInterceptorManager _interceptor { get; set; }
-
         protected override async Task OnInitializedAsync()
         {
             var authState = await AuthenticationState;
@@ -31,7 +27,6 @@ namespace IGift.Client.Layouts.Main
                 try
                 {
                     await InitializeHub();
-
                 }
                 catch (Exception e)
                 {
@@ -82,7 +77,7 @@ namespace IGift.Client.Layouts.Main
             var currentUserId = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
             var nombre = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
 
-            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
 
             await _hubConnection.StartAsync();
@@ -116,6 +111,7 @@ namespace IGift.Client.Layouts.Main
                     if (!string.IsNullOrEmpty(token))
                     {
                         _snack.Add("Token refrescado", Severity.Success);
+                        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     }
                 }
                 catch (Exception e)
@@ -153,7 +149,6 @@ namespace IGift.Client.Layouts.Main
             _hubConnection.On<string>(AppConstants.SignalR.PingRequest, async (userName) =>
             {
                 await _hubConnection.SendAsync(AppConstants.SignalR.PingResponse, currentUserId, userName);
-
             });
 
             await _hubConnection.SendAsync(AppConstants.SignalR.OnConnect, currentUserId);

@@ -34,7 +34,6 @@
 @using IGift.Client.Shared.ScrollUp
 @using IGift.Client.Pages.Inicio.Componentes
 @using IGift.Client.Pages.Users.RegisterFolder
-@using IGift.Client.Pages.Users.Login.Componentes
 @using IGift.Client.Pages.Users.RegisterFolder.Usuarios
 @using IGift.Client.Pages.Communication.Chat.Components
 
@@ -48,20 +47,24 @@
 @using IGift.Application.Responses.Peticiones;
 @using IGift.Application.Responses.Titulos.Categoria
 
-
 @inject NavigationManager _nav;
 @inject ISnackbar _snack;
 
 
-@using IGift.Client.Infrastructure.Services.CarritoDeCompras
-@using IGift.Client.Infrastructure.Services.Peticiones:
-@using IGift.Client.Infrastructure.Services.Titulos.Categoria
-
+@using IGift.Client.Infrastructure.Services;
+@using IGift.Client.Infrastructure.Services.Peticiones;
+@using IGift.Client.Infrastructure.Services.Interceptor;
+@using IGift.Client.Infrastructure.Services.Titulos.Categoria;
+@using IGift.Client.Infrastructure.Services.CarritoDeCompras;
+@using IGift.Client.Infrastructure.Services.Identity.Authentication;
 
 @using global::Client.Infrastructure.Services.Identity.Users
 @using global::IGift.Client.Infrastructure.Services.Files
 
 
+@inject IAuthService _authService
+@inject IHttpInterceptorManager _interceptor;
+@inject HttpClient _httpClient
 @inject IPeticionesService _peticionesService;
 @inject ITitulosService _titulosService ;
 @inject IShopCart _shopCartService;

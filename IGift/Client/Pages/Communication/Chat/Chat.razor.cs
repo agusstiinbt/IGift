@@ -56,7 +56,7 @@ namespace IGift.Client.Pages.Communication.Chat
         /// <returns></returns>
         private async Task InitializeHub()
         {
-            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
             if (_hubConnection.State == HubConnectionState.Disconnected)
             {
@@ -98,6 +98,7 @@ namespace IGift.Client.Pages.Communication.Chat
             {
                 await LoadUserChat(ChatId);
             }
+
             await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
         }
 

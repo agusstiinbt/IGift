@@ -25,5 +25,19 @@ namespace IGift.Client.Pages.Users.Login
                 _snack.Add("Registración de usuario exitosa", Severity.Success);
             }
         }
+
+        private async Task HandleLoginForm()
+        {
+            var result = await _authService.Login(loginModel);
+
+            if (result.Succeeded)
+            {
+                _nav.NavigateTo(IGift.Shared.Constants.AppConstants.Routes.Home);
+            }
+            else
+            {
+                _snack.Add(result.Messages.FirstOrDefault(), Severity.Error);
+            }
+        }
     }
 }

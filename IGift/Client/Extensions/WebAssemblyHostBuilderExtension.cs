@@ -5,9 +5,12 @@ using Client.Infrastructure.Services.Identity.Authentication;
 using Client.Infrastructure.Services.Identity.Users;
 using Client.Infrastructure.Services.Interceptor;
 using Client.Infrastructure.Services.Notification;
+using IGift.Client.Infrastructure.Authentication;
 using IGift.Client.Infrastructure.Services.CarritoDeCompras;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Client.Infrastructure.Services.Files;
+using IGift.Client.Infrastructure.Services.Identity.Authentication;
+using IGift.Client.Infrastructure.Services.Interceptor;
 using IGift.Client.Infrastructure.Services.Peticiones;
 using IGift.Client.Infrastructure.Services.Titulos.Categoria;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -64,16 +67,21 @@ namespace IGift.Client.Extensions
 
             .AddAuthorizationCore()
 
+            .AddTransient<AuthenticationHeaderHandler>()
+
+
             //HTTP
-            .AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(ClientName).EnableIntercept(sp))
-
-            .AddHttpClient(ClientName, client =>
-            {
-                client.DefaultRequestHeaders.AcceptLanguage.Clear();
-                client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
-                client.BaseAddress = new Uri(b.HostEnvironment.BaseAddress);
-            });
-
+             .AddTransient<AuthenticationHeaderHandler>()
+                .AddScoped(sp => sp
+                    .GetRequiredService<IHttpClientFactory>()
+                    .CreateClient(ClientName).EnableIntercept(sp))
+                .AddHttpClient(ClientName, client =>
+                {
+                    client.DefaultRequestHeaders.AcceptLanguage.Clear();
+                    client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
+                    client.BaseAddress = new Uri(b.HostEnvironment.BaseAddress);
+                })
+                .AddHttpMessageHandler<AuthenticationHeaderHandler>();
             b.Services.AddHttpClientInterceptor();
 
 

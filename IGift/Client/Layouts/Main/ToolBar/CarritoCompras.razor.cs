@@ -40,7 +40,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         private async Task InitializeHub()
         {
-            _hubConnection = _hubConnection.TryInitialize(_nav, _localStorage);
+            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
             if (_hubConnection.State == HubConnectionState.Disconnected)
             {

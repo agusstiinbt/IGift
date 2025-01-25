@@ -1,10 +1,12 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Extensions;
 using IGift.Application.CQRS.Identity.Token;
 using IGift.Application.CQRS.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
+using IGift.Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -67,8 +69,14 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Logout()
         {
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
-            await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
 
+            await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
+
+            ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
+            _httpClient.DefaultRequestHeaders.Authorization = null;
             return await Result.SuccessAsync();
         }
 
@@ -76,30 +84,6 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         {
             await _js.InitializeInactivityTimer(dotNetObjectReference);
         }
-
-        public async Task<string> TryRefreshToken()
-        {
-            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
-            if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
-
-            //var authState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync(); es lo mismo
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
-
-            var expiration = user.FindFirst(c => c.Type.Equals("exp"))?.Value;
-            var expirationTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(expiration));
-            var timeUTC = DateTime.UtcNow;
-
-            var diff = expirationTime - timeUTC;
-            if (diff.TotalMinutes <= 1)
-            {
-                return await RefreshToken();
-            }
-
-            return string.Empty;
-        }
-
-        public async Task<string> TryForceRefreshToken() => await RefreshToken();
 
         public async Task<string> RefreshToken()
         {
@@ -121,9 +105,28 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             await _localStorage.SetItemAsync(AppConstants.Local.RefreshToken, refreshToken);
 
 
-            await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
+            //await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return token;
         }
+
+        public async Task<string> TryRefreshToken()
+        {
+            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
+            if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            var exp = user.FindFirst(c => c.Type.Equals("exp"))?.Value;
+            var expTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(exp));
+            var timeUTC = DateTime.UtcNow;
+            var diff = expTime - timeUTC;
+            if (diff.TotalMinutes <= 1)
+                return await RefreshToken();
+            return string.Empty;
+        }
+
+        public async Task<string> TryForceRefreshToken() => await RefreshToken();
+
     }
 }
