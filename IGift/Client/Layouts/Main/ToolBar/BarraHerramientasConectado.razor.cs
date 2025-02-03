@@ -15,7 +15,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
         [CascadingParameter]
         private string _estiloBotones { get; set; }
 
-        [Parameter] public HubConnection _hubConnection { get; set; }
+        [CascadingParameter] public HubConnection _hubConnection { get; set; }
 
 
         private List<TitulosConectadoResponse> titulosConectado = new List<TitulosConectadoResponse>();
