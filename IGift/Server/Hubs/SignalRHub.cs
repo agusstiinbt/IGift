@@ -26,6 +26,11 @@ namespace IGift.Server.Hubs
             await Clients.User(UserId).SendAsync(AppConstants.SignalR.ReceiveShopCartNotificationAsync, lista);
         }
 
+        public async Task RegenerateTokensAsync()
+        {
+            await Clients.All.SendAsync(AppConstants.SignalR.ReceiveRegenerateTokens);
+        }
+
         //public async Task SendMessageAsync(Chat chat, string userName)
         //{
         //    //await Clients.All.SendAsync("ReceiveMessage", userName);
