@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
 {
-    [AllowAnonymous]
+
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PeticionesController : BaseApiController<PeticionesController>
@@ -20,6 +21,7 @@ namespace IGift.Server.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> GetAll(GetAllPeticionesQuery query)
         {
             return Ok(await _mediator.Send(query));

@@ -3,6 +3,7 @@ using IGift.Application.CQRS.Identity.Users;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Shared.Wrapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
@@ -23,7 +24,6 @@ namespace IGift.Server.Controllers
         {
             return Ok(await _tokenService.LoginAsync(m));
         }
-
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<Result>> RefreshToken(TokenRequest t)
         {

@@ -1,11 +1,13 @@
 ﻿using IGift.Application.CQRS.Notifications.Query;
 using IGIFT.Server.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotificationController : BaseApiController<NotificationController>
     {
         [HttpPost]
