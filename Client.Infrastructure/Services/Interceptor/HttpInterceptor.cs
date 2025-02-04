@@ -26,6 +26,10 @@ namespace Client.Infrastructure.Services.Interceptor
         public async Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e)
         {
             var absPath = e.Request.RequestUri.AbsolutePath;
+            if (absPath.ToLower().Contains("signal"))
+            {
+
+            }
             if (!absPath.ToLower().Contains("token") /*&& !absPath.Contains("accounts")*/)
             {
                 try

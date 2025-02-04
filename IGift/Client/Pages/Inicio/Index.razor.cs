@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
@@ -7,6 +8,7 @@ using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.IdentityModel.Tokens;
 using MudBlazor;
 
 namespace IGift.Client.Pages.Inicio
@@ -30,7 +32,7 @@ namespace IGift.Client.Pages.Inicio
         private MudTable<PeticionesResponse> _table;
 
 
-        private string NombreUsuario { get; set; }
+        private string NombreUsuario { get; set; } = string.Empty;
 
         public readonly string EstiloBotones = "color:black";
         private string Compra { get; set; } = "Compra";
@@ -44,33 +46,56 @@ namespace IGift.Client.Pages.Inicio
         private int _totalItems;
         private int _currentPage;
 
+
         protected override async Task OnInitializedAsync()
         {
             _interceptor.RegisterEvent();
 
+            var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+
+            var user = state.User;
+            if (user.Identity!.IsAuthenticated)
+                NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
+
+            //await InitializeHub();
+        }
+
+        private async Task InitializeHub()
+        {
             try
             {
                 _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
                 if (_hubConnection.State == HubConnectionState.Disconnected)
-                {
                     await _hubConnection.StartAsync();
-                }
-
-                var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-                var user = state.User;
-                if (state != null && user.Identity!.IsAuthenticated)
-                {
-                    NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
-                }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                //TODO estudiar hubconnection y resolver los problemas
-                throw e;
+                //if (ex.Message.Contains("401"))
+                //    _snack.Add("🔒 Error 401: Parece que el token ha expirado. Redirigiendo al login...\"", Severity.Error);
             }
-
         }
+
+
+        private async Task RefrescarToken()
+        {
+            try
+            {
+                var token = await _authService.TryRefreshToken();
+                if (!string.IsNullOrEmpty(token))
+                    _snack.Add("Token refrescado con RefreshToken", Severity.Success);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                _snack.Add("🔒 Error 401: Parece que el token ha expirado. Redirigiendo al login...\"", Severity.Error);
+                await Task.Delay(3000);
+                await _authService.Logout();
+                await Task.Delay(3000);
+                _nav.NavigateTo(AppConstants.Routes.Home);
+            }
+        }
+
 
         private void SeleccionarBoton(string boton)
         {

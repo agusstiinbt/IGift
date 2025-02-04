@@ -30,7 +30,10 @@ namespace IGift.Client.Infrastructure.Services.Identity.Authentication
         Task Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class;
 
         Task<string> RefreshToken();
-
+        /// <summary>
+        /// Devuelve un string vacio si el RefreshToken es nulo o vacio. Arroja una exception del metodo RefreshToken si no se pudo hacer el refresh correctamente.
+        /// </summary>
+        /// <returns>Devuelve el token refrescado</returns>
         Task<string> TryRefreshToken();
 
         Task<string> TryForceRefreshToken();

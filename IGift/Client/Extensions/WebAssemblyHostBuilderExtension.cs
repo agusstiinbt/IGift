@@ -33,12 +33,16 @@ namespace IGift.Client.Extensions
         }
         public static WebAssemblyHostBuilder AddClientServices(this WebAssemblyHostBuilder b)
         {
+            b.Services
+
+
+           .AddAuthorizationCore()
 
             //Servicio de LocalStorage
-            b.Services.AddBlazoredLocalStorage();
+          .AddBlazoredLocalStorage()
 
             //Servicios MudBlazor
-            b.Services.AddMudServices(config =>
+          .AddMudServices(config =>
             {
                 config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
 
@@ -50,13 +54,18 @@ namespace IGift.Client.Extensions
                 config.SnackbarConfiguration.ShowTransitionDuration = 500;
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
                 config.SnackbarConfiguration.ClearAfterNavigation = true;
-            });
+            })
+
+          .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
 
             //Servicios propios
-            b.Services.AddScoped<IAuthService, AuthService>()
-            .AddScoped<IUserManager, UserManager>()
+
             .AddScoped<IGiftAuthenticationStateProvider>()
             .AddScoped<AuthenticationStateProvider, IGiftAuthenticationStateProvider>()
+
+
+            .AddScoped<IAuthService, AuthService>()
+            .AddScoped<IUserManager, UserManager>()
             .AddScoped<IHttpInterceptorManager, HttpInterceptorManager>()
             .AddScoped<INotificationService, NotificationService>()
             .AddScoped<IPeticionesService, PeticionesService>()
@@ -65,12 +74,8 @@ namespace IGift.Client.Extensions
             .AddScoped<IShopCart, ShopCartService>()
             .AddScoped<ITitulosService, TitulosService>()
 
-            .AddAuthorizationCore()
-
             .AddTransient<AuthenticationHeaderHandler>()
-
-
-            //HTTP
+             //HTTP
              .AddTransient<AuthenticationHeaderHandler>()
                 .AddScoped(sp => sp
                     .GetRequiredService<IHttpClientFactory>()
@@ -82,8 +87,8 @@ namespace IGift.Client.Extensions
                     client.BaseAddress = new Uri(b.HostEnvironment.BaseAddress);
                 })
                 .AddHttpMessageHandler<AuthenticationHeaderHandler>();
-            b.Services.AddHttpClientInterceptor();
 
+            b.Services.AddHttpClientInterceptor();
 
             return b;
         }

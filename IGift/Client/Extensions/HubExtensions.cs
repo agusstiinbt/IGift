@@ -12,13 +12,13 @@ namespace IGift.Client.Extensions
             if (hubConnection == null)
             {
                 await Task.FromResult(
-                hubConnection = new HubConnectionBuilder()
-                                  .WithUrl(navigationManager.ToAbsoluteUri(AppConstants.SignalR.HubUrl), options =>
-                                  {
-                                      options.AccessTokenProvider = async () => (await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken));
-                                  })
-                                  .WithAutomaticReconnect()
-                                  .Build());
+                              hubConnection = new HubConnectionBuilder()
+                                                .WithUrl(navigationManager.ToAbsoluteUri(AppConstants.SignalR.HubUrl), options =>
+                                                {
+                                                    options.AccessTokenProvider = async () => (await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken));
+                                                })
+                                                .WithAutomaticReconnect()
+                                                .Build());
             }
             return hubConnection;
         }

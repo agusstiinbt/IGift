@@ -20,14 +20,14 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         protected async override Task OnInitializedAsync()
         {
-            var result = await _notificationService.GetAll();
-            if (result.Succeeded)
-            {
-                list = result.Data.ToList();
-                _notifications = list.Count;
-            }
-            _visible = _notifications == 0 ? false : true;
-            await InitializeHub();
+            //var result = await _notificationService.GetAll();
+            //if (result.Succeeded)
+            //{
+            //    list = result.Data.ToList();
+            //    _notifications = list.Count;
+            //}
+            //_visible = _notifications == 0 ? false : true;
+            //await InitializeHub();
         }
 
         private void ToggleOpen()

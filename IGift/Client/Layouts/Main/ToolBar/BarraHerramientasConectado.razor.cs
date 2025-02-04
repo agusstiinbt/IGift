@@ -26,31 +26,31 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         protected override async Task OnInitializedAsync()
         {
-            try
-            {
-                var response = await _titulosService.LoadConectado();
-                if (response.Succeeded)
-                {
-                    titulosConectado = response.Data.Titulos.ToList();
-                    listaCategorias = response.Data.Categorias.ToList();
-                }
-                if (string.IsNullOrEmpty(userName))
-                {
-                    var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-                    userName = state.User.GetFirstName();
-                }
-                _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
+            //try
+            //{
+            //    var response = await _titulosService.LoadConectado();
+            //    if (response.Succeeded)
+            //    {
+            //        titulosConectado = response.Data.Titulos.ToList();
+            //        listaCategorias = response.Data.Categorias.ToList();
+            //    }
+            //    if (string.IsNullOrEmpty(userName))
+            //    {
+            //        var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+            //        userName = state.User.GetFirstName();
+            //    }
+            //    _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
 
-                if (_hubConnection.State == HubConnectionState.Disconnected)
-                {
-                    await _hubConnection.StartAsync();
-                }
-            }
-            catch (Exception e)
-            {
+            //    if (_hubConnection.State == HubConnectionState.Disconnected)
+            //    {
+            //        await _hubConnection.StartAsync();
+            //    }
+            //}
+            //catch (Exception e)
+            //{
 
-                throw;
-            }
+            //    throw;
+            //}
 
         }
 

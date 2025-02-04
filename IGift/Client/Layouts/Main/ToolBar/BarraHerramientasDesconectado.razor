@@ -38,9 +38,12 @@
     protected override async Task OnInitializedAsync()
     {
         var response = await _titulosService.LoadDesconectado();
+        if (response.Succeeded)
+        {
+            listaDesconectado = response.Data.Titulos;
+            listaCategorias = response.Data.Categorias;
+        }
 
         //TODO mas adelante convendria poner los titulos conectado y desconectado mas las categorias en un solo llamado dentro de una sola clase response y pasarlo desde el componente padre a este componente o el de conectado segun corresponda
-        listaDesconectado = response.Data.Titulos;
-        listaCategorias = response.Data.Categorias;
     }
 }

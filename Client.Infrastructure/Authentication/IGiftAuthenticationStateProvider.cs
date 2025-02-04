@@ -32,19 +32,25 @@ namespace Client.Infrastructure.Authentication
         /// <summary>
         /// Desloguea al usuario dejando el estado de autenticación del usuario vacío y limpia los headers del HTTP
         /// </summary>
-        public void MarkUserAsLoggedOut()
+        public async Task MarkUserAsLoggedOut()
         {
-            //await _localStorage.ClearAsync();//en teoria esto liompia todo lo que se encuentra en el local storage
+            await _localStorage.ClearAsync();//en teoria esto liompia todo lo que se encuentra en el local storage
 
-            //await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
-            //await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
-            //await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
-            //await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
+            await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
 
             var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(anonymousUser));
 
-            NotifyAuthenticationStateChanged(authState);
+            NotifyAuthenticationStateChanged(Task.FromResult(GetAnonymousState()));
+        }
+        private AuthenticationState GetAnonymousState()
+        {
+            var identity = new ClaimsIdentity(); // Estado vacío
+            var user = new ClaimsPrincipal(identity);
+            return new AuthenticationState(user);
         }
 
         /// <summary>

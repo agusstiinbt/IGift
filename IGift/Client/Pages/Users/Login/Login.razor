@@ -49,13 +49,13 @@
                 <div class="form-group">
                     <label for="email">Email</label>
                     <InputText Id="email" Class="form-control" @bind-Value="loginModel.Email" />
-                    <ValidationMessage For="@(() => loginModel.Email)" />
-                </div>
+@*                     <ValidationMessage For="@(() => loginModel.Email)" />
+ *@                </div>
                 <div class="form-group">
                     <label for="password">Contraseña</label>
                     <InputText Id="password" type="password" Class="form-control;" @bind-Value="loginModel.Password" />
-                    <ValidationMessage For="@(() => loginModel.Password)" />
-                </div>
+@*                     <ValidationMessage For="@(() => loginModel.Password)" />
+ *@                </div>
                 <button type="submit" class="btn btn-primary">Continuar</button>
             </EditForm>
 

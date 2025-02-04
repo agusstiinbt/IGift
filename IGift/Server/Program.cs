@@ -1,4 +1,5 @@
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using Hangfire;
 using HangfireBasicAuthenticationFilter;
@@ -10,6 +11,7 @@ using IGift.Application.Interfaces.Identity;
 using IGift.Application.Interfaces.Repositories;
 using IGift.Application.Interfaces.Repositories.Generic.Auditable;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
+using IGift.Application.OptionsPattern;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Infrastructure.Repositories.Generic.Auditable;
@@ -23,6 +25,7 @@ using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using IGIFT.Server.Shared.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -30,7 +33,6 @@ using Newtonsoft.Json;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSwaggerGen();
 
 var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 var logFilePath = Path.Combine(desktopPath, "app-logs.txt");
@@ -40,13 +42,28 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-builder.Host.UseSerilog(); // Usa Serilog en lugar del logger predeterminado
+//builder.Host.UseSerilog(); // Usa Serilog en lugar del logger predeterminado
 
 // Add services to the container.
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+var applicationSettingsConfiguration = builder.Configuration.GetSection(nameof(AppConfiguration));
+var config = applicationSettingsConfiguration.Get<AppConfiguration>();
+
+//CORS
+builder.Services.AddCors(options =>
+options.AddDefaultPolicy(
+    builder =>
+    {
+        builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().WithOrigins(config!.ApplicationUrl.TrimEnd('/'));
+    }));
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IDatabaseSeeder, SQLDatabaseSeeder>();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
@@ -61,10 +78,6 @@ builder.Services.AddIdentity<IGiftUser, IGiftRole>(options =>
 })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-
-
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
 
 builder.Services
     .AddAuthentication(authentication =>
@@ -108,7 +121,7 @@ builder.Services
                 {
                     c.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     c.Response.ContentType = "application/json";
-                    var result = JsonConvert.SerializeObject(Result.Fail("The token is expired"));
+                    var result = JsonConvert.SerializeObject(new { message = "The token is expired" });
                     return c.Response.WriteAsync(result);
                 }
                 else
@@ -116,7 +129,7 @@ builder.Services
 #if DEBUG
                     c.NoResult();
                     c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    c.Response.ContentType = "text/plain";
+                    c.Response.ContentType = "application/json";
                     return c.Response.WriteAsync(c.Exception.ToString());
 #else
                                 c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -149,6 +162,26 @@ builder.Services
         };
     });
 
+//SignalR
+builder.Services.AddSignalR();
+
+
+//Mapeo
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblyContaining<GetAllNotificationQuery>());
+
+
+//Scopes
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<IUploadService, UploadService>();
+builder.Services.AddScoped<IProfilePicture, ProfilePictureService>();
+
+
 //Repositories
 builder.Services.AddTransient(typeof(IAuditableUnitOfWork<>), typeof(AuditableUnitOfWork<>));
 builder.Services.AddTransient(typeof(INonAuditableUnitOfWork<>), typeof(NonAuditableUnitOfWork<>));
@@ -156,41 +189,30 @@ builder.Services.AddTransient(typeof(INonAuditableUnitOfWork<>), typeof(NonAudit
 builder.Services.AddTransient(typeof(IAuditableRepository<,>), typeof(AuditableRepository<,>));
 builder.Services.AddTransient(typeof(INonAuditableRepository<,>), typeof(NonAuditableRepository<,>));
 
-//Scopes
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IMailService, MailService>();
-builder.Services.AddScoped<IDatabaseSeeder, SQLDatabaseSeeder>();
-builder.Services.AddScoped<IUploadService, UploadService>();
-builder.Services.AddScoped<IProfilePicture, ProfilePictureService>();
+//swager
+builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddControllers();
+
+builder.Services.AddRazorPages();
+
+
+
 
 //builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Files")));
 
 
 
-//Mapeo
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-
-//CORS
-builder.Services.AddCors(options =>
-options.AddDefaultPolicy(
-    builder =>
-    {
-        builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().WithOrigins();
-    }));
 
 //hangfire
 builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
 builder.Services.AddHangfireServer();
 
-//SignalR
-builder.Services.AddSignalR();
 
 
-//MediatR
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssemblyContaining<GetAllNotificationQuery>());
+
+
 
 
 var app = builder.Build();
@@ -203,9 +225,16 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+
+
+if (config.BehindSSLProxy)
+{
+    app.UseCors();
+    //app.UseForwardedHeaders();
+}
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage();
     app.UseWebAssemblyDebugging();
 }
 else
@@ -214,19 +243,27 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 
+
 app.UseBlazorFrameworkFiles();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<MyMiddleware>();
+
+app.MapRazorPages();
+app.MapControllers();
+app.MapFallbackToFile("index.html");
+app.MapHub<SignalRHub>(AppConstants.SignalR.HubUrl);
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 //Hangfire
 app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
@@ -242,14 +279,5 @@ app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
         }
     }
 });
-app.UseMiddleware<MyMiddleware>();
-
-app.MapRazorPages();
-
-app.MapControllers();
-app.MapFallbackToFile("index.html");
-
-//SignalR
-app.MapHub<SignalRHub>(AppConstants.SignalR.HubUrl);
 
 app.Run();

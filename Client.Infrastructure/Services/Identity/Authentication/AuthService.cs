@@ -58,8 +58,6 @@ namespace Client.Infrastructure.Services.Identity.Authentication
                 //preparamos los headers con el token correcto
                 await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
 
-                // _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-
                 return await Result.SuccessAsync();
             }
 
@@ -75,7 +73,8 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);
             await _localStorage.RemoveItemAsync(AppConstants.Local.IdUser);
 
-            ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+            await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;
             return await Result.SuccessAsync();
         }
@@ -90,7 +89,11 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             var token = await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken);
             var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
 
-            var response = await _httpClient.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
+
+            //La única forma 100% segura de evitar el envío del Authorization header es usar un nuevo HttpClient para la petición de RefreshToken.
+            using var client = new HttpClient { BaseAddress = new Uri("https://localhost:7214") }; // Usa la URL de tu API
+            var response = await client.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
+            //var response = await _httpClient.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
             var result = await response.ToResult<UserLoginResponse>();
 
             if (!result.Succeeded)
@@ -104,25 +107,29 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             await _localStorage.SetItemAsync(AppConstants.Local.AuthToken, token);
             await _localStorage.SetItemAsync(AppConstants.Local.RefreshToken, refreshToken);
 
-
-            //await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
 
             return token;
         }
 
+
         public async Task<string> TryRefreshToken()
         {
             var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
-            if (string.IsNullOrEmpty(tokenDisponible)) return string.Empty;
+
+            if (string.IsNullOrEmpty(tokenDisponible))
+                return string.Empty;
+
             var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
             var exp = user.FindFirst(c => c.Type.Equals("exp"))?.Value;
             var expTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(exp));
             var timeUTC = DateTime.UtcNow;
             var diff = expTime - timeUTC;
+
             if (diff.TotalMinutes <= 1)
                 return await RefreshToken();
+
             return string.Empty;
         }
 

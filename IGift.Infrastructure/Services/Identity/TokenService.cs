@@ -49,7 +49,7 @@ namespace IGift.Infrastructure.Services.Identity
             {
                 errorMessage = "token invalido";
             }
-            if (user.RefreshTokenExpiryTime <= DateTime.Now)
+            if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
                 errorMessage = "El refresh token ya ha expirado";
             }
@@ -101,7 +101,7 @@ namespace IGift.Infrastructure.Services.Identity
             }
 
             user.RefreshToken = GenerateRefreshToken();
-            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(3);
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(3);
             await _userManager.UpdateAsync(user);
 
             var response = new UserLoginResponse
@@ -213,15 +213,16 @@ namespace IGift.Infrastructure.Services.Identity
                 IssuerSigningKey = new SymmetricSecurityKey(Key),
                 ValidateIssuer = false,
                 ValidateAudience = false,
-                ValidateLifetime = false,//Esto se deja en false (por lo menos en este método y no en el program.cs) porque al dejarlo en true si recibimos un token expirado, que es justamente la idea de este método, nos va a arrojar una excepcion de tipo TokenExpiredException
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                ValidateLifetime = false,
+                //Esto se deja en false (por lo menos en este método y no en el program.cs) porque al dejarlo en true si recibimos un token expirado, que es justamente la idea de este método, nos va a arrojar una excepcion de tipo TokenExpiredException
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
             if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new Exception("token invalido");
+                throw new SecurityTokenException("token invalido");
             }
 
             return principal;
