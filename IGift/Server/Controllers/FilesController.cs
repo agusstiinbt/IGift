@@ -15,7 +15,7 @@ namespace IGift.Server.Controllers
             _profileService = profileService;
         }
 
-        [HttpPost("GetProfilePictureById")]
+        [HttpPost("GetProfilePictureById")]//TODO estudiar el resposnecache que tiene este metodo en el blazor hero
         public async Task<ActionResult> GetProfilePictureAsync(ProfilePictureById p)
         {
             return Ok(await _profileService.GetByUserIdAsync(p.Id));
