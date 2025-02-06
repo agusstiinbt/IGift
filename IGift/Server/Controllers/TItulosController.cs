@@ -1,6 +1,5 @@
 ﻿using IGift.Application.CQRS.Titulos.Conectado;
 using IGift.Application.CQRS.Titulos.Desconectado;
-using IGIFT.Server.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

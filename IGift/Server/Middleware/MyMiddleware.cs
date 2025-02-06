@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using System.Text.Json;
 using IGift.Shared.Wrapper;
-using Microsoft.AspNetCore.Http;
 
-namespace IGIFT.Server.Shared.Middleware
+namespace IGift.Server.Middleware
 {
     public class MyMiddleware
     {

@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
@@ -8,7 +7,6 @@ using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.IdentityModel.Tokens;
 using MudBlazor;
 
 namespace IGift.Client.Pages.Inicio

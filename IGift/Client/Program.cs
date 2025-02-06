@@ -1,4 +1,3 @@
-using System.Globalization;
 using IGift.Client.Extensions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

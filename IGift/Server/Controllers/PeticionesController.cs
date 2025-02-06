@@ -1,6 +1,5 @@
 ﻿using IGift.Application.CQRS.Peticiones.Command;
 using IGift.Application.CQRS.Peticiones.Query;
-using IGIFT.Server.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

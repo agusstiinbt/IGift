@@ -1,283 +1,47 @@
-using System.Net;
-using System.Security.Claims;
-using System.Text;
-using Hangfire;
-using HangfireBasicAuthenticationFilter;
-using IGift.Application.CQRS.Notifications.Query;
-using IGift.Application.Interfaces.Communication.Mail;
-using IGift.Application.Interfaces.DDBB.Sql;
-using IGift.Application.Interfaces.Files;
-using IGift.Application.Interfaces.Identity;
-using IGift.Application.Interfaces.Repositories;
-using IGift.Application.Interfaces.Repositories.Generic.Auditable;
-using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
-using IGift.Application.OptionsPattern;
 using IGift.Infrastructure.Data;
-using IGift.Infrastructure.Models;
-using IGift.Infrastructure.Repositories.Generic.Auditable;
-using IGift.Infrastructure.Repositories.Generic.NonAuditable;
-using IGift.Infrastructure.Services.DDBB.Sql;
-using IGift.Infrastructure.Services.Files;
-using IGift.Infrastructure.Services.Identity;
-using IGift.Infrastructure.Services.Mail;
-using IGift.Server.Hubs;
-using IGift.Shared.Constants;
-using IGift.Shared.Wrapper;
-using IGIFT.Server.Shared.Middleware;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
-
-var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-var logFilePath = Path.Combine(desktopPath, "app-logs.txt");
-
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
-    .CreateLogger();
-
-//builder.Host.UseSerilog(); // Usa Serilog en lugar del logger predeterminado
-
-// Add services to the container.
-
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-var applicationSettingsConfiguration = builder.Configuration.GetSection(nameof(AppConfiguration));
-var config = applicationSettingsConfiguration.Get<AppConfiguration>();
-
-//CORS
-builder.Services.AddCors(options =>
-options.AddDefaultPolicy(
-    builder =>
-    {
-        builder.AllowCredentials().AllowAnyHeader().AllowAnyMethod().WithOrigins(config!.ApplicationUrl.TrimEnd('/'));
-    }));
-
-
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddScoped<IDatabaseSeeder, SQLDatabaseSeeder>();
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-
-builder.Services.AddIdentity<IGiftUser, IGiftRole>(options =>
+namespace IGift.Server
 {
-    options.Password.RequiredLength = 6;
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.User.RequireUniqueEmail = true;
-})
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services
-    .AddAuthentication(authentication =>
+    public class Program
     {
-        authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
+        public async static Task Main(string[] args)
         {
+            var host = CreateHostBuilder(args).Build();
 
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]!)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidIssuer = builder.Configuration["JwtIssuer"],
-            ValidAudience = builder.Configuration["JwtAudience"],
-            ClockSkew = TimeSpan.Zero//Para más información sobre esto leer el README
-        };
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
 
-        options.Events = new JwtBearerEvents
-        {
-            OnMessageReceived = context =>
-            {
-                var accessToken = context.Request.Query[AppConstants.Local.Access_Token];
+                try
+                {
+                    var context = services.GetRequiredService<ApplicationDbContext>();
 
-                var path = context.HttpContext.Request.Path;
-                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(AppConstants.SignalR.HubUrl))
-                {
-                    context.Token = accessToken;
+                    if (context.Database.IsSqlServer())
+                    {
+                        context.Database.Migrate();
+                    }
                 }
-                return Task.CompletedTask;
-            },
-            OnAuthenticationFailed = c =>
-            {
-                if (c.Exception is SecurityTokenExpiredException)
+                catch (Exception ex)
                 {
-                    c.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    c.Response.ContentType = "application/json";
-                    var result = JsonConvert.SerializeObject(new { message = "The token is expired" });
-                    return c.Response.WriteAsync(result);
-                }
-                else
-                {
-#if DEBUG
-                    c.NoResult();
-                    c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    c.Response.ContentType = "application/json";
-                    return c.Response.WriteAsync(c.Exception.ToString());
-#else
-                                c.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                                c.Response.ContentType = "application/json";
-                                var result = JsonConvert.SerializeObject(Result.Fail(localizer["An unhandled error has occurred."]));
-                                return c.Response.WriteAsync(result);
-#endif
-                }
-            },
-            OnChallenge = context =>
-            {
-                context.HandleResponse();
-                if (!context.Response.HasStarted)
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    context.Response.ContentType = "application/json";
-                    var result = JsonConvert.SerializeObject(Result.Fail("You are not Authorized."));
-                    return context.Response.WriteAsync(result);
-                }
+                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-                return Task.CompletedTask;
-            },
-            OnForbidden = context =>
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                context.Response.ContentType = "application/json";
-                var result = JsonConvert.SerializeObject(Result.Fail("You are not authorized to access this resource."));
-                return context.Response.WriteAsync(result);
+                    logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+
+                    throw;
+                }
             }
-        };
-    });
 
-//SignalR
-builder.Services.AddSignalR();
-
-
-//Mapeo
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-//MediatR
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssemblyContaining<GetAllNotificationQuery>());
-
-
-//Scopes
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IMailService, MailService>();
-builder.Services.AddScoped<IUploadService, UploadService>();
-builder.Services.AddScoped<IProfilePicture, ProfilePictureService>();
-
-
-//Repositories
-builder.Services.AddTransient(typeof(IAuditableUnitOfWork<>), typeof(AuditableUnitOfWork<>));
-builder.Services.AddTransient(typeof(INonAuditableUnitOfWork<>), typeof(NonAuditableUnitOfWork<>));
-
-builder.Services.AddTransient(typeof(IAuditableRepository<,>), typeof(AuditableRepository<,>));
-builder.Services.AddTransient(typeof(INonAuditableRepository<,>), typeof(NonAuditableRepository<,>));
-
-//swager
-builder.Services.AddSwaggerGen();
-
-
-builder.Services.AddControllers();
-
-builder.Services.AddRazorPages();
-
-
-
-
-//builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Files")));
-
-
-
-
-//hangfire
-builder.Services.AddHangfire(x => x.UseSqlServerStorage(connectionString));
-builder.Services.AddHangfireServer();
-
-
-
-
-
-
-
-var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var seeder = services.GetRequiredService<IDatabaseSeeder>();
-    seeder.Initialize();
-}
-
-// Configure the HTTP request pipeline.
-
-
-if (config.BehindSSLProxy)
-{
-    app.UseCors();
-    //app.UseForwardedHeaders();
-}
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-    app.UseWebAssemblyDebugging();
-}
-else
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-app.UseHttpsRedirection();
-
-
-app.UseBlazorFrameworkFiles();
-
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseMiddleware<MyMiddleware>();
-
-app.MapRazorPages();
-app.MapControllers();
-app.MapFallbackToFile("index.html");
-app.MapHub<SignalRHub>(AppConstants.SignalR.HubUrl);
-
-app.UseSwagger();
-app.UseSwaggerUI();
-
-//Hangfire
-app.UseHangfireDashboard("/HangfireDashboard", new DashboardOptions
-{
-    //AppPath = "" //The path for the Back To Site link. Set to null in order to hide the Back To  Site link.
-    DashboardTitle = "IGift Dashboard",
-    Authorization = new[]
-    {
-        new HangfireCustomBasicAuthenticationFilter
-        {
-            User =AppConstants.Server.AdminEmail,
-            Pass = AppConstants.Server.DefaultPassword
+            await host.RunAsync();
         }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+         Host.CreateDefaultBuilder(args)
+         .UseSerilog()
+             .ConfigureWebHostDefaults(webBuilder =>
+             {
+                 webBuilder.UseStaticWebAssets();
+                 webBuilder.UseStartup<Startup>();
+             });
     }
-});
-
-app.Run();
+}

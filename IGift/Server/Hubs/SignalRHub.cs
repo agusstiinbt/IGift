@@ -1,9 +1,11 @@
 ﻿using IGift.Application.Responses.Peticiones;
 using IGift.Shared.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace IGift.Server.Hubs
 {
+    [Authorize]
     public class SignalRHub : Hub
     {
         public async Task OnConnectAsync(string userId)

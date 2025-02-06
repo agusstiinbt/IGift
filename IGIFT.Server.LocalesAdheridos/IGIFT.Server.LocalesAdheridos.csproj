@@ -15,7 +15,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\IGift.Application\IGift.Application.csproj" />
 		<ProjectReference Include="..\IGift.Infrastructure\IGift.Infrastructure.csproj" />
-		<ProjectReference Include="..\IGIFT.Server.Shared\IGIFT.Server.Shared\IGIFT.Server.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

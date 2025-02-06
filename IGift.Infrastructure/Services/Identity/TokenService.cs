@@ -5,11 +5,12 @@ using System.Text;
 using IGift.Application.CQRS.Identity.Token;
 using IGift.Application.CQRS.Identity.Users;
 using IGift.Application.Interfaces.Identity;
+using IGift.Application.OptionsPattern;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace IGift.Infrastructure.Services.Identity
@@ -17,15 +18,15 @@ namespace IGift.Infrastructure.Services.Identity
     public class TokenService : ITokenService
     {
         private readonly UserManager<IGiftUser> _userManager;
-        private readonly IConfiguration _configuration;
         private readonly RoleManager<IGiftRole> _roleManager;//TODO implementar
-        public TokenService(UserManager<IGiftUser> userManager, IConfiguration configuration, RoleManager<IGiftRole> roleManager)
+        private readonly AppConfiguration _appConfig;
+
+        public TokenService(UserManager<IGiftUser> userManager, RoleManager<IGiftRole> roleManager, IOptions<AppConfiguration> appConfig)
         {
             _userManager = userManager;
-            _configuration = configuration;
             _roleManager = roleManager;
+            _appConfig = appConfig.Value;
         }
-
 
         /// <summary>
         /// Renueva el tiempo de expiración del token del usuario según el tiempo de expiración del Refresh TokenController. Si este último ya expiró entonces no se podrá renovar el token y el usuario deberá volver a loguearse
@@ -116,7 +117,6 @@ namespace IGift.Infrastructure.Services.Identity
 
         #region Private
 
-
         /// <summary>
         /// Genera un string aleatorio que funciona como RefreshToken
         /// </summary>
@@ -161,9 +161,9 @@ namespace IGift.Infrastructure.Services.Identity
         /// <returns></returns>
         private SigningCredentials GetSigningCredentials()
         {
-            var Key = Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]!);
+            var secret = Encoding.UTF8.GetBytes(_appConfig.Secret);
 
-            return new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256);
+            return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
         }
 
         /// <summary>
@@ -205,12 +205,11 @@ namespace IGift.Infrastructure.Services.Identity
         /// <exception cref="Exception">Claims del usuario</exception>
         private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
-            var Key = Encoding.UTF8.GetBytes(_configuration["JwtSecurityKey"]!);
 
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Key),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appConfig.Secret)),
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero,

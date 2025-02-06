@@ -1,6 +1,5 @@
 ﻿using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Identity.Users;
-using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace IGift.Client.Pages.Users.Login

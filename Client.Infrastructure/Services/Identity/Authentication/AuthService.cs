@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Extensions;
@@ -91,9 +90,9 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
 
             //La única forma 100% segura de evitar el envío del Authorization header es usar un nuevo HttpClient para la petición de RefreshToken.
-            using var client = new HttpClient { BaseAddress = new Uri("https://localhost:7214") }; // Usa la URL de tu API
-            var response = await client.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
-            //var response = await _httpClient.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
+            //using var client = new HttpClient { BaseAddress = new Uri("https://localhost:7214") }; // Usa la URL de tu API
+            //var response = await client.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
+            var response = await _httpClient.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
             var result = await response.ToResult<UserLoginResponse>();
 
             if (!result.Succeeded)

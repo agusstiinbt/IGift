@@ -66,7 +66,7 @@ namespace Client.Infrastructure.Authentication
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", savedToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", savedToken);
             var state = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(GetClaimsFromToken(savedToken), "jwt")));
             AuthenticationStateUser = state.User;
             return state;
