@@ -14,40 +14,33 @@ namespace IGift.Client.Pages.Inicio
     public partial class Index
     {
 
-        #region Propiedades
-
+        // Parametros
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
+        [Parameter] public string? _Categoria { get; set; }
+        [Parameter] public string? TxtBusqueda { get; set; } = string.Empty;
+        [Parameter] public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
 
-        [Parameter]
-        public string? _Categoria { get; set; }
-
-        [Parameter]
-        public string? TxtBusqueda { get; set; } = string.Empty;
-
-        [Parameter]
-        public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
+        //Propiedades
         private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
-
         public ICollection<PeticionesResponse> _pagedData { get; set; }
-
         private MudTable<PeticionesResponse> _table;
 
-
+        //Strings
         private string NombreUsuario { get; set; } = string.Empty;
 
-        public readonly string EstiloBotones = "color:black";
+        private readonly string EstiloBotones = "color:black";
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
-
         private string EstiloBotonComprarPeticion { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonCrear { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "USDT";
 
+
+        //Ints
         private int _totalItems;
         private int _currentPage;
 
-        #endregion
 
         protected override async Task OnInitializedAsync()
         {

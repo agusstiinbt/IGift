@@ -74,7 +74,6 @@ namespace IGift.Client.Extensions
             .AddScoped<IShopCart, ShopCartService>()
             .AddScoped<ITitulosService, TitulosService>()
 
-            .AddTransient<AuthenticationHeaderHandler>()
              //HTTP
              .AddTransient<AuthenticationHeaderHandler>()
                 .AddScoped(sp => sp
