@@ -16,7 +16,7 @@
                     <MudButton Href="@href" Style="@_estiloBotones">@item.Descripcion</MudButton>
                 }
             }
-             
+
         </div>
 
         <!-- Botones finales -->
@@ -28,12 +28,12 @@
 
 
 @code {
-    [CascadingParameter]
-    private string _estiloBotones { get; set; }
-    private string href { get; set; }
+    [CascadingParameter] private string _estiloBotones { get; set; }
 
     private List<TitulosDesconectadoResponse> listaDesconectado = new List<TitulosDesconectadoResponse>();
     private List<CategoriaResponse> listaCategorias = new List<CategoriaResponse>();
+
+    private string href { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,6 +42,10 @@
         {
             listaDesconectado = response.Data.Titulos;
             listaCategorias = response.Data.Categorias;
+        }
+        else
+        {
+            _snack.Add(response.Messages.First(), Severity.Error);
         }
 
         //TODO mas adelante convendria poner los titulos conectado y desconectado mas las categorias en un solo llamado dentro de una sola clase response y pasarlo desde el componente padre a este componente o el de conectado segun corresponda
