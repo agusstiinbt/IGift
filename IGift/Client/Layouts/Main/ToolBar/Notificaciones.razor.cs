@@ -20,14 +20,21 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         protected async override Task OnInitializedAsync()
         {
-            //var result = await _notificationService.GetAll();
-            //if (result.Succeeded)
-            //{
-            //    list = result.Data.ToList();
-            //    _notifications = list.Count;
-            //}
-            //_visible = _notifications == 0 ? false : true;
-            //await InitializeHub();
+            var result = await _notificationService.GetAll();
+            if (result.Succeeded)
+            {
+                list = result.Data.ToList();
+                _notifications = list.Count;
+            }
+            _visible = _notifications == 0 ? false : true;
+
+
+            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
+
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+            {
+                await _hubConnection.StartAsync();
+            }
         }
 
         private void ToggleOpen()
@@ -36,19 +43,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
                 _open = false;
             else
                 _open = true;
-        }
-
-        private async Task InitializeHub()
-        {
-            //Esta clase Notificaciones.razor debería de recibir como cascading parameter el HubConnection
-
-            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
-
-            if (_hubConnection.State == HubConnectionState.Disconnected)
-            {
-                await _hubConnection.StartAsync();
-            }
-
         }
     }
 

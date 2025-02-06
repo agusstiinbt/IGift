@@ -13,8 +13,10 @@ namespace IGift.Client.Pages.Inicio
 {
     public partial class Index
     {
-        [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
+        #region Propiedades
+
+        [CascadingParameter] private HubConnection _hubConnection { get; set; }
 
         [Parameter]
         public string? _Categoria { get; set; }
@@ -25,6 +27,7 @@ namespace IGift.Client.Pages.Inicio
         [Parameter]
         public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
         private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
+
         public ICollection<PeticionesResponse> _pagedData { get; set; }
 
         private MudTable<PeticionesResponse> _table;
@@ -44,56 +47,21 @@ namespace IGift.Client.Pages.Inicio
         private int _totalItems;
         private int _currentPage;
 
+        #endregion
 
         protected override async Task OnInitializedAsync()
         {
-            _interceptor.RegisterEvent();
-
             var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
 
             var user = state.User;
             if (user.Identity!.IsAuthenticated)
                 NombreUsuario = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
 
-            //await InitializeHub();
+            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
+
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+                await _hubConnection.StartAsync();
         }
-
-        private async Task InitializeHub()
-        {
-            try
-            {
-                _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
-
-                if (_hubConnection.State == HubConnectionState.Disconnected)
-                    await _hubConnection.StartAsync();
-            }
-            catch (Exception ex)
-            {
-                //if (ex.Message.Contains("401"))
-                //    _snack.Add("🔒 Error 401: Parece que el token ha expirado. Redirigiendo al login...\"", Severity.Error);
-            }
-        }
-
-
-        private async Task RefrescarToken()
-        {
-            try
-            {
-                var token = await _authService.TryRefreshToken();
-                if (!string.IsNullOrEmpty(token))
-                    _snack.Add("Token refrescado con RefreshToken", Severity.Success);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                _snack.Add("🔒 Error 401: Parece que el token ha expirado. Redirigiendo al login...\"", Severity.Error);
-                await Task.Delay(3000);
-                await _authService.Logout();
-                await Task.Delay(3000);
-                _nav.NavigateTo(AppConstants.Routes.Home);
-            }
-        }
-
 
         private void SeleccionarBoton(string boton)
         {

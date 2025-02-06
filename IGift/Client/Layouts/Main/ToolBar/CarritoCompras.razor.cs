@@ -19,15 +19,16 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         protected async override Task OnInitializedAsync()
         {
-            //var result = await _shopCartService.GetShopCartAsync();
-            //if (result.Succeeded)
-            //{
-            //    list = result.Data;
-            //    _peticiones = list.Count;
-            //}
-            //_visible = _peticiones == 0 ? false : true;
+            var result = await _shopCartService.GetShopCartAsync();
+            if (result.Succeeded)
+            {
+                list = result.Data;
+                _peticiones = list.Count;
+            }
+            _visible = _peticiones == 0 ? false : true;
 
-            //await InitializeHub();
+            await InitializeHub();
+
             _visible = _peticiones == 0 ? false : true;
         }
 
