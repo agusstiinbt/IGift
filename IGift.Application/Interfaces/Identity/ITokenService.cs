@@ -6,7 +6,7 @@ namespace IGift.Application.Interfaces.Identity
 {
     public interface ITokenService
     {
-        Task<Result<UserLoginResponse>> LoginAsync(UserLoginRequest model);
-        Task<Result<UserLoginResponse>> RefreshUserToken(TokenRequest tRequest);
+        Task<Result<TokenResponse>> LoginAsync(UserLoginRequest model);
+        Task<Result<TokenResponse>> RefreshUserToken(TokenRequest tRequest);
     }
 }

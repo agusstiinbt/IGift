@@ -4,9 +4,9 @@ using IGift.Shared.Wrapper;
 
 namespace Client.Infrastructure.Extensions
 {
-    internal static class ResultExtensions
+    public static class ResultExtensions
     {
-        internal static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response)
+        public static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)
             {
@@ -29,7 +29,7 @@ namespace Client.Infrastructure.Extensions
             return await Result<T>.FailAsync(HandleMessage(response));
         }
 
-        internal static async Task<IResult> ToResult(this HttpResponseMessage response)
+        public static async Task<IResult> ToResult(this HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)
             {
@@ -46,7 +46,7 @@ namespace Client.Infrastructure.Extensions
             return await Result.FailAsync(HandleMessage(response));
         }
 
-        internal static async Task<PaginatedResult<T>> ToPaginatedResult<T>(this HttpResponseMessage response)
+        public static async Task<PaginatedResult<T>> ToPaginatedResult<T>(this HttpResponseMessage response)
         {
             var responseAsString = await response.Content.ReadAsStringAsync();
             var responseObject = JsonSerializer.Deserialize<PaginatedResult<T>>(responseAsString, new JsonSerializerOptions

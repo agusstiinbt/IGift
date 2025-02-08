@@ -7,7 +7,9 @@
 
 @using Microsoft.JSInterop
 @using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.SignalR.Client;
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Authorization
@@ -61,6 +63,7 @@
 @using global::IGift.Client.Infrastructure.Services.Files
 
 
+@inject IDialogService _dialogService
 @inject IAuthService _authService
 @inject IHttpInterceptorManager _interceptor;
 @inject HttpClient _httpClient

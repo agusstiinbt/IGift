@@ -24,7 +24,7 @@
                         <MudNavLink Href="/security">Configuraciones de inicio</MudNavLink>
                     </MudNavGroup>
 
-                    <MudNavLink Href=@AppConstants.Routes.Logout>Salir</MudNavLink>
+                    <MudNavLink OnClick="Logout">Salir</MudNavLink>
 
                 </MudNavMenu>
             </MudPaper>
@@ -37,7 +37,15 @@
 
 @code {
 
+    [CascadingParameter] private HubConnection? hubConnection { get; set; }
+
+    [Parameter] public string userName { get; set; }
+
+    private string MenuStyle = "visibility:collapse";
     private string _buttonText = "Reply";
+
+    public bool _open;
+    public bool _expanded;
 
     private void SetButtonText(int id)
     {
@@ -57,7 +65,18 @@
                 break;
         }
     }
-    public bool _open;
+
+    private void Logout()
+    {
+        var parameters = new DialogParameters
+        {
+            {nameof(Pages.Users.Logout.HubConnection), hubConnection}
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+
+        _dialogService.Show<Pages.Users.Logout>("Salir", parameters, options);
+    }
 
     public void ToggleOpen()
     {
@@ -67,22 +86,12 @@
             _open = true;
     }
 
-    private string MenuStyle = "visibility:collapse";
     private void ShowMenu()
     {
         if (!string.IsNullOrEmpty(MenuStyle))
-        {
             MenuStyle = string.Empty;
-        }
         else
-        {
             MenuStyle = "visibility:collapse";
-        }
     }
-
-    bool _expanded;
-
-    [Parameter]
-    public string userName { get; set; }
 
 }

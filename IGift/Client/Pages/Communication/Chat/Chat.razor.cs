@@ -20,7 +20,7 @@ namespace IGift.Client.Pages.Communication.Chat
         }
 
         [Inject] private IChatManager _chatService { get; set; }
-        [CascadingParameter] private HubConnection _hubConnection { get; set; }
+        [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
         /// <summary>
         /// Mensajes de un chat
@@ -46,6 +46,7 @@ namespace IGift.Client.Pages.Communication.Chat
 
         protected override async Task OnInitializedAsync()
         {
+            //TODO el acceso al chat mediante la interfaz grafica deberia de estar presente en algun .razor que se muestre solamente despues del login. Como titulos o algo asi
             await InitializeHub();
         }
 
@@ -56,13 +57,6 @@ namespace IGift.Client.Pages.Communication.Chat
         /// <returns></returns>
         private async Task InitializeHub()
         {
-            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
-
-            if (_hubConnection.State == HubConnectionState.Disconnected)
-            {
-                await _hubConnection.StartAsync();
-            }
-
             //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
             _hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
             {

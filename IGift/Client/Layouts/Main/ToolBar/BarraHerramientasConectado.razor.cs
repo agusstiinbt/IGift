@@ -9,18 +9,13 @@ namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class BarraHerramientasConectado
     {
-        [Parameter]
-        public string userName { get; set; }
+        [Parameter] public string userName { get; set; }
 
-        [CascadingParameter]
-        private string _estiloBotones { get; set; }
-
-        [CascadingParameter] public HubConnection _hubConnection { get; set; }
+        [CascadingParameter] private string _estiloBotones { get; set; }
 
 
         private List<TitulosConectadoResponse> titulosConectado = new List<TitulosConectadoResponse>();
         private List<CategoriaResponse> listaCategorias = new List<CategoriaResponse>();
-
 
         private string href { get; set; }
 
@@ -36,12 +31,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
             {
                 var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
                 userName = state.User.GetFirstName();
-            }
-            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
-
-            if (_hubConnection.State == HubConnectionState.Disconnected)
-            {
-                await _hubConnection.StartAsync();
             }
 
         }

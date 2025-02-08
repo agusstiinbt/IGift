@@ -33,10 +33,10 @@ namespace IGift.Infrastructure.Services.Identity
         /// </summary>
         /// <param name="tRequest"></param>
         /// <returns></returns>
-        public async Task<Result<UserLoginResponse>> RefreshUserToken(TokenRequest tRequest)
+        public async Task<Result<TokenResponse>> RefreshUserToken(TokenRequest tRequest)
         {
             string errorMessage = string.Empty;
-            if (tRequest == null) { return await Result<UserLoginResponse>.FailAsync("TokenController nulo"); }
+            if (tRequest == null) { return await Result<TokenResponse>.FailAsync("TokenController nulo"); }
 
             var userPrincipal = GetPrincipalFromExpiredToken(tRequest.Token);
             var userEmail = userPrincipal.FindFirstValue(ClaimTypes.Email);
@@ -57,17 +57,17 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                return await Result<UserLoginResponse>.FailAsync(errorMessage);
+                return await Result<TokenResponse>.FailAsync(errorMessage);
             }
 
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
-            user.RefreshToken = GenerateRefreshToken();
-            await _userManager.UpdateAsync(user);
+            //user.RefreshToken = GenerateRefreshToken();
+            //await _userManager.UpdateAsync(user);
 
             //TODO implementar la imagen url
-            var response = new UserLoginResponse { Token = token, RefreshToken = user.RefreshToken };
+            var response = new TokenResponse { Token = token, RefreshToken = tRequest.RefreshToken };
 
-            return await Result<UserLoginResponse>.SuccessAsync(response);
+            return await Result<TokenResponse>.SuccessAsync(response);
         }
 
         /// <summary>
@@ -75,13 +75,13 @@ namespace IGift.Infrastructure.Services.Identity
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<Result<UserLoginResponse>> LoginAsync(UserLoginRequest model)
+        public async Task<Result<TokenResponse>> LoginAsync(UserLoginRequest model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email!);
 
             if (user == null)
             {
-                return await Result<UserLoginResponse>.FailAsync("Email no encontrado.");
+                return await Result<TokenResponse>.FailAsync("Email no encontrado.");
             }
 
             //  Dejar esto para decidir más adelante si lo usamos o no
@@ -92,27 +92,27 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (!user.EmailConfirmed)
             {
-                return await Result<UserLoginResponse>.FailAsync("E-Mail aún no confirmado.");
+                return await Result<TokenResponse>.FailAsync("E-Mail aún no confirmado.");
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password!);
             if (!passwordValid)
             {
-                return await Result<UserLoginResponse>.FailAsync("Contraseña inválida.");
+                return await Result<TokenResponse>.FailAsync("Contraseña inválida.");
             }
 
             user.RefreshToken = GenerateRefreshToken();
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(3);
             await _userManager.UpdateAsync(user);
 
-            var response = new UserLoginResponse
+            var response = new TokenResponse
             {
                 Token = await GenerateJwtAsync(user),
                 RefreshToken = user.RefreshToken,
                 IdUser = user.Id!
             };
 
-            return await Result<UserLoginResponse>.SuccessAsync(response);
+            return await Result<TokenResponse>.SuccessAsync(response);
         }
 
         #region Private

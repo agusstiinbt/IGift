@@ -1,2 +1,45 @@
-﻿@page "/Logout"
+﻿<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Logout" Class="mr-3 mb-n1" />
+            Confirmacion de salida...
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText>Confirmacion de salida</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="Submit">Aceptar</MudButton>
+    </DialogActions>
+</MudDialog>
 
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public HubConnection HubConnection { get; set; }
+
+    async Task Submit()
+    {
+        //TODO este hubconnection enviara la desconeccion a el chat.razor
+        // var userId = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
+        //await HubConnection.SendAsync(AppConstants.SignalR.OnDisconnect, userId);
+        await _shopCartService.ClearCache();
+        await _authService.Logout();
+        _interceptor.DisposeEvent();
+        _nav.NavigateTo(AppConstants.Routes.Home);
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _shopCartService.ClearCache();
+        await _authService.Logout();
+        _interceptor.DisposeEvent();
+        _nav.NavigateTo(AppConstants.Routes.Home);
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

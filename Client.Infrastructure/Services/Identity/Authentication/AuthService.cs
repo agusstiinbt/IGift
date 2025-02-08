@@ -39,7 +39,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
             var response = await _httpClient.PostAsJsonAsync(ConstTokenController.LogIn, loginModel);
-            var result = await response.ToResult<UserLoginResponse>();
+            var result = await response.ToResult<TokenResponse>();
 
             if (result.Succeeded)
             {
@@ -83,17 +83,19 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             await _js.InitializeInactivityTimer(dotNetObjectReference);
         }
 
+        /// <summary>
+        /// Devuelve el token renovado o arroja una excepcion si no se pudo hacer la renovacion en el servidor
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<string> RefreshToken()
         {
             var token = await _localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken);
             var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
 
 
-            //La única forma 100% segura de evitar el envío del Authorization header es usar un nuevo HttpClient para la petición de RefreshToken.
-            //using var client = new HttpClient { BaseAddress = new Uri("https://localhost:7214") }; // Usa la URL de tu API
-            //var response = await client.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
             var response = await _httpClient.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
-            var result = await response.ToResult<UserLoginResponse>();
+            var result = await response.ToResult<TokenResponse>();
 
             if (!result.Succeeded)
             {
@@ -114,9 +116,9 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<string> TryRefreshToken()
         {
-            var tokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
+            var refreshTokenDisponible = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
 
-            if (string.IsNullOrEmpty(tokenDisponible))
+            if (string.IsNullOrEmpty(refreshTokenDisponible))
                 return string.Empty;
 
             var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();

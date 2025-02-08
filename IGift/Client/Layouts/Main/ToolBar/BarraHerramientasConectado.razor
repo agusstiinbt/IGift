@@ -1,37 +1,31 @@
-﻿<CascadingValue Value="_hubConnection">
+﻿<MudPaper Elevation="25" Style="background-color:#D4A054; display: flex; justify-content: center; align-items: center;">
 
-    <MudPaper Elevation="25" Style="background-color:#D4A054; display: flex; justify-content: center; align-items: center;">
+    <MudToolBar Style="display: flex; align-items: center; width: 100%; height: auto;">
 
-        <MudToolBar Style="display: flex; align-items: center; width: 100%; height: auto;">
+        <!-- Contenedor para los botones centrales -->
+        <div style="flex-grow: 1; display: flex; justify-content: center;">
 
-            <!-- Contenedor para los botones centrales -->
-            <div style="flex-grow: 1; display: flex; justify-content: center;">
-
-                @foreach (var item in titulosConectado)
+            @foreach (var item in titulosConectado)
+            {
+                if (item.Descripcion == "Categorias")
                 {
-                    if (item.Descripcion == "Categorias")
-                    {
-                        <PopOverCategorias categoriaList="@listaCategorias" />
-                    }
-                    else
-                    {
-                        href = "/" + item.Descripcion;
-                        <MudButton Href="@href" Style="@_estiloBotones">@item.Descripcion</MudButton>
-                    }
+                    <PopOverCategorias categoriaList="@listaCategorias" />
                 }
-            </div>
+                else
+                {
+                    href = "/" + item.Descripcion;
+                    <MudButton Href="@href" Style="@_estiloBotones">@item.Descripcion</MudButton>
+                }
+            }
+        </div>
 
-            <!-- Botones finales -->
-            <TogglePerfil userName=@userName />
+        <!-- Botones finales -->
+        <TogglePerfil userName=@userName />
 
-            <Notificaciones />
+        <Notificaciones />
 
-            <CarritoCompras />
+        <CarritoCompras />
 
-        </MudToolBar>
+    </MudToolBar>
 
-    </MudPaper>
-
-</CascadingValue>
-
-
+</MudPaper>

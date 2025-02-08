@@ -28,6 +28,10 @@ namespace Client.Infrastructure.Services.Interceptor
             var absPath = e.Request.RequestUri.AbsolutePath;
             if (!absPath.ToLower().Contains("token") /*&& !absPath.Contains("accounts")*/)
             {
+                if (absPath.ToLower().Trim().Contains("notification"))
+                {
+
+                }
                 try
                 {
                     var token = await _authService.TryRefreshToken();
@@ -40,7 +44,9 @@ namespace Client.Infrastructure.Services.Interceptor
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    await Task.Delay(3000);
                     _snackBar.Add("Sesión terminada", Severity.Error);
+                    await Task.Delay(3000);
                     await _authService.Logout();
                     _navigationManager.NavigateTo(AppConstants.Routes.Home);
                 }

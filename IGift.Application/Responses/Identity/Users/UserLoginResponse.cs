@@ -2,7 +2,7 @@
 
 namespace IGift.Application.Responses.Identity.Users
 {
-    public class UserLoginResponse
+    public class TokenResponse
     {
         public string Token { get; set; }
         public string RefreshToken { get; set; }

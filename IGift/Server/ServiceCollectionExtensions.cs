@@ -244,6 +244,8 @@ namespace IGift.Server
                     },
                     OnChallenge = context =>
                     {
+                        var path = context.HttpContext.Request.Path;
+
                         context.HandleResponse();
                         if (!context.Response.HasStarted)
                         {
@@ -257,6 +259,8 @@ namespace IGift.Server
                     },
                     OnForbidden = context =>
                     {
+                        var path = context.HttpContext.Request.Path;
+
                         context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                         context.Response.ContentType = "application/json";
                         var result = JsonConvert.SerializeObject(Result.Fail("You are not authorized to access this resource."));

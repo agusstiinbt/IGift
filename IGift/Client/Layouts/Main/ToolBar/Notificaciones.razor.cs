@@ -10,8 +10,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
     {
         [Inject] INotificationService _notificationService { get; set; }
 
-        [CascadingParameter] private HubConnection _hubConnection { get; set; }
-
         private List<NotificationResponse> list { get; set; } = new();
 
         private int _notifications { get; set; } = 0;
@@ -28,13 +26,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
             }
             _visible = _notifications == 0 ? false : true;
 
-
-            _hubConnection = await _hubConnection.TryInitialize(_nav, _localStorage);
-
-            if (_hubConnection.State == HubConnectionState.Disconnected)
-            {
-                await _hubConnection.StartAsync();
-            }
         }
 
         private void ToggleOpen()
