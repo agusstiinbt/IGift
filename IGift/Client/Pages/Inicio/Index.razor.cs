@@ -2,7 +2,6 @@
 using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
-using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;

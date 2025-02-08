@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using IGift.Application.Models.Chat;
-using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;

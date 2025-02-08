@@ -1,10 +1,9 @@
-﻿using IGift.Shared.Constants;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Blazored.LocalStorage;
+using IGift.Client.Infrastructure.Services.Identity.Authentication;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-using IGift.Client.Infrastructure.Services.Identity.Authentication;
-using System.Runtime.InteropServices;
-using System.IdentityModel.Tokens.Jwt;
-using Blazored.LocalStorage;
 
 
 namespace IGift.Client.Extensions

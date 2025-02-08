@@ -3,7 +3,6 @@ using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Client.Extensions;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace IGift.Client.Layouts.Main.ToolBar
 {

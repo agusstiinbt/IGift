@@ -1,5 +1,4 @@
 ﻿using IGift.Application.Responses.Peticiones;
-using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
