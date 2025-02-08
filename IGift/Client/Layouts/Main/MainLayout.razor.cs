@@ -26,7 +26,11 @@ namespace IGift.Client.Layouts.Main
 
             var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
             if (state.User.Identity!.IsAuthenticated)
+            {
+                var curentUserId = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+                var nombre = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
                 await InitializeHub();
+            }
         }
 
         /// <summary>
@@ -63,8 +67,7 @@ namespace IGift.Client.Layouts.Main
         /// <returns></returns>
         private async Task InitializeHub()
         {
-            var curentUserId = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-            var nombre = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
+
             try
             {
                 _hubConnection = await _hubConnection.TryInitialize(_nav, _authService, _localStorage);
@@ -148,37 +151,12 @@ namespace IGift.Client.Layouts.Main
             {
                 if (e.Message.Contains("401"))
                 {
-                    Console.WriteLine($"Token vencido");
-                    _snack.Add("Conexion con SignalR perdida. Token vencido");
-                    await Task.Delay(3000);//Aca podemos, si deseamos o no, hacer la renovacion del token con el httpclient
-                    _snack.Add("Sesión terminada", Severity.Error);
-                    await Task.Delay(3000);
-                    await _authService.Logout();
-                    _nav.NavigateTo(AppConstants.Routes.Home);
+                    _snack.Add("Conexion con SignalR perdida. Token vencido", Severity.Warning);
                 }
-            }
-        }
-
-        private async Task RefrescarToken()
-        {
-            try
-            {
-                var token = await _authService.TryRefreshToken();
-                if (!string.IsNullOrEmpty(token))
+                else
                 {
-                    _snack.Add("Token refrescado con RefreshToken", Severity.Success);
-                    await InitializeHub();
+                    _snack.Add("Ocurrio un eror inesperado de SignalR");
                 }
-            }
-            catch (Exception ex)
-            {
-                await _hubConnection.StopAsync();
-                Console.WriteLine(ex.Message);
-                _snack.Add("🔒 Error 401: Parece que el token ha expirado. Redirigiendo al login...\"", Severity.Error);
-                await Task.Delay(3000);
-                await _authService.Logout();
-                await Task.Delay(3000);
-                _nav.NavigateTo(AppConstants.Routes.Home);
             }
         }
 

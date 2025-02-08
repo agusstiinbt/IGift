@@ -1,10 +1,8 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using Blazored.LocalStorage;
+﻿using Blazored.LocalStorage;
 using IGift.Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-
 
 namespace IGift.Client.Extensions
 {
@@ -18,10 +16,6 @@ namespace IGift.Client.Extensions
         {
 
             var token = await localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken);
-
-            //var refreshToken = await IsTokenExpired(token!);
-            //if (refreshToken)
-            //    throw new Exception("401 Token expirado");
 
             if (hubConnection == null)
             {
@@ -58,24 +52,6 @@ namespace IGift.Client.Extensions
             return hubConnection;
         }
 
-        /// <summary>
-        /// Devuelve un string vacio si no hace falta renovar el token o si no existe un refreshToken en LocalStorage. Si falla la renovacion del token en el servidor arroja una Exception del metodo RefreshToken. Sino, devuelve el token renovado.
-        /// </summary>
-        /// <param name="authService"></param>
-        /// <returns></returns>
-        private static async Task<string> GetValidTokenAsync(IAuthService authService)
-        {
-            try
-            {
-                return await authService.TryRefreshToken();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return string.Empty;
-            }
-        }
-
         public static async Task ReconnectWithRetryAsync(HubConnection hubConnection)
         {
             while (hubConnection.State == HubConnectionState.Disconnected)
@@ -94,13 +70,5 @@ namespace IGift.Client.Extensions
             }
         }
 
-        private static async Task<bool> IsTokenExpired(string token)
-        {
-            var jwtHandler = new JwtSecurityTokenHandler();
-            var jwt = jwtHandler.ReadToken(token) as JwtSecurityToken;
-
-            return jwt?.ValidTo < DateTime.UtcNow.AddMinutes(1); // Expira en menos de 1 minuto
-        }
     }
-
 }
