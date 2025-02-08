@@ -1,6 +1,3 @@
-Debemos tener un middleware try catch para los problemas que puede ocurrir con signalr en el cliente
-
-
 Documentar bien para que sirve cada uno de los metodos que tenemos tanto en el configure services como en el configure app.
 Crear un nuevo chat en chatgpt explicandole nuestra arquitectura y que tendremos 5 microservicios, una api gateway, y 6 bbdd contando redis.
 Luego si necesitamos actualizar las versiones de .net core, sabremos como reemplazar cada cosa sabien ahora para que servian porque estan bien 
