@@ -76,9 +76,7 @@ namespace IGift.Server
 
             app.ConfigureSwagger();
 
-
             app.Initialize(_configuration);
-
         }
     }
 }
