@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
-using Client.Infrastructure.Authentication;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
@@ -16,21 +15,17 @@ namespace IGift.Client.Layouts.Main
         [CascadingParameter]
         public Task<AuthenticationState> AuthenticationState { get; set; }
 
+        [Parameter]
         public HubConnection _hubConnection { get; set; }
 
-        private bool _isConnected = false;
+        private string CurrentUserId { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
+            await InitializeHub();
+
             await _authService.Disconnect(DotNetObjectReference.Create(this));
             _interceptor.RegisterEvent();
-
-            var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
-            if (state.User.Identity!.IsAuthenticated)
-            {
-                var curentUserId = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-                var nombre = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
-                await InitializeHub();
-            }
         }
 
         /// <summary>
@@ -67,96 +62,92 @@ namespace IGift.Client.Layouts.Main
         /// <returns></returns>
         private async Task InitializeHub()
         {
-
             try
             {
                 _hubConnection = await _hubConnection.TryInitialize(_nav, _authService, _localStorage);
-
-                _hubConnection.On<string, string, string>(AppConstants.SignalR.ReceiveChatNotification, (message, receiverUserId, senderUserId) =>
+                if (_hubConnection != null)
                 {
-                    if (curentUserId == receiverUserId)
+                    _hubConnection.On<string, string, string>(AppConstants.SignalR.ReceiveChatNotification, (message, receiverUserId, senderUserId) =>
                     {
-                        //TODO implementar:..._jsRuntime.InvokeAsync<string>("PlayAudio", "notification");
-                        _snack.Add(message, Severity.Info, config =>
+                        if (CurrentUserId == receiverUserId)
                         {
-                            config.VisibleStateDuration = 10000;
-                            config.HideTransitionDuration = 500;
-                            config.ShowTransitionDuration = 500;
-                            config.Action = "Chat?";
-                            config.ActionColor = Color.Primary;
-                            config.Onclick = snackbar =>
+                            //TODO implementar:..._jsRuntime.InvokeAsync<string>("PlayAudio", "notification");
+                            _snack.Add(message, Severity.Info, config =>
                             {
-                                _nav.NavigateTo($"chat/{senderUserId}");
-                                return Task.CompletedTask;
-                            };
-                        });
-                    }
-                });
-
-                _hubConnection.On(AppConstants.SignalR.ReceiveRegenerateTokens, async () =>
-                {
-                    try
-                    {
-                        var token = await _authService.TryForceRefreshToken();
-                        if (!string.IsNullOrEmpty(token))
-                        {
-                            _snack.Add("Token refrescado", Severity.Success);
-                            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                                config.VisibleStateDuration = 10000;
+                                config.HideTransitionDuration = 500;
+                                config.ShowTransitionDuration = 500;
+                                config.Action = "Chat?";
+                                config.ActionColor = Color.Primary;
+                                config.Onclick = snackbar =>
+                                {
+                                    _nav.NavigateTo($"chat/{senderUserId}");
+                                    return Task.CompletedTask;
+                                };
+                            });
                         }
-                    }
-                    catch (Exception e)
+                    });
+
+                    _hubConnection.On(AppConstants.SignalR.ReceiveRegenerateTokens, async () =>
                     {
-                        _snack.Add("Sesión finalizada", Severity.Error);
-                        await _authService.Logout();
-                        _nav.NavigateTo("/");
-                    }
-                });
+                        try
+                        {
+                            var token = await _authService.TryForceRefreshToken();
+                            if (!string.IsNullOrEmpty(token))
+                            {
+                                _snack.Add("Token refrescado", Severity.Success);
+                                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            _snack.Add("Sesión finalizada", Severity.Error);
+                            await _authService.Logout();
+                            _nav.NavigateTo("/");
+                        }
+                    });
 
-                //TODO investigar sobre esto porque puede ser util para desloguer automaticamente cuando se le haya cambiado permisos o roles a un usuario
-                //_hubConnection.On<string, string>(AppConstants.SignalR.LogoutUsersByRole, async (userId, roleId) =>
-                //{
-                //    if (currentUserId != userId)
-                //    {
-                //        var rolesResponse = await RoleManager.GetRolesAsync();
-                //        if (rolesResponse.Succeeded)
-                //        {
-                //            var role = rolesResponse.Data.FirstOrDefault(x => x.Id == roleId);
-                //            if (role != null)
-                //            {
-                //                var currentUserRolesResponse = await _userManager.GetRolesAsync(CurrentUserId);
-                //                if (currentUserRolesResponse.Succeeded && currentUserRolesResponse.Data.UserRoles.Any(x => x.RoleName == role.Name))
-                //                {
-                //                    _snackBar.Add(_localizer["You are logged out because the Permissions of one of your Roles have been updated."], Severity.Error);
-                //                    await hubConnection.SendAsync(ApplicationConstants.SignalR.OnDisconnect, CurrentUserId);
-                //                    await _authenticationManager.Logout();
-                //                    _navigationManager.NavigateTo("/login");
-                //                }
-                //            }
-                //        }
-                //    }
-                //});
+                    //TODO investigar sobre esto porque puede ser util para desloguer automaticamente cuando se le haya cambiado permisos o roles a un usuario
+                    //_hubConnection.On<string, string>(AppConstants.SignalR.LogoutUsersByRole, async (userId, roleId) =>
+                    //{
+                    //    if (currentUserId != userId)
+                    //    {
+                    //        var rolesResponse = await RoleManager.GetRolesAsync();
+                    //        if (rolesResponse.Succeeded)
+                    //        {
+                    //            var role = rolesResponse.Data.FirstOrDefault(x => x.Id == roleId);
+                    //            if (role != null)
+                    //            {
+                    //                var currentUserRolesResponse = await _userManager.GetRolesAsync(CurrentUserId);
+                    //                if (currentUserRolesResponse.Succeeded && currentUserRolesResponse.Data.UserRoles.Any(x => x.RoleName == role.Name))
+                    //                {
+                    //                    _snackBar.Add(_localizer["You are logged out because the Permissions of one of your Roles have been updated."], Severity.Error);
+                    //                    await hubConnection.SendAsync(ApplicationConstants.SignalR.OnDisconnect, CurrentUserId);
+                    //                    await _authenticationManager.Logout();
+                    //                    _navigationManager.NavigateTo("/login");
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                    //});
 
-                _hubConnection.On<string>(AppConstants.SignalR.PingRequest, async (userName) =>
-                {
-                    await _hubConnection.SendAsync(AppConstants.SignalR.PingResponse, curentUserId, userName);
-                });
+                    _hubConnection.On<string>(AppConstants.SignalR.PingRequest, async (userName) =>
+                    {
+                        await _hubConnection.SendAsync(AppConstants.SignalR.PingResponse, CurrentUserId, userName);
+                    });
 
-                await _hubConnection.SendAsync(AppConstants.SignalR.OnConnect, curentUserId);
+                    CurrentUserId = AuthenticationState.Result.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
-                _isConnected = true;
+                    await _hubConnection.SendAsync(AppConstants.SignalR.OnConnect, CurrentUserId);
 
-                _snack.Add("Bienvenido " + nombre, Severity.Success);//TODO cada vez que se refresca la página se muetra y solo debe ejecutarse una sola vez, fijarse cómo podemos solucionarlo
+                }
             }
             catch (Exception e)
             {
                 if (e.Message.Contains("401"))
-                {
                     _snack.Add("Conexion con SignalR perdida. Token vencido", Severity.Warning);
-                }
                 else
-                {
-                    _snack.Add("Ocurrio un eror inesperado de SignalR");
-                }
+                    _snack.Add(e.Message);
             }
         }
 

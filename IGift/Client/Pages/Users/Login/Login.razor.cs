@@ -25,7 +25,11 @@ namespace IGift.Client.Pages.Users.Login
 
             if (result.Succeeded)
             {
+                StateHasChanged();
+                await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).StateChangedAsync();
                 _nav.NavigateTo(IGift.Shared.Constants.AppConstants.Routes.Home);
+                StateHasChanged();
+                await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).StateChangedAsync();
             }
             else
             {

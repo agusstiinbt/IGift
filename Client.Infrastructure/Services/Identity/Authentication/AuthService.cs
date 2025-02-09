@@ -106,7 +106,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             refreshToken = result.Data.RefreshToken;
 
             await _localStorage.SetItemAsync(AppConstants.Local.AuthToken, token);
-            await _localStorage.SetItemAsync(AppConstants.Local.RefreshToken, refreshToken);
+            //await _localStorage.SetItemAsync(AppConstants.Local.RefreshToken, refreshToken);
 
             await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).StateChangedAsync();
 

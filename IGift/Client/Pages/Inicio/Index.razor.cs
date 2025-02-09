@@ -2,6 +2,7 @@
 using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
+using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
@@ -17,7 +18,7 @@ namespace IGift.Client.Pages.Inicio
         [Parameter] public string? _Categoria { get; set; }
         [Parameter] public string? TxtBusqueda { get; set; } = string.Empty;
         [Parameter] public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
-        [CascadingParameter] private HubConnection? _hubConnection { get; set; }
+        [CascadingParameter] public HubConnection? _hubConnection { get; set; }
 
         //Propiedades
         private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
@@ -39,17 +40,23 @@ namespace IGift.Client.Pages.Inicio
         private int _totalItems;
         private int _currentPage;
 
-        private bool IsAuthenticated = false;
-
         protected override async Task OnInitializedAsync()
         {
+            try
+            {
+                if (_hubConnection == null)
+                    _hubConnection = await _hubConnection.TryInitialize(_nav, _authService, _localStorage);
+            }
+            catch (Exception e)
+            {
+                _snack.Add(e.Message);
+            }
+
             var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
 
-            IsAuthenticated = state.User.Identity!.IsAuthenticated;
-
-            if (IsAuthenticated)
-                NombreUsuario = state.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
+            NombreUsuario = state.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
         }
+
 
         private void SeleccionarBoton(string boton)
         {
@@ -87,7 +94,7 @@ namespace IGift.Client.Pages.Inicio
         /// <returns></returns>
         private async Task AgregarAlCarrito(PeticionesResponse p)
         {
-            if (IsAuthenticated && _hubConnection != null)
+            if (_hubConnection != null)
             {
                 //TODO esto debería de ser un parámetro desde arriba para no invocarlo todo el tiempo
                 var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);

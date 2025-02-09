@@ -17,7 +17,7 @@ namespace IGift.Client.Extensions
 
             var token = await localStorage.GetItemAsync<string>(AppConstants.Local.AuthToken);
 
-            if (hubConnection == null)
+            if (hubConnection == null && !string.IsNullOrEmpty(token))
             {
                 try
                 {
@@ -29,19 +29,15 @@ namespace IGift.Client.Extensions
                         .WithAutomaticReconnect()
                         .Build();
 
+                    await hubConnection.StartAsync();
+
                     // Manejo de eventos de reconexión y errores
                     hubConnection.Closed += async (error) =>
                     {
-                        Console.WriteLine("SignalR desconectado. Reintentando conexión...");
                         await ReconnectWithRetryAsync(hubConnection);
                     };
 
-                    // 🔥 IMPORTANTE: Intentar iniciar la conexión
-                    if (hubConnection.State == HubConnectionState.Disconnected)
-                    {
-                        await hubConnection.StartAsync();
-                        Console.WriteLine("Conexión SignalR establecida.");
-                    }
+
                     return hubConnection;
                 }
                 catch (Exception e)
@@ -69,6 +65,5 @@ namespace IGift.Client.Extensions
                 }
             }
         }
-
     }
 }
