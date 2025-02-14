@@ -17,7 +17,7 @@ namespace IGift.Client.Pages.Inicio
     public partial class Index
     {
         // Parametros
-        [CascadingParameter] public Task<AuthenticationState>? AuthenticationState { get; set; }
+        [CascadingParameter] public required Task<AuthenticationState> AuthenticationState { get; set; }
         [Parameter] public string? _Categoria { get; set; }
         [Parameter] public string? TxtBusqueda { get; set; } = string.Empty;
         [Parameter] public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
@@ -226,7 +226,6 @@ namespace IGift.Client.Pages.Inicio
             catch (Exception e)
             {
                 if (e.Message.Contains("401"))
-                {
                     _snack.Add("Conexion con SignalR perdida. Proceda con cuidado", Severity.Info, config =>
                     {
                         config.VisibleStateDuration = 3000;
@@ -234,7 +233,6 @@ namespace IGift.Client.Pages.Inicio
                         config.ShowTransitionDuration = 500;
                         config.ActionColor = Color.Primary;
                     });
-                }
                 else
                     _snack.Add(e.Message);
             }
