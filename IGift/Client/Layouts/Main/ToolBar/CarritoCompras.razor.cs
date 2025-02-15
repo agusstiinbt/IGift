@@ -45,17 +45,18 @@ namespace IGift.Client.Layouts.Main.ToolBar
             {
                 _hubConnection.On<ICollection<PeticionesResponse>>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, async (lista) =>
                 {
-                    //TODO es necesario enviar a esta subscripcion el Id si ya lo estamos localizando desde la clase signalR
-                    var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
 
-                    // Ejecutar el cambio de estado en el contexto de la IU
-
+                    // Ejecutar el cambio de estado en el contexto de la UI
                     list = lista.ToList();
                     _peticiones = list.Count;
                     _snack.Add("Peticion agregada al carrito", Severity.Success);
-                    await InvokeAsync(StateHasChanged);//Esto tiene que estar siempre porque dentro de un 'on' no se detecta un cambio en el UI
+
+                    await InvokeAsync(StateHasChanged); // Asegurar que la actualización de UI ocurre en el hilo correcto
                 });
             }
+
+            await Task.CompletedTask; // Para evitar advertencias de métodos async sin 'await'
         }
+
     }
 }

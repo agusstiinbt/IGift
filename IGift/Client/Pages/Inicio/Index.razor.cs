@@ -22,25 +22,29 @@ namespace IGift.Client.Pages.Inicio
         [Parameter] public string? TxtBusqueda { get; set; } = string.Empty;
         [Parameter] public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
 
-        public HubConnection? _hubConnection { get; set; }
-
-        private string? CurrentUserId { get; set; }
 
         //Propiedades
         private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
         public ICollection<PeticionesResponse> _pagedData { get; set; }
         private MudTable<PeticionesResponse> _table;
+        public HubConnection? _hubConnection { get; set; }
+
 
         //Strings
+        public string SearchString { get; set; } = string.Empty;
         private string NombreUsuario { get; set; } = string.Empty;
-
-        private readonly string EstiloBotones = "color:black";
+        private string CurrentUserId { get; set; } = string.Empty;
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
+        private readonly string EstiloBotones = "color:black";
         private string EstiloBotonComprarPeticion { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonCrear { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "USDT";
+
+
+        //Booleanss
+        public bool ShowTablePeticiones { get; set; } = false;
 
         //Ints
         private int _totalItems;
@@ -99,19 +103,29 @@ namespace IGift.Client.Pages.Inicio
         {
             if (_hubConnection != null)
             {
-                //TODO esto debería de ser un parámetro desde arriba para no invocarlo todo el tiempo
                 var idUser = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
                 var response = await _shopCartService.SaveShopCartAsync(p);
 
                 if (response.Succeeded)
+                {
                     await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, _pagedData, idUser);
+                    await InvokeAsync(StateHasChanged);
+                }
                 else
                     _snack.Add(response.Messages.FirstOrDefault());
             }
             else
-            {
                 _nav.NavigateTo(AppConstants.Routes.Login);
-            }
+        }
+
+        public async Task RealizarBusqueda()
+        {
+            TxtBusqueda = SearchString;
+
+            if (!ShowTablePeticiones)
+                ShowTablePeticiones = true;
+            else
+                await OnSearch(TxtBusqueda);
         }
 
         private async Task<TableData<PeticionesResponse>> GetData(TableState state, CancellationToken cancellationToken)

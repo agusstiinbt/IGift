@@ -17,6 +17,6 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
         /// <returns></returns>
         Task<IResult<List<PeticionesResponse>>> GetShopCartAsync();
 
-        Task ClearCache();
+        Task ClearCarritoDeCompras();
     }
 }

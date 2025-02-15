@@ -24,7 +24,7 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
 
             if (!carrito.Any(x => x.Id == p.Id))
             {
-                carrito!.Add(p);
+                carrito.Add(p);
                 var json = JsonSerializer.Serialize(carrito);
 
                 await _localStorage.SetItemAsync(AppConstants.Local.ShopCart, json);
@@ -49,24 +49,19 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
         {
             var json = await _localStorage.GetItemAsync<string>(AppConstants.Local.ShopCart);
 
-            List<PeticionesResponse> carrito;
+            List<PeticionesResponse> carrito = new List<PeticionesResponse>();
 
             if (!string.IsNullOrEmpty(json))
             {
-                // Si hay algo en 'carrito', deserializarlo a una lista 
-                carrito = JsonSerializer.Deserialize<List<PeticionesResponse>>(json);
-            }
-            else
-            {
-                // Si 'carrito' está vacío, inicializar una nueva lista
-                carrito = new List<PeticionesResponse>();
+                var listaDeserializada = JsonSerializer.Deserialize<List<PeticionesResponse>>(json);
+                if (listaDeserializada != null)
+                    carrito = listaDeserializada;
             }
 
-            return carrito!;
-            // Leer la lista existente de 'carrito'
+            return carrito;
         }
 
-        public async Task ClearCache()
+        public async Task ClearCarritoDeCompras()
         {
             await _localStorage.ClearAsync();
         }

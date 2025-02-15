@@ -91,7 +91,7 @@
 
                 </MudTd>
 
-                <MudButton OnClick="() => AgregarAlCarrito(context)" Style="background-color:green;color:white;">Comprar @BotonSeleccionado</MudButton>
+                <MudButton OnClick="() => AgregarAlCarrito(context)" Style="background-color:green;color:white;">Agregar al carrito</MudButton>
 
             </RowTemplate>
 
@@ -100,21 +100,3 @@
     </MudPaper>
 }
 
-@code {
-    public bool ShowTablePeticiones { get; set; } = false;
-
-    public string SearchString { get; set; } = string.Empty;
-
-    public async Task RealizarBusqueda()
-    {
-        TxtBusqueda = SearchString;
-
-        if (!ShowTablePeticiones)
-        {
-            ShowTablePeticiones = true;  
-        }
-        else{
-            await OnSearch(TxtBusqueda);
-        }
-    }
-}
