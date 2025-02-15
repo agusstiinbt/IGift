@@ -6,7 +6,6 @@ namespace IGift.Client.Pages.Users.Login
 {
     public partial class Login
     {
-
         private UserLoginRequest loginModel = new();
 
         protected override async Task OnInitializedAsync()
@@ -28,8 +27,6 @@ namespace IGift.Client.Pages.Users.Login
                 StateHasChanged();
                 await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).StateChangedAsync();
                 _nav.NavigateTo(IGift.Shared.Constants.AppConstants.Routes.Home);
-                StateHasChanged();
-                await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).StateChangedAsync();
             }
             else
             {
