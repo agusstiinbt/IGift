@@ -5,18 +5,32 @@
 
     <MudPopover Open="_open" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
         <MudPaper Outlined="true" Class="px-4 py-8">
-            <MudPaper Width="250px" Class="py-3" Elevation="0">
 
-                <MudNavMenu>
+            <MudNavMenu>
+
+                <MudList T="string">
 
                     @foreach (var n in list)
                     {
-                        <MudNavLink Href="/">@n.Descripcion: @n.Monto @n.Moneda</MudNavLink>
+                        <MudListItem>
+                            <AvatarContent>
+                                <MudAvatar>
+                                    @*   TODO  Esto puede ser el dia de mañana la imagen del producto descargada y traida al cliente, o sea local storage, o en donde mejor convenga
+                      <MudImage Src="images/mony.jpg" /> *@
+                                    <MudIcon Icon="@Icons.Material.Filled.Work" Color="Color.Primary" />
+                                </MudAvatar>
+                            </AvatarContent>
+                            <ChildContent>
+                                @n.Descripcion: @n.Monto @n.Moneda
+                            </ChildContent>
+                        </MudListItem>
                     }
 
-                </MudNavMenu>
+                </MudList>
 
-            </MudPaper>
+
+            </MudNavMenu>
+
         </MudPaper>
     </MudPopover>
 </div>

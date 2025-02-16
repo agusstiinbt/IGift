@@ -57,7 +57,8 @@ namespace IGift.Client.Pages.Inicio
             {
                 _interceptor.RegisterEvent();
                 await InitializeHub();
-                await _authService.Disconnect(DotNetObjectReference.Create(this));
+                //dejar comentado cuando se hagan pruebas de html
+                //await _authService.Disconnect(DotNetObjectReference.Create(this)); 
 
                 var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
 

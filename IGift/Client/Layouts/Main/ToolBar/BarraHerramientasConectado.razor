@@ -1,6 +1,6 @@
 ﻿<MudPaper Elevation="25" Style="background-color:#D4A054; display: flex; justify-content: center; align-items: center;">
 
-    <MudToolBar Style="display: flex; align-items: center; width: 100%; height: auto;">
+    <MudToolBar Style="display: flex; align-items: center; height: auto;">
 
         <!-- Contenedor para los botones centrales -->
         <div style="flex-grow: 1; display: flex; justify-content: center;">
@@ -19,12 +19,15 @@
             }
         </div>
 
-        <!-- Botones finales -->
-        <TogglePerfil userName=@userName />
 
-        <Notificaciones />
+            <!-- Botones finales -->
+            <TogglePerfil userName=@userName />
 
-        <CarritoCompras />
+            <Notificaciones />
+
+            <CarritoCompras />
+
+
 
     </MudToolBar>
 
