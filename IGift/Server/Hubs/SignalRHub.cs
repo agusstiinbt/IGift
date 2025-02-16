@@ -23,9 +23,9 @@ namespace IGift.Server.Hubs
             await Clients.User(receiverUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotification, message, receiverUserId, senderUserId);
         }
 
-        public async Task SendShopCartNotificationAsync(ICollection<PeticionesResponse> lista, string UserId)
+        public async Task SendShopCartNotificationAsync(PeticionesResponse p, string UserId)
         {
-            await Clients.User(UserId).SendAsync(AppConstants.SignalR.ReceiveShopCartNotificationAsync, lista);
+            await Clients.User(UserId).SendAsync(AppConstants.SignalR.ReceiveShopCartNotificationAsync, p);
         }
 
         public async Task RegenerateTokensAsync()

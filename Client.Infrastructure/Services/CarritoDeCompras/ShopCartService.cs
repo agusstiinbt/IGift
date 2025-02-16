@@ -34,12 +34,7 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
             return await Result.FailAsync("Ya se posee esa petición en el carrito de compras");
         }
 
-        public async Task<IResult<List<PeticionesResponse>>> GetShopCartAsync()
-        {
-            var response = await GetPeticiones();
-
-            return await Result<List<PeticionesResponse>>.SuccessAsync(response);
-        }
+        public async Task<List<PeticionesResponse>> GetShopCartAsync() => await GetPeticiones();
 
         /// <summary>
         /// Lee la lista existene de 'carrito' en el local storage. Si hay algo en 'carrito' devuelve una lista deserializada. Si esta vacío, devuelve una lista nueva.

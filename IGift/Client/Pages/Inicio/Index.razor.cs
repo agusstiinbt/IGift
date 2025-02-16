@@ -108,8 +108,10 @@ namespace IGift.Client.Pages.Inicio
 
                 if (response.Succeeded)
                 {
-                    await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, _pagedData, idUser);
-                    await InvokeAsync(StateHasChanged);
+                    await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, p, idUser);
+
+                    // Notificación en el UI thread
+                   await InvokeAsync(() => _snack.Add("Petición agregada al carrito", Severity.Success));
                 }
                 else
                     _snack.Add(response.Messages.FirstOrDefault());

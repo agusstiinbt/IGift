@@ -25,7 +25,7 @@
     {
         //TODO este hubconnection enviara la desconeccion a el chat.razor
         // var userId = await _localStorage.GetItemAsync<string>(AppConstants.Local.IdUser);
-        //await HubConnection.SendAsync(AppConstants.SignalR.OnDisconnect, userId);
+        // await HubConnection.SendAsync(AppConstants.SignalR.OnDisconnect, userId);
         await _shopCartService.ClearCarritoDeCompras();
         await _authService.Logout();
         _interceptor.DisposeEvent();
@@ -35,6 +35,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _snack.Clear();
+        _snack.Dispose();
         await _shopCartService.ClearCarritoDeCompras();
         await _authService.Logout();
         _interceptor.DisposeEvent();

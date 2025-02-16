@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Responses.Peticiones;
+using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -10,53 +11,37 @@ namespace IGift.Client.Layouts.Main.ToolBar
     {
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
-        private List<PeticionesResponse> list { get; set; } = new();
-
+        private List<PeticionesResponse> list { get; set; } = new List<PeticionesResponse>();
         private int _peticiones { get; set; } = 0;
         public bool _open { get; set; }
         private bool _visible { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            var result = await _shopCartService.GetShopCartAsync();
-            if (result.Succeeded)
-            {
-                list = result.Data;
-                _peticiones = list.Count;
-            }
-            _visible = _peticiones == 0 ? false : true;
+            list = await _shopCartService.GetShopCartAsync();
+
+            _peticiones = list.Count;
+
+            _visible = _peticiones > 0;
 
             await InitializeHub();
-
-            _visible = _peticiones == 0 ? false : true;
         }
-
-        private void ToggleOpen()
-        {
-            if (_open)
-                _open = false;
-            else
-                _open = true;
-        }
+        private void ToggleOpen() => _open = !_open;
 
         private async Task InitializeHub()
         {
-            if (_hubConnection != null)
+            if (_hubConnection == null)
             {
-                _hubConnection.On<ICollection<PeticionesResponse>>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, async (lista) =>
+                _hubConnection = await _hubConnection!.TryInitialize(_nav, _authService, _localStorage);
+
+                _hubConnection.On<PeticionesResponse>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, (p) =>
                 {
-
-                    // Ejecutar el cambio de estado en el contexto de la UI
-                    list = lista.ToList();
-                    _peticiones = list.Count;
-                    _snack.Add("Peticion agregada al carrito", Severity.Success);
-
-                    await InvokeAsync(StateHasChanged); // Asegurar que la actualización de UI ocurre en el hilo correcto
+                    list.Add(p);
+                    _peticiones++;
+                    _visible = _peticiones > 0;
+                    InvokeAsync(StateHasChanged);
                 });
             }
-
-            await Task.CompletedTask; // Para evitar advertencias de métodos async sin 'await'
         }
-
     }
 }

@@ -15,7 +15,7 @@ namespace IGift.Client.Infrastructure.Services.CarritoDeCompras
         /// Devuelve la lista de peticiones guardadas en el carrito de compras
         /// </summary>
         /// <returns></returns>
-        Task<IResult<List<PeticionesResponse>>> GetShopCartAsync();
+        Task<List<PeticionesResponse>> GetShopCartAsync();
 
         Task ClearCarritoDeCompras();
     }
