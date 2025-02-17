@@ -1,11 +1,3 @@
-Hasta que podamos comprar las 2 memorias ram de 32 gb cada una debemos ocuparnos del front. Hacer un buen disenio porque nos deben llamar
-entre otras cosas por nuestra capacidad de trabajar con Blazor
-
-Hacer una estructura de microservicios con cada controller distinto e implementar la logica de RabbitMQ. Al instalar el disco nuevo 
-
-Fijarse qué base de datos conviene más segun el tipo de datos que vamos a manejar en cada controller, es decir por ejemplo el tokenController
-debería de guardarse capaz en una base de datos como MySQl
-
 2) La última tarea de las anteriores nos va a dar paso a iniciar la lógica e interfaz del chat;
 	a)Diseñar una interfaz de chat entre distintos usuarios
 	b)Implementar una campanita de notificaciones; esto es signalR y debería de estar en alguna 
