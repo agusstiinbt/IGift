@@ -9,7 +9,7 @@
 	f)Luego de completar el punto e), debemos estudiar la parte de SmartContracts y lograr 
 		generar un smart contract que genere una tarjeta de regalo ficticia.
 
-3) El paso siguiente debería de ser cambiar el servicio de guardado de imágenes en la computadora por un servicio en la Nube como Azure o AWS
+3) El paso siguiente debería de ser cambiar el servicio de guardado de imág enes en la computadora por un servicio en la Nube como Azure o AWS
 
 
 
