@@ -1,6 +1,8 @@
 ﻿@page "/"
 
-<ContenedorLogoPrincipal />
+<div class="d-flex justify-center">
+    <MudImage Src="svg/MainLogo.jpg" ObjectFit="ObjectFit.Fill" ObjectPosition="ObjectPosition.Center" Height="170" Width="830" Elevation="25" Class="rounded-lg" />
+</div>
 
 @*Buscador*@
 <div style="display: grid; place-items: center;">
@@ -18,7 +20,7 @@
 
     <Authorized>
         <CascadingValue Value="EstiloBotones">
-            <BarraHerramientasConectado userName="@NombreUsuario" />
+            <BarraHerramientasConectado />
         </CascadingValue>
     </Authorized>
 
