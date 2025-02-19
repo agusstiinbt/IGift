@@ -30,18 +30,13 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         private async Task InitializeHub()
         {
-            if (_hubConnection == null)
+            await Task.FromResult(_hubConnection!.On<PeticionesResponse>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, (p) =>
             {
-                _hubConnection = await _hubConnection!.TryInitialize(_nav, _authService, _localStorage);
-
-                _hubConnection.On<PeticionesResponse>(AppConstants.SignalR.ReceiveShopCartNotificationAsync, (p) =>
-                {
-                    list.Add(p);
-                    _peticiones++;
-                    _visible = _peticiones > 0;
-                    InvokeAsync(StateHasChanged);
-                });
-            }
+                list.Add(p);
+                _peticiones++;
+                _visible = _peticiones > 0;
+                InvokeAsync(StateHasChanged);
+            }));
         }
     }
 }

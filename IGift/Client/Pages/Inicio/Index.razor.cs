@@ -36,7 +36,7 @@ namespace IGift.Client.Pages.Inicio
         private string CurrentUserId { get; set; } = string.Empty;
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
-        private readonly string EstiloBotones = "color:black";
+        public string EstiloBotones {  get; set; } = string.Empty;
         private string EstiloBotonComprarPeticion { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonCrear { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
@@ -45,6 +45,7 @@ namespace IGift.Client.Pages.Inicio
 
         //Booleanss
         public bool ShowTablePeticiones { get; set; } = false;
+        public bool IsHubConnected { get; set; } = false;
 
         //Ints
         private int _totalItems;
@@ -56,13 +57,37 @@ namespace IGift.Client.Pages.Inicio
             if (authState.User.Identity!.IsAuthenticated)
             {
                 _interceptor.RegisterEvent();
-                await InitializeHub();
-                //dejar comentado cuando se hagan pruebas de html
-                //await _authService.Disconnect(DotNetObjectReference.Create(this)); 
+                await Task.Delay(2000);
+                IsHubConnected = await InitializeHub();
+                await Task.Delay(2000);
 
-                var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+                if (!IsHubConnected)
+                {
+                    try
+                    {
+                        await Task.Delay(2000);
 
-                NombreUsuario = state.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
+                        var tokenRenovado = await _authService.TryForceRefreshToken();
+                        _snack.Add("Token renovado");
+                    }
+                    catch (Exception e)
+                    {
+                        await Logout();
+                    }
+                }
+                else
+                {
+                    //dejar comentado cuando se hagan pruebas de html
+                    //await _authService.Disconnect(DotNetObjectReference.Create(this)); 
+
+                    var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+
+                    NombreUsuario = state.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
+                }
+            }
+            else
+            {
+                _nav.ToAbsoluteUri(AppConstants.Routes.Logout);
             }
         }
 
@@ -112,7 +137,7 @@ namespace IGift.Client.Pages.Inicio
                     await _hubConnection.SendAsync(AppConstants.SignalR.SendShopCartNotificationAsync, p, idUser);
 
                     // Notificación en el UI thread
-                   await InvokeAsync(() => _snack.Add("Petición agregada al carrito", Severity.Success));
+                    await InvokeAsync(() => _snack.Add("Petición agregada al carrito", Severity.Success));
                 }
                 else
                     _snack.Add(response.Messages.FirstOrDefault());
@@ -158,7 +183,7 @@ namespace IGift.Client.Pages.Inicio
         /// Inicializamos todas las conexiones de tipo Hub
         /// </summary>
         /// <returns></returns>
-        private async Task InitializeHub()
+        private async Task<bool> InitializeHub()
         {
             try
             {
@@ -238,10 +263,12 @@ namespace IGift.Client.Pages.Inicio
 
                     await _hubConnection.SendAsync(AppConstants.SignalR.OnConnect, CurrentUserId);
 
+                    IsHubConnected = true;
                 }
             }
             catch (Exception e)
             {
+                IsHubConnected = false;
                 if (e.Message.Contains("401"))
                     _snack.Add("Conexion con SignalR perdida. Proceda con cuidado", Severity.Info, config =>
                     {
@@ -253,6 +280,7 @@ namespace IGift.Client.Pages.Inicio
                 else
                     _snack.Add(e.Message);
             }
+            return IsHubConnected;
         }
 
         /// <summary>
@@ -262,11 +290,9 @@ namespace IGift.Client.Pages.Inicio
         [JSInvokable]
         public async Task Logout()
         {
-            var authState = await AuthenticationState;
-            if (authState.User.Identity!.IsAuthenticated)
-            {
-                _nav.NavigateTo(AppConstants.Routes.Logout);
-            }
+            _snack.Add("Sesion terminada. Vuelva a iniciar sesion por favor");
+            await Task.Delay(3000);
+            _nav.NavigateTo(AppConstants.Routes.Logout);
         }
 
         /// <summary>

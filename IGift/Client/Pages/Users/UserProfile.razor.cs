@@ -64,7 +64,7 @@ namespace IGift.Client.Pages.Users
             if (result.Succeeded)
             {
                 imageBase64 = Convert.ToBase64String(result.Data.Data);
-                background = $"width: 80px; height: 60px; background-image: url('data:image/jpg;base64,{imageBase64}'); background-size: cover;";
+                background = $"width: 100px; height: 80px; background-image: url('data:image/jpg;base64,{imageBase64}'); background-size: cover;";
             }
             else
             {

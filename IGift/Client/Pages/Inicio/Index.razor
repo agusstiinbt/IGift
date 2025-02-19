@@ -19,8 +19,17 @@
 <AuthorizeView>
 
     <Authorized>
-        <CascadingValue Value="EstiloBotones">
-            <BarraHerramientasConectado />
+        <CascadingValue Value="_hubConnection">
+            @if (IsHubConnected)
+            {
+                <BarraHerramientasConectado />
+            }
+            else
+            {
+                <MudSkeleton Style="background-color:#D4A054" Height="80px" />
+                <MudSkeleton Animation="Animation.False" />
+                <MudSkeleton Animation="Animation.Wave" />
+            }
         </CascadingValue>
     </Authorized>
 

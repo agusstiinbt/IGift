@@ -1,5 +1,5 @@
 ﻿@* Cuando se coloca el componente CascadingAuthenticationState en la jerarquía de componentes de Blazor, automáticamente proporciona el estado de autenticación actual a todos los componentes secundarios que lo soliciten mediante inyección de dependencias. *@
-@* <CascadingAuthenticationState>
+<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
 
         <Found Context="routeData">
@@ -31,25 +31,6 @@
         </NotFound>
 
     </Router>
-</CascadingAuthenticationState> *@
+</CascadingAuthenticationState>
 
 
-
-<Error>
-    <Router AppAssembly="@typeof(Program).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    <Login />
-                </NotAuthorized>
-            </AuthorizeRouteView>
-        </Found>
-        <NotFound>
-            <CascadingAuthenticationState>
-                <LayoutView Layout="@typeof(NotFoundLayout)">
-                    <p>Sorry, there's nothing at this address.</p>
-                </LayoutView>
-            </CascadingAuthenticationState>
-        </NotFound>
-    </Router>
-</Error>
