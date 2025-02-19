@@ -66,7 +66,6 @@ namespace IGift.Client.Pages.Inicio
                     try
                     {
                         await Task.Delay(2000);
-
                         var tokenRenovado = await _authService.TryForceRefreshToken();
                         _snack.Add("Token renovado");
                     }
