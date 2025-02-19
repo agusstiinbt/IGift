@@ -28,10 +28,6 @@ namespace Client.Infrastructure.Services.Interceptor
             var absPath = e.Request.RequestUri.AbsolutePath;
             if (!absPath.ToLower().Contains("token") /*&& !absPath.Contains("accounts")*/)
             {
-                if (absPath.ToLower().Trim().Contains("notification"))
-                {
-
-                }
                 try
                 {
                     var token = await _authService.TryRefreshToken();

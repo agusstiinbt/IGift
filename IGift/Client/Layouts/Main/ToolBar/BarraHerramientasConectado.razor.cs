@@ -9,9 +9,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
     public partial class BarraHerramientasConectado
     {
 
-        [CascadingParameter] private string _estiloBotones { get; set; }
-
-
         private List<TitulosConectadoResponse> titulosConectado = new List<TitulosConectadoResponse>();
         private List<CategoriaResponse> listaCategorias = new List<CategoriaResponse>();
 
@@ -25,9 +22,10 @@ namespace IGift.Client.Layouts.Main.ToolBar
             {
                 titulosConectado = response.Data.Titulos.ToList();
                 listaCategorias = response.Data.Categorias.ToList();
+
+                var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+                userName = state.User.GetFirstName();
             }
-            var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-            userName = state.User.GetFirstName();
         }
 
         public bool _open;
