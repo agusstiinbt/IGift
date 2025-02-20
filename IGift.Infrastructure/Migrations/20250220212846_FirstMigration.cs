@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace IGift.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,6 +222,34 @@ namespace IGift.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatHistories",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FromUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ToUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatHistories_Users_FromUserId",
+                        column: x => x.FromUserId,
+                        principalSchema: "Identity",
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ChatHistories_Users_ToUserId",
+                        column: x => x.ToUserId,
+                        principalSchema: "Identity",
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contracts",
                 columns: table => new
                 {
@@ -418,6 +447,16 @@ namespace IGift.Infrastructure.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChatHistories_FromUserId",
+                table: "ChatHistories",
+                column: "FromUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatHistories_ToUserId",
+                table: "ChatHistories",
+                column: "ToUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contracts_IdUser2",
                 table: "Contracts",
                 column: "IdUser2");
@@ -504,6 +543,9 @@ namespace IGift.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categorias");
+
+            migrationBuilder.DropTable(
+                name: "ChatHistories");
 
             migrationBuilder.DropTable(
                 name: "Contracts");

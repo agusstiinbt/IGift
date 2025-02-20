@@ -1,14 +1,13 @@
-﻿using IGift.Application.Interfaces.Communication.Chat;
+﻿using IGift.Application.CQRS.Communication.Chat;
+using IGift.Application.Interfaces.Chat;
+using IGift.Application.Interfaces.Communication.Chat;
+using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Infrastructure.Services.Communication
 {
     public class ChatService : IChatService
     {
-        public async Task<IResult<List<ChatHistory>>> GetChatHistoryByIdAsync(string UserID)
-        {
-            return null;
-        }
 
         //private readonly byte[] _key;
         //private readonly string _path;
@@ -18,26 +17,37 @@ namespace IGift.Infrastructure.Services.Communication
         //    _key = Encoding.UTF8.GetBytes(key);
         //    _path = path;
         //}
-        public async Task<IResult> SaveMessage(ChatHistory chat)
+        //public async Task<IResult> SaveMessage(ChatHistory chat)
+        //{
+
+        //    //var iv = GenerateIV();
+        //    //var encryptedUserId = Encrypt(chat.FromUserId, _key, iv);
+        //    //var filePath = Path.Combine(_path, $"{Convert.ToBase64String(encryptedUserId)}.txt");
+
+        //    //var serializedMessage = JsonConvert.SerializeObject(chat);
+        //    //var encryptedMessage = Encrypt(serializedMessage, _key, iv);
+
+        //    //using (var stream = new FileStream(filePath, FileMode.Append))
+        //    //{
+        //    //    // Write IV to the file
+        //    //    stream.Write(iv, 0, iv.Length);
+
+        //    //    // Write encrypted message to the file
+        //    //    stream.Write(encryptedMessage, 0, encryptedMessage.Length);
+        //    //}
+        //    return await Result.SuccessAsync();
+        //}
+
+        public Task<IResult> SaveMessage(ChatHistory<IChatUser> message)
         {
-
-            //var iv = GenerateIV();
-            //var encryptedUserId = Encrypt(chat.FromUserId, _key, iv);
-            //var filePath = Path.Combine(_path, $"{Convert.ToBase64String(encryptedUserId)}.txt");
-
-            //var serializedMessage = JsonConvert.SerializeObject(chat);
-            //var encryptedMessage = Encrypt(serializedMessage, _key, iv);
-
-            //using (var stream = new FileStream(filePath, FileMode.Append))
-            //{
-            //    // Write IV to the file
-            //    stream.Write(iv, 0, iv.Length);
-
-            //    // Write encrypted message to the file
-            //    stream.Write(encryptedMessage, 0, encryptedMessage.Length);
-            //}
-            return await Result.SuccessAsync();
+            throw new NotImplementedException();
         }
+
+        Task<IResult<IEnumerable<ChatHistoryResponse>>> IChatService.GetChatHistoryByIdAsync(string chatId)
+        {
+            throw new NotImplementedException();
+        }
+
         //private byte[] GenerateIV()
         //{
         //    using (Aes aes = Aes.Create())
@@ -87,9 +97,9 @@ namespace IGift.Infrastructure.Services.Communication
         //    return simpletext;
         //}
 
-        private async Task<IResult> SaveChatToFile(ChatHistory chat)
-        {
-            return null;
-        }
+        //private async Task<IResult> SaveChatToFile(ChatHistory chat)
+        //{
+        //    return null;
+        //}
     }
 }

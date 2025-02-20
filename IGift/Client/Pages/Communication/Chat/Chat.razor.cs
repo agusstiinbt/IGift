@@ -1,4 +1,7 @@
 ﻿using System.Security.Claims;
+using IGift.Application.CQRS.Communication.Chat;
+using IGift.Application.Interfaces.Chat;
+using IGift.Application.Models.Chat;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
@@ -20,10 +23,7 @@ namespace IGift.Client.Pages.Communication.Chat
         [Inject] private IChatManager _chatService { get; set; }
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
-        ///// <summary>
-        ///// Mensajes de un chat
-        ///// </summary>
-        //private List<ChatHistory<IGiftUser>> _messages = new(); Mejorar...
+        private List<ChatHistoryResponse> _messages = new();
 
 
         #region Parámetros del usuario actual
@@ -62,18 +62,18 @@ namespace IGift.Client.Pages.Communication.Chat
             });
 
 
-            _hubConnection.On<ChatHistory, string>(AppConstants.SignalR.ReceiveMessage, async (chatHistory, userName) =>
+            _hubConnection.On<ChatHistory<IChatUser>, string>(AppConstants.SignalR.ReceiveMessage, async (chatHistory, userName) =>
             {
                 if ((ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId) || (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId))
                 {
                     if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
                     {
-                        _messages.Add(new ChatHistory { Message = chatHistory.Message, Date = chatHistory.Date, FromUserImageUrl = CurrentUserImageUrl });
+                        _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = CurrentUserImageUrl });
                         await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
                     }
                     else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
                     {
-                        _messages.Add(new ChatHistory { Message = chatHistory.Message, Date = chatHistory.Date, FromUserImageUrl = ChatImageUrl });
+                        _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = ChatImageUrl });
                     }
                     //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
                     StateHasChanged();
@@ -153,11 +153,11 @@ namespace IGift.Client.Pages.Communication.Chat
             if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ChatId))
             {
                 //Save Message to DB
-                var chatHistory = new ChatHistory
+                var chatHistory = new ChatHistory<IChatUser>
                 {
                     Message = CurrentMessage,
                     ToUserId = ChatId,
-                    Date = DateTime.Now
+                    CreatedDate = DateTime.Now
                 };
 
                 //var response = await _chatService.SaveMessage(chatHistory);

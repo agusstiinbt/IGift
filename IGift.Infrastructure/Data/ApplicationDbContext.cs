@@ -1,11 +1,16 @@
-﻿using IGift.Application.Models;
+﻿using System.Reflection.Emit;
+using IGift.Application.Interfaces.Chat;
+using IGift.Application.Models;
 using IGift.Application.Models.Chat;
 using IGift.Application.Models.Titulos;
+using IGift.Domain.Contracts;
 using IGift.Domain.Entities;
 using IGift.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Pqc.Crypto.Lms;
+
 namespace IGift.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IGiftUser, IGiftRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IGiftRoleClaim, IdentityUserToken<string>>
@@ -104,6 +109,28 @@ namespace IGift.Infrastructure.Data
 
             #region Contracts
 
+            builder.Entity<ChatHistory<IGiftUser>>(entity =>
+            {
+                entity.HasKey(ch => ch.Id);
+
+                entity.HasOne(ch => ch.FromUser)
+                    .WithMany()
+                    .HasForeignKey(ch => ch.FromUserId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(ch => ch.ToUser)
+                    .WithMany()
+                    .HasForeignKey(ch => ch.ToUserId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+            //  Explicación de CHAT History
+            //Se define la clave primaria: entity.HasKey(ch => ch.Id);
+            //            Se configuran las relaciones:
+            //FromUserId apunta a IGiftUser, sin cascada(OnDelete(DeleteBehavior.NoAction)).
+            //ToUserId apunta a IGiftUser, también sin cascada.
+            //Esto previene que la eliminación de un usuario borre los mensajes de chat en cascada, evitando ciclos.
+
+
             builder.Entity<Contract>()
                .HasOne<IGiftUser>()
                .WithMany(x => x.Contratos)
@@ -119,6 +146,7 @@ namespace IGift.Infrastructure.Data
             #endregion
 
             #endregion
+
 
             builder.Entity<Peticiones>(entity =>
             {
