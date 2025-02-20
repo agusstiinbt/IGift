@@ -22,13 +22,11 @@ namespace IGift.Client.Pages.Inicio
         [Parameter] public string? TxtBusqueda { get; set; } = string.Empty;
         [Parameter] public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
 
-
         //Propiedades
         private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
         public ICollection<PeticionesResponse> _pagedData { get; set; }
         private MudTable<PeticionesResponse> _table;
         public HubConnection? _hubConnection { get; set; }
-
 
         //Strings
         public string SearchString { get; set; } = string.Empty;
@@ -36,14 +34,13 @@ namespace IGift.Client.Pages.Inicio
         private string CurrentUserId { get; set; } = string.Empty;
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
-        public string EstiloBotones {  get; set; } = string.Empty;
+        public string EstiloBotones { get; set; } = string.Empty;
         private string EstiloBotonComprarPeticion { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonCrear { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "USDT";
 
-
-        //Booleanss
+        //Booleans
         public bool ShowTablePeticiones { get; set; } = false;
         public bool IsHubConnected { get; set; } = false;
 
@@ -57,17 +54,16 @@ namespace IGift.Client.Pages.Inicio
             if (authState.User.Identity!.IsAuthenticated)
             {
                 _interceptor.RegisterEvent();
-                await Task.Delay(2000);
                 IsHubConnected = await InitializeHub();
-                await Task.Delay(2000);
 
                 if (!IsHubConnected)
                 {
                     try
                     {
-                        await Task.Delay(2000);
                         var tokenRenovado = await _authService.TryForceRefreshToken();
                         _snack.Add("Token renovado");
+                        await Task.Delay(1500);
+                        _nav.NavigateTo(AppConstants.Routes.Home);
                     }
                     catch (Exception e)
                     {
@@ -76,11 +72,8 @@ namespace IGift.Client.Pages.Inicio
                 }
                 else
                 {
-                    //dejar comentado cuando se hagan pruebas de html
-                    //await _authService.Disconnect(DotNetObjectReference.Create(this)); 
-
+                    await _authService.Disconnect(DotNetObjectReference.Create(this));
                     var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-
                     NombreUsuario = state.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
                 }
             }

@@ -21,7 +21,6 @@ namespace IGift.Server.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-
         [BindProperty]
         public InputModel Input { get; set; }
 
