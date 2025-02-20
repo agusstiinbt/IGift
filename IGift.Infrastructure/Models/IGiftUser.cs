@@ -1,11 +1,12 @@
-﻿using IGift.Application.Models;
+﻿using IGift.Application.Interfaces.Chat;
+using IGift.Application.Models;
 using IGift.Domain.Contracts;
 using IGift.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace IGift.Infrastructure.Models
 {
-    public class IGiftUser : IdentityUser<string>, IAuditableEntity<string>
+    public class IGiftUser : IdentityUser<string>, IChatUser, IAuditableEntity<string>
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }

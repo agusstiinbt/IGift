@@ -1,5 +1,4 @@
-﻿using IGift.Application.Models.Chat;
-using IGift.Shared.Wrapper;
+﻿using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Communication.Chat
 {

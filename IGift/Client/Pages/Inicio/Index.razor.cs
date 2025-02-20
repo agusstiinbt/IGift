@@ -72,7 +72,7 @@ namespace IGift.Client.Pages.Inicio
                 }
                 else
                 {
-                    await _authService.Disconnect(DotNetObjectReference.Create(this));
+                    //await _authService.Disconnect(DotNetObjectReference.Create(this));
                     var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
                     NombreUsuario = state.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
                 }

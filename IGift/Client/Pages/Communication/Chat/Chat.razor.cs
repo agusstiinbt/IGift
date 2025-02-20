@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using IGift.Application.Models.Chat;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
@@ -21,10 +20,10 @@ namespace IGift.Client.Pages.Communication.Chat
         [Inject] private IChatManager _chatService { get; set; }
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
-        /// <summary>
-        /// Mensajes de un chat
-        /// </summary>
-        private List<ChatHistory> _messages = new();
+        ///// <summary>
+        ///// Mensajes de un chat
+        ///// </summary>
+        //private List<ChatHistory<IGiftUser>> _messages = new(); Mejorar...
 
 
         #region Parámetros del usuario actual

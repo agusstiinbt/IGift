@@ -1,4 +1,5 @@
 ﻿using IGift.Application.Models;
+using IGift.Application.Models.Chat;
 using IGift.Application.Models.Titulos;
 using IGift.Domain.Entities;
 using IGift.Infrastructure.Models;
@@ -13,16 +14,24 @@ namespace IGift.Infrastructure.Data
 
         #region DBSets
 
-        public DbSet<TitulosDesconectado> TitulosDesconectados { get; set; }
-        public DbSet<TitulosConectado> TitulosConectados { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
-        public DbSet<GiftCard> GiftCards { get; set; }
+        public DbSet<ChatHistory<IGiftUser>> ChatHistories { get; set; }
         public DbSet<Contract> Contracts { get; set; }
+
+        public DbSet<GiftCard> GiftCards { get; set; }
+
         public DbSet<LocalAdherido> LocalesAdheridos { get; set; }
-        public DbSet<Peticiones> Pedidos { get; set; }
+
         public DbSet<Notification> Notification { get; set; }
-        public DbSet<ProfilePicture> ProfilePicture { get; set; }
+
         public DbSet<OperacionesIntercambio> OperacionesIntercambio { get; set; }
+
+        public DbSet<Peticiones> Pedidos { get; set; }
+        public DbSet<ProfilePicture> ProfilePicture { get; set; }
+
+        public DbSet<TitulosConectado> TitulosConectados { get; set; }
+        public DbSet<TitulosDesconectado> TitulosDesconectados { get; set; }
+
 
         #endregion
 

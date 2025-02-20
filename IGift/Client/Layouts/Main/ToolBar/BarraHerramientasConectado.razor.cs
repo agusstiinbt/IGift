@@ -2,7 +2,6 @@
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Client.Extensions;
-using Microsoft.AspNetCore.Components;
 
 namespace IGift.Client.Layouts.Main.ToolBar
 {

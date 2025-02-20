@@ -1,6 +1,6 @@
 ﻿@using FluentValidation
 
-<MudCard>
+@* <MudCard>
     <MudForm Model="@model" @ref="@form" Validation="@(orderValidator.ValidateValue)" ValidationDelay="0">
         <MudCardContent>
             <MudTextField @bind-Value="model.Name"
@@ -197,4 +197,5 @@
             return result.Errors.Select(e => e.ErrorMessage);
         };
     }
-}
+} *@
+
