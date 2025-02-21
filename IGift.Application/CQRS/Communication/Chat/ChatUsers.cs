@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IGift.Application.CQRS.Communication.Chat
+﻿namespace IGift.Application.CQRS.Communication.Chat
 {
     /// <summary>
     /// Esta clase se usa para mostrar en el costado del chat room los chats que tenemos con otros usuarios

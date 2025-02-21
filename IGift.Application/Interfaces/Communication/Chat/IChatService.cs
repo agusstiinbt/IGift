@@ -20,6 +20,6 @@ namespace IGift.Application.Interfaces.Communication.Chat
         /// Este metodo carga los bubbles del costado del chatroom. Solamente trae el ultimo mensaje para ser visto desde fuera.
         /// </summary>
         /// <returns></returns>
-        Task<IResult<IEnumerable<ChatUsers>>> LoadChatUsers();
+        Task<IResult<IEnumerable<ChatUsers>>> LoadChatUsers(string CurrentUserId);
     }
 }

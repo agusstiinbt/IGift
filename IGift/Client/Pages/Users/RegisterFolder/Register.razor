@@ -1,9 +1,66 @@
 ﻿@page "/register"
 @inject NavigationManager NavigationManager
 
+<MudPaper Height="450px" Width="100%" Elevation="0" Style="background-color:#181A20">
 
-<RegistrationLogo>
+    <MudContainer MaxWidth="MaxWidth.Small">
 
-    <RegisterBody />
+        <MudPaper Elevation="0" Height="400px" Width="100%" Square="true" Style="background-color:#C8AE68">
 
-</RegistrationLogo>
+            <MudContainer Class="d-flex justify-center mt-8" Style="margin-bottom:50px;background-color:#C8AE68">
+                <MudImage ObjectFit="ObjectFit.Cover" Height="100" Width="300" Src="svg/MainLogo.svg" Elevation="0" Class="rounded-lg" />
+            </MudContainer>
+
+            <MudCard Style="background-color:transparent">
+
+
+                <MudText Typo="Typo.body1" Style="color: white">
+                    ¿Tienes una cuenta? <MudLink Href="@AppConstants.Routes.Login"><u style="color: #005dff">Ingresa aquí</u></MudLink>
+                </MudText>
+
+                @*// Ivan - Agregar validaciones de campos y mostrar mensajes de error en caso de que no se cumplan las validaciones (ejemplo: email no válido, contraseña no válida, etc).*@
+                <EditForm Model="_user" OnValidSubmit="RegistrarUsuario">
+
+                    <DataAnnotationsValidator />
+
+                    <!--Grid 1-->
+                    <MudGrid>
+                        <!--Columna izquierda 1-->
+
+                        <MudItem xs="6">
+
+                            <MudTextField OnlyValidateIfDirty="true" Label="Email" Class="mb-3" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense" MaxLength="256"
+                                          @bind-Value="_user.Email" For="@(() => _user.Email)" />
+
+                            <MudTextField OnlyValidateIfDirty="true" Label="Contraseña" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="HandleIconPasswordClick" AdornmentAriaLabel="Show Password" T="string" Counter="25" MaxLength="25" Immediate="true" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
+                                          @bind-Value="_user.Password" For="@(() => _user.Password)" />
+
+                            <MudTextField OnlyValidateIfDirty="true" Label="Confirmar Contraseña" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="HandleIconPasswordClick" AdornmentAriaLabel="Show Password" T="string" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
+                                          @bind-Value="_user.ConfirmPassword" For="@(() => _user.ConfirmPassword)" />
+                        </MudItem>
+
+                        <!--Columna derecha 1-->
+                        <MudItem xs="6">
+                            <MudTextField OnlyValidateIfDirty="true" Label="Nombre" Class="mb-3" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense" MaxLength="30"
+                                          @bind-Value="_user.FirstName" For="@(() => _user.FirstName)" />
+
+                            <MudTextField OnlyValidateIfDirty="true" Label="Apellido" Class="mb-3" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense" MaxLength="30"
+                                          @bind-Value="_user.LastName" For="@(() => _user.LastName)" />
+
+                        </MudItem>
+
+                    </MudGrid>
+
+                    <!--Grid 2-->
+
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="background-color:#FCD535" FullWidth><MudText Style="font-weight:bold;color:black;">Registrar</MudText></MudButton>
+
+                </EditForm>
+
+            </MudCard>
+
+        </MudPaper>
+
+    </MudContainer>
+
+</MudPaper>

@@ -1,14 +1,19 @@
-﻿using IGift.Application.CQRS.Communication.Chat;
+﻿using AutoMapper;
+using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
+using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
+using IGift.Infrastructure.Data;
 using IGift.Shared.Wrapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace IGift.Infrastructure.Services.Communication
 {
     public class ChatService : IChatService
     {
 
+        #region Para cuando querramos encriptar el codigo
         //private readonly byte[] _key;
         //private readonly string _path;
 
@@ -37,16 +42,6 @@ namespace IGift.Infrastructure.Services.Communication
         //    //}
         //    return await Result.SuccessAsync();
         //}
-
-        public Task<IResult> SaveMessage(ChatHistory<IChatUser> message)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IResult<IEnumerable<ChatHistoryResponse>>> IChatService.GetChatHistoryByIdAsync(string chatId)
-        {
-            throw new NotImplementedException();
-        }
 
         //private byte[] GenerateIV()
         //{
@@ -101,5 +96,37 @@ namespace IGift.Infrastructure.Services.Communication
         //{
         //    return null;
         //}
+
+        #endregion
+
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
+
+        public ChatService(ApplicationDbContext context, IMapper mapper, IUserService userService)
+        {
+            _context = context;
+            _mapper = mapper;
+            _userService = userService;
+        }
+
+        public Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IResult<IEnumerable<ChatUsers>>> LoadChatUsers(string CurrentUserId)
+        {
+            var response = await _context.ChatHistories.Where(x => x.FromUser.Id == CurrentUserId).ToListAsync();
+
+            var result = response.DistinctBy(x => x.ToUser.Id).ToList();
+
+            return null;
+        }
+
+        public Task<IResult> SaveMessage(ChatHistory<IChatUser> message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

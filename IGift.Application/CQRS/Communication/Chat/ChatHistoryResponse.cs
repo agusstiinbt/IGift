@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IGift.Application.CQRS.Communication.Chat
+﻿namespace IGift.Application.CQRS.Communication.Chat
 {
     /// <summary>
     /// Esta clase va a ser responsable de mostrar los mensajes en el chat

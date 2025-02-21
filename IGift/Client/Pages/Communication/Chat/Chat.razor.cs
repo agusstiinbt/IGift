@@ -1,9 +1,5 @@
-﻿using System.Security.Claims;
-using IGift.Application.CQRS.Communication.Chat;
-using IGift.Application.Interfaces.Chat;
-using IGift.Application.Models.Chat;
+﻿using IGift.Application.CQRS.Communication.Chat;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
-using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -45,7 +41,7 @@ namespace IGift.Client.Pages.Communication.Chat
         protected override async Task OnInitializedAsync()
         {
             //TODO el acceso al chat mediante la interfaz grafica deberia de estar presente en algun .razor que se muestre solamente despues del login. Como titulos o algo asi
-            await InitializeHub();
+            // await InitializeHub();
         }
 
 
@@ -53,46 +49,46 @@ namespace IGift.Client.Pages.Communication.Chat
         /// Inicializamos todas las conexiones de tipo Hub
         /// </summary>
         /// <returns></returns>
-        private async Task InitializeHub()
-        {
-            //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
-            _hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
-            {
-                // var connectedUser= userli
-            });
+        //private async Task InitializeHub()
+        //{
+        //    //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
+        //    _hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
+        //    {
+        //        // var connectedUser= userli
+        //    });
 
 
-            _hubConnection.On<ChatHistory<IChatUser>, string>(AppConstants.SignalR.ReceiveMessage, async (chatHistory, userName) =>
-            {
-                if ((ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId) || (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId))
-                {
-                    if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
-                    {
-                        _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = CurrentUserImageUrl });
-                        await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
-                    }
-                    else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
-                    {
-                        _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = ChatImageUrl });
-                    }
-                    //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
-                    StateHasChanged();
-                };
-            });
-            //await GetUsersAsync(); Esto se usaría para traer todos los chats que tenemos 
+        //    _hubConnection.On<ChatHistory<IChatUser>, string>(AppConstants.SignalR.ReceiveMessage, async (chatHistory, userName) =>
+        //    {
+        //        if ((ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId) || (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId))
+        //        {
+        //            if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
+        //            {
+        //                _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = CurrentUserImageUrl });
+        //                await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
+        //            }
+        //            else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
+        //            {
+        //                _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = ChatImageUrl });
+        //            }
+        //            //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
+        //            StateHasChanged();
+        //        };
+        //    });
+        //    //await GetUsersAsync(); Esto se usaría para traer todos los chats que tenemos 
 
-            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            CurrentUserId = state.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+        //    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        //    CurrentUserId = state.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
-            CurrentUserImageUrl = await _localStorage.GetItemAsync<string>(AppConstants.Local.UserImageURL);
+        //    CurrentUserImageUrl = await _localStorage.GetItemAsync<string>(AppConstants.Local.UserImageURL);
 
-            if (!string.IsNullOrEmpty(ChatId))
-            {
-                await LoadUserChat(ChatId);
-            }
+        //    if (!string.IsNullOrEmpty(ChatId))
+        //    {
+        //        await LoadUserChat(ChatId);
+        //    }
 
-            await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
-        }
+        //    await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
+        //}
 
         /// <summary>
         /// Trae el chat del userID, en el caso de no existir un chat entonces creará uno nuevo.
@@ -144,41 +140,41 @@ namespace IGift.Client.Pages.Communication.Chat
         {
             if (e.Key == "Enter")
             {
-                await SubmitAsync();
+                //await SubmitAsync();
             }
         }
 
-        private async Task SubmitAsync()
-        {
-            if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ChatId))
-            {
-                //Save Message to DB
-                var chatHistory = new ChatHistory<IChatUser>
-                {
-                    Message = CurrentMessage,
-                    ToUserId = ChatId,
-                    CreatedDate = DateTime.Now
-                };
+        //private async Task SubmitAsync()
+        //{
+        //    if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ChatId))
+        //    {
+        //        //Save Message to DB
+        //        var chatHistory = new ChatHistory<IChatUser>
+        //        {
+        //            Message = CurrentMessage,
+        //            ToUserId = ChatId,
+        //            CreatedDate = DateTime.Now
+        //        };
 
-                //var response = await _chatService.SaveMessage(chatHistory);
-                //if (response.Succeeded)
-                //{
-                //    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-                //    var user = state.User;
-                //    //CurrentUserId = user.GetUserId();
-                //    //chatHistory.FromUserId = CurrentUserId;
-                //    //var userName = $"{user.GetFirstName()} {user.GetLastName()}";
-                //    //await HubConnection.SendAsync(ApplicationConstants.SignalR.SendMessage, chatHistory, userName);
-                //    //CurrentMessage = string.Empty;
-                //}
-                //else
-                //{
-                //    foreach (var message in response.Messages)
-                //    {
-                //        // _snackBar.Add(message, Severity.Error);
-                //    }
-                //}
-            }
-        }
+        //        //var response = await _chatService.SaveMessage(chatHistory);
+        //        //if (response.Succeeded)
+        //        //{
+        //        //    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        //        //    var user = state.User;
+        //        //    //CurrentUserId = user.GetUserId();
+        //        //    //chatHistory.FromUserId = CurrentUserId;
+        //        //    //var userName = $"{user.GetFirstName()} {user.GetLastName()}";
+        //        //    //await HubConnection.SendAsync(ApplicationConstants.SignalR.SendMessage, chatHistory, userName);
+        //        //    //CurrentMessage = string.Empty;
+        //        //}
+        //        //else
+        //        //{
+        //        //    foreach (var message in response.Messages)
+        //        //    {
+        //        //        // _snackBar.Add(message, Severity.Error);
+        //        //    }
+        //        //}
+        //    }
+        //}
     }
 }
