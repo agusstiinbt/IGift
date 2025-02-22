@@ -36,10 +36,13 @@
             <MudNavGroup Title="@Chats.Count(x => x.Seen == false).ToString()" Icon="@Icons.Material.Filled.Email" Expanded="false">
                 @foreach (var item in Chats.Where(x => x.Seen == false))
                 {
-                    <MudNavLink Style=@EstiloBotones Href="/users">@item.UserName</MudNavLink>
+                    <MudButton OnClick="()=>GetChatById(item.ToUserId)">
+                        @item.UserName
+                        <br />
+                        @item.LastMessage
+                    </MudButton>
                 }
             </MudNavGroup>
-
 
             <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
 
@@ -55,40 +58,43 @@
 
             <MudPaper Style="background-color:#EFE8E2" Width="100%" Square="true">
 
-                <MudToolBar Style="width:100%;background-color:#AC8768;" Class="align-self-start">
+                @if (CurrentChat != null && CurrentChat.Any())
+                {
+                    <MudToolBar Style="width:100%;background-color:#AC8768;" Class="align-self-start">
 
-                    <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
-                        <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
-                            <MudImage Src="images/jonny.jpg" />
-                        </MudAvatar>
-                    </MudBadge>
-                    @* <MudFab Label="@Iniciales" Style="@background" /> *@
+                        <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
+                            <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
+                                <MudImage Src="images/jonny.jpg" />
+                            </MudAvatar>
+                        </MudBadge>
+                        @* <MudFab Label="@Iniciales" Style="@background" /> *@
 
-                    <MudSpacer />
-                    <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
-                </MudToolBar>
+                        <MudSpacer />
+                        <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
+                    </MudToolBar>
 
-                @* Mensajes *@
-                <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+                    @* Mensajes *@
+                    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
 
-                    @*
+                        @*
                     ATENCIÓN!!!!: revisar el siguiente lnk para determinar cómo poner los mensajes en la izquierda o derecha según sea mensajes de uno o del otro usuario:
                     https://mudblazor.com/utilities/justify-content#start
                     *@
 
-                    <MudText Typo="Typo.body2" Style=" padding: 15px;border-radius: 5px;margin-top:5px">Message</MudText>
+                        <MudText Typo="Typo.body2" Style=" padding: 15px;border-radius: 5px;margin-top:5px">Message</MudText>
 
-                </div>
+                    </div>
 
-                <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:lightgrey">
+                    <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:lightgrey">
 
-                    <MudTextField T="string" Placeholder="Enter your message..." @onkeypress="OnKeyPressInChat" Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
+                        <MudTextField T="string" Placeholder="Enter your message..." @onkeypress="OnKeyPressInChat" Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
-                    <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
-                </MudPaper>
+                        <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+                    </MudPaper>
+
+                }
 
             </MudPaper>
-
 
         </MudContainer>
 

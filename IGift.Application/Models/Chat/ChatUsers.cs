@@ -5,7 +5,15 @@
     /// </summary>
     public class ChatUser
     {
-        public long ChatId { get; set; }
+        /// <summary>
+        /// El Id del chat correspondiente
+        /// </summary>
+        public string ChatId { get; set; }
+
+        /// <summary>
+        /// Este es el Id del usuario con el cual estamos chateando
+        /// </summary>
+        public string ToUserId { get; set; }
         public required string UserName { get; set; }
         public string? UserProfileImageUrl { get; set; }
         public required string LastMessage { get; set; }

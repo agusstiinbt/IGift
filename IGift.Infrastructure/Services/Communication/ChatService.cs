@@ -107,7 +107,7 @@ namespace IGift.Infrastructure.Services.Communication
             _userService = userService;
         }
 
-        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId)
+        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId)
         {
             Expression<Func<ChatHistory<IGiftUser>, ChatHistoryResponse>> expression = e => new ChatHistoryResponse
             {
@@ -119,7 +119,7 @@ namespace IGift.Infrastructure.Services.Communication
             };
 
             var result = await _context.ChatHistories
-                            .Where(x => x.ToUserId == chatId)
+                            .Where(x => x.ToUserId == ToUserId)
                             .Select(expression)
                             .AsNoTracking()
                             .ToListAsync();
@@ -155,6 +155,7 @@ namespace IGift.Infrastructure.Services.Communication
                 var chatUsers = response.Select(e => new ChatUser
                 {
                     ChatId = e.Id,
+                    ToUserId = e.ToUserId,
                     UserName = e.ToUser.UserName,
                     UserProfileImageUrl = e.ToUser.ProfilePictureDataUrl,
                     LastMessage = e.Message,

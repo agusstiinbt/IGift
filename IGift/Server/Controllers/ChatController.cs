@@ -26,7 +26,7 @@ namespace IGift.Server.Controllers
         [HttpPost("GetChatById")]
         public async Task<ActionResult> GetChatById(GetChatById obj)
         {
-            return Ok(await _chatService.GetChatHistoryByIdAsync(obj.UserId));
+            return Ok(await _chatService.GetChatHistoryByIdAsync(obj.ToUserId));
         }
 
         [HttpPost("SaveMessage")]

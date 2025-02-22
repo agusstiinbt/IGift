@@ -11,9 +11,9 @@ namespace IGift.Application.Interfaces.Communication.Chat
         /// <summary>
         /// Este metodo debe ser usado luego de haber traido todos los chats con otros usuarios. Cuando se haga click en un usuario se debe usar este metodo y pasarle el chatId correspondiente para traer la comunicacion entre dos users
         /// </summary>
-        /// <param name="chatId"></param>
+        /// <param name="ToUserId"></param>
         /// <returns></returns>
-        Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId);
+        Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId);
 
         /// <summary>
         /// Este metodo carga los bubbles(chats historicos) del costado del chatroom. Solamente trae el ultimo mensaje para ser visto desde fuera.

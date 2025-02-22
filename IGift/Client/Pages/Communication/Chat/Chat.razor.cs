@@ -1,4 +1,5 @@
-﻿using Client.Infrastructure.Authentication;
+﻿using System.Runtime.InteropServices;
+using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Client.Extensions;
@@ -24,9 +25,10 @@ namespace IGift.Client.Pages.Communication.Chat
         [Inject] private IChatManager _chatService { get; set; }
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
-        private List<ChatHistoryResponse> _messages = new();
-        private List<ChatUser> Chats { get; set; } = new List<ChatUser>();
+        private List<ChatHistoryResponse> CurrentChat = null;
 
+        //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
+        private List<ChatUser> Chats { get; set; } = new List<ChatUser>();
 
         #region Parámetros del usuario actual
         [Parameter] public string CurrentMessage { get; set; }
@@ -58,6 +60,16 @@ namespace IGift.Client.Pages.Communication.Chat
 
         }
 
+
+        private async Task GetChatById(string ToUserId)
+        {
+            var response = await _chatManager.GetChatById(new GetChatById(ToUserId));
+
+            if (response.Succeeded)
+                CurrentChat = response.Data.ToList();
+            else
+                _snack.Add(response.Messages.First());
+        }
 
         /// <summary>
         /// Inicializamos todas las conexiones de tipo Hub
