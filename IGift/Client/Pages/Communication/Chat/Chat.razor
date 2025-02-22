@@ -43,7 +43,7 @@
                 <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
 
                     @*
-                    ATENCIÓN!!!!: revisar el siguiente lnk para determinar cómo poner lños mensajes en la izquierda o derecha según sea mensajes de uno o del otro usuario:
+                    ATENCIÓN!!!!: revisar el siguiente lnk para determinar cómo poner los mensajes en la izquierda o derecha según sea mensajes de uno o del otro usuario:
                     https://mudblazor.com/utilities/justify-content#start
                     *@
 
@@ -55,7 +55,7 @@
 
                     <MudTextField T="string" Placeholder="Enter your message..." @onkeypress="OnKeyPressInChat" Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
-                    @* <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton> *@
+                    <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
                 </MudPaper>
 
             </MudPaper>

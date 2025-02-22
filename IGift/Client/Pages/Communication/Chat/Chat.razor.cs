@@ -1,6 +1,11 @@
-﻿using IGift.Application.CQRS.Communication.Chat;
+﻿using Client.Infrastructure.Authentication;
+using IGift.Application.CQRS.Communication.Chat;
+using IGift.Application.Models.Chat;
+using IGift.Client.Extensions;
 using IGift.Client.Infrastructure.Services.Communication.Chat;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
@@ -20,11 +25,11 @@ namespace IGift.Client.Pages.Communication.Chat
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
         private List<ChatHistoryResponse> _messages = new();
+        private List<ChatUser> Chats { get; set; } = new List<ChatUser>();
 
 
         #region Parámetros del usuario actual
         [Parameter] public string CurrentMessage { get; set; }
-        [Parameter] public string CurrentUserId { get; set; }
         [Parameter] public string CurrentUserImageUrl { get; set; }
         #endregion
 
@@ -36,12 +41,21 @@ namespace IGift.Client.Pages.Communication.Chat
         [Parameter] public string ChatUserName { get; set; }
         [Parameter] public string ChatImageUrl { get; set; }
 
+
+
+        private AuthenticationState? _authenticationState { get; set; } = null;
+        private string CurrentUserId { get; set; } = string.Empty;
+
         #endregion
 
         protected override async Task OnInitializedAsync()
         {
-            //TODO el acceso al chat mediante la interfaz grafica deberia de estar presente en algun .razor que se muestre solamente despues del login. Como titulos o algo asi
-            // await InitializeHub();
+            _authenticationState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
+            CurrentUserId = _authenticationState.User.GetUserId();
+
+            await LoadChatUsers();
+            //await InitializeHub();
+
         }
 
 
@@ -90,51 +104,12 @@ namespace IGift.Client.Pages.Communication.Chat
         //    await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
         //}
 
-        /// <summary>
-        /// Trae el chat del userID, en el caso de no existir un chat entonces creará uno nuevo.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        private async Task LoadUserChat(string userId)
+        private async Task LoadChatUsers()
         {
-            _open = false;
-            var response = await _userManager.GetUserById(userId);
-            if (response.Succeeded)
-            {
-                //var contact = response.Data;
-                //ChatId = contact.Id;
-                //ChatFullName = contact.FirstName + " " + contact.LastName;
-                //ChatUserName = contact.FirstName;
-                //ChatImageUrl = contact.Url;
-                //_nav.NavigateTo(AppConstants.Routes.Chat + "/" + ChatId);
-                //_messages = new();
-                //var historyResponse =// await _chatService.GetChatHistoryByIdAsync(ChatId);
-                //if (historyResponse.Succeeded)
-                //{
-                //    _messages = historyResponse.Data.ToList();
-                //}
-                //else
-                //{
-                //    foreach (var message in historyResponse.Messages)
-                //    {
-                //        _snack.Add(message, Severity.Error);
-                //    }
-                //}
-            }
-            else
-            {
-                foreach (var message in response.Messages)
-                {
-                    _snack.Add(message, Severity.Error);
-                }
-            }
+            var result = await _chatManager.LoadChatUsers(new LoadChatUsers() { IdCurrentUser = CurrentUserId });
+            if (result.Succeeded)
+                Chats = result.Data.ToList();
         }
-
-        /// <summary>
-        /// Este método se encarga de traernos todos los chats que tenemos pendientes y no han sido aún eliminados
-        /// </summary>
-        /// <returns></returns>
-        private async Task GetUsersAsync() { }//TODO terminar de implementar
 
         private async Task OnKeyPressInChat(KeyboardEventArgs e)
         {
@@ -144,37 +119,32 @@ namespace IGift.Client.Pages.Communication.Chat
             }
         }
 
-        //private async Task SubmitAsync()
-        //{
-        //    if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ChatId))
-        //    {
-        //        //Save Message to DB
-        //        var chatHistory = new ChatHistory<IChatUser>
-        //        {
-        //            Message = CurrentMessage,
-        //            ToUserId = ChatId,
-        //            CreatedDate = DateTime.Now
-        //        };
+        private async Task SubmitAsync()
+        {
+            if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ChatId))
+            {
+                //Save Message to DB
+                var chatHistory = new SaveChatMessage
+                {
+                    Message = CurrentMessage,
+                    FromUserId = CurrentUserId,
+                    ToUserId = ChatId
+                };
 
-        //        //var response = await _chatService.SaveMessage(chatHistory);
-        //        //if (response.Succeeded)
-        //        //{
-        //        //    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        //        //    var user = state.User;
-        //        //    //CurrentUserId = user.GetUserId();
-        //        //    //chatHistory.FromUserId = CurrentUserId;
-        //        //    //var userName = $"{user.GetFirstName()} {user.GetLastName()}";
-        //        //    //await HubConnection.SendAsync(ApplicationConstants.SignalR.SendMessage, chatHistory, userName);
-        //        //    //CurrentMessage = string.Empty;
-        //        //}
-        //        //else
-        //        //{
-        //        //    foreach (var message in response.Messages)
-        //        //    {
-        //        //        // _snackBar.Add(message, Severity.Error);
-        //        //    }
-        //        //}
-        //    }
-        //}
+                var response = await _chatService.SaveMessage(chatHistory);
+                if (response.Succeeded)
+                {
+                    var userName = _authenticationState!.User.GetFirstName();
+
+                    await _hubConnection!.SendAsync(AppConstants.SignalR.SendMessage, chatHistory, userName);
+                    CurrentMessage = string.Empty;
+                }
+                else
+                {
+                    for (int i = 0; i < response.Messages.Count; i++)
+                        _snack.Add(response.Messages[i], Severity.Error);
+                }
+            }
+        }
     }
 }

@@ -55,20 +55,21 @@
 @using IGift.Client.Infrastructure.Services.Interceptor;
 @using IGift.Client.Infrastructure.Services.Titulos.Categoria;
 @using IGift.Client.Infrastructure.Services.CarritoDeCompras;
+@using IGift.Client.Infrastructure.Services.Communication.Chat;
 @using IGift.Client.Infrastructure.Services.Identity.Authentication;
 
 @using global::Client.Infrastructure.Services.Identity.Users
 @using global::IGift.Client.Infrastructure.Services.Files
 
-
-@inject IDialogService _dialogService
-@inject IAuthService _authService
+@inject IChatManager _chatManager;
+@inject IDialogService _dialogService;
+@inject IAuthService _authService;
 @inject IHttpInterceptorManager _interceptor;
-@inject HttpClient _httpClient
+@inject HttpClient _httpClient;
 @inject IPeticionesService _peticionesService;
 @inject ITitulosService _titulosService ;
 @inject IShopCart _shopCartService;
 @inject IUserManager _userManager;
 @inject AuthenticationStateProvider _authenticationStateProvider;
-@inject IProfilePicture _profileService
+@inject IProfilePicture _profileService;
 @inject ILocalStorageService _localStorage;

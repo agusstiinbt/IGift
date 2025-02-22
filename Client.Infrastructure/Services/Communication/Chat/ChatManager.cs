@@ -16,7 +16,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
             _httpClient = httpClient;
         }
 
-        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(GetChatById obj)
+        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(GetChatById obj)
         {
             var response = await _httpClient.PostAsJsonAsync(ChatController.GetChatById, obj);
             var result = await response.ToResult<IEnumerable<ChatHistoryResponse>>();
