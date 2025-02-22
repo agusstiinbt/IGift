@@ -1,4 +1,5 @@
-﻿using IGift.Application.Interfaces.Communication.Chat;
+﻿using IGift.Application.CQRS.Communication.Chat;
+using IGift.Application.Interfaces.Communication.Chat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,13 @@ namespace IGift.Server.Controllers
         {
             var idCurrentUser = "97476a3e-c2e0-4e0a-9eff-5b2c69e37483";
             return Ok(await _chatService.GetChatHistoryByIdAsync(idCurrentUser));
+        }
+
+        [HttpPost("SaveMessage")] // Ruta personalizada
+        [AllowAnonymous]
+        public async Task<ActionResult> SaveMessage(SaveChatMessage message)
+        {
+            return Ok(await _chatService.SaveMessage(message));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.CQRS.Communication.Chat
+﻿namespace IGift.Application.Models.Chat
 {
     /// <summary>
     /// Esta clase se usa para mostrar en el costado del chat room los chats que tenemos con otros usuarios

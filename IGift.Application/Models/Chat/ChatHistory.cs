@@ -10,7 +10,7 @@ namespace IGift.Application.Models.Chat
         public required string Message { get; set; }
         public required bool Seen { get; set; }
         public DateTime CreatedDate { get; set; }
-        public virtual required TUser FromUser { get; set; }
-        public virtual required TUser ToUser { get; set; }
+        public TUser FromUser { get; set; }
+        public TUser ToUser { get; set; }
     }
 }

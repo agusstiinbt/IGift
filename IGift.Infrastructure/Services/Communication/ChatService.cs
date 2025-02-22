@@ -1,8 +1,6 @@
 ﻿using System.Linq.Expressions;
-using System.Security.Cryptography;
 using AutoMapper;
 using IGift.Application.CQRS.Communication.Chat;
-using IGift.Application.Interfaces.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
@@ -173,10 +171,20 @@ namespace IGift.Infrastructure.Services.Communication
             return await Result<IEnumerable<ChatUser>>.FailAsync("No hay chats historicos");
         }
 
-
-        public Task<IResult> SaveMessage(ChatHistory<IChatUser> message)
+        public async Task<IResult> SaveMessage(SaveChatMessage saveChatMessage)
         {
-            throw new NotImplementedException();
+            await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
+            {
+                FromUserId = saveChatMessage.FromUserId,
+                ToUserId = saveChatMessage.ToUserId,
+                Message = saveChatMessage.Message,
+                CreatedDate = DateTime.Now,
+                Seen = false
+            });
+
+            await _context.SaveChangesAsync();
+
+            return await Result.SuccessAsync();
         }
     }
 }
