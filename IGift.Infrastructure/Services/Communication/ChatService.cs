@@ -126,12 +126,12 @@ namespace IGift.Infrastructure.Services.Communication
             //    Seen = e.Seen
             //}; La expression no funciona si la consulta liqn tiene un GroupBy
 
-            // Consulta optimizada
             var response = await _context.ChatHistories
                         .Include(m => m.ToUser) // Incluir la información del usuario destinatario
                         .Where(x => x.FromUser.Id == CurrentUserId)
                         .GroupBy(x => x.ToUserId)
                         .Select(g => g.OrderByDescending(m => m.CreatedDate).First())
+                        .AsNoTracking()//aumentamos la velocidad de la consulta
                         .ToListAsync();
 
             if (response != null)
@@ -150,6 +150,7 @@ namespace IGift.Infrastructure.Services.Communication
 
             return await Result<IEnumerable<ChatUser>>.FailAsync("No hay chats historicos");
         }
+
 
         public Task<IResult> SaveMessage(ChatHistory<IChatUser> message)
         {

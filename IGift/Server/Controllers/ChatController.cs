@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
