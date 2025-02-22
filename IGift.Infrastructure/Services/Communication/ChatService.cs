@@ -1,14 +1,10 @@
-﻿using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using AutoMapper;
+﻿using AutoMapper;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
 using IGift.Infrastructure.Data;
-using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
 using Microsoft.EntityFrameworkCore;
 

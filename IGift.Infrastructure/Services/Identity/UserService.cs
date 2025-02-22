@@ -132,7 +132,7 @@ namespace IGift.Infrastructure.Services.Identity
                 Email = model.Email,
                 UserName = model.UserName,
                 EmailConfirmed = false,
-                PhoneNumber = model.PhoneNumber,
+                // PhoneNumber = model.PhoneNumber,
                 PhoneNumberConfirmed = false,
                 CreatedOn = DateTime.Now,
             };
@@ -223,22 +223,22 @@ namespace IGift.Infrastructure.Services.Identity
                 return await Result.FailAsync($"El nombre de usuario{model.UserName} ya esta registrado. Por favor intente con otro");
             }
 
-            if (!string.IsNullOrWhiteSpace(model.PhoneNumber))
-            {
-                try
-                {
-                    var existsPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
-                    if (existsPhoneNumber != null)
-                    {
-                        return await Result.FailAsync($"El número de teléfono ya se encuentra registrado. Por favor intente con otro");
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Error al verificar registro de usuario: " + e.Message);
-                }
+            //if (!string.IsNullOrWhiteSpace(model.PhoneNumber))
+            //{
+            //    try
+            //    {
+            //        var existsPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber);
+            //        if (existsPhoneNumber != null)
+            //        {
+            //            return await Result.FailAsync($"El número de teléfono ya se encuentra registrado. Por favor intente con otro");
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        throw new Exception("Error al verificar registro de usuario: " + e.Message);
+            //    }
 
-            }
+            //}
 
             var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
             if (userWithSameEmail != null)
