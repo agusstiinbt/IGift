@@ -45,7 +45,7 @@ namespace IGift.Client.Pages.Communication.Chat
 
         private AuthenticationState? _authenticationState { get; set; } = null;
         private string CurrentUserId { get; set; } = string.Empty;
-
+        private string EstiloBotones = "color:#848E9C";
         #endregion
 
         protected override async Task OnInitializedAsync()
@@ -108,7 +108,13 @@ namespace IGift.Client.Pages.Communication.Chat
         {
             var result = await _chatManager.LoadChatUsers(new LoadChatUsers() { IdCurrentUser = CurrentUserId });
             if (result.Succeeded)
+            {
                 Chats = result.Data.ToList();
+            }
+            else
+            {
+                _snack.Add(result.Messages.First());
+            }
         }
 
         private async Task OnKeyPressInChat(KeyboardEventArgs e)

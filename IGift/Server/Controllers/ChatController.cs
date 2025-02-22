@@ -17,22 +17,19 @@ namespace IGift.Server.Controllers
             _chatService = chatService;
         }
 
-        [HttpPost("LoadChatUsers")] // Ruta personalizada
-        [AllowAnonymous]
+        [HttpPost("LoadChatUsers")]
         public async Task<ActionResult> LoadChatUsers(LoadChatUsers obj)
         {
             return Ok(await _chatService.LoadChatUsers(obj.IdCurrentUser));
         }
 
-        [HttpPost("GetChatById")] // Ruta personalizada
-        [AllowAnonymous]
+        [HttpPost("GetChatById")]
         public async Task<ActionResult> GetChatById(GetChatById obj)
         {
             return Ok(await _chatService.GetChatHistoryByIdAsync(obj.UserId));
         }
 
-        [HttpPost("SaveMessage")] // Ruta personalizada
-        [AllowAnonymous]
+        [HttpPost("SaveMessage")]
         public async Task<ActionResult> SaveMessage(SaveChatMessage message)
         {
             return Ok(await _chatService.SaveMessage(message));

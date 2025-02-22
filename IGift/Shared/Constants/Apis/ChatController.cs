@@ -2,7 +2,7 @@
 {
     public class ChatController
     {
-        private static string route = "api/Chat";
+        private static string route = "api/Chat/";
 
         public static string LoadChatUsers = route + "LoadChatUsers";
         public static string GetChatById = route + "GetChatById";

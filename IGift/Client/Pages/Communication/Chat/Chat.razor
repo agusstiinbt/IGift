@@ -14,7 +14,36 @@
     @* Barra de herramientas deslizable *@
     <MudDrawer Style="background-color:transparent" @bind-Open="@_open" Elevation="1">
 
-        <ChatDrawer />
+        <MudDrawerHeader>
+            <ChatProfileToggle />
+        </MudDrawerHeader>
+
+        <MudNavMenu>
+
+            <MudDivider Class="my-2" />
+
+            <MudText Style=@EstiloBotones Typo="Typo.h6" Class="px-4">Mensajes</MudText>
+            <MudDivider Class="my-2" />
+
+            @if (Chats.Any())
+            {
+                foreach (var item in Chats.Where(x => x.Seen))
+                {
+                    <MudNavLink Style=@EstiloBotones Href="/billing">@item.UserName</MudNavLink>
+                }
+            }
+
+            <MudNavGroup Title="@Chats.Count(x => x.Seen == false).ToString()" Icon="@Icons.Material.Filled.Email" Expanded="false">
+                @foreach (var item in Chats.Where(x => x.Seen == false))
+                {
+                    <MudNavLink Style=@EstiloBotones Href="/users">@item.UserName</MudNavLink>
+                }
+            </MudNavGroup>
+
+
+            <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
+
+        </MudNavMenu>
 
     </MudDrawer>
 
