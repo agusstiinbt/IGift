@@ -10,12 +10,12 @@ namespace IGift.Application.CQRS.Identity.Users
         public string Password { get; set; } = string.Empty;
         public string ConfirmPassword { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
+       // public string PhoneNumber { get; set; } = string.Empty;
     }
 
-    public class UserCreateRequestFluentVallidaor : AbstractValidator<UserCreateRequest>
+    public class UserCreateValidator : AbstractValidator<UserCreateRequest>
     {
-        public UserCreateRequestFluentVallidaor()
+        public UserCreateValidator()
         {
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("Debe ingresar un nombre")
@@ -36,7 +36,7 @@ namespace IGift.Application.CQRS.Identity.Users
 
             RuleFor(x => x.Password)
            .NotEmpty().WithMessage("La contraseña es obligatoria.")
-           .MinimumLength(10).WithMessage("La contraseña debe tener al menos 10 caracteres.")
+           .MinimumLength(7).WithMessage("La contraseña debe tener al menos 7 caracteres.")
            .Matches("[A-Z]").WithMessage("Debe contener al menos una letra mayúscula.")
            .Matches("[a-z]").WithMessage("Debe contener al menos una letra minúscula.")
            .Matches("[0-9]").WithMessage("Debe contener al menos un número.")

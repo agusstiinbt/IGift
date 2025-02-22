@@ -19,9 +19,9 @@
                 </MudText>
 
                 @*// Ivan - Agregar validaciones de campos y mostrar mensajes de error en caso de que no se cumplan las validaciones (ejemplo: email no válido, contraseña no válida, etc).*@
-                <EditForm Model="_user" OnValidSubmit="RegistrarUsuario">
+                <EditForm Model="@_user" OnValidSubmit="@RegistrarUsuario">
 
-                    <DataAnnotationsValidator />
+                    <FluentValidationValidator />
 
                     <!--Grid 1-->
                     <MudGrid>
@@ -31,12 +31,21 @@
 
                             <MudTextField OnlyValidateIfDirty="true" Label="Email" Class="mb-3" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense" MaxLength="256"
                                           @bind-Value="_user.Email" For="@(() => _user.Email)" />
+                            <ValidationMessage For="@(()=>_user.Email)" />
 
                             <MudTextField OnlyValidateIfDirty="true" Label="Contraseña" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="HandleIconPasswordClick" AdornmentAriaLabel="Show Password" T="string" Counter="25" MaxLength="25" Immediate="true" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
                                           @bind-Value="_user.Password" For="@(() => _user.Password)" />
+                            <ValidationMessage For="@(()=>_user.Password)" />
+
+
+                            <MudTextField OnlyValidateIfDirty="true" Label="UserName" Class="mb-3" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense" MaxLength="256"
+                                          @bind-Value="_user.UserName" For="@(() => _user.UserName)" />
+                            <ValidationMessage For="@(()=>_user.UserName)" />
 
                             <MudTextField OnlyValidateIfDirty="true" Label="Confirmar Contraseña" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="HandleIconPasswordClick" AdornmentAriaLabel="Show Password" T="string" Variant="Variant.Filled" Style="background-color: white;" Margin="Margin.Dense"
                                           @bind-Value="_user.ConfirmPassword" For="@(() => _user.ConfirmPassword)" />
+                            <ValidationMessage For="@(()=>_user.ConfirmPassword)" />
+
                         </MudItem>
 
                         <!--Columna derecha 1-->

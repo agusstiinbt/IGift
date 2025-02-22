@@ -1,10 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
+using AutoMapper;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
 using IGift.Infrastructure.Data;
+using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -115,13 +119,40 @@ namespace IGift.Infrastructure.Services.Communication
             throw new NotImplementedException();
         }
 
-        public async Task<IResult<IEnumerable<ChatUsers>>> LoadChatUsers(string CurrentUserId)
+        public async Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(string CurrentUserId)
         {
-            var response = await _context.ChatHistories.Where(x => x.FromUser.Id == CurrentUserId).ToListAsync();
+            //Expression<Func<ChatHistory<IGiftUser>, ChatUser>> expression = e => new ChatUser
+            //{
+            //    ChatId = e.Id,
+            //    UserName = e.ToUser.UserName,
+            //    UserProfileImageUrl = e.ToUser.ProfilePictureDataUrl,
+            //    LastMessage = e.Message,
+            //    Seen = e.Seen
+            //}; La expression no funciona si la consulta liqn tiene un GroupBy
 
-            var result = response.DistinctBy(x => x.ToUser.Id).ToList();
+            // Consulta optimizada
+            var response = await _context.ChatHistories
+                        .Include(m => m.ToUser) // Incluir la información del usuario destinatario
+                        .Where(x => x.FromUser.Id == CurrentUserId)
+                        .GroupBy(x => x.ToUserId)
+                        .Select(g => g.OrderByDescending(m => m.CreatedDate).First())
+                        .ToListAsync();
 
-            return null;
+            if (response != null)
+            {
+                var chatUsers = response.Select(e => new ChatUser
+                {
+                    ChatId = e.Id,
+                    UserName = e.ToUser.UserName,
+                    UserProfileImageUrl = e.ToUser.ProfilePictureDataUrl,
+                    LastMessage = e.Message,
+                    Seen = e.Seen
+                }).ToList();
+
+                return await Result<IEnumerable<ChatUser>>.SuccessAsync(chatUsers);
+            }
+
+            return await Result<IEnumerable<ChatUser>>.FailAsync("No hay chats historicos");
         }
 
         public Task<IResult> SaveMessage(ChatHistory<IChatUser> message)

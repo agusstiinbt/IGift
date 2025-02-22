@@ -17,9 +17,9 @@ namespace IGift.Application.Interfaces.Communication.Chat
         Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId);
 
         /// <summary>
-        /// Este metodo carga los bubbles del costado del chatroom. Solamente trae el ultimo mensaje para ser visto desde fuera.
+        /// Este metodo carga los bubbles(chats historicos) del costado del chatroom. Solamente trae el ultimo mensaje para ser visto desde fuera.
         /// </summary>
         /// <returns></returns>
-        Task<IResult<IEnumerable<ChatUsers>>> LoadChatUsers(string CurrentUserId);
+        Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(string CurrentUserId);
     }
 }

@@ -2,28 +2,22 @@
 using IGift.Shared.Constants;
 using MudBlazor;
 
-
 namespace IGift.Client.Pages.Users.RegisterFolder
 {
     public partial class Register
     {
-        private UserCreateRequest _user { get; set; } = new UserCreateRequest();
+        private UserCreateRequest _user = new UserCreateRequest();
         private bool passwordIsShow;
         private InputType PasswordInput = InputType.Password;
         private string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-        protected override Task OnInitializedAsync()
-        {
-            _user = new UserCreateRequest();
-            return base.OnInitializedAsync();
-        }
         private async Task RegistrarUsuario()
         {
             var result = await _authService.Register(_user);
 
             if (result.Succeeded)
             {
-                _nav.NavigateTo(AppConstants.Routes.Login + "/true");
+                _nav.NavigateTo(AppConstants.Routes.Login);
             }
             else
             {
@@ -63,6 +57,5 @@ namespace IGift.Client.Pages.Users.RegisterFolder
                 PasswordInput = InputType.Text;
             }
         }
-
     }
 }
