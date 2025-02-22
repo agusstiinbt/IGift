@@ -1,12 +1,15 @@
-﻿namespace IGift.Client.Infrastructure.Services.Communication.Chat
+﻿using IGift.Application.CQRS.Communication.Chat;
+using IGift.Application.Models.Chat;
+using IGift.Shared.Wrapper;
+
+namespace IGift.Client.Infrastructure.Services.Communication.Chat
 {
-    //TODO continuar
     public interface IChatManager
     {
-        //Task<IResult<IEnumerable<ChatUserResponse>>> GetChatUsersAsync();
+        Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId);
 
-        //Task<IResult> SaveMessageAsync(ChatHistory<IChatUser> chatHistory);
+        Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(string CurrentUserId);
 
-        //Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryAsync(string cId);
+        Task<IResult> SaveMessage(SaveChatMessage saveChatMessage);
     }
 }
