@@ -5,7 +5,7 @@ namespace IGift.Application.Interfaces.Files
     /// <summary>
     /// La clase UploadService permite subir archivos y garantiza que no haya conflictos de nombres utilizando métodos para generar el siguiente nombre de archivo disponible.
     /// </summary>
-    public interface IUploadService//TODO implementar
+    public interface IUploadService
     {
         /// <summary>
         /// Guarda un archivo de cualquier tipo en una carpeta del servidor.

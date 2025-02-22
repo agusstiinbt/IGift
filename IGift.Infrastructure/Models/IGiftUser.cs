@@ -31,10 +31,6 @@ namespace IGift.Infrastructure.Models
         public virtual ICollection<Contract> Contratos { get; set; }
         public virtual ICollection<OperacionesIntercambio> OperacionesIntercambios { get; set; }
 
-        //TODO implementar para el chat?
-        public IGiftUser()
-        {
-
-        }
+        //Podemos implementar uan collection virtual de Chats pero no hace falta
     }
 }

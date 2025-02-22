@@ -8,7 +8,6 @@ using MimeKit;
 
 namespace IGift.Infrastructure.Services.Mail
 {
-    //TODO a implementar
     public class MailService : IMailService
     {
         private readonly MailConfiguration _config;

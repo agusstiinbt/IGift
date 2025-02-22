@@ -32,7 +32,6 @@ namespace IGift.Application.CQRS.Notifications.Query
 
         public async Task<IResult<IEnumerable<NotificationResponse>>> Handle(GetAllNotificationQuery request, CancellationToken cancellationToken)
         {
-            //TODO fijarse si este response trae algo porque hicimos un cambio en el paradigma de unit of work para clases que no tiene AuditableEntity ni IAuditableEntity
             var query = await _unitOfWork.Repository<Notification>().GetAllMapAsyncQuery<NotificationResponse>(_mapper);
 
             if (!string.IsNullOrEmpty(request.IdUser))//Traemos solamente aquellas notificaciones que corresponda al IdUser pasado

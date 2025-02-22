@@ -2,7 +2,6 @@
 {
     public static partial class AppConstants
     {
-        //TODO eliminar porque debe ser desde la bbbdd
         public static class Routes
         {
             public static string Home = "/";
