@@ -1,24 +1,40 @@
-﻿using IGift.Application.CQRS.Communication.Chat;
+﻿using System.Net.Http.Json;
+using Client.Infrastructure.Extensions;
+using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
+using IGift.Shared.Constants.Apis;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Client.Infrastructure.Services.Communication.Chat
 {
     public class ChatManager : IChatManager
     {
-        public Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId)
+        private readonly HttpClient _httpClient;
+
+        public ChatManager(HttpClient httpClient)
         {
-            throw new NotImplementedException();
+            _httpClient = httpClient;
         }
 
-        public Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(string CurrentUserId)
+        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(GetChatById obj)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync(ChatController.GetChatById, obj);
+            var result = await response.ToResult<IEnumerable<ChatHistoryResponse>>();
+            return result;
         }
 
-        public Task<IResult> SaveMessage(SaveChatMessage saveChatMessage)
+        public async Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(LoadChatUsers obj)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync(ChatController.LoadChatUsers, obj);
+            var result = await response.ToResult<IEnumerable<ChatUser>>();
+            return result;
+        }
+
+        public async Task<IResult> SaveMessage(SaveChatMessage saveChatMessage)
+        {
+            var response = await _httpClient.PostAsJsonAsync(ChatController.SaveMessage, saveChatMessage);
+            var result = await response.ToResult<SaveChatMessage>();
+            return result;
         }
     }
 }

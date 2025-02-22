@@ -18,7 +18,7 @@ namespace IGift.Client.Infrastructure.Services.Peticiones
 
         public async Task<PaginatedResult<PeticionesResponse>> GetAll(GetAllPeticionesQuery request)
         {
-            var response = await _http.PostAsJsonAsync(ConstPeticionesController.GetAll, request);
+            var response = await _http.PostAsJsonAsync(PeticionesController.GetAll, request);
             var result = await response.ToPaginatedResult<PeticionesResponse>();
             return result;
         }
