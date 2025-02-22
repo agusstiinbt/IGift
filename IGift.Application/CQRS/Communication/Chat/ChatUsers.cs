@@ -3,7 +3,7 @@
     /// <summary>
     /// Esta clase se usa para mostrar en el costado del chat room los chats que tenemos con otros usuarios
     /// </summary>
-    public class ChatUsers
+    public class ChatUser
     {
         public long ChatId { get; set; }
         public required string UserName { get; set; }
