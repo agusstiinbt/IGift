@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Responses\Chat\**" />
+	  <EmbeddedResource Remove="Responses\Chat\**" />
+	  <None Remove="Responses\Chat\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Remove="Interfaces\Repositories\IRepository2.cs" />
 	</ItemGroup>
 
@@ -28,7 +34,6 @@
 	<ItemGroup>
 		<Folder Include="CQRS\Communication\Email\" />
 		<Folder Include="CQRS\Notifications\Command\" />
-		<Folder Include="Responses\Chat\" />
 		<Folder Include="Responses\Identity\Token\" />
 	</ItemGroup>
 

@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using System.Security.Cryptography;
+using AutoMapper;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
 using IGift.Infrastructure.Data;
+using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -110,9 +113,27 @@ namespace IGift.Infrastructure.Services.Communication
             _userService = userService;
         }
 
-        public Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId)
+        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string chatId)
         {
-            throw new NotImplementedException();
+            Expression<Func<ChatHistory<IGiftUser>, ChatHistoryResponse>> expression = e => new ChatHistoryResponse
+            {
+                FromUserId = e.FromUserId,
+                ToUserId = e.ToUserId,
+                Message = e.Message,
+                Seen = e.Seen,
+                DateSend = e.CreatedDate
+            };
+
+            var result = await _context.ChatHistories
+                            .Where(x => x.ToUserId == chatId)
+                            .Select(expression)
+                            .AsNoTracking()
+                            .ToListAsync();
+
+            if (result.Any())
+                return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(result);
+
+            return await Result<IEnumerable<ChatHistoryResponse>>.FailAsync("No existen chats con el usuario");
         }
 
         public async Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(string CurrentUserId)
@@ -133,6 +154,7 @@ namespace IGift.Infrastructure.Services.Communication
                         .Select(g => g.OrderByDescending(m => m.CreatedDate).First())
                         .AsNoTracking()//aumentamos la velocidad de la consulta
                         .ToListAsync();
+            //TODO debemos poner un asnotracking en todo el codigo... donde haga falta revisar todos los services del infraestructure
 
             if (response != null)
             {
