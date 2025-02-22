@@ -8,6 +8,6 @@
         /// <summary>
         /// Id del usuario en la sesion actual
         /// </summary>
-        public  string IdCurrentUser { get; set; }=string.Empty; 
+        public string IdCurrentUser { get; set; } = string.Empty;
     }
 }

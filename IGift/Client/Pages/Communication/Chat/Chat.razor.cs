@@ -1,9 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using Client.Infrastructure.Authentication;
+﻿using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Client.Extensions;
-using IGift.Client.Infrastructure.Services.Communication.Chat;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -15,41 +13,25 @@ namespace IGift.Client.Pages.Communication.Chat
 {
     public partial class Chat
     {
-        private bool _open = false;
-
-        private void ToggleDrawer()
-        {
-            _open = !_open;
-        }
-
-        [Inject] private IChatManager _chatService { get; set; }
+        #region Parametros
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
+
         private List<ChatHistoryResponse> CurrentChat = null;
-
-        //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
         private List<ChatUser> Chats { get; set; } = new List<ChatUser>();
-
-        #region Parámetros del usuario actual
-        [Parameter] public string CurrentMessage { get; set; }
-        [Parameter] public string CurrentUserImageUrl { get; set; }
-        #endregion
-
-        #region Parámetros del usuario a chatear
-
-        //TODO posiblemente no todos estos parametros deberían de tener el [parameter]
-        [Parameter] public string ChatFullName { get; set; }
-        [Parameter] public string ChatId { get; set; }
-        [Parameter] public string ChatUserName { get; set; }
-        [Parameter] public string ChatImageUrl { get; set; }
-
-
+        //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
 
         private AuthenticationState? _authenticationState { get; set; } = null;
+
         private string CurrentUserId { get; set; } = string.Empty;
         private string EstiloBotones = "color:#848E9C";
+
+        private bool _open = false;
+
         #endregion
 
+
+        //Metodos
         protected override async Task OnInitializedAsync()
         {
             _authenticationState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
@@ -59,7 +41,6 @@ namespace IGift.Client.Pages.Communication.Chat
             //await InitializeHub();
 
         }
-
 
         private async Task GetChatById(string ToUserId)
         {
@@ -164,5 +145,7 @@ namespace IGift.Client.Pages.Communication.Chat
                 }
             }
         }
+
+        private void ToggleDrawer() => _open = !_open;
     }
 }
