@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using AutoMapper;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Identity;
@@ -13,7 +12,6 @@ namespace IGift.Infrastructure.Services.Communication
 {
     public class ChatService : IChatService
     {
-
         #region Para cuando querramos encriptar el codigo
         //private readonly byte[] _key;
         //private readonly string _path;
@@ -101,13 +99,11 @@ namespace IGift.Infrastructure.Services.Communication
         #endregion
 
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
-        public ChatService(ApplicationDbContext context, IMapper mapper, IUserService userService)
+        public ChatService(ApplicationDbContext context, IUserService userService)
         {
             _context = context;
-            _mapper = mapper;
             _userService = userService;
         }
 
