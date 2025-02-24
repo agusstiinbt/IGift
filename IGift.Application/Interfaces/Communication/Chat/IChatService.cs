@@ -6,12 +6,17 @@ namespace IGift.Application.Interfaces.Communication.Chat
 {
     public interface IChatService
     {
+        /// <summary>
+        /// Guarda un mensaje a un chat en particular
+        /// </summary>
+        /// <param name="saveChatMessage"></param>
+        /// <returns></returns>
         Task<IResult> SaveMessage(SaveChatMessage saveChatMessage);
 
         /// <summary>
-        /// Este metodo debe ser usado luego de haber traido todos los chats con otros usuarios. Cuando se haga click en un usuario se debe usar este metodo y pasarle el chatId correspondiente para traer la comunicacion entre dos users
+        /// Trae desde la bbdd el chat completo y pone como visto el ultimo mensaje
         /// </summary>
-        /// <param name="ToUserId"></param>
+        /// <param name="ToUserId">Este es el id del usuario con el que estamos chateando. Esto se usara para traer el chat correspondiente con este IdUser</param>
         /// <returns></returns>
         Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId);
 

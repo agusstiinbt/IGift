@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Identity;
@@ -109,25 +110,34 @@ namespace IGift.Infrastructure.Services.Communication
 
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId)
         {
-            Expression<Func<ChatHistory<IGiftUser>, ChatHistoryResponse>> expression = e => new ChatHistoryResponse
+            var chatHistories = await _context.ChatHistories
+                .Where(x => x.ToUserId == ToUserId)
+                .OrderBy(x => x.CreatedDate)
+                .ToListAsync(); // Traemos todos los mensajes en una sola consulta
+
+            if (!chatHistories.Any())
+                return await Result<IEnumerable<ChatHistoryResponse>>.FailAsync("No existen chats con el usuario");
+
+            // Marcar como leído solo el primer mensaje más antiguo
+            var firstMessage = chatHistories.FirstOrDefault();
+            if (firstMessage != null && !firstMessage.Seen)
+            {
+                firstMessage.Seen = true;
+                await _context.SaveChangesAsync();
+            }
+
+            //Usamos un select de esta manera (en ejecucion en memoria) y no una expression (ejecucion en sql) porque en este metodo evitamos el uso de AsNoTracking al tener que modificar el seen del ultimo mensaje.
+            //La proyección (Select) se hace en memoria para evitar problemas de traducción en EF Core
+            var response = chatHistories.Select(e => new ChatHistoryResponse
             {
                 FromUserId = e.FromUserId,
                 ToUserId = e.ToUserId,
                 Message = e.Message,
                 Seen = e.Seen,
                 DateSend = e.CreatedDate
-            };
+            }).ToList();
 
-            var result = await _context.ChatHistories
-                            .Where(x => x.ToUserId == ToUserId)
-                            .Select(expression)
-                            .AsNoTracking()
-                            .ToListAsync();
-
-            if (result.Any())
-                return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(result);
-
-            return await Result<IEnumerable<ChatHistoryResponse>>.FailAsync("No existen chats con el usuario");
+            return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(response);
         }
 
         public async Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(string CurrentUserId)

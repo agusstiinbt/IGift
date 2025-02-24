@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
+using Serilog.Sinks.Http.Private.Durable;
 
 namespace IGift.Client.Pages.Communication.Chat
 {
@@ -16,20 +17,23 @@ namespace IGift.Client.Pages.Communication.Chat
         #region Parametros
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
-
         private List<ChatHistoryResponse> CurrentChat = null;
         private List<ChatUser> Chats { get; set; } = new List<ChatUser>();
         //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
 
         private AuthenticationState? _authenticationState { get; set; } = null;
 
+        /// <summary>
+        /// El Id del usuario al cual vamos a enviar o recibir mensajes
+        /// </summary>
+        public string ToUserId { get; set; }
+        private string? CurrentMessage { get; set; }
         private string CurrentUserId { get; set; } = string.Empty;
         private string EstiloBotones = "color:#848E9C";
 
         private bool _open = false;
 
         #endregion
-
 
         //Metodos
         protected override async Task OnInitializedAsync()
@@ -39,11 +43,16 @@ namespace IGift.Client.Pages.Communication.Chat
 
             await LoadChatUsers();
             //await InitializeHub();
-
         }
 
+        /// <summary>
+        /// Abre el chat seleccionado y pone el ultimo mensaje como visto
+        /// </summary>
+        /// <param name="ToUserId"></param>
+        /// <returns></returns>
         private async Task GetChatById(string ToUserId)
         {
+            this.ToUserId = ToUserId;
             var response = await _chatManager.GetChatById(new GetChatById(ToUserId));
 
             if (response.Succeeded)
@@ -118,31 +127,40 @@ namespace IGift.Client.Pages.Communication.Chat
             }
         }
 
+        /// <summary>
+        /// Envia un mensaje al chat correspondiente al usuario conectado y al usuario destino
+        /// </summary>
+        /// <returns></returns>
         private async Task SubmitAsync()
         {
-            if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ChatId))
+            if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ToUserId))
             {
-                //Save Message to DB
+                //Save Message to DBs
                 var chatHistory = new SaveChatMessage
                 {
                     Message = CurrentMessage,
                     FromUserId = CurrentUserId,
-                    ToUserId = ChatId
+                    ToUserId = ToUserId
                 };
 
-                var response = await _chatService.SaveMessage(chatHistory);
+                var response = await _chatManager.SaveMessage(chatHistory);
                 if (response.Succeeded)
                 {
                     var userName = _authenticationState!.User.GetFirstName();
 
-                    await _hubConnection!.SendAsync(AppConstants.SignalR.SendMessage, chatHistory, userName);
+                    try
+                    {
+                        await _hubConnection!.SendAsync(AppConstants.SignalR.SendMessage, chatHistory, userName);
+                    }
+                    catch (Exception )
+                    {
+                        _snack.Add("Mensaje enviado pero no notificado al usuario. Proceda con cuidado", Severity.Warning);
+                    }
                     CurrentMessage = string.Empty;
                 }
                 else
-                {
                     for (int i = 0; i < response.Messages.Count; i++)
                         _snack.Add(response.Messages[i], Severity.Error);
-                }
             }
         }
 
