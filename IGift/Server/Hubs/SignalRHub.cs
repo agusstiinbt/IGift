@@ -1,4 +1,6 @@
-﻿using IGift.Application.Responses.Peticiones;
+﻿using IGift.Application.CQRS.Communication.Chat;
+using IGift.Application.Responses.Peticiones;
+using IGift.Client.Pages.Communication.Chat;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -10,17 +12,17 @@ namespace IGift.Server.Hubs
     {
         public async Task OnConnectAsync(string userId)
         {
-            await Clients.All.SendAsync(AppConstants.SignalR.ConnectUser, userId);
+            await Clients.All.SendAsync(AppConstants.SignalR.ConnectUserAsync, userId);
         }
 
         public async Task OnDisconnectAsync(string userId)
         {
-            await Clients.All.SendAsync(AppConstants.SignalR.DisconnectUser, userId);
+            await Clients.All.SendAsync(AppConstants.SignalR.DisconnectUserAsync, userId);
         }
 
         public async Task ChatNotificationAsync(string message, string receiverUserId, string senderUserId)
         {
-            await Clients.User(receiverUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotification, message, receiverUserId, senderUserId);
+            await Clients.User(receiverUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotificationAsync, message, receiverUserId, senderUserId);
         }
 
         public async Task SendShopCartNotificationAsync(PeticionesResponse p, string UserId)
@@ -30,14 +32,21 @@ namespace IGift.Server.Hubs
 
         public async Task RegenerateTokensAsync()
         {
-            await Clients.All.SendAsync(AppConstants.SignalR.ReceiveRegenerateTokens);
+            await Clients.All.SendAsync(AppConstants.SignalR.ReceiveRegenerateTokensAsync);
         }
 
-        //public async Task SendMessageAsync(Chat chat, string userName)
-        //{
-        //    //await Clients.All.SendAsync("ReceiveMessage", userName);
-        //    await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveMessage, chat, userName);
-        //    await Clients.User(chat.FromUserId).SendAsync(AppConstants.SignalR.ReceiveMessage, chat, userName);
-        //}
+        public async Task SendMessageAsync(SaveChatMessage chat, string CurrentUserId, string userName)
+        {
+            //await Clients.All.SendAsync("ReceiveMessage", userName);
+
+            await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chat, userName);
+            await Clients.User(chat.FromUserId).SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chat, userName);
+        }
+
+
+        public async Task SendChatNotificationAsync(SaveChatMessage chat, string receiverUserId)
+        {
+            await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotificationAsync, chat, receiverUserId);
+        }
     }
 }

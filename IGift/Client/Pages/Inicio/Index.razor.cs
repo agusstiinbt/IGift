@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
 using Client.Infrastructure.Authentication;
+using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
 using IGift.Client.Extensions;
@@ -182,28 +183,23 @@ namespace IGift.Client.Pages.Inicio
                 _hubConnection = await _hubConnection.TryInitialize(_nav, _authService, _localStorage);
                 if (_hubConnection != null)
                 {
-                    _hubConnection.On<string, string, string>(AppConstants.SignalR.ReceiveChatNotification, (message, receiverUserId, senderUserId) =>
+                    _hubConnection.On<SaveChatMessage, string>(AppConstants.SignalR.ReceiveChatNotificationAsync, (Chat, receiverUserId) =>
                     {
-                        if (CurrentUserId == receiverUserId)
+                        if (CurrentUserId != receiverUserId)
                         {
                             //TODO implementar:..._jsRuntime.InvokeAsync<string>("PlayAudio", "notification");
-                            _snack.Add(message, Severity.Info, config =>
+                            _snack.Add(Chat.Message, Severity.Info, config =>
                             {
                                 config.VisibleStateDuration = 10000;
                                 config.HideTransitionDuration = 500;
                                 config.ShowTransitionDuration = 500;
                                 config.Action = "Chat?";
                                 config.ActionColor = Color.Primary;
-                                config.Onclick = snackbar =>
-                                {
-                                    _nav.NavigateTo($"chat/{senderUserId}");
-                                    return Task.CompletedTask;
-                                };
                             });
                         }
                     });
 
-                    _hubConnection.On(AppConstants.SignalR.ReceiveRegenerateTokens, async () =>
+                    _hubConnection.On(AppConstants.SignalR.ReceiveRegenerateTokensAsync, async () =>
                     {
                         try
                         {
@@ -214,7 +210,7 @@ namespace IGift.Client.Pages.Inicio
                                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             _snack.Add("Sesión finalizada", Severity.Error);
                             await _authService.Logout();

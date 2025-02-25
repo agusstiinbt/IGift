@@ -1,9 +1,11 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
+using IGift.Application.Responses.Identity.Users;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
@@ -108,6 +110,7 @@ namespace IGift.Infrastructure.Services.Communication
             _userService = userService;
         }
 
+
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId)
         {
             var chatHistories = await _context.ChatHistories
@@ -140,58 +143,91 @@ namespace IGift.Infrastructure.Services.Communication
             return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(response);
         }
 
-        public async Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(string CurrentUserId)
+        public async Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(string CurrentUserId)
         {
-            //Expression<Func<ChatHistory<IGiftUser>, ChatUser>> expression = e => new ChatUser
+            //Expression<Func<ChatRoom, ChatUserResponse>> expression = e => new ChatUserResponse
             //{
-            //    ChatId = e.Id,
-            //    UserName = e.ToUser.UserName,
-            //    UserProfileImageUrl = e.ToUser.ProfilePictureDataUrl,
-            //    LastMessage = e.Message,
-            //    Seen = e.Seen
-            //}; La expression no funciona si la consulta liqn tiene un GroupBy
+            //    LastMessage = e.LastMessage,
+            //    Seen = e.Seen,
+            //    LastMessageFrom = e.LastMessageFrom,
+            //};// La expression no funciona si la consulta liqn tiene un GroupBy
 
-            var response = await _context.ChatHistories
-                        .Include(m => m.ToUser) // Incluir la información del usuario destinatario
-                        .Where(x => x.FromUser.Id == CurrentUserId)
-                        .GroupBy(x => x.ToUserId)
-                        .Select(g => g.OrderByDescending(m => m.CreatedDate).First())
-                        .AsNoTracking()//aumentamos la velocidad de la consulta
-                        .ToListAsync();
-            //TODO debemos poner un asnotracking en todo el codigo... donde haga falta revisar todos los services del infraestructure
+            var salas = await _context.ChatRoom
+                          .Where(x => x.IdUser1 == CurrentUserId || x.IdUser2 == CurrentUserId)
+                          //.Select(expression)
+                          .AsNoTracking()
+                          .ToListAsync();
 
-            if (response != null)
+            if (!salas.Any())
+                return await Result<IEnumerable<ChatUserResponse>>.FailAsync("No hay chats historicos");
+
+            var result = new List<ChatUserResponse>();
+
+            for (int i = 0; i < salas.Count; i++)
             {
-                var chatUsers = response.Select(e => new ChatUser
+                var chat = new ChatUserResponse()
                 {
-                    ChatId = e.Id,
-                    ToUserId = e.ToUserId,
-                    UserName = e.ToUser.UserName,
-                    UserProfileImageUrl = e.ToUser.ProfilePictureDataUrl,
-                    LastMessage = e.Message,
-                    Seen = e.Seen
-                }).ToList();
+                    LastMessage = salas[i].LastMessage,
+                    Seen = salas[i].Seen,
+                    LastMessageFrom = salas[i].LastMessageFrom,
+                };
 
-                return await Result<IEnumerable<ChatUser>>.SuccessAsync(chatUsers);
+                if (salas[i].LastMessageFrom != CurrentUserId)
+                {
+                    var user = await _userService.GetByIdAsync(salas[i].LastMessageFrom!);
+                    if (user.Succeeded)
+                        chat.ProfilePictureUrl = user.Data.Url;
+                }
+
+                result.Add(chat);
             }
-
-            return await Result<IEnumerable<ChatUser>>.FailAsync("No hay chats historicos");
+            return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(result);
         }
 
-        public async Task<IResult> SaveMessage(SaveChatMessage saveChatMessage)
+        public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {
-            await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
+            var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
+
+            if (userResponse.Succeeded)
             {
-                FromUserId = saveChatMessage.FromUserId,
-                ToUserId = saveChatMessage.ToUserId,
-                Message = saveChatMessage.Message,
-                CreatedDate = DateTime.Now,
-                Seen = false
-            });
 
-            await _context.SaveChangesAsync();
+                var sala = await _context.ChatRoom.Where(x =>
+                       (x.IdUser1 == chat.FromUserId && x.IdUser2 == chat.ToUserId) ||
+                       (x.IdUser1 == chat.ToUserId && x.IdUser2 == chat.FromUserId)).FirstOrDefaultAsync();
 
-            return await Result.SuccessAsync();
+                if (sala != null)
+                {
+                    sala.LastMessage = chat.Message;
+                    sala.Seen = false;
+                    sala.LastMessageFrom = chat.FromUserId;
+                }
+                else
+                {
+                    await _context.ChatRoom.AddAsync(new ChatRoom
+                    {
+                        IdUser1 = chat.FromUserId,
+                        IdUser2 = chat.ToUserId,
+                        LastMessage = chat.Message,
+                        Seen = false,
+                        LastMessageFrom = chat.FromUserId,
+                    });
+                }
+
+                await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
+                {
+                    FromUserId = chat.FromUserId,
+                    ToUserId = chat.ToUserId,
+                    Message = chat.Message,
+                    CreatedDate = DateTime.Now,
+                    Seen = false
+                });
+
+                await _context.SaveChangesAsync();
+
+                return await Result.SuccessAsync();
+            }
+
+            return await Result.FailAsync("El usuario no existe");
         }
     }
 }

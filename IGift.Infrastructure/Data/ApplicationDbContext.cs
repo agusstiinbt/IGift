@@ -1,4 +1,5 @@
-﻿using IGift.Application.Models;
+﻿using System.Reflection.Emit;
+using IGift.Application.Models;
 using IGift.Application.Models.Chat;
 using IGift.Application.Models.Titulos;
 using IGift.Domain.Entities;
@@ -17,6 +18,7 @@ namespace IGift.Infrastructure.Data
 
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<ChatHistory<IGiftUser>> ChatHistories { get; set; }
+        public DbSet<ChatRoom> ChatRoom { get; set; }
         public DbSet<Contract> Contracts { get; set; }
 
         public DbSet<GiftCard> GiftCards { get; set; }
@@ -61,7 +63,7 @@ namespace IGift.Infrastructure.Data
 
             // Configurar la relación uno a uno entre IGiftUser y ProfilePicture
             builder.Entity<ProfilePicture>()
-                .HasOne<IGiftUser>()
+                .HasOne<IGiftUser>()//TODO deberiamos de implementar un virtual de ProfilePicture en IGiftUser
                 .WithOne()
                 .HasForeignKey<ProfilePicture>(p => p.IdUser)
                 .IsRequired();
@@ -125,7 +127,6 @@ namespace IGift.Infrastructure.Data
             //FromUserId apunta a IGiftUser, sin cascada(OnDelete(DeleteBehavior.NoAction)).
             //ToUserId apunta a IGiftUser, también sin cascada.
             //Esto previene que la eliminación de un usuario borre los mensajes de chat en cascada, evitando ciclos.
-
 
             builder.Entity<Contract>()
                .HasOne<IGiftUser>()

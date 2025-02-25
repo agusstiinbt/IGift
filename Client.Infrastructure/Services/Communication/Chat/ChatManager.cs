@@ -23,10 +23,10 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
             return result;
         }
 
-        public async Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(LoadChatUsers obj)
+        public async Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(LoadChatUsers obj)
         {
             var response = await _httpClient.PostAsJsonAsync(ChatController.LoadChatUsers, obj);
-            var result = await response.ToResult<IEnumerable<ChatUser>>();
+            var result = await response.ToResult<IEnumerable<ChatUserResponse>>();
             return result;
         }
 

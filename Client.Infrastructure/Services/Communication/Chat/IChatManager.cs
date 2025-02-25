@@ -13,7 +13,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         /// <returns></returns>
         Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(GetChatById obj);
 
-        Task<IResult<IEnumerable<ChatUser>>> LoadChatUsers(LoadChatUsers obj);
+        Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(LoadChatUsers obj);
 
         /// <summary>
         /// Guarda un mensaje al chat entre usuarios

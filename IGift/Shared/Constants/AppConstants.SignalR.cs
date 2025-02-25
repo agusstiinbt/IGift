@@ -6,29 +6,31 @@
         {
             public const string HubUrl = "/signalRHub";
 
-            public const string SendUpdateDashboard = "UpdateDashboardAsync";
-            public const string ReceiveUpdateDashboard = "UpdateDashboard";
+            public const string UpdateDashboardAsync = "UpdateDashboardAsync";
+            public const string ReceiveUpdateDashboardAsync = "ReceiveUpdateDashboardAsync";
 
-            public const string SendRegenerateTokens = "RegenerateTokensAsync";
-            public const string ReceiveRegenerateTokens = "RegenerateTokens";
+            public const string RegenerateTokensAsync = "RegenerateTokensAsync";
+            public const string ReceiveRegenerateTokensAsync = "ReceiveRegenerateTokensAsync";
 
-            public const string ReceiveChatNotification = "ReceiveChatNotification";
-            public const string SendChatNotification = "ChatNotificationAsync";
+            public const string ReceiveChatNotificationAsync = "ReceiveChatNotificationAsync";
+            public const string SendChatNotificationAsync = "SendChatNotificationAsync";
 
             public const string ReceiveShopCartNotificationAsync = "ReceiveShopCartNotificationAsync";
             public const string SendShopCartNotificationAsync = "SendShopCartNotificationAsync";
 
-            public const string ReceiveMessage = "ReceiveMessage";
-            public const string SendMessage = "SendMessageAsync";
+            public const string ReceiveMessageAsync = "ReceiveMessageAsync";
+            public const string SendMessageAsync = "SendMessageAsync";
+
+
 
             public const string OnConnect = "OnConnectAsync";
-            public const string ConnectUser = "ConnectUser";
+            public const string ConnectUserAsync = "ConnectUserAsync";
 
-            public const string OnDisconnect = "OnDisconnectAsync";
-            public const string DisconnectUser = "DisconnectUser";
+            public const string OnDisconnectAsync = "OnDisconnectAsync";
+            public const string DisconnectUserAsync = "DisconnectUserAsync";
 
             public const string OnChangeRolePermissions = "OnChangeRolePermissions";
-            public const string LogoutUsersByRole = "LogoutUsersByRole";
+            public const string LogoutUsersByRoleAsync = "LogoutUsersByRoleAsync";
 
             /// <summary>
             /// Envía la petición para dejar a un usuario online/offline

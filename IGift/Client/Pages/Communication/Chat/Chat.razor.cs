@@ -18,7 +18,7 @@ namespace IGift.Client.Pages.Communication.Chat
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
         private List<ChatHistoryResponse> CurrentChat = null;
-        private List<ChatUser> Chats { get; set; } = new List<ChatUser>();
+        private List<ChatUserResponse> Chats { get; set; } = new List<ChatUserResponse>();
         //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
 
         private AuthenticationState? _authenticationState { get; set; } = null;
@@ -136,25 +136,28 @@ namespace IGift.Client.Pages.Communication.Chat
             if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ToUserId))
             {
                 //Save Message to DBs
-                var chatHistory = new SaveChatMessage
+                var chat = new SaveChatMessage
                 {
                     Message = CurrentMessage,
                     FromUserId = CurrentUserId,
                     ToUserId = ToUserId
                 };
 
-                var response = await _chatManager.SaveMessage(chatHistory);
+                var response = await _chatManager.SaveMessage(chat);
+
                 if (response.Succeeded)
                 {
                     var userName = _authenticationState!.User.GetFirstName();
 
                     try
                     {
-                        await _hubConnection!.SendAsync(AppConstants.SignalR.SendMessage, chatHistory, userName);
+                        await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, chat, CurrentUserId);
+
+                        //await _hubConnection!.SendAsync(AppConstants.SignalR.SendMessageAsync, chat, CurrentUserId, userName);
                     }
-                    catch (Exception )
+                    catch (Exception)
                     {
-                        _snack.Add("Mensaje enviado pero no notificado al usuario. Proceda con cuidado", Severity.Warning);
+                        _snack.Add("Ocurrio un problema con SignalR. Proceda con cuidado", Severity.Warning);
                     }
                     CurrentMessage = string.Empty;
                 }
