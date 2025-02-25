@@ -110,7 +110,6 @@ namespace IGift.Infrastructure.Services.Communication
             _userService = userService;
         }
 
-
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId)
         {
             var chatHistories = await _context.ChatHistories
@@ -153,36 +152,55 @@ namespace IGift.Infrastructure.Services.Communication
             //};// La expression no funciona si la consulta liqn tiene un GroupBy
 
             var salas = await _context.ChatRoom
-                          .Where(x => x.IdUser1 == CurrentUserId || x.IdUser2 == CurrentUserId)
-                          //.Select(expression)
-                          .AsNoTracking()
-                          .ToListAsync();
+                .Where(x => x.IdUser1 == CurrentUserId || x.IdUser2 == CurrentUserId)
+                .AsNoTracking()
+                .ToListAsync();
 
             if (!salas.Any())
-                return await Result<IEnumerable<ChatUserResponse>>.FailAsync("No hay chats historicos");
-
-            var result = new List<ChatUserResponse>();
-
-            for (int i = 0; i < salas.Count; i++)
             {
-                var chat = new ChatUserResponse()
-                {
-                    LastMessage = salas[i].LastMessage,
-                    Seen = salas[i].Seen,
-                    LastMessageFrom = salas[i].LastMessageFrom,
-                };
-
-                if (salas[i].LastMessageFrom != CurrentUserId)
-                {
-                    var user = await _userService.GetByIdAsync(salas[i].LastMessageFrom!);
-                    if (user.Succeeded)
-                        chat.ProfilePictureUrl = user.Data.Url;
-                }
-
-                result.Add(chat);
+                return await Result<IEnumerable<ChatUserResponse>>.FailAsync("No hay chats históricos");
             }
-            return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(result);
+
+            var chatResponses = salas.Select(chat => new ChatUserResponse
+            {
+                LastMessage = chat.LastMessage,
+                Seen = chat.Seen,
+                LastMessageFrom = chat.LastMessageFrom,
+                ProfilePictureUrl = string.Empty
+            }).ToList();
+
+            // Obtener los IDs de los otros usuarios en cada chat (el que NO es el usuario actual)
+            var userIdsToFetch = salas
+                .Select(chat => chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2)
+                .Distinct()
+                .ToList();
+
+            // Hacer todas las llamadas a _userService en paralelo
+            var userTasks = userIdsToFetch
+                .Select(async userId =>
+                {
+                    var userResponse = await _userService.GetByIdAsync(userId);
+                    return userResponse.Succeeded ? new { userId, userResponse.Data.ProfilePictureDataUrl } : null;
+                });
+
+            // Ejecutar todas las tareas simultáneamente
+            var users = (await Task.WhenAll(userTasks))
+                .Where(u => u != null)
+                .ToDictionary(u => u!.userId, u => u.ProfilePictureDataUrl);
+
+            // Asignar la foto de perfil correcta a cada chat
+            for (int i = 0; i < chatResponses.Count; i++)
+            {
+                string otherUserId = salas[i].IdUser1 != CurrentUserId ? salas[i].IdUser1 : salas[i].IdUser2;
+                if (users.TryGetValue(otherUserId, out var profileUrl))
+                {
+                    chatResponses[i].ProfilePictureUrl = profileUrl;
+                }
+            }
+
+            return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(chatResponses);
         }
+
 
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {
