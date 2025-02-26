@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace IGift.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class _1eraMigration : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,6 +29,22 @@ namespace IGift.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categorias", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatRoom",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LastMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Seen = table.Column<bool>(type: "bit", nullable: false),
+                    IdUser1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdUser2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastMessageFrom = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatRoom", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,7 +241,7 @@ namespace IGift.Infrastructure.Migrations
                 name: "ChatHistories",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FromUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ToUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -545,6 +562,9 @@ namespace IGift.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ChatHistories");
+
+            migrationBuilder.DropTable(
+                name: "ChatRoom");
 
             migrationBuilder.DropTable(
                 name: "Contracts");

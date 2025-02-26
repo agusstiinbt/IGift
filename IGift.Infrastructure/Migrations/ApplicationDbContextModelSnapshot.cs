@@ -24,8 +24,9 @@ namespace IGift.Infrastructure.Migrations
 
             modelBuilder.Entity("IGift.Application.Models.Chat.ChatHistory<IGift.Infrastructure.Models.IGiftUser>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -60,10 +61,6 @@ namespace IGift.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FromWhoIsLastMessage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IdUser1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -73,7 +70,9 @@ namespace IGift.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastMessage")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastMessageFrom")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Seen")
