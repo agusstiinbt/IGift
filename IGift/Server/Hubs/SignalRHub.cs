@@ -1,6 +1,5 @@
 ﻿using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Responses.Peticiones;
-using IGift.Client.Pages.Communication.Chat;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;

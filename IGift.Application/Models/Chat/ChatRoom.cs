@@ -1,6 +1,4 @@
-﻿using IGift.Application.Interfaces.Chat;
-
-namespace IGift.Application.Models.Chat
+﻿namespace IGift.Application.Models.Chat
 {
     public class ChatRoom
     {

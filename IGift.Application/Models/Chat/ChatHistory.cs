@@ -4,7 +4,7 @@ namespace IGift.Application.Models.Chat
 {
     public class ChatHistory<TUser> : IChatHistory<TUser> where TUser : IChatUser
     {
-        public Guid Id { get; set; }= Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
         public required string FromUserId { get; set; }
         public required string ToUserId { get; set; }
         public required string Message { get; set; }

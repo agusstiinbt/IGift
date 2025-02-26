@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
-using Serilog.Sinks.Http.Private.Durable;
 
 namespace IGift.Client.Pages.Communication.Chat
 {

@@ -159,7 +159,7 @@ namespace IGift.Infrastructure.Services.Communication
                     Seen = chat.Seen,
                     IsLastMessageFromMe = chat.LastMessageFrom == CurrentUserId,
                     ProfilePictureUrl = string.Empty, // Se actualizará después
-                    ToUserId= chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2,
+                    ToUserId = chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2,
                     UserName = string.Empty // Se actualizará después
                 },
                 OtherUserId = chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2
