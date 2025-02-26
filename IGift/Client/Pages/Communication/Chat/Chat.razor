@@ -35,7 +35,7 @@
             <MudNavGroup Title="@Chats.Count(x => x.Seen == false).ToString()" Icon="@Icons.Material.Filled.Email" Expanded="false">
                 @foreach (var item in Chats.Where(x => x.Seen == false))
                 {
-                    <MudButton OnClick="()=>GetChatById(item.ToUserId)">
+                    <MudButton OnClick="()=>GetChatById(item.ToUserId!)">
                         @item.UserName
                         <br />
                         @item.LastMessage

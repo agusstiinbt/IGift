@@ -46,7 +46,7 @@ namespace IGift.Client.Pages.Communication.Chat
         }
 
         /// <summary>
-        /// Abre el chat seleccionado y pone el ultimo mensaje como visto
+        /// Abre el chat seleccionado y pone el ultimo mensaje como visto. NEcesitamos pasarle el Id del usuario con el que queremos chatear
         /// </summary>
         /// <param name="ToUserId"></param>
         /// <returns></returns>

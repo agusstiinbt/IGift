@@ -7,7 +7,9 @@
     {
         public string? LastMessage { get; set; }
         public bool Seen { get; set; }
-        public string? LastMessageFrom { get; set; }
+        public bool IsLastMessageFromMe { get; set; }
         public string? ProfilePictureUrl { get; set; }
+        public string? UserName { get; set; }
+        public string? ToUserId { get; set; }
     }
 }
