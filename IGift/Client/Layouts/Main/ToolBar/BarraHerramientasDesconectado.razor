@@ -13,7 +13,7 @@
                 else
                 {
                     href = "/" + item.Descripcion;
-                    <MudButton Href="@href" Style="@_estiloBotones">@item.Descripcion</MudButton>
+                    <MudButton Href="@href">@item.Descripcion</MudButton>
                 }
             }
 
@@ -28,7 +28,6 @@
 
 
 @code {
-    [CascadingParameter] private string _estiloBotones { get; set; }
 
     private List<TitulosDesconectadoResponse> listaDesconectado = new List<TitulosDesconectadoResponse>();
     private List<CategoriaResponse> listaCategorias = new List<CategoriaResponse>();

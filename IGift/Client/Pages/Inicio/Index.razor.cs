@@ -4,6 +4,8 @@ using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
+using IGift.Application.Responses.Titulos.Categoria;
+using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
@@ -24,22 +26,27 @@ namespace IGift.Client.Pages.Inicio
         [Parameter] public PaginatedResult<PeticionesResponse>? _datosDeBusqueda { get; set; } = null;
 
         //Propiedades
-        private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
-        public ICollection<PeticionesResponse> _pagedData { get; set; }
-        private MudTable<PeticionesResponse> _table;
+
         public HubConnection? _hubConnection { get; set; }
+
+        private MudTable<PeticionesResponse> _table;
+        private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
+
+        private ICollection<PeticionesResponse> _pagedData { get; set; }
+        private List<CategoriaResponse> listaCategorias = new List<CategoriaResponse>();
+        private List<TitulosConectadoResponse> titulosConectado = new List<TitulosConectadoResponse>();
 
         //Strings
         public string SearchString { get; set; } = string.Empty;
-        private string NombreUsuario { get; set; } = string.Empty;
         private string CurrentUserId { get; set; } = string.Empty;
         private string Compra { get; set; } = "Compra";
         private string Venta { get; set; } = "Venta";
-        public string EstiloBotones { get; set; } = string.Empty;
         private string EstiloBotonComprarPeticion { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonCrear { get; set; } = "color:white;";
         private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "USDT";
+        public string UserName { get; set; }
+        private string href { get; set; }
 
         //Booleans
         public bool ShowTablePeticiones { get; set; } = false;
@@ -75,7 +82,15 @@ namespace IGift.Client.Pages.Inicio
                 {
                     //await _authService.Disconnect(DotNetObjectReference.Create(this));
                     var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-                    NombreUsuario = state.User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
+
+                    var response = await _titulosService.LoadConectado();
+                    if (response.Succeeded)
+                    {
+                        titulosConectado = response.Data.Titulos.ToList();
+                        listaCategorias = response.Data.Categorias.ToList();
+
+                        UserName = state.User.GetFirstName();
+                    }
                 }
             }
             else

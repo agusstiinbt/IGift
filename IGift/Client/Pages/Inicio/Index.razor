@@ -22,7 +22,34 @@
         <CascadingValue Value="_hubConnection">
             @if (IsHubConnected)
             {
-                <BarraHerramientasConectado />
+                <MudPaper Elevation="25" Style="background-color:#D4A054; display: flex; justify-content: space-between; align-items: center; ">
+
+                    <!-- Contenedor de los botones centrales -->
+                    <MudToolBar Style=" display: flex; align-items: center; height: auto; margin-left:30%; width:fit-content; justify-content: center;">
+                        <div style="display: flex; justify-content: center;">
+                            @foreach (var item in titulosConectado)
+                            {
+                                if (item.Descripcion == "Categorias")
+                                {
+                                    <PopOverCategorias categoriaList="@listaCategorias" />
+                                }
+                                else
+                                {
+                                    href = "/" + item.Descripcion;
+                                    <MudButton Href="@href" Style="color:black">@item.Descripcion</MudButton>
+                                }
+                            }
+                        </div>
+                    </MudToolBar>
+
+                    <!-- (contenedor de botones finales) -->
+                    <div style=" display: flex; align-items: center; height: auto; margin-right: 15%;">
+                        <TogglePerfil userName="@UserName" />
+                        <Notificaciones />
+                        <CarritoCompras />
+                    </div>
+
+                </MudPaper>
             }
             else
             {
@@ -32,10 +59,8 @@
     </Authorized>
 
     <NotAuthorized>
-        <CascadingValue Value="EstiloBotones">
-            <BarraHerramientasDesconectado />
-            <TituloDeslogueado />
-        </CascadingValue>
+        <BarraHerramientasDesconectado />
+        <TituloDeslogueado />
     </NotAuthorized>
 
 </AuthorizeView>

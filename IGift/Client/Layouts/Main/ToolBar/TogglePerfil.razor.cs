@@ -7,12 +7,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class TogglePerfil
     {
-        [CascadingParameter] private HubConnection? hubConnection { get; set; }
-
         [Parameter] public string userName { get; set; }
-
-        private string MenuStyle = "visibility:collapse";
-        private string _buttonText = "Reply";
 
         private string IdUser { get; set; } = string.Empty;
         private string Nombre { get; set; }
@@ -23,31 +18,9 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         private string background = string.Empty;
         private string Correo { get; set; }
-
-
+        
         public bool _open;
         public bool _expanded;
-
-
-
-        private void SetButtonText(int id)
-        {
-            switch (id)
-            {
-                case 0:
-                    _buttonText = "Reply";
-                    break;
-                case 1:
-                    _buttonText = "Reply All";
-                    break;
-                case 2:
-                    _buttonText = "Forward";
-                    break;
-                case 3:
-                    _buttonText = "Reply & Delete";
-                    break;
-            }
-        }
 
         private void Logout()
         {
@@ -63,13 +36,6 @@ namespace IGift.Client.Layouts.Main.ToolBar
                 _open = true;
         }
 
-        private void ShowMenu()
-        {
-            if (!string.IsNullOrEmpty(MenuStyle))
-                MenuStyle = string.Empty;
-            else
-                MenuStyle = "visibility:collapse";
-        }
 
         protected override async Task OnInitializedAsync()
         {
