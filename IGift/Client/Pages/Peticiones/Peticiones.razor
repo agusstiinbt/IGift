@@ -1,5 +1,51 @@
-﻿<h3>Peticiones.razor</h3>
+﻿@page "/Peticiones"
+ @layout PublicacionesLayout
+@attribute [Authorize]
+@using MudBlazor;
 
-@code {
 
-}
+<MudContainer Style="background-color:none; width:100%; height:100vh; position:relative;">
+
+    <!-- Bloque superior -->
+    <MudPaper Height="50%" Width="100%" Style="background-color:#FFEA78">
+    </MudPaper>
+
+    <!-- Bloque central (el azul) -->
+    <MudPaper Height="400px" Width="800px" Square="true" Class="mud-theme-primary"
+              Style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); display:flex; align-items:center; justify-content:center;">
+
+        <!-- Contenedor del Grid con altura del 100% -->
+        <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="height:100%; width:100%; display:flex; flex-wrap:wrap; align-content:center;">
+
+            <MudItem xs="3" Style="display:flex; justify-content:center;">
+                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
+                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="3" Style="display:flex; justify-content:center;">
+                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
+                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="3" Style="display:flex; justify-content:center;">
+                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
+                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="3" Style="display:flex; justify-content:center;">
+                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
+                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                </MudPaper>
+            </MudItem>
+
+        </MudGrid>
+
+    </MudPaper>
+
+    <!-- Bloque inferior -->
+    <MudPaper Height="50%" Width="100%" Style="background-color:#EDEDED"></MudPaper>
+
+</MudContainer>

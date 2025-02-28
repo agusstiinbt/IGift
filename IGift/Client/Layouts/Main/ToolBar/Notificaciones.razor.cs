@@ -37,13 +37,8 @@ namespace IGift.Client.Layouts.Main.ToolBar
             //TODO implementar una funcionalidad de signalR para recibir notificaciones de todo tipo, correo electronico o chat tambien. En el archivo index.razor.cs tenemos el codigo que levanta un snackbar cuando se recibe una notificacion de tipo chat y ese snackbar tiene una funcionalidad de tipo click que nos re dirigiria a el chat en cuestion. Pero ese snackbar se desaparece en 5 segundos entonces hay que hacer una notificacion en la campanita que haga lo mismo con la funcionalidad de click pero que en este caso no desapareceria
         }
 
-        private void ToggleOpen()
-        {
-            if (_open)
-                _open = false;
-            else
-                _open = true;
-        }
+        private void ToggleOpen() => _open = !_open;
+
     }
 
 }

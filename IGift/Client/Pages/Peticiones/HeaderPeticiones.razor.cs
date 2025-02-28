@@ -1,12 +1,10 @@
-﻿using System.Security.Claims;
-using Client.Infrastructure.Authentication;
+﻿using Client.Infrastructure.Authentication;
+using System.Security.Claims;
 using IGift.Client.Extensions;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 
-namespace IGift.Client.Layouts.Main.ToolBar
+namespace IGift.Client.Pages.Peticiones
 {
-    public partial class TogglePerfil
+    public partial class HeaderPeticiones
     {
         public string userName { get; set; }
 
@@ -29,13 +27,8 @@ namespace IGift.Client.Layouts.Main.ToolBar
 
         }
 
-        public void ToggleOpen()
-        {
-            if (_open)
-                _open = false;
-            else
-                _open = true;
-        }
+        private void ToggleOpen() => _open = !_open;
+
 
 
         protected override async Task OnInitializedAsync()
@@ -69,3 +62,4 @@ namespace IGift.Client.Layouts.Main.ToolBar
         }
     }
 }
+

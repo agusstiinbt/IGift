@@ -1,0 +1,45 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+
+    <MudAppBar Elevation="1" Dense="@_dense" style="background-color:#D4A054; height: 60px;">
+        <MudSpacer />
+
+        <MudPaper Elevation="0" Class="d-flex align-center justify-center cursor-pointer"
+                  Style="background-color:inherit; height: 100%; max-height: 100%;">
+            <MudImage Src="svg/MainLogo.jpg" Elevation="25" ObjectFit="ObjectFit.Cover"
+                      Class="rounded-lg" Style="max-height: 80%; max-width: auto;width:100px;"
+                      @onclick="NavegarInicio" />
+        </MudPaper>
+        <MudSpacer />
+
+        <div style="display: flex; align-items: center; height: auto; margin-right: 15%;">
+            <HeaderPeticiones />
+        </div>
+
+    </MudAppBar>
+
+    <MudMainContent Class="pt-16 px-16">
+        <MudContainer Class="mt-6">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+
+</MudLayout>
+
+@code {
+    private bool _dense = false;
+    private DrawerClipMode _clipMode = DrawerClipMode.Always;
+    public string Style = "height:100vh;overflow:auto;background-color:#181A20";
+    private string UserName = "Agustin";
+
+    private void NavegarInicio()
+    {
+        _nav.NavigateTo(AppConstants.Routes.Home);
+    }
+}

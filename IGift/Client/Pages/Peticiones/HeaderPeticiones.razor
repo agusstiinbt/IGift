@@ -1,7 +1,8 @@
-﻿<MudPaper Class="width:100px;height:35px;" Style="background-color:transparent;" Elevation="0">
+﻿
+<MudPaper Class="width:100px;height:35px;" Style="background-color:transparent;" Elevation="0">
     <div>
         <MudFab title="Perfil" @onclick="@ToggleOpen" Style="@background" />
-       
+        <MudButton @onclick="@ToggleOpen" Size="Size.Large" Style="border:none" EndIcon="@Icons.Material.Filled.ArrowDropDown"><MudText Typo="Typo.subtitle1"> AGUSTIN</MudText></MudButton>
     </div>
 
     <MudPopover Open="_open" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Paper="false">
@@ -35,3 +36,4 @@
         </MudPaper>
     </MudPopover>
 </MudPaper>
+
