@@ -3,41 +3,44 @@
 @attribute [Authorize]
 @using MudBlazor;
 
-
-<MudContainer Style="background-color:none; width:100%; height:100vh; position:relative;">
+<MudContainer Style="background-color:red; width:100%; height:100vh; position:relative;">
 
     <!-- Bloque superior -->
-    <MudPaper Height="50%" Width="100%" Style="background-color:#FFEA78">
-    </MudPaper>
+    <MudPaper Height="50%" Width="100%" Style="background-color:#FFEA78"></MudPaper>
 
+    <!-- Texto centrado arriba del cuadro azul -->
+    <MudText Typo="Typo.h4" Style="position:absolute; top:calc(30% - 80px); left:50%; transform:translate(-50%, -50%); text-align:center;">
+        ¡Hola! Antes que nada contanos,
+        ¿qué vas a publicar?
+    </MudText>
     <!-- Bloque central (el azul) -->
-    <MudPaper Height="400px" Width="800px" Square="true" Class="mud-theme-primary"
-              Style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); display:flex; align-items:center; justify-content:center;">
+    <MudPaper Height="400px" Width="800px" Square="true" Class="" Elevation="0" Style="border:none;position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); display:flex; align-items:center; justify-content:center; flex-direction:column;background-color:transparent">
 
         <!-- Contenedor del Grid con altura del 100% -->
-        <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="height:100%; width:100%; display:flex; flex-wrap:wrap; align-content:center;">
+        <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="border:none;height:100%; width:100%; display:flex; flex-wrap:wrap; align-content:center;">
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
-                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                    <MudImage Src="Peticiones/Calzado.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
-                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                    <MudImage Src="Peticiones/Vehiculos.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
-                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                    <MudImage Src="Peticiones/Inmuebles.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper Width="200px" Height="150px" Elevation="0" Class="d-flex align-center justify-center" Style="background-color:inherit">
-                    <MudImage Src="svg/MainLogo.jpg" Width="150" Height="150" Elevation="25" ObjectFit="ObjectFit.Cover" Class="rounded-lg" />
+                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                    <MudImage Src="Peticiones/Servicios.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg">
+                    </MudImage>
                 </MudPaper>
             </MudItem>
 
@@ -49,3 +52,11 @@
     <MudPaper Height="50%" Width="100%" Style="background-color:#EDEDED"></MudPaper>
 
 </MudContainer>
+
+@code {
+
+    private void Dirigir()
+    {
+        _snack.Add("Hola mundo");
+    }
+}
