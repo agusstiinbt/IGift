@@ -5,7 +5,8 @@ namespace IGift.Application.Enums
     public enum EnumCategoria
     {
         Vehiculos,
-        Imuebles,
+        Inmuebles,
+        Calzado,
         Supermercado,
         Tecnologia,
         [Description("Compra Internacional")]

@@ -1,7 +1,7 @@
 ﻿@page "/Peticiones"
  @layout PublicacionesLayout
 @attribute [Authorize]
-@using MudBlazor;
+
 
 <div style="width:100%; height:100%;display:flex;flex-direction:column;min-width:760px;border-collapse:collapse;">
 
@@ -14,40 +14,68 @@
         ¿qué vas a publicar?
     </MudText>
 
-    <!-- Bloque central (el azul) -->
-    <MudPaper Height="400px" Width="800px" Square="true" Class="" Elevation="0" Style="border:none;position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); display:flex; align-items:center; justify-content:center; flex-direction:column;background-color:transparent">
+    @if (!PublicationSelected)
+    {
+        <!-- Bloque central -->
+        <MudPaper Height="400px" Width="800px" Square="true" Class="" Elevation="0" Style="border:none;position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); display:flex; align-items:center; justify-content:center; flex-direction:column;background-color:transparent">
 
-        <!-- Contenedor del Grid con altura del 100% -->
-        <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="border:none;height:100%; width:100%; display:flex; flex-wrap:wrap; align-content:center;">
+            <!-- Contenedor del Grid con altura del 100% -->
+            <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="border:none;height:100%; width:100%; display:flex; flex-wrap:wrap; align-content:center;">
 
-            <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
-                    <MudImage Src="Peticiones/Calzado.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
-                </MudButton>
-            </MudItem>
+                <MudItem xs="3" Style="display:flex; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" @onclick="()=>Dirigir(EnumCategoria.Calzado.ToString())" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
+                        <MudImage Src="Peticiones/Calzado.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
+                    </MudButton>
+                </MudItem>
 
-            <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
-                    <MudImage Src="Peticiones/Vehiculos.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
-                </MudButton>
-            </MudItem>
+                <MudItem xs="3" Style="display:flex; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" @onclick="()=>Dirigir(EnumCategoria.Vehiculos.ToString())" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
+                        <MudImage Src="Peticiones/Vehiculos.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
+                    </MudButton>
+                </MudItem>
 
-            <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
-                    <MudImage Src="Peticiones/Inmuebles.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
-                </MudButton>
-            </MudItem>
+                <MudItem xs="3" Style="display:flex; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" @onclick="()=>Dirigir(EnumCategoria.Inmuebles.ToString())" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
+                        <MudImage Src="Peticiones/Inmuebles.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
+                    </MudButton>
+                </MudItem>
 
-            <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
-                    <MudImage Src="Peticiones/Servicios.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg">
-                    </MudImage>
-                </MudButton>
-            </MudItem>
+                <MudItem xs="3" Style="display:flex; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" @onclick="()=>Dirigir(EnumCategoria.Servicios.ToString())" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
+                        <MudImage Src="Peticiones/Servicios.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg">
+                        </MudImage>
+                    </MudButton>
+                </MudItem>
 
-        </MudGrid>
+            </MudGrid>
 
-    </MudPaper>
+        </MudPaper>
+    }
+    else
+    {
+        <MudPaper Height="400px" Width="800px" Square="true" Class="" Elevation="0" Style="border:none;position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); display:flex; align-items:center; justify-content:center; flex-direction:column;background-color:transparent">
+
+            <!-- Contenedor del Grid con altura del 100% -->
+            <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="border:none;height:100%; width:100%; display:flex; flex-wrap:wrap; align-content:center;">
+
+                <MudItem xs="2" Style="display:flex; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" @onclick="()=>Dirigir(EnumCategoria.Calzado.ToString())" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
+                        <MudImage Src="Peticiones/Calzado.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
+                    </MudButton>
+                </MudItem>
+
+                <MudItem xs="2" Style="display:flex; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" @onclick="()=>Dirigir(EnumCategoria.Vehiculos.ToString())" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
+                        <MudImage Src="Peticiones/Vehiculos.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
+                    </MudButton>
+                </MudItem>
+
+
+
+            </MudGrid>
+
+        </MudPaper>
+    }
 
     <!-- Bloque inferior -->
     <MudPaper Style="background-color:#EDEDED;height:50%;width:100%;"></MudPaper>
@@ -55,74 +83,16 @@
 </div>
 @code {
     private int elevation = 0;
-    private void ModificarElevation(MouseEventArgs e, int valor)
+    private bool PublicationSelected { get; set; } = false;
+
+    protected override void OnInitialized()
     {
-        elevation = valor;
+
     }
-    private void Dirigir()
+    private void Dirigir(string categoria)
     {
-        _snack.Add("Hola mundo");
-    }
-
-    private IScrollListener? _scrollListener;
-    private List<Message> messages = new();
-    private Message? _selectedMessage;
-    private MudMenu? _contextMenu;
-
-    private bool Hovering => _paperHovering || _bubbleHovering;
-    private bool _bubbleHovering;
-    private bool _paperHovering;
-
-    private Message? _hoverMessage;
-
-    private void HoverStart(Object args)
-    {
-        _bubbleHovering = true;
+        _snack.Add("Ha seleccionado " + categoria);
+        PublicationSelected = true;
     }
 
-    private void HoverStop(string typeOfStop)
-    {
-        try
-        {
-            switch (typeOfStop)
-            {
-                case "paper":
-                    _paperHovering = false;
-                    break;
-                case "bubble":
-                    _bubbleHovering = false;
-                    break;
-                case "scroll":
-                    _paperHovering = false;
-                    _bubbleHovering = false;
-                    StateHasChanged();
-                    break;
-                default:
-                    break;
-            }
-        }
-        catch { }
-    }
-
-    private async Task RightClickMessage(MouseEventArgs args)
-    {
-    }
-
-    private async Task ClickMessage(MouseEventArgs args)
-    {
-    }
-
-    private record Message(
-        string Name,
-        string Initials,
-        string Text,
-        string Time,
-        int Likes = 0,
-        int Cries = 0,
-        int Angers = 0)
-    {
-        public int Likes { get; set; } = Likes;
-        public int Cries { get; set; } = Cries;
-        public int Angers { get; set; } = Angers;
-    }
 }

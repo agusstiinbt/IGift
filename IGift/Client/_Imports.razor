@@ -17,24 +17,21 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 
-@using IGift.Application.Responses.Titulos.Desconectado
-@using IGift.Shared.Constants;
-
 @using IGift.Client
-
-
 @using IGift.Client.Layouts
 @using IGift.Client.Layouts.Main
 @using IGift.Client.Layouts.Publicaciones
 @using IGift.Client.Layouts.UserProfile
 @using IGift.Client.Layouts.Main.ToolBar
 @using IGift.Client.Pages.Users.Login
+
+@using IGift.Shared.Constants;
+
 @using IGift.Client.Shared
+@using IGift.Client.Shared.ScrollUp
 @using IGift.Client.Shared.PopOverCategorias
 
-
 @using IGift.Client.Pages.Inicio
-@using IGift.Client.Shared.ScrollUp
 @using IGift.Client.Pages.Inicio.Componentes
 @using IGift.Client.Pages.Users.RegisterFolder
 @using IGift.Client.Pages.Communication.Chat.Components
@@ -44,10 +41,11 @@
 @using IGift.Client.Pages.Peticiones;
 @using IGift.Client.Pages.Communication
 
-
+@using IGift.Application.Enums
 @using IGift.Application.CQRS.Identity
 @using IGift.Application.Responses.Peticiones;
 @using IGift.Application.Responses.Titulos.Categoria
+@using IGift.Application.Responses.Titulos.Desconectado
 
 @inject NavigationManager _nav;
 @inject ISnackbar _snack;
