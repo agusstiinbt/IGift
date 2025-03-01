@@ -5,9 +5,9 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
+<MudLayout Style="background-color:#fff;border-collapse:collapse;display:table;min-width:920px;table-layout:fixed;height:100%;margin:0;width:100%;min-height:100vh;">
 
-    <MudAppBar Elevation="1" Dense="@_dense" style="background-color:#D4A054; height: 60px;">
+    <MudAppBar Elevation="1" Dense="@_dense" style="background-color:#D4A054; height: 48px;position:relative;display:flex;justify-content:center;font-size:13px;">
         <MudSpacer />
 
         <MudPaper Elevation="0" Class="d-flex align-center justify-center cursor-pointer"
@@ -24,14 +24,11 @@
 
     </MudAppBar>
 
-    <MudMainContent Class="pt-16 px-16" Style="height:100vh;overflow:auto;background-color:black;display: flex; flex-direction: column;">
-        <MudContainer Class="mt-6" Style="background-color:green; width:100vh;">
-            @Body
-        </MudContainer>
+    <MudMainContent Style="height:100%;width:100%;display: table-row;border-collapse:collapse;">
+        @Body
     </MudMainContent>
 
-
-
+    <footer></footer>
 </MudLayout>
 
 @code {

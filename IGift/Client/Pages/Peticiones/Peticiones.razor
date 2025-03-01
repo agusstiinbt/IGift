@@ -3,10 +3,10 @@
 @attribute [Authorize]
 @using MudBlazor;
 
-<MudContainer Style="background-color:red; width:100%; height:100vh; position:relative;">
+<div style="width:100%; height:100%;display:flex;flex-direction:column;min-width:760px;border-collapse:collapse;">
 
     <!-- Bloque superior -->
-    <MudPaper Height="50%" Width="100%" Style="background-color:#FFEA78"></MudPaper>
+    <MudPaper Style="background-color:#FFEA78;height:50%;width:100%;"></MudPaper>
 
     <!-- Texto centrado arriba del cuadro azul -->
     <MudText Typo="Typo.h4" Style="position:absolute; top:calc(30% - 80px); left:50%; transform:translate(-50%, -50%); text-align:center;">
@@ -20,28 +20,28 @@
         <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center" Style="border:none;height:100%; width:100%; display:flex; flex-wrap:wrap; align-content:center;">
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
                     <MudImage Src="Peticiones/Calzado.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
-                </MudPaper>
+                </MudButton>
             </MudItem>
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
                     <MudImage Src="Peticiones/Vehiculos.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
-                </MudPaper>
+                </MudButton>
             </MudItem>
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
                     <MudImage Src="Peticiones/Inmuebles.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg" />
-                </MudPaper>
+                </MudButton>
             </MudItem>
 
             <MudItem xs="3" Style="display:flex; justify-content:center;">
-                <MudPaper @onclick="Dirigir" Width="200px" Height="150px" Elevation="0" Class="cursor-pointer d-flex align-center justify-center" Style="background-color:white">
+                <MudButton Variant="Variant.Filled" @onclick="Dirigir" Class="cursor-pointer d-flex align-center justify-center" Style="width:200px;height:150px;background-color:white">
                     <MudImage Src="Peticiones/Servicios.svg" Width="150" Height="150" Elevation="0" ObjectFit="ObjectFit.Contain" Class="rounded-lg">
                     </MudImage>
-                </MudPaper>
+                </MudButton>
             </MudItem>
 
         </MudGrid>
@@ -49,14 +49,79 @@
     </MudPaper>
 
     <!-- Bloque inferior -->
-    <MudPaper Height="50%" Width="100%" Style="background-color:#EDEDED"></MudPaper>
+    <MudPaper Style="background-color:#EDEDED;height:50%;width:100%;"></MudPaper>
 
-</MudContainer>
-
+</div>
 @code {
-
+    private int elevation = 0;
+    private void ModificarElevation(MouseEventArgs e, int valor)
+    {
+        elevation = valor;
+    }
     private void Dirigir()
     {
         _snack.Add("Hola mundo");
+    }
+
+    private IScrollListener? _scrollListener;
+    private List<Message> messages = new();
+    private Message? _selectedMessage;
+    private MudMenu? _contextMenu;
+
+    private bool Hovering => _paperHovering || _bubbleHovering;
+    private bool _bubbleHovering;
+    private bool _paperHovering;
+
+    private Message? _hoverMessage;
+
+    private void HoverStart(Object args)
+    {
+        _bubbleHovering = true;
+    }
+
+    private void HoverStop(string typeOfStop)
+    {
+        try
+        {
+            switch (typeOfStop)
+            {
+                case "paper":
+                    _paperHovering = false;
+                    break;
+                case "bubble":
+                    _bubbleHovering = false;
+                    break;
+                case "scroll":
+                    _paperHovering = false;
+                    _bubbleHovering = false;
+                    StateHasChanged();
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch { }
+    }
+
+    private async Task RightClickMessage(MouseEventArgs args)
+    {
+    }
+
+    private async Task ClickMessage(MouseEventArgs args)
+    {
+    }
+
+    private record Message(
+        string Name,
+        string Initials,
+        string Text,
+        string Time,
+        int Likes = 0,
+        int Cries = 0,
+        int Angers = 0)
+    {
+        public int Likes { get; set; } = Likes;
+        public int Cries { get; set; } = Cries;
+        public int Angers { get; set; } = Angers;
     }
 }
