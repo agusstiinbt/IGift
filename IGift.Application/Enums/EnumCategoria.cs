@@ -12,6 +12,8 @@ namespace IGift.Application.Enums
         CompraInternacional,
         [Description("Hogar y Muebles")]
         HogarYMuebles,
+        [Description("Juegos y Juguetes")]
+        JuegosYJuguetes,
         Electrodomesticos,
         Servicios,
         [Description("Salud y Belleza")]
