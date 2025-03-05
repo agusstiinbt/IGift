@@ -149,7 +149,7 @@ namespace IGift.Infrastructure.Services.Communication
                 .Include(x => x.FromUser)
                 .Where(x => x.FromUserId == CurrentUserId)
                 .GroupBy(x => x.ToUserId)
-                .Select(x => x.OrderByDescending(c => c.CreatedDate).FirstOrDefault())
+                .Select(x => x.OrderByDescending(c => c.CreatedDate).First())
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -167,7 +167,7 @@ namespace IGift.Infrastructure.Services.Communication
                 .Include(x => x.FromUser)
                 .Where(x => usersId.Contains(x.FromUserId) && x.ToUserId == CurrentUserId)//Aca le estamos indicando que se filtre con 2 datos: el primero es que contenga como FromUserId algun valor dentro de UsersId y el otro filtro es que el ToUserId sea el CurrentUserID
                 .GroupBy(x => x.FromUserId)
-                .Select(x => x.OrderByDescending(x => x.CreatedDate).FirstOrDefault())
+                .Select(x => x.OrderByDescending(x => x.CreatedDate).First())
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -258,48 +258,23 @@ namespace IGift.Infrastructure.Services.Communication
 
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {
-            //var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
+            var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
 
-            //if (userResponse.Succeeded)
-            //{
+            if (!userResponse.Succeeded)
+                return await Result.FailAsync("El usuario no existe");
 
-            //    var sala = await _context.ChatRoom.Where(x =>
-            //           (x.IdUser1 == chat.FromUserId && x.IdUser2 == chat.ToUserId) ||
-            //           (x.IdUser1 == chat.ToUserId && x.IdUser2 == chat.FromUserId)).FirstOrDefaultAsync();
+            await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
+            {
+                FromUserId = chat.FromUserId,
+                ToUserId = chat.ToUserId,
+                Message = chat.Message,
+                CreatedDate = DateTime.Now,
+                Seen = false
+            });
 
-            //    if (sala != null)
-            //    {
-            //        sala.LastMessage = chat.Message;
-            //        sala.Seen = false;
-            //        sala.LastMessageFrom = chat.FromUserId;
-            //    }
-            //    else
-            //    {
-            //        await _context.ChatRoom.AddAsync(new ChatRoom
-            //        {
-            //            IdUser1 = chat.FromUserId,
-            //            IdUser2 = chat.ToUserId,
-            //            LastMessage = chat.Message,
-            //            Seen = false,
-            //            LastMessageFrom = chat.FromUserId,
-            //        });
-            //    }
+            await _context.SaveChangesAsync();
 
-            //    await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
-            //    {
-            //        FromUserId = chat.FromUserId,
-            //        ToUserId = chat.ToUserId,
-            //        Message = chat.Message,
-            //        CreatedDate = DateTime.Now,
-            //        Seen = false
-            //    });
-
-            //    await _context.SaveChangesAsync();
-
-            //    return await Result.SuccessAsync();
-            //}
-
-            return await Result.FailAsync("El usuario no existe");
+            return await Result.SuccessAsync();
         }
     }
 }
