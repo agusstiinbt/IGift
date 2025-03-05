@@ -6,6 +6,7 @@ using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace IGift.Infrastructure.Services.Communication
 {
@@ -140,107 +141,163 @@ namespace IGift.Infrastructure.Services.Communication
 
         public async Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(string CurrentUserId)
         {
-            var salas = await _context.ChatRoom
-                .Where(x => x.IdUser1 == CurrentUserId || x.IdUser2 == CurrentUserId)
+
+            var listaTerminada = new List<ChatUserResponse>();
+
+            // Obtener los últimos mensajes enviados por el usuario actual
+            var ultimosMensajesMios = await _context.ChatHistories
+                .Include(x => x.FromUser)
+                .Where(x => x.FromUserId == CurrentUserId)
+                .GroupBy(x => x.ToUserId)
+                .Select(x => x.OrderByDescending(c => c.CreatedDate).FirstOrDefault())
                 .AsNoTracking()
                 .ToListAsync();
 
-            if (!salas.Any())
-            {
-                return await Result<IEnumerable<ChatUserResponse>>.FailAsync("No hay chats históricos");
-            }
+            if (!ultimosMensajesMios.Any())
+                return await Result<IEnumerable<ChatUserResponse>>.FailAsync();
 
-            // Crear lista de ChatUserResponse con el ID del otro usuario
-            var chatResponses = salas.Select(chat => new
-            {
-                ChatResponse = new ChatUserResponse
-                {
-                    LastMessage = chat.LastMessage,
-                    Seen = chat.Seen,
-                    IsLastMessageFromMe = chat.LastMessageFrom == CurrentUserId,
-                    ProfilePictureUrl = string.Empty, // Se actualizará después
-                    ToUserId = chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2,
-                    UserName = string.Empty // Se actualizará después
-                },
-                OtherUserId = chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2
-            }).ToList();
-
-            // Obtener IDs únicos de los otros usuarios
-            var userIdsToFetch = chatResponses
-                .Select(c => c.OtherUserId)
+            // Obtener IDs de los usuarios con los que conversó
+            var usersId = ultimosMensajesMios
+                .Select(x => x!.ToUserId)
                 .Distinct()
                 .ToList();
+            var a = usersId.Contains("2");
+            // 🔥 Cargar todos los mensajes en una sola consulta antes de la ejecución en paralelo
+            var ultimosMensajesParaMi = await _context.ChatHistories
+                .Include(x => x.FromUser)
+                .Where(x => usersId.Contains(x.FromUserId) && x.ToUserId == CurrentUserId)//Aca le estamos indicando que se filtre con 2 datos: el primero es que contenga como FromUserId algun valor dentro de UsersId y el otro filtro es que el ToUserId sea el CurrentUserID
+                .GroupBy(x => x.FromUserId)
+                .Select(x => x.OrderByDescending(x => x.CreatedDate).FirstOrDefault())
+                .AsNoTracking()
+                .ToListAsync();
 
-            // Consultar todos los usuarios en paralelo
-            var userTasks = userIdsToFetch
-                .Select(async userId =>
-                {
-                    var userResponse = await _userService.GetByIdAsync(userId);
-                    return userResponse.Succeeded
-                        ? new Tuple<string, string?, string?>(userId, userResponse.Data.ProfilePictureDataUrl, userResponse.Data.UserName)
-                        : null;
-                });
-
-            // Ejecutar todas las tareas en paralelo
-            var users = (await Task.WhenAll(userTasks))
-                .Where(u => u != null)
-                .ToDictionary(u => u!.Item1, u => new { ProfilePictureDataUrl = u!.Item2, UserName = u.Item3 });
-
-            // Asignar la foto y el username correctos a cada ChatUserResponse
-            foreach (var chat in chatResponses)
+            // 🔥 Organizar los datos de los chats
+            for (int i = 0; i < ultimosMensajesMios.Count; i++)
             {
-                if (users.TryGetValue(chat.OtherUserId, out var userData))
-                {
-                    chat.ChatResponse.ProfilePictureUrl = userData.ProfilePictureDataUrl;
-                    chat.ChatResponse.UserName = userData.UserName;
-                }
-            }
+                var mensajeRecibido = ultimosMensajesParaMi
+                  .FirstOrDefault(x => x!.FromUserId == ultimosMensajesMios[i]!.ToUserId);
 
-            return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(chatResponses.Select(c => c.ChatResponse));
+                var mensajeMasReciente = mensajeRecibido != null && mensajeRecibido.CreatedDate > ultimosMensajesMios[i]!.CreatedDate
+                    ? mensajeRecibido
+                    : ultimosMensajesMios[i]!;
+
+                listaTerminada.Add(new ChatUserResponse
+                {
+                    LastMessage = mensajeMasReciente.Message,
+                    Seen = mensajeMasReciente.Seen,
+                    IsLastMessageFromMe = mensajeMasReciente.FromUserId == CurrentUserId,
+                    ProfilePictureUrl = string.Empty, // Se actualizará después
+                    UserName = mensajeMasReciente.FromUser.UserName // Se actualizará después
+                });
+            }
+            return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(listaTerminada);
+
+            #region Codigo viejo
+
+            //      var salas = await _context.ChatRoom
+            //.Where(x => x.IdUser1 == CurrentUserId || x.IdUser2 == CurrentUserId)
+            //.AsNoTracking()
+            //.ToListAsync();
+
+            //      if (!salas.Any())
+            //      {
+            //          return await Result<IEnumerable<ChatUserResponse>>.FailAsync("No hay chats históricos");
+            //      }
+
+            //      // Crear lista de ChatUserResponse con el ID del otro usuario
+            //      var chatResponses = salas.Select(chat => new
+            //      {
+            //          ChatResponse = new ChatUserResponse
+            //          {
+            //              LastMessage = chat.LastMessage,
+            //              Seen = chat.Seen,
+            //              IsLastMessageFromMe = chat.LastMessageFrom == CurrentUserId,
+            //              ProfilePictureUrl = string.Empty, // Se actualizará después
+            //              ToUserId = chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2,
+            //              UserName = string.Empty // Se actualizará después
+            //          },
+            //          OtherUserId = chat.IdUser1 != CurrentUserId ? chat.IdUser1 : chat.IdUser2
+            //      }).ToList();
+
+            //      // Obtener IDs únicos de los otros usuarios
+            //      var userIdsToFetch = chatResponses
+            //          .Select(c => c.OtherUserId)
+            //          .Distinct()
+            //          .ToList();
+
+            //      // Consultar todos los usuarios en paralelo
+            //      var userTasks = userIdsToFetch
+            //          .Select(async userId =>
+            //          {
+            //              var userResponse = await _userService.GetByIdAsync(userId);
+            //              return userResponse.Succeeded
+            //                  ? new Tuple<string, string?, string?>(userId, userResponse.Data.ProfilePictureDataUrl, userResponse.Data.UserName)
+            //                  : null;
+            //          });
+
+            //      // Ejecutar todas las tareas en paralelo
+            //      var users = (await Task.WhenAll(userTasks))
+            //          .Where(u => u != null)
+            //          .ToDictionary(u => u!.Item1, u => new { ProfilePictureDataUrl = u!.Item2, UserName = u.Item3 });
+
+            //      // Asignar la foto y el username correctos a cada ChatUserResponse
+            //      foreach (var chat in chatResponses)
+            //      {
+            //          if (users.TryGetValue(chat.OtherUserId, out var userData))
+            //          {
+            //              chat.ChatResponse.ProfilePictureUrl = userData.ProfilePictureDataUrl;
+            //              chat.ChatResponse.UserName = userData.UserName;
+            //          }
+            //      }
+
+            //      return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(chatResponses.Select(c => c.ChatResponse));
+
+            #endregion
+
         }
 
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {
-            var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
+            //var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
 
-            if (userResponse.Succeeded)
-            {
+            //if (userResponse.Succeeded)
+            //{
 
-                var sala = await _context.ChatRoom.Where(x =>
-                       (x.IdUser1 == chat.FromUserId && x.IdUser2 == chat.ToUserId) ||
-                       (x.IdUser1 == chat.ToUserId && x.IdUser2 == chat.FromUserId)).FirstOrDefaultAsync();
+            //    var sala = await _context.ChatRoom.Where(x =>
+            //           (x.IdUser1 == chat.FromUserId && x.IdUser2 == chat.ToUserId) ||
+            //           (x.IdUser1 == chat.ToUserId && x.IdUser2 == chat.FromUserId)).FirstOrDefaultAsync();
 
-                if (sala != null)
-                {
-                    sala.LastMessage = chat.Message;
-                    sala.Seen = false;
-                    sala.LastMessageFrom = chat.FromUserId;
-                }
-                else
-                {
-                    await _context.ChatRoom.AddAsync(new ChatRoom
-                    {
-                        IdUser1 = chat.FromUserId,
-                        IdUser2 = chat.ToUserId,
-                        LastMessage = chat.Message,
-                        Seen = false,
-                        LastMessageFrom = chat.FromUserId,
-                    });
-                }
+            //    if (sala != null)
+            //    {
+            //        sala.LastMessage = chat.Message;
+            //        sala.Seen = false;
+            //        sala.LastMessageFrom = chat.FromUserId;
+            //    }
+            //    else
+            //    {
+            //        await _context.ChatRoom.AddAsync(new ChatRoom
+            //        {
+            //            IdUser1 = chat.FromUserId,
+            //            IdUser2 = chat.ToUserId,
+            //            LastMessage = chat.Message,
+            //            Seen = false,
+            //            LastMessageFrom = chat.FromUserId,
+            //        });
+            //    }
 
-                await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
-                {
-                    FromUserId = chat.FromUserId,
-                    ToUserId = chat.ToUserId,
-                    Message = chat.Message,
-                    CreatedDate = DateTime.Now,
-                    Seen = false
-                });
+            //    await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
+            //    {
+            //        FromUserId = chat.FromUserId,
+            //        ToUserId = chat.ToUserId,
+            //        Message = chat.Message,
+            //        CreatedDate = DateTime.Now,
+            //        Seen = false
+            //    });
 
-                await _context.SaveChangesAsync();
+            //    await _context.SaveChangesAsync();
 
-                return await Result.SuccessAsync();
-            }
+            //    return await Result.SuccessAsync();
+            //}
 
             return await Result.FailAsync("El usuario no existe");
         }

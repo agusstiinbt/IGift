@@ -17,7 +17,6 @@ namespace IGift.Infrastructure.Data
 
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<ChatHistory<IGiftUser>> ChatHistories { get; set; }
-        public DbSet<ChatRoom> ChatRoom { get; set; }
         public DbSet<Contract> Contracts { get; set; }
 
         public DbSet<GiftCard> GiftCards { get; set; }
