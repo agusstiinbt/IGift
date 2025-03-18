@@ -5,7 +5,7 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout Style="background-color:#fff;border-collapse:collapse;display:table;min-width:920px;table-layout:fixed;height:100%;margin:0;width:100%;min-height:100vh;">
+<MudLayout Style="background-color:green;border-collapse:collapse;display:table;min-width:920px;table-layout:fixed;height:100%;margin:0;width:100%;min-height:100vh;">
 
     <MudAppBar Elevation="1" Dense="@_dense" style="background-color:#D4A054; height: 48px;position:relative;display:flex;justify-content:center;font-size:13px;">
         <MudSpacer />
@@ -24,11 +24,11 @@
 
     </MudAppBar>
 
-    <MudMainContent Style="height:100%;width:100%;display: table-row;border-collapse:collapse;">
+    <MudMainContent Style="">
+        @* height:100%;width:100%;display: table-row;border-collapse:collapse; *@
         @Body
     </MudMainContent>
-
-    <footer></footer>
+    <FooterPeticionesLayout />
 </MudLayout>
 
 @code {

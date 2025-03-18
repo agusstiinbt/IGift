@@ -14,7 +14,7 @@ namespace IGift.Client.Layouts.Main.ToolBar
         public bool _open { get; set; }
         private bool _visible { get; set; }
 
-        protected async override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             list = await _shopCartService.GetShopCartAsync();
 

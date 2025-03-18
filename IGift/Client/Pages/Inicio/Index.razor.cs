@@ -55,7 +55,6 @@ namespace IGift.Client.Pages.Inicio
         //Ints
         private int _totalItems;
         private int _currentPage;
-
         protected override async Task OnInitializedAsync()
         {
             var authState = await AuthenticationState;
@@ -98,6 +97,7 @@ namespace IGift.Client.Pages.Inicio
                 _nav.ToAbsoluteUri(AppConstants.Routes.Logout);
             }
         }
+
 
         private void SeleccionarBoton(string boton)
         {
