@@ -1,4 +1,5 @@
 2) La última tarea de las anteriores nos va a dar paso a iniciar la lógica e interfaz del chat;
+
 	a)Diseñar una interfaz de chat entre distintos usuarios
 	b)Implementar una campanita de notificaciones; esto es signalR y debería de estar en alguna 
 		parte del código que se comparta. Fijarse el código de Blazor Hero para más detalles
@@ -9,19 +10,19 @@
 	f)Luego de completar el punto e), debemos estudiar la parte de SmartContracts y lograr 
 		generar un smart contract que genere una tarjeta de regalo ficticia.
 
-3) El paso siguiente debería de ser cambiar el servicio de guardado de imág enes en la computadora por un servicio en la Nube como Azure o AWS
-
-
+3) El paso siguiente debería de ser cambiar el servicio de guardado de imág enes en la computadora
+por un servicio en la Nube como Azure o AWS
 
 Pasos para hacer el chat:
 
-
 2)La notificación debe ocurrir en tiempo real
 
-3) El método de comprar debe enviar una notificación a Agustín. Esa notificación (snackBar) al hacer click se debe dirigir al chat/UserId 
+3) El método de comprar debe enviar una notificación a Agustín. Esa notificación (snackBar) al hacer click
+se debe dirigir al chat/UserId 
 Existe un método en blazor Hero que hacía eso al hacer click en uan notificacion. Buscarlo
 
-4) Al cargar el usuario Id en la página de chat.razor se debe ejecutar un método que busque un archivo con el chat id del usuario en cuestión 
+4) Al cargar el usuario Id en la página de chat.razor se debe ejecutar un método que busque un archivo con el chat
+id del usuario en cuestión 
 si no existe entonces se creará uno nuevo en el caso de que exista entonces se deberá de cargar dentro de la vista
 
 5) La parte visual del chat que es para enviar mensajes no debe aparecer hasta que por lo menos se haya cargado con algun valor el ChatId

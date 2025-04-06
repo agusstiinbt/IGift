@@ -2,10 +2,10 @@
 @inject NavigationManager NavigationManager
 
 
-
 <div class="d-flex justify-center">
     <MudImage Src="svg/MainLogo.jpg" ObjectFit="ObjectFit.Fill" ObjectPosition="ObjectPosition.Center" Height="170" Width="830" Elevation="25" Class="rounded-lg" />
 </div>
+
 <br />
 <br />
 
@@ -58,17 +58,13 @@
                 *@
 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <InputText Id="email" style=@EstiloInputs Class="form-control" @bind-Value="loginModel.Email" />
-                    <ValidationMessage For="@(() => loginModel.Email)" />
+                    <MudTextField Style=@EstiloInputs @bind-Value="loginModel.Email" Label="Usuario" Variant="Variant.Text" Clearable="true" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CardGiftcard" AdornmentColor="Color.Warning" Immediate="true" FullWidth="false" />
                 </div>
                 <div class="form-group">
-                    <label for="password">Contraseña</label>
+                    <MudTextField Style=@EstiloInputs T="string" Label="Password" @bind-Value="loginModel.Password" InputType="InputType.Password" Required="true" RequiredError="Password is required!" />
                     <br />
-                    <InputText Id="password" style=@EstiloInputs type="password" Class="form-control;" @bind-Value="loginModel.Password" />
-                    <ValidationMessage For="@(() => loginModel.Password)" />
                 </div>
-                <button type="submit" class="btn btn-primary">Continuar</button>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Small</MudButton>
             </EditForm>
 
         </MudPaper>
@@ -78,6 +74,37 @@
 <br />
 <CaruselInicio />
 
+
+
+
 @code {
-    private string EstiloInputs = "width:200px;";
+    bool success;
+    string[] errors = { };
+    MudTextField<string> pwField1;
+    MudForm form;
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Password is required!";
+            yield break;
+        }
+        if (pw.Length < 8)
+            yield return "Password must be at least of length 8";
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return "Password must contain at least one capital letter";
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return "Password must contain at least one lowercase letter";
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return "Password must contain at least one digit";
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (pwField1.Value != arg)
+            return "Passwords don't match";
+        return null;
+    }
+    private string EstiloInputs = "width:250px;";
 }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
 using MudBlazor;
+using MudBlazor.Extensions;
 
 namespace IGift.Client.Pages.Inicio
 {
@@ -96,6 +97,7 @@ namespace IGift.Client.Pages.Inicio
             {
                 _nav.ToAbsoluteUri(AppConstants.Routes.Logout);
             }
+
         }
 
 
@@ -173,11 +175,32 @@ namespace IGift.Client.Pages.Inicio
             };
 
             var response = await _peticionesService.GetAll(query);
+
             peticiones = response;
 
             _totalItems = peticiones.TotalCount;
             _currentPage = peticiones.CurrentPage;
             _pagedData = peticiones.Data;
+
+
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+            _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
+
+
 
             return new TableData<PeticionesResponse> { TotalItems = _totalItems, Items = _pagedData }; ;
         }

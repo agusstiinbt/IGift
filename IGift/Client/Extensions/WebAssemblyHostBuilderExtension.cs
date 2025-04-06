@@ -43,18 +43,18 @@ namespace IGift.Client.Extensions
 
             //Servicios MudBlazor
           .AddMudServices(config =>
-            {
-                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
+          {
+              config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
 
-                config.SnackbarConfiguration.PreventDuplicates = false;
-                config.SnackbarConfiguration.NewestOnTop = false;
-                config.SnackbarConfiguration.ShowCloseIcon = true;
-                config.SnackbarConfiguration.VisibleStateDuration = 5000;
-                config.SnackbarConfiguration.HideTransitionDuration = 500;
-                config.SnackbarConfiguration.ShowTransitionDuration = 500;
-                config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
-                config.SnackbarConfiguration.ClearAfterNavigation = true;
-            })
+              config.SnackbarConfiguration.PreventDuplicates = false;
+              config.SnackbarConfiguration.NewestOnTop = false;
+              config.SnackbarConfiguration.ShowCloseIcon = true;
+              config.SnackbarConfiguration.VisibleStateDuration = 5000;
+              config.SnackbarConfiguration.HideTransitionDuration = 500;
+              config.SnackbarConfiguration.ShowTransitionDuration = 500;
+              config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+              config.SnackbarConfiguration.ClearAfterNavigation = true;
+          })
 
           .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
 

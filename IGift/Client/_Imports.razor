@@ -5,6 +5,9 @@
 @using System.Net.Http
 @using System.Net.Http.Json
 @using System.Globalization
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
 
 @using Microsoft.JSInterop
 @using Microsoft.AspNetCore.Authorization
@@ -47,8 +50,8 @@
 @using IGift.Application.Responses.Titulos.Categoria
 @using IGift.Application.Responses.Titulos.Desconectado
 
-@inject NavigationManager _nav;
-@inject ISnackbar _snack;
+
+
 
 
 @using IGift.Client.Infrastructure.Services;
@@ -62,6 +65,9 @@
 @using global::Client.Infrastructure.Services.Identity.Users
 @using global::IGift.Client.Infrastructure.Services.Files
 
+
+@inject NavigationManager _nav;
+@inject ISnackbar _snack;
 @inject IChatManager _chatManager;
 @inject IDialogService _dialogService;
 @inject IAuthService _authService;

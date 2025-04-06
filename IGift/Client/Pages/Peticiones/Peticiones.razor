@@ -1,18 +1,18 @@
 ﻿@page "/Peticiones"
- @layout PublicacionesLayout
+ @layout PeticionesLayout
 @attribute [Authorize]
 
 
-<div style="width:100%; height:100%;display:flex;flex-direction:column;min-width:760px;border-collapse:collapse;">
+<MudContainer style="display:flex;flex-direction:column;min-width:760px;border-collapse:collapse;background-color:green">
 
     @if (!PublicationSelected)
     {
-        <MudContainer Class="mt-16">
+        <MudContainer Class="mt-16" Style="background-color:transparent">
             <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Pricing</MudText>
             <MudText Align="Align.Center">Some long pricing text should go here maybe? who knows what text you would want here, i guess i cant fill it in for you.</MudText>
-            <MudGrid Class="mt-8">
+            <MudGrid Class="mt-8" Justify="Justify.SpaceEvenly">
 
-                <MudItem xs="12" sm="6" md="4">
+                <MudItem xs="4">
                     <MudCard Elevation="25" Class="rounded-lg pb-4">
                         <MudCardHeader>
                             <CardHeaderContent>
@@ -41,7 +41,7 @@
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
-                <MudItem xs="12" sm="6" md="4">
+                <MudItem xs="4">
                     <MudCard Elevation="25" Class="rounded-lg pb-4">
                         <MudCardHeader>
                             <CardHeaderContent>
@@ -70,7 +70,7 @@
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
-                <MudItem xs="12" sm="6" md="4">
+                <MudItem xs="4">
                     <MudCard Elevation="25" Class="rounded-lg pb-4">
                         <MudCardHeader>
                             <CardHeaderContent>
@@ -99,7 +99,7 @@
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
-                <MudItem xs="12" sm="12" md="4">
+                <MudItem xs="4">
                     <MudCard Elevation="25" Class="rounded-lg pb-4">
                         <MudCardHeader>
                             <CardHeaderContent>
@@ -124,28 +124,16 @@
             </MudGrid>
         </MudContainer>
     }
-    else
-    {
 
-    }
-
-    <!-- Bloque inferior -->
-    <MudPaper Style="background-color:#EDEDED;height:50%;width:100%;"></MudPaper>
-
-</div>
+</MudContainer>
 @code {
 
     private int elevation = 0;
     private bool PublicationSelected { get; set; } = false;
 
-    protected override void OnInitialized()
-    {
-
-    }
     private void Dirigir(string categoria)
     {
         _snack.Add("Ha seleccionado " + categoria);
         PublicationSelected = true;
     }
-
 }
