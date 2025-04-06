@@ -72,7 +72,7 @@
 {
     <MudPaper Style="background-color:transparent;height:500px;" Class="d-flex justify-center " Elevation="0">
 
-        <MudTable Dense="true" Hover="true" Bordered="true" Striped="true" T="PeticionesResponse" Style="overflow:scroll;background-color:#181A20;height:450px" ServerData="@(new Func<TableState, CancellationToken, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table" Class="">
+        <MudTable Dense="true" Hover="true" Bordered="true" Striped="true" T="PeticionesResponse" Style="overflow:scroll;background-color:#181A20;height:450px" ServerData="@(new Func<TableState, CancellationToken, Task<TableData<PeticionesResponse>>>(GetData))" @ref="_table">
             <!-- Aquí puedes agregar las columnas y otras configuraciones del MudTable -->
 
             <ToolBarContent>
@@ -123,7 +123,6 @@
                 <MudTd DataLabel="Brand">
                     <MudHighlighter HighlightedText="@TxtBusqueda" />
                     <MudText Style="color:white;">@context.Monto</MudText>
-
                 </MudTd>
 
                 <MudButton OnClick="() => AgregarAlCarrito(context)" Style="background-color:green;color:white;">Agregar al carrito</MudButton>

@@ -201,7 +201,6 @@ namespace IGift.Client.Pages.Inicio
             _pagedData.Add(new PeticionesResponse() { Descripcion = "Tarjeta de regalo Automotriz", Monto = 123, Moneda = "USDT" });
 
 
-
             return new TableData<PeticionesResponse> { TotalItems = _totalItems, Items = _pagedData }; ;
         }
         private async Task OnSearch(string text)
