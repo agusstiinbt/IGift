@@ -29,16 +29,20 @@
                 <MudContainer Style="overflow:auto">
                     <MudStack>
 
-                        @foreach (var mensaje in Chats)
+                        @foreach (var registro in Chats)
                         {
-                            <MudAvatar>
-                                Ok
-                            </MudAvatar>
+                            <div>
+                                @{
+                                    string imageBase64 = Convert.ToBase64String(registro.ProfilePictureUrl);
+                                    string estilo = $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
+                                }
+                                <MudFab title="Perfil" Style="@background" />
+                            </div>
                             <MudPaper Class="mt-2 mb-2">
-                                <p>@mensaje.UserName</p>
+                                <p>@registro.UserName</p>
 
-                                <p style="color:@(mensaje.IsLastMessageFromMe && !mensaje.Seen ? "black" : "inherit")">
-                                    @(mensaje.IsLastMessageFromMe ? $"You: {mensaje.LastMessage}" : mensaje.LastMessage)
+                                <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black" : "inherit")">
+                                    @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
                                 </p>
                             </MudPaper>
                         }

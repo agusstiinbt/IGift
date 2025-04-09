@@ -30,6 +30,7 @@ namespace IGift.Client.Pages.Communication.Chat
         private string CurrentUserId { get; set; } = string.Empty;
 
         private bool _open = false;
+        private string background { get; set; }
 
         #endregion
 
