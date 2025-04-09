@@ -313,7 +313,7 @@ namespace IGift.Server
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<IChatService, ChatService>();
             services.AddTransient<IProfilePicture, ProfilePictureService>();
-            services.AddTransient<IUploadService, UploadService>();
+            services.AddTransient<IUploadFileService, UploadService>();
 
             return services;
         }

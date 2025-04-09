@@ -27,9 +27,9 @@ namespace IGift.Application.CQRS.LocalesAdheridos.Command
     {
         private readonly IMapper _mapper;
         private readonly IAuditableUnitOfWork<int> _unitOfWork;
-        private readonly IUploadService _uploadService;
+        private readonly IUploadFileService _uploadService;
 
-        public AddEditLocalAdheridoCommandHandler(IMapper mapper, IAuditableUnitOfWork<int> unitOfWork, IUploadService uploadService)
+        public AddEditLocalAdheridoCommandHandler(IMapper mapper, IAuditableUnitOfWork<int> unitOfWork, IUploadFileService uploadService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
