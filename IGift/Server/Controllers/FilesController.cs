@@ -7,7 +7,7 @@ namespace IGift.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [AllowAnonymous]
     public class FilesController : ControllerBase
     {
         private readonly IProfilePicture _profileService;

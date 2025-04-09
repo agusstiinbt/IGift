@@ -16,9 +16,9 @@ namespace IGift.Infrastructure.Services.Files
         private readonly ApplicationDbContext _dbContext;
         private readonly IWebHostEnvironment _env;//Esta propiedad sabe de donde se esta haciendo el llamado, por eso sabe donde buscar la imagen
         private readonly ILogger<ProfilePictureService> logger;
-        private readonly IUploadService _uploadService;
+        private readonly IUploadFileService _uploadService;
 
-        public ProfilePictureService(ApplicationDbContext dbContext, IWebHostEnvironment env, ILogger<ProfilePictureService> logger, IUploadService uploadService)
+        public ProfilePictureService(ApplicationDbContext dbContext, IWebHostEnvironment env, ILogger<ProfilePictureService> logger, IUploadFileService uploadService)
         {
             _dbContext = dbContext;
             _env = env;
@@ -33,25 +33,72 @@ namespace IGift.Infrastructure.Services.Files
         /// <returns></returns>
         public async Task<IResult<ProfilePictureResponse>> GetByUserIdAsync(string IdUser)
         {
-            var response = await _dbContext.ProfilePicture.Where(x => x.IdUser == IdUser).FirstAsync();
-            if (string.IsNullOrEmpty(response.Url))
+            try
             {
-                return await Result<ProfilePictureResponse>.FailAsync("No se ha encontrado la foto de perfil");
-            }
+                var result = await _dbContext.ProfilePicture.Where(x => x.IdUser == IdUser).ToListAsync();
 
-            var filePath = Path.Combine(_env.ContentRootPath, response.Url!);
-            if (!File.Exists(filePath))
+                if (result.Any()) {
+
+                    var response = result.FirstOrDefault();
+                    if (string.IsNullOrEmpty(response.Url))
+                    {
+                        return await Result<ProfilePictureResponse>.FailAsync("No se ha encontrado la foto de perfil");
+                    }
+
+                    var filePath = Path.Combine(_env.ContentRootPath, response.Url!);
+                    if (!File.Exists(filePath))
+                    {
+                        return await Result<ProfilePictureResponse>.FailAsync("No se ha encontrado la foto de perfil");
+                    }
+
+                    var data = await File.ReadAllBytesAsync(filePath);
+                    var fileType = response.FileType;
+
+                    var profilePicture = new ProfilePictureResponse { Data = data, FileType = fileType, UploadDate = response.UploadDate };
+
+                    return Result<ProfilePictureResponse>.Success(profilePicture);
+                }
+              
+            }
+            catch (Exception e)
             {
-                return await Result<ProfilePictureResponse>.FailAsync("No se ha encontrado la foto de perfil");
+
+                throw;
             }
-
-            var data = await File.ReadAllBytesAsync(filePath);
-            var fileType = response.FileType;
-
-            var profilePicture = new ProfilePictureResponse { Data = data, FileType = fileType, UploadDate = response.UploadDate };
-
-            return Result<ProfilePictureResponse>.Success(profilePicture);
+            return await Result<ProfilePictureResponse>.FailAsync();
         }
+
+        /// <summary>
+        /// Devuelve la informacion de foto de perfil del IdUser
+        /// </summary>
+        /// <param name="IdUser"></param>
+        /// <returns></returns>
+        public async Task<ProfilePictureResponse> GetByUserIdAsync2(string IdUser)
+        {
+            var response = await _dbContext.ProfilePicture.Where(x => x.IdUser == IdUser).ToListAsync();
+
+            if (response.Any())
+            {
+                var result = response.FirstOrDefault();
+
+                if (string.IsNullOrEmpty(result.Url))
+                    return null;
+
+                var filePath = Path.Combine(_env.ContentRootPath, result.Url!);
+                if (!File.Exists(filePath))
+                    return null;
+
+                var data = await File.ReadAllBytesAsync(filePath);
+                var fileType = result.FileType;
+
+                var profilePicture = new ProfilePictureResponse { Data = data, FileType = fileType, UploadDate = result.UploadDate };
+
+                return profilePicture;
+            }
+            return null;
+          
+        }
+
 
         /// <summary>
         /// Guarda una foto de perfil en una carpeta del servidor y en el caso de sea de un nuevo usuario se crea la informacion en la bbdd

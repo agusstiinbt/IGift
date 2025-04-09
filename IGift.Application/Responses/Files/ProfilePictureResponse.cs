@@ -2,7 +2,7 @@
 {
     public class ProfilePictureResponse
     {
-        public required byte[] Data { get; set; }
+        public byte[]? Data { get; set; } = null;
         public DateTime UploadDate { get; set; }
         public string? FileType { get; set; } = string.Empty;
     }

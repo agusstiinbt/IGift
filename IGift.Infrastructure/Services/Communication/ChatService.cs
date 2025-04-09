@@ -1,5 +1,6 @@
 ﻿using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
+using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
 using IGift.Infrastructure.Data;
@@ -99,11 +100,13 @@ namespace IGift.Infrastructure.Services.Communication
 
         private readonly ApplicationDbContext _context;
         private readonly IUserService _userService;
+        private readonly IProfilePicture _profileService;
 
-        public ChatService(ApplicationDbContext context, IUserService userService)
+        public ChatService(ApplicationDbContext context, IUserService userService, IProfilePicture profileService)
         {
             _context = context;
             _userService = userService;
+            _profileService = profileService;
         }
 
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId)
@@ -140,49 +143,63 @@ namespace IGift.Infrastructure.Services.Communication
 
         public async Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(string CurrentUserId)
         {
-            // Obtener tanto los últimos mensajes enviados como recibidos en una sola consulta
-            var chatHistories = await _context.ChatHistories
-                .Include(x => x.FromUser)
-                .Include(x => x.ToUser)
-                .Where(x => x.FromUserId == CurrentUserId || x.ToUserId == CurrentUserId)
-                .GroupBy(x => new { x.FromUserId, x.ToUserId })
-                .Select(g => g.OrderByDescending(x => x.CreatedDate).First())
-                .AsNoTracking()
-                .ToListAsync();
-
-            if (!chatHistories.Any())
-                return await Result<IEnumerable<ChatUserResponse>>.FailAsync();
-
-            // Agrupar por par de usuarios (independiente del orden)
-            var groupedChats = chatHistories
-                .GroupBy(x => new
-                {
-                    User1 = string.Compare(x.FromUserId, x.ToUserId) < 0 ? x.FromUserId : x.ToUserId,
-                    User2 = string.Compare(x.FromUserId, x.ToUserId) > 0 ? x.FromUserId : x.ToUserId
-                })
-                .Select(g => g.OrderByDescending(x => x.CreatedDate).First()) // último mensaje por grupo
-                .ToList();
-
-            // Mapear a ChatUserResponse
-            var result = groupedChats.Select(mensaje =>
+            try
             {
-                bool soyYo = mensaje.FromUserId == CurrentUserId;
-                var otroUsuario = soyYo ? mensaje.ToUser : mensaje.FromUser;
 
-                return new ChatUserResponse
+
+                // Obtener tanto los últimos mensajes enviados como recibidos en una sola consulta
+                var chatHistories = await _context.ChatHistories
+                    .Include(x => x.FromUser)
+                    .Include(x => x.ToUser)
+                    .Where(x => x.FromUserId == CurrentUserId || x.ToUserId == CurrentUserId)
+                    .GroupBy(x => new { x.FromUserId, x.ToUserId })
+                    .Select(g => g.OrderByDescending(x => x.CreatedDate).First())
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                if (!chatHistories.Any())
+                    return await Result<IEnumerable<ChatUserResponse>>.FailAsync();
+
+                // Agrupar por par de usuarios (independiente del orden)
+                var groupedChats = chatHistories
+                    .GroupBy(x => new
+                    {
+                        User1 = string.Compare(x.FromUserId, x.ToUserId) < 0 ? x.FromUserId : x.ToUserId,
+                        User2 = string.Compare(x.FromUserId, x.ToUserId) > 0 ? x.FromUserId : x.ToUserId
+                    })
+                    .Select(g => g.OrderByDescending(x => x.CreatedDate).First())
+                    .ToList();
+
+                // Ejecutar llamadas en paralelo para obtener imágenes
+                var tasks = groupedChats.Select(async mensaje =>
                 {
-                    LastMessage = mensaje.Message,
-                    Seen = mensaje.Seen,
-                    IsLastMessageFromMe = soyYo,
-                    ToUserId = otroUsuario.Id, // string
-                    UserName = otroUsuario.UserName,
-                    ProfilePictureUrl = "" // Podés agregarlo si lo tenés
-                };
+                    bool soyYo = mensaje.FromUserId == CurrentUserId;
+                    var otroUsuario = soyYo ? mensaje.ToUser : mensaje.FromUser;
 
-            }).ToList();
+                    var foto = await _profileService.GetByUserIdAsync2(otroUsuario.Id);
 
-            return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(result);
+                    return new ChatUserResponse
+                    {
+                        LastMessage = mensaje.Message,
+                        Seen = mensaje.Seen,
+                        IsLastMessageFromMe = soyYo,
+                        ToUserId = otroUsuario.Id,
+                        UserName = otroUsuario.UserName,
+                        ProfilePictureUrl = foto is null ? new Application.Responses.Files.ProfilePictureResponse() : foto,
+                    };
+                });
+
+                var result = await Task.WhenAll(tasks);
+
+                return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(result);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
+
 
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {

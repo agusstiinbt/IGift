@@ -33,10 +33,16 @@
                         {
                             <div>
                                 @{
-                                    string imageBase64 = Convert.ToBase64String(registro.ProfilePictureUrl);
-                                    string estilo = $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
+                                    string imageBase64 = string.Empty;
+                                    string estilo = string.Empty;
+                                    if (registro.ProfilePictureUrl.Data != null)
+                                    {
+                                        imageBase64 = Convert.ToBase64String(registro.ProfilePictureUrl.Data);
+
+                                        estilo = $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
+                                    }
                                 }
-                                <MudFab title="Perfil" Style="@background" />
+                                <MudFab title="Perfil" Style="@estilo" />
                             </div>
                             <MudPaper Class="mt-2 mb-2">
                                 <p>@registro.UserName</p>

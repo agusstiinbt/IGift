@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace IGift.Infrastructure.Services.Files
 {
-    public class UploadService : IUploadService
+    public class UploadService : IUploadFileService
     {
         private readonly ILogger<UploadService> _logger;
 
