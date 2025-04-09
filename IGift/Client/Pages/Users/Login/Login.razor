@@ -58,13 +58,13 @@
                 *@
 
                 <div class="form-group">
-                    <MudTextField Style=@EstiloInputs @bind-Value="loginModel.Email" Label="Usuario" Variant="Variant.Text" Clearable="true" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CardGiftcard" AdornmentColor="Color.Warning" Immediate="true" FullWidth="false" />
+                    <MudTextField Style=@EstiloInputs @bind-Value="loginModel.Email" Label="Usuario" Variant="Variant.Text" Clearable="true" Adornment="Adornment.End"  AdornmentIcon="@Icons.Material.Filled.CardGiftcard" AdornmentColor="Color.Warning" Immediate="true" FullWidth="false" />
                 </div>
                 <div class="form-group">
                     <MudTextField Style=@EstiloInputs T="string" Label="Password" @bind-Value="loginModel.Password" InputType="InputType.Password" Required="true" RequiredError="Password is required!" />
                     <br />
                 </div>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Small</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Login</MudButton>
             </EditForm>
 
         </MudPaper>

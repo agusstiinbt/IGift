@@ -26,96 +26,27 @@
 
             @if (Chats.Any())
             {
-                foreach (var item in Chats.Where(x => x.Seen))
-                {
-                    <MudNavLink Style=@EstiloBotones Href="/billing">Agustin</MudNavLink>
-                }
+                <MudContainer Style="overflow:auto">
+                    <MudStack>
+
+                        @foreach (var mensaje in Chats)
+                        {
+                            <MudAvatar>
+                                Ok
+                            </MudAvatar>
+                            <MudPaper Class="mt-2 mb-2">
+                                <p>@mensaje.UserName</p>
+
+                                <p style="color:@(mensaje.IsLastMessageFromMe && !mensaje.Seen ? "black" : "inherit")">
+                                    @(mensaje.IsLastMessageFromMe ? $"You: {mensaje.LastMessage}" : mensaje.LastMessage)
+                                </p>
+                            </MudPaper>
+                        }
+                    </MudStack>
+
+                </MudContainer>
+
             }
-
-            <MudNavGroup Title="@Chats.Count(x => x.Seen == false).ToString()" Icon="@Icons.Material.Filled.Email" Expanded="false">
-                <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />  <MudAvatar>
-                    Ok
-                </MudAvatar>
-
-                <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Height="64px">
-                    <p>Agustin</p>
-                    <p>Como estas?</p>
-                </MudPaper>
-
-                <br />
-            </MudNavGroup>
 
             <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
 
@@ -146,7 +77,7 @@
                     </MudToolBar>
 
                     @* Mensajes *@
-                    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow-y: hidden; overflow-x: scroll;" id="chatContainer">
+                    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;overflow-x:hidden" id="chatContainer">
 
                         <MudPaper Style="background-color:transparent" Class="d-flex justify-end">
                             <MudAvatar>
@@ -448,5 +379,6 @@
 
 
 @code {
+    private string EstiloBotones = "color:#848E9C";
 
 }

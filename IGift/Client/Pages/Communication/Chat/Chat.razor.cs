@@ -28,7 +28,6 @@ namespace IGift.Client.Pages.Communication.Chat
         public string ToUserId { get; set; }
         private string? CurrentMessage { get; set; }
         private string CurrentUserId { get; set; } = string.Empty;
-        private string EstiloBotones = "color:#848E9C";
 
         private bool _open = false;
 
@@ -60,10 +59,10 @@ namespace IGift.Client.Pages.Communication.Chat
                 _snack.Add(response.Messages.First());
         }
 
-        /// <summary>
-        /// Inicializamos todas las conexiones de tipo Hub
-        /// </summary>
-        /// <returns></returns>
+        ///// <summary>
+        ///// Inicializamos todas las conexiones de tipo Hub
+        ///// </summary>
+        ///// <returns></returns>
         //private async Task InitializeHub()
         //{
         //    //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
@@ -109,13 +108,9 @@ namespace IGift.Client.Pages.Communication.Chat
         {
             var result = await _chatManager.LoadChatUsers(new LoadChatUsers() { IdCurrentUser = CurrentUserId });
             if (result.Succeeded)
-            {
                 Chats = result.Data.ToList();
-            }
             else
-            {
                 _snack.Add(result.Messages.First());
-            }
         }
 
         private async Task OnKeyPressInChat(KeyboardEventArgs e)
