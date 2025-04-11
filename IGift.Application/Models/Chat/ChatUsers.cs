@@ -10,7 +10,7 @@ namespace IGift.Application.Models.Chat
         public string? LastMessage { get; set; }
         public bool Seen { get; set; }
         public bool IsLastMessageFromMe { get; set; }
-        public ProfilePictureResponse? ProfilePictureUrl { get; set; }
+        public byte[]? Data { get; set; }
         public string? UserName { get; set; }
         public string? ToUserId { get; set; }
     }

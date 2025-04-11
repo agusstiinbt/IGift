@@ -17,7 +17,7 @@ namespace IGift.Client.Pages.Communication.Chat
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
         private List<ChatHistoryResponse> CurrentChat = null;
-        private List<ChatUserResponse> Chats { get; set; } = new List<ChatUserResponse>();
+        private List<ChatUserResponse> Chats { get; set; } = null;
         //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
 
         private AuthenticationState? _authenticationState { get; set; } = null;

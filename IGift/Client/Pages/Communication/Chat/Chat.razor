@@ -1,4 +1,5 @@
 ﻿@page "/chat"
+@using IGift.Application.Models.Chat
 @attribute [Authorize]
 
 <MudLayout Style="height:100vh;">
@@ -24,7 +25,7 @@
             <MudText Style=@EstiloBotones Typo="Typo.h6" Class="px-4">Mensajes</MudText>
             <MudDivider Class="my-2" />
 
-            @if (Chats.Any())
+            @if (Chats != null && Chats.Any())
             {
                 <MudContainer Style="overflow:auto">
                     <MudStack>
@@ -32,18 +33,9 @@
                         @foreach (var registro in Chats)
                         {
                             <div>
-                                @{
-                                    string imageBase64 = string.Empty;
-                                    string estilo = string.Empty;
-                                    if (registro.ProfilePictureUrl.Data != null)
-                                    {
-                                        imageBase64 = Convert.ToBase64String(registro.ProfilePictureUrl.Data);
-
-                                        estilo = $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
-                                    }
-                                }
-                                <MudFab title="Perfil" Style="@estilo" />
+                                <MudFab title="Perfil" Style="@GetProfilePictureData(registro)" />
                             </div>
+
                             <MudPaper Class="mt-2 mb-2">
                                 <p>@registro.UserName</p>
 
@@ -55,7 +47,6 @@
                     </MudStack>
 
                 </MudContainer>
-
             }
 
             <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
@@ -387,8 +378,19 @@
 
 </MudLayout>
 
-
 @code {
-    private string EstiloBotones = "color:#848E9C";
 
+    private string GetProfilePictureData(ChatUserResponse c)
+    {
+        var imageBase64 = string.Empty;
+        var estilo = string.Empty;
+        if (c.Data != null)
+        {
+            imageBase64 = Convert.ToBase64String(c.Data);
+
+            return $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
+        }
+        return "";
+    }
+    private string EstiloBotones = "color:#848E9C";
 }
