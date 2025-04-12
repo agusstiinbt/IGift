@@ -1,21 +1,33 @@
 using IGift.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Events;
 
 namespace IGift.Server
 {
     public class Program
     {
-        public async static Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+               .WriteTo.File
+                (
+                Path.Combine(AppContext.BaseDirectory, "Logs", "log-.txt"),
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 7,
+                restrictedToMinimumLevel: LogEventLevel.Information
+                ).CreateLogger();
 
-            using (var scope = host.Services.CreateScope())
+            try
             {
-                var services = scope.ServiceProvider;
+                Log.Information("Starting up...");
+                var host = CreateHostBuilder(args).Build();
 
-                try
+                using (var scope = host.Services.CreateScope())
                 {
+                    var services = scope.ServiceProvider;
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
                     if (context.Database.IsSqlServer())
@@ -23,25 +35,27 @@ namespace IGift.Server
                         context.Database.Migrate();
                     }
                 }
-                catch (Exception ex)
-                {
-                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-                    logger.LogError(ex, "An error occurred while migrating or seeding the database.");
-
-                    throw;
-                }
+                await host.RunAsync();
             }
-
-            await host.RunAsync();
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application start-up failed");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-         Host.CreateDefaultBuilder(args)
-         .UseSerilog()
-             .ConfigureWebHostDefaults(webBuilder =>
-             {
-                 webBuilder.UseStaticWebAssets();
-                 webBuilder.UseStartup<Startup>();
-             });
+            Host.CreateDefaultBuilder(args)
+                .UseSerilog() // Usa el logger ya configurado arriba
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStaticWebAssets();
+                    webBuilder.UseStartup<Startup>();
+                });
     }
+
 }

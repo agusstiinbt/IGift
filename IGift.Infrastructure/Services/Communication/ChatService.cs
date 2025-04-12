@@ -7,6 +7,7 @@ using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IGift.Infrastructure.Services.Communication
 {
@@ -100,13 +101,14 @@ namespace IGift.Infrastructure.Services.Communication
 
         private readonly ApplicationDbContext _context;
         private readonly IUserService _userService;
-        private readonly IProfilePicture _profileService;
+        //private readonly IProfilePicture _profileService;//Para mas informacion de por que no usamos este servicio leer el metodo LoadChatUsers
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public ChatService(ApplicationDbContext context, IUserService userService, IProfilePicture profileService)
+        public ChatService(ApplicationDbContext context, IUserService userService, IServiceScopeFactory scopeFactory)
         {
             _context = context;
             _userService = userService;
-            _profileService = profileService;
+            _scopeFactory = scopeFactory;
         }
 
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId)
@@ -143,7 +145,6 @@ namespace IGift.Infrastructure.Services.Communication
 
         public async Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(string CurrentUserId)
         {
-            // Obtener tanto los últimos mensajes enviados como recibidos en una sola consulta
             var chatHistories = await _context.ChatHistories
                 .Include(x => x.FromUser)
                 .Include(x => x.ToUser)
@@ -156,7 +157,6 @@ namespace IGift.Infrastructure.Services.Communication
             if (!chatHistories.Any())
                 return await Result<IEnumerable<ChatUserResponse>>.FailAsync();
 
-            // Agrupar por par de usuarios (independiente del orden)
             var groupedChats = chatHistories
                 .GroupBy(x => new
                 {
@@ -166,14 +166,15 @@ namespace IGift.Infrastructure.Services.Communication
                 .Select(g => g.OrderByDescending(x => x.CreatedDate).First())
                 .ToList();
 
-            // Ejecutar llamadas en paralelo para obtener imágenes
             var tasks = groupedChats.Select(async mensaje =>
             {
+                using var scope = _scopeFactory.CreateScope();
+                //🧠 ¿Por qué no usar _profileService directamente?
+                //Ese servicio fue inyectado junto con el ChatService, lo que significa que usa el mismo DbContext que se inyectó a ChatService. Si usás ese mismo _profileService dentro de múltiples tareas en paralelo(como con Task.WhenAll), vas a volver a caer en el mismo problema de concurrencia, porque estarías compartiendo indirectamente el mismo DbContext.Porque eso crea un nuevo IProfilePicture, que a su vez tiene un nuevo DbContext detrás. Eso permite que cada tarea trabaje de forma aislada y segura en paralelo, sin pisarse con otras.
+                var profileService = scope.ServiceProvider.GetRequiredService<IProfilePicture>();
                 bool soyYo = mensaje.FromUserId == CurrentUserId;
                 var otroUsuario = soyYo ? mensaje.ToUser : mensaje.FromUser;
-
-                var foto = await _profileService.GetByUserIdAsync2(otroUsuario.Id);
-
+                var foto = await profileService.GetByUserIdAsync2(otroUsuario.Id);
                 return new ChatUserResponse
                 {
                     LastMessage = mensaje.Message,
@@ -181,15 +182,12 @@ namespace IGift.Infrastructure.Services.Communication
                     IsLastMessageFromMe = soyYo,
                     ToUserId = otroUsuario.Id,
                     UserName = otroUsuario.UserName,
-                    Data = foto is null ? null : foto.Data,
+                    Data = foto?.Data,
                 };
             });
-
             var result = await Task.WhenAll(tasks);
-            //TODO encerrar todo en un try catch y logear el exception 
             return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(result);
         }
-
 
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {

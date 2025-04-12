@@ -1,8 +1,6 @@
 ﻿using System.Security.Claims;
 using Client.Infrastructure.Authentication;
 using IGift.Client.Extensions;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace IGift.Client.Layouts.Main.ToolBar
 {

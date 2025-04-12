@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
 using MudBlazor;
-using MudBlazor.Extensions;
 
 namespace IGift.Client.Pages.Inicio
 {

@@ -1,5 +1,5 @@
-﻿using Client.Infrastructure.Authentication;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using Client.Infrastructure.Authentication;
 using IGift.Client.Extensions;
 
 namespace IGift.Client.Pages.Peticiones

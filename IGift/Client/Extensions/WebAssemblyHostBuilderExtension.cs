@@ -36,10 +36,10 @@ namespace IGift.Client.Extensions
             b.Services
 
 
-           .AddAuthorizationCore()
+         .AddAuthorizationCore()
 
-            //Servicio de LocalStorage
-          .AddBlazoredLocalStorage()
+        //Servicio de LocalStorage
+        .AddBlazoredLocalStorage()
 
             //Servicios MudBlazor
           .AddMudServices(config =>

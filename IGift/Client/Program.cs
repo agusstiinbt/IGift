@@ -13,7 +13,10 @@ public static class Program
                       .CreateDefault(args)
                       .AddRootComponents()
                       .AddClientServices();
+
+        builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
         var host = builder.Build();
-        await builder.Build().RunAsync();
+        await host.RunAsync();
     }
 }

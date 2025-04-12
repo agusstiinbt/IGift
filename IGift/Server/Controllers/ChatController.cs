@@ -2,6 +2,7 @@
 using IGift.Application.Interfaces.Communication.Chat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace IGift.Server.Controllers
 {
@@ -20,7 +21,16 @@ namespace IGift.Server.Controllers
         [HttpPost("LoadChatUsers")]
         public async Task<ActionResult> LoadChatUsers(LoadChatUsers obj)
         {
-            return Ok(await _chatService.LoadChatUsers(obj.IdCurrentUser));
+            try
+            {
+                var result = await _chatService.LoadChatUsers(obj.IdCurrentUser);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Excepción en LoadChatUsers para el usuario {UserId}", obj.IdCurrentUser);
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
 
         [HttpPost("GetChatById")]

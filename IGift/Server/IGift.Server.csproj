@@ -57,6 +57,9 @@
 	<ItemGroup>
 		<Folder Include="Controllers\Base\" />
 		<Folder Include="Files\Images\ProfilePictures\" />
+		<None Update="Logs\**\*.*">
+			<Visible>false</Visible>
+		</None>
 	</ItemGroup>
 
 </Project>

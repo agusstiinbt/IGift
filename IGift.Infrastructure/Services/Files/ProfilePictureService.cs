@@ -37,7 +37,8 @@ namespace IGift.Infrastructure.Services.Files
             {
                 var result = await _dbContext.ProfilePicture.Where(x => x.IdUser == IdUser).ToListAsync();
 
-                if (result.Any()) {
+                if (result.Any())
+                {
 
                     var response = result.FirstOrDefault();
                     if (string.IsNullOrEmpty(response.Url))
@@ -58,7 +59,7 @@ namespace IGift.Infrastructure.Services.Files
 
                     return Result<ProfilePictureResponse>.Success(profilePicture);
                 }
-              
+
             }
             catch (Exception e)
             {
@@ -96,7 +97,7 @@ namespace IGift.Infrastructure.Services.Files
                 return profilePicture;
             }
             return null;
-          
+
         }
 
 

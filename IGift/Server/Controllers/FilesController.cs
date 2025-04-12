@@ -1,13 +1,11 @@
 ﻿using IGift.Application.CQRS.Files.ProfilePicture;
 using IGift.Application.Interfaces.Files;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IGift.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class FilesController : ControllerBase
     {
         private readonly IProfilePicture _profileService;

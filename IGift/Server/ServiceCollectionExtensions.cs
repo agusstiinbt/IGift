@@ -115,6 +115,7 @@ namespace IGift.Server
                         });
                 });
             };
+            ;
             return services;
         }
         /// <summary>
