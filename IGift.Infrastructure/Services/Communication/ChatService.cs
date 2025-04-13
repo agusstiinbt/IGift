@@ -137,7 +137,7 @@ namespace IGift.Infrastructure.Services.Communication
                 ToUserId = e.ToUserId,
                 Message = e.Message,
                 Seen = e.Seen,
-                DateSend = e.CreatedDate
+                Date = e.CreatedDate
             }).ToList();
 
             return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(response);

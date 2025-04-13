@@ -68,8 +68,8 @@
                                     </div>
 
                                     <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
-                                        <p><b>@registro.UserName</b></p>
-
+                                        <p><b></b></p>
+                                        <MudText Align="Align.Center"><b>@registro.UserName</b></MudText>
                                         <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black" : "inherit")">
                                             @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
                                         </p>

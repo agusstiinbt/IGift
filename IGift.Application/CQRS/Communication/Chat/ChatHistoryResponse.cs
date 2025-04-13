@@ -14,6 +14,6 @@
         //public string ToUserFullName { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
         public bool Seen { get; set; }
-        public DateTime DateSend { get; set; }
+        public DateTime Date { get; set; }
     }
 }
