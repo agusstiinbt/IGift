@@ -2,51 +2,85 @@
 @using IGift.Application.Models.Chat
 @attribute [Authorize]
 
-<MudLayout Style="height:100vh;">
+<MudLayout Style="height:100vh;background-color:#DBE4F5;">
 
     @* Barra herramientas superior con boton para abrir "barra de herramientas deslizable" *@
-    <MudToolBar Style="background-color:#181A20">
+    <MudToolBar Style="background-color:#CFD9EF;border-width:3px;">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Error" />
     </MudToolBar>
 
     @* Barra de herramientas deslizable *@
-    <MudDrawer Style="background-color:transparent" @bind-Open="@_open" Elevation="1">
+    <MudDrawer Style="background:radial-gradient(black, transparent);" @bind-Open="@_open" Elevation="1">
 
-        <MudDrawerHeader>
+        <MudDrawerHeader Style="">
             <ChatProfileToggle />
         </MudDrawerHeader>
 
-        <MudNavMenu>
+        <MudNavMenu Style="background-color:transparent">
 
             <MudDivider Class="my-2" />
 
-            <MudText Style=@EstiloBotones Typo="Typo.h6" Class="px-4">Mensajes</MudText>
+            @* Botones All, Mensajes y Group *@
+            <MudPaper Class=" pa-4 align-start d-flex" Style="width: 250px; background-color:transparent" Outlined="true">
+
+
+                <MudPaper @onclick="()=>SelectText(all)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                    <MudText Typo="Typo.button" HtmlTag="h3" style=@(AllBox ? "border-bottom-width: 2px;" : "")>
+                        All
+                    </MudText>
+                </MudPaper>
+
+                <MudSpacer />
+
+                <MudPaper @onclick="()=>SelectText(message)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                    <MudText Typo="Typo.button" HtmlTag="h3" style=@(MensajesBox ? "border-bottom-width: 2px;" : "")>
+                        Mensajes
+                    </MudText>
+                </MudPaper>
+
+                <MudSpacer />
+
+                <MudPaper @onclick="()=>SelectText(group)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                    <MudText Typo="Typo.button" HtmlTag="h3" style=@(GroupBox ? "border-bottom-width: 2px;" : "")>
+                        Group
+                    </MudText>
+                </MudPaper>
+
+            </MudPaper>
+
             <MudDivider Class="my-2" />
 
             @if (Chats != null && Chats.Any())
             {
-                <MudContainer Style="overflow:auto">
-                    <MudStack>
+                @if (MensajesBox || AllBox)
+                {
+                    <MudContainer Style="overflow:auto;">
+                        <MudStack>
 
-                        @foreach (var registro in Chats)
-                        {
-                            <div>
-                                <MudFab title="Perfil" Style="@GetProfilePictureData(registro)" />
-                            </div>
+                            @foreach (var registro in Chats)
+                            {
+                                <MudPaper Style="background-color:#a3bacf">
 
-                            <MudPaper Class="mt-2 mb-2">
-                                <p>@registro.UserName</p>
+                                    <div>
+                                        <MudFab title="Perfil" Style="@GetProfilePictureData(registro)" />
+                                    </div>
 
-                                <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black" : "inherit")">
-                                    @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
-                                </p>
-                            </MudPaper>
-                        }
-                    </MudStack>
+                                    <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
+                                        <p><b>@registro.UserName</b></p>
 
-                </MudContainer>
+                                        <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black" : "inherit")">
+                                            @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
+                                        </p>
+                                    </MudPaper>
+                                </MudPaper>
+
+                            }
+                        </MudStack>
+
+                    </MudContainer>
+                }
             }
 
             <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
@@ -56,15 +90,15 @@
     </MudDrawer>
 
     @* En este contenedor tendremos todo lo que corresponde al "Chat" *@
-    <MudMainContent Style="background-color:red">
+    <MudMainContent Style="background-color:#FAFAFA">
 
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-grow-1 flex-row">
 
-            <MudPaper Style="background-color:yellow" Width="100%" Square="true">
+            <MudPaper Style="background-color:transparent" Width="100%" Square="true">
 
                 @if (true)
                 {
-                    <MudToolBar Style="width:100%;background-color:green;" Class="align-self-start">
+                    <MudToolBar Style="width:100%;background-color:transparent;" Class="align-self-start">
 
                         <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
                             <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
@@ -379,6 +413,43 @@
 </MudLayout>
 
 @code {
+    private List<string> MenusInChat = new List<string>()
+    {
+        "message","all","group"
+    };
+
+
+    private string message = "message";
+    private string all = "all";
+    private string group = "group";
+
+    private bool MensajesBox { get; set; } = true;
+    private bool AllBox { get; set; } = false;
+    private bool GroupBox { get; set; } = false;
+
+    private void SelectText(string txt)
+    {
+        //De esta manera o con un "Switch" funciona mas rapido porque evita renderizados innecesarios
+        if (txt == "message" && !MensajesBox)
+        {
+            MensajesBox = true;
+            AllBox = false;
+            GroupBox = false;
+        }
+        else if (txt == "all" && !AllBox)
+        {
+            MensajesBox = false;
+            AllBox = true;
+            GroupBox = false;
+        }
+        else if (txt == "group" && !GroupBox)
+        {
+            MensajesBox = false;
+            AllBox = false;
+            GroupBox = true;
+        }
+    }
+
 
     private string GetProfilePictureData(ChatUserResponse c)
     {
@@ -392,5 +463,6 @@
         }
         return "";
     }
-    private string EstiloBotones = "color:#848E9C";
+    private string EstiloBotones = "color:Black";
+
 }
