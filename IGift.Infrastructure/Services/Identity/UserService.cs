@@ -82,8 +82,8 @@ namespace IGift.Infrastructure.Services.Identity
             var result = new UserResponse()
             {
                 Id = id,
-                FirstName= response.FirstName,
-                LastName= response.LastName,
+                FirstName = response.FirstName,
+                LastName = response.LastName,
                 Email = response.Email,
                 CreatedOn = response.CreatedOn,
             };

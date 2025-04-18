@@ -242,7 +242,7 @@ namespace IGift.Infrastructure.Services.Communication
             catch (Exception e)
             {
             }
-                return await Result.FailAsync();
+            return await Result.FailAsync();
         }
     }
 }

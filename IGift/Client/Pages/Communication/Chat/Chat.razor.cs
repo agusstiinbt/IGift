@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
@@ -8,7 +6,6 @@ using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
 
