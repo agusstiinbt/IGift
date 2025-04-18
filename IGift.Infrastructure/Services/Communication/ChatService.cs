@@ -111,11 +111,14 @@ namespace IGift.Infrastructure.Services.Communication
             _scopeFactory = scopeFactory;
         }
 
-        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(string ToUserId)
+        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(SearchChatById info)
         {
             var chatHistories = await _context.ChatHistories
-                .Where(x => x.ToUserId == ToUserId)
+                .Include(x => x.FromUser)
+                .Include(x => x.ToUser)
+                .Where(x => (x.ToUserId == info.ToUserId && x.FromUserId == info.FromUserId) || (x.ToUserId == info.FromUserId && x.FromUserId == info.ToUserId))
                 .OrderBy(x => x.CreatedDate)
+                .AsNoTracking()
                 .ToListAsync(); // Traemos todos los mensajes en una sola consulta
 
             if (!chatHistories.Any())
@@ -131,16 +134,40 @@ namespace IGift.Infrastructure.Services.Communication
 
             //Usamos un select de esta manera (en ejecucion en memoria) y no una expression (ejecucion en sql) porque en este metodo evitamos el uso de AsNoTracking al tener que modificar el seen del ultimo mensaje.
             //La proyección (Select) se hace en memoria para evitar problemas de traducción en EF Core
-            var response = chatHistories.Select(e => new ChatHistoryResponse
-            {
-                FromUserId = e.FromUserId,
-                ToUserId = e.ToUserId,
-                Message = e.Message,
-                Seen = e.Seen,
-                Date = e.CreatedDate
-            }).ToList();
 
-            return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(response);
+            var tasks = chatHistories.Select(async mensaje =>
+            {
+                using var scope = _scopeFactory.CreateScope();
+
+                var profileService = scope.ServiceProvider.GetRequiredService<IProfilePicture>();
+                bool soyYo = mensaje.FromUserId == info.FromUserId;
+                var otroUsuario = soyYo ? mensaje.ToUser : mensaje.FromUser;
+                var foto = await profileService.GetByUserIdAsync2(otroUsuario.Id);
+
+                return new ChatHistoryResponse
+                {
+                    IsMyMessage = mensaje.FromUserId == info.FromUserId,
+                    FromUserId = mensaje.FromUserId,
+                    ToUserId = mensaje.ToUserId,
+                    Message = mensaje.Message,
+                    Seen = mensaje.Seen,
+                    Date = mensaje.CreatedDate,
+                    Data = foto?.Data,
+                };
+            });
+            //var response = chatHistories.Select(e => new ChatHistoryResponse
+            //{
+            //    IsMyMessage = e.FromUserId == info.FromUserId,
+            //    FromUserId = e.FromUserId,
+            //    ToUserId = e.ToUserId,
+            //    Message = e.Message,
+            //    Seen = e.Seen,
+            //    Date = e.CreatedDate
+            //}).ToList();
+
+            var result = await Task.WhenAll(tasks);
+
+            return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(result);
         }
 
         public async Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(string CurrentUserId)
@@ -181,6 +208,7 @@ namespace IGift.Infrastructure.Services.Communication
                     Seen = mensaje.Seen,
                     IsLastMessageFromMe = soyYo,
                     ToUserId = otroUsuario.Id,
+                    FromUserId = CurrentUserId,
                     UserName = otroUsuario.UserName,
                     Data = foto?.Data,
                 };

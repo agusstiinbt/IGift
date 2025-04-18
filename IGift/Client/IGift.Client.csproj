@@ -33,6 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Pages\Communication\Chat\Components\" />
 	  <Folder Include="Pages\Communication\Email\Components\" />
 	</ItemGroup>
 

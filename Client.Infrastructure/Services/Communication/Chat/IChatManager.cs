@@ -11,7 +11,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(GetChatById obj);
+        Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(SearchChatById obj);
 
         Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(LoadChatUsers obj);
 

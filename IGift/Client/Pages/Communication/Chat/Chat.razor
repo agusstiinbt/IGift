@@ -15,7 +15,21 @@
     <MudDrawer Style="background:radial-gradient(black, transparent);" @bind-Open="@_open" Elevation="1">
 
         <MudDrawerHeader Style="">
-            <ChatProfileToggle />
+            <MudMenu TransformOrigin="Origin.TopLeft" AnchorOrigin="Origin.BottomRight" Ripple="true">
+
+                <ActivatorContent>
+                    <MudFab Label="@Iniciales" Style="@backgroundProfilePicture" />
+                </ActivatorContent>
+
+                <ChildContent>
+                    <MudMenuItem>Profile</MudMenuItem>
+                    <MudMenuItem>Theme</MudMenuItem>
+                    <MudMenuItem>Usage</MudMenuItem>
+                    <MudMenuItem>Sign Out</MudMenuItem>
+                </ChildContent>
+
+            </MudMenu>
+
         </MudDrawerHeader>
 
         <MudNavMenu Style="background-color:transparent">
@@ -61,10 +75,10 @@
 
                             @foreach (var registro in Chats)
                             {
-                                <MudPaper Style="background-color:#a3bacf">
+                                <MudPaper Style="background-color:#a3bacf" @onclick="()=>SelectedChatBubble(registro)">
 
                                     <div>
-                                        <MudFab title="Perfil" Style="@GetProfilePictureData(registro)" />
+                                        <MudFab title="Perfil" Style="@GetProfilePictureData(registro.Data)" />
                                     </div>
 
                                     <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
@@ -114,284 +128,54 @@
                     @* Mensajes *@
                     <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;overflow-x:hidden" id="chatContainer">
 
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-end">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
 
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
+                        @if (CurrentChat != null)
+                        {
+                            if (CurrentChat.Any())
+                            {
 
+                                @foreach (var item in CurrentChat)
+                                {
+                                    if (item.IsMyMessage)
+                                    {
+                                        <MudPaper Style="background-color:transparent" Class="d-flex justify-end">
+                                            <div>
+                                                <MudFab Label="@Iniciales" Style="@backgroundProfilePicture" />
+                                            </div>
+                                        </MudPaper>
 
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
+                                        <MudPaper Style="height:100px;" Class="d-flex justify-end" Elevation="0">
+                                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
+                                                <p>@item.Date</p>
+                                                <p>@item.Message</p>
+                                            </MudPaper>
+                                        </MudPaper>
+                                        <br />
+                                    }
+                                    else
+                                    {
+                                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
+                                            <MudAvatar>
+                                                <MudFab title="Perfil" Style="@GetProfilePictureData(item.Data)" />
+                                            </MudAvatar>
+                                        </MudPaper>
 
+                                        <MudPaper Style="height:100px;" Class="d-flex justify-start" Elevation="0">
+                                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
+                                                <p>@item.Date</p>
+                                                <p>@item.Message</p>
+                                            </MudPaper>
+                                        </MudPaper>
+                                        <br />
+                                    }
 
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper><MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-end" Elevation="0">
-                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
-                        <br />
-
-
-                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
-                            <MudAvatar>
-                                @* <MudImage Src="images/jonny.jpg" /> *@
-                                Ok
-                            </MudAvatar>
-                        </MudPaper>
-                        <MudPaper Style="border-color:red;border-width:10px;height:100px;" Class="d-flex justify-start " Elevation="0">
-                            <MudPaper Style="border-color:green;border-width:10px;" Class="mud-theme-primary" Width="124px" Height="64px">
-                                <p>Hola como estas?</p>
-                            </MudPaper>
-                        </MudPaper>
+                                }
+                            }
+                            else
+                            {
+                                <p>Seleccione un chat</p>
+                            }
+                        }
 
                     </div>
 
@@ -413,11 +197,11 @@
 </MudLayout>
 
 @code {
+
     private List<string> MenusInChat = new List<string>()
     {
         "message","all","group"
     };
-
 
     private string message = "message";
     private string all = "all";
@@ -450,14 +234,13 @@
         }
     }
 
-
-    private string GetProfilePictureData(ChatUserResponse c)
+    private string GetProfilePictureData(byte[] c)
     {
         var imageBase64 = string.Empty;
         var estilo = string.Empty;
-        if (c.Data != null)
+        if (c != null)
         {
-            imageBase64 = Convert.ToBase64String(c.Data);
+            imageBase64 = Convert.ToBase64String(c);
 
             return $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
         }

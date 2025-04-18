@@ -19,7 +19,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
             _logger = logger;
         }
 
-        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(GetChatById obj)
+        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(SearchChatById obj)
         {
             var response = await _httpClient.PostAsJsonAsync(ChatController.GetChatById, obj);
             var result = await response.ToResult<IEnumerable<ChatHistoryResponse>>();

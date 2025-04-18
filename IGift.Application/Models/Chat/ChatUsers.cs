@@ -10,6 +10,7 @@
         public bool IsLastMessageFromMe { get; set; }
         public byte[]? Data { get; set; }
         public string? UserName { get; set; }
-        public string? ToUserId { get; set; }
+        public string ToUserId { get; set; } = string.Empty;
+        public string FromUserId { get; set; } = string.Empty;
     }
 }
