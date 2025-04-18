@@ -77,8 +77,17 @@ namespace IGift.Infrastructure.Services.Identity
 
             if (response == null)
                 return await Result<UserResponse>.FailAsync();
+            //TODO mejorar el mapeo u alguna otra cosa para hacer
 
-            var result = _mapper.Map<UserResponse>(response);
+            var result = new UserResponse()
+            {
+                Id = id,
+                FirstName= response.FirstName,
+                LastName= response.LastName,
+                Email = response.Email,
+                CreatedOn = response.CreatedOn,
+            };
+
             result.ProfilePictureDataUrl = response.ProfilePictureDataUrl;
             return await Result<UserResponse>.SuccessAsync(result);
         }

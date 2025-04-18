@@ -142,20 +142,13 @@ namespace IGift.Client.Pages.Communication.Chat
 
         private async Task SelectedChatBubble(ChatUserResponse registro)
         {
+            ToUserId = registro.ToUserId;
             var response = await _chatManager.GetChatById(new SearchChatById(registro.ToUserId!, registro.FromUserId));
 
             if (response.Succeeded)
                 CurrentChat = response.Data.ToList();
             else
                 _snack.Add(response.Messages.First());
-        }
-
-        private async Task OnKeyPressInChat(KeyboardEventArgs e)
-        {
-            if (e.Key == "Enter")
-            {
-                //await SubmitAsync();
-            }
         }
 
         /// <summary>
@@ -178,8 +171,8 @@ namespace IGift.Client.Pages.Communication.Chat
 
                 if (response.Succeeded)
                 {
+                    //TODO terminar para que se pueda actualizar en pantalla al recibir o enviar un nuevo mensaje 
                     var userName = _authenticationState!.User.GetFirstName();
-
                     try
                     {
                         await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, chat, CurrentUserId);
@@ -196,6 +189,7 @@ namespace IGift.Client.Pages.Communication.Chat
                     for (int i = 0; i < response.Messages.Count; i++)
                         _snack.Add(response.Messages[i], Severity.Error);
             }
+
         }
 
         private void ToggleDrawer() => _open = !_open;

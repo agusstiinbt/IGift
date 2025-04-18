@@ -219,23 +219,30 @@ namespace IGift.Infrastructure.Services.Communication
 
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {
-            var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
-
-            if (!userResponse.Succeeded)
-                return await Result.FailAsync("El usuario no existe");
-
-            await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
+            try
             {
-                FromUserId = chat.FromUserId,
-                ToUserId = chat.ToUserId,
-                Message = chat.Message,
-                CreatedDate = DateTime.Now,
-                Seen = false
-            });
+                var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
 
-            await _context.SaveChangesAsync();
+                if (!userResponse.Succeeded)
+                    return await Result.FailAsync("El usuario no existe");
 
-            return await Result.SuccessAsync();
+                await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
+                {
+                    FromUserId = chat.FromUserId,
+                    ToUserId = chat.ToUserId,
+                    Message = chat.Message,
+                    CreatedDate = DateTime.Now,
+                    Seen = false
+                });
+
+                await _context.SaveChangesAsync();
+
+                return await Result.SuccessAsync();
+            }
+            catch (Exception e)
+            {
+            }
+                return await Result.FailAsync();
         }
     }
 }

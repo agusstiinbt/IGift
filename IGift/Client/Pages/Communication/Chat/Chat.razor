@@ -15,21 +15,6 @@
     <MudDrawer Style="background:radial-gradient(black, transparent);" @bind-Open="@_open" Elevation="1">
 
         <MudDrawerHeader Style="">
-            <MudMenu TransformOrigin="Origin.TopLeft" AnchorOrigin="Origin.BottomRight" Ripple="true">
-
-                <ActivatorContent>
-                    <MudFab Label="@Iniciales" Style="@backgroundProfilePicture" />
-                </ActivatorContent>
-
-                <ChildContent>
-                    <MudMenuItem>Profile</MudMenuItem>
-                    <MudMenuItem>Theme</MudMenuItem>
-                    <MudMenuItem>Usage</MudMenuItem>
-                    <MudMenuItem>Sign Out</MudMenuItem>
-                </ChildContent>
-
-            </MudMenu>
-
         </MudDrawerHeader>
 
         <MudNavMenu Style="background-color:transparent">
@@ -181,7 +166,7 @@
 
                     <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:lightgrey">
 
-                        <MudTextField T="string" Placeholder="Enter your message..." @onkeypress="OnKeyPressInChat" Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
+                        <MudTextField T="string" Placeholder="Enter your message..."Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
                         <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
                     </MudPaper>
