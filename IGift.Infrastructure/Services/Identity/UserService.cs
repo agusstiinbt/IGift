@@ -86,9 +86,9 @@ namespace IGift.Infrastructure.Services.Identity
                 LastName = response.LastName,
                 Email = response.Email,
                 CreatedOn = response.CreatedOn,
+                ProfilePictureDataUrl = response.ProfilePictureDataUrl
             };
 
-            result.ProfilePictureDataUrl = response.ProfilePictureDataUrl;
             return await Result<UserResponse>.SuccessAsync(result);
         }
 

@@ -18,6 +18,11 @@ namespace IGift.Client.Pages.Communication.Chat
         private List<ChatHistoryResponse> CurrentChat = null;
         private List<ChatUserResponse> Chats { get; set; } = null;
 
+        /// <summary>
+        /// El Key, es el UserId. El Value tiene que ser la imagen en base 64
+        /// </summary>
+        private Dictionary<string, string?>? FotosDeUsuarios { get; set; } = null;
+
         //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
         private AuthenticationState? _authenticationState { get; set; } = null;
 
@@ -37,12 +42,16 @@ namespace IGift.Client.Pages.Communication.Chat
         private string Apellido { get; set; }
         private string Iniciales { get; set; }
 
-        private string imageBase64 = string.Empty;
 
         private string backgroundProfilePicture = string.Empty;
+
+
         //Metodos
         protected override async Task OnInitializedAsync()
         {
+
+            FotosDeUsuarios = new Dictionary<string, string>();
+
             _authenticationState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
             CurrentUserId = _authenticationState.User.GetUserId();
 
@@ -60,62 +69,70 @@ namespace IGift.Client.Pages.Communication.Chat
             //await InitializeHub();
         }
 
+        ///// <summary>
+        ///// Inicializamos todas las conexiones de tipo Hub
+        ///// </summary>
+        ///// <returns></returns>
+        //private async Task InitializeHub()
+        //{
+        //    //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
+        //    //_hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
+        //    //{
+        //    //    // var connectedUser= userli
+        //    //});
+
+
+        //    _hubConnection.On<SaveChatMessage, string>(AppConstants.SignalR.ReceiveMessageAsync, async (chatHistory, userName) =>
+        //    {
+        //        if (CurrentUserId == chatHistory.FromUserId)
+        //        {
+        //            if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
+        //            {
+        //                _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = CurrentUserImageUrl });
+        //                await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
+        //            }
+        //            else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
+        //            {
+        //                _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = ChatImageUrl });
+        //            }
+        //            //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
+        //            StateHasChanged();
+        //        }
+        //        ;
+        //    }
+        //    );
+        //    //await GetUsersAsync(); Esto se usaría para traer todos los chats que tenemos 
+
+        //    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        //    CurrentUserId = state.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+
+        //    CurrentUserImageUrl = await _localStorage.GetItemAsync<string>(AppConstants.Local.UserImageURL);
+
+        //    if (!string.IsNullOrEmpty(ChatId))
+        //    {
+        //        await LoadUserChat(ChatId);
+        //    }
+
+        //    await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
+        //}
+
+
+
         /// <summary>
-        /// Inicializamos todas las conexiones de tipo Hub
+        /// Cargamos NUESTRA foto de perfil
         /// </summary>
         /// <returns></returns>
-        private async Task InitializeHub()
-        {
-            //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
-            //_hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
-            //{
-            //    // var connectedUser= userli
-            //});
-
-
-            _hubConnection.On<SaveChatMessage, string>(AppConstants.SignalR.ReceiveMessageAsync, async (chatHistory, userName) =>
-            {
-                if (CurrentUserId == chatHistory.FromUserId)
-                {
-                    if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
-                    {
-                        _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = CurrentUserImageUrl });
-                        await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
-                    }
-                    else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
-                    {
-                        _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = ChatImageUrl });
-                    }
-                    //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
-                    StateHasChanged();
-                }
-                ;
-            }
-            );
-            //await GetUsersAsync(); Esto se usaría para traer todos los chats que tenemos 
-
-            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            CurrentUserId = state.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-
-            CurrentUserImageUrl = await _localStorage.GetItemAsync<string>(AppConstants.Local.UserImageURL);
-
-            if (!string.IsNullOrEmpty(ChatId))
-            {
-                await LoadUserChat(ChatId);
-            }
-
-            await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
-        }
-
-
         private async Task GetProfilePicture()
         {
             var result = await _profileService.GetByIdAsync(IdUser!);
 
             if (result.Succeeded)
             {
-                imageBase64 = Convert.ToBase64String(result.Data.Data);
+                var imageBase64 = Convert.ToBase64String(result.Data.Data);
+
                 backgroundProfilePicture = $"width: 80px; height: 60px; background-image: url('data:image/jpg;base64,{imageBase64}'); background-size: cover;";
+
+                FotosDeUsuarios!.Add(CurrentUserId, imageBase64);
             }
             else
             {
@@ -123,30 +140,48 @@ namespace IGift.Client.Pages.Communication.Chat
             }
         }
 
+
+        /// <summary>
+        /// Carga la grilla de chats en el lazo izquierdo
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadChatUsers()
         {
             var result = await _chatManager.LoadChatUsers(new LoadChatUsers() { IdCurrentUser = CurrentUserId });
+
             if (result.Succeeded)
+            {
+                var imageBase64 = string.Empty;
+
                 Chats = result.Data.ToList();
+
+                for (int i = 0; i < Chats.Count; i++)
+                {
+                    imageBase64 = Convert.ToBase64String(Chats[i].Data);
+                    FotosDeUsuarios!.Add(Chats[i].UserId, imageBase64);
+                }
+            }
             else
                 _snack.Add(result.Messages.First());
         }
+
+
         /// <summary>
-        /// Abre el chat seleccionado y pone el ultimo mensaje como visto. NEcesitamos pasarle el Id del usuario con el que queremos chatear
+        /// Abre el chat seleccionado y pone el ultimo mensaje como visto. 
         /// </summary>
         /// <param name="ToUserId"></param>
         /// <returns></returns>
-
-        private async Task SelectedChatBubble(ChatUserResponse registro)
+        private async Task SelectedChatBubble(string ToUserId)
         {
-            ToUserId = registro.ToUserId;
-            var response = await _chatManager.GetChatById(new SearchChatById(registro.ToUserId!, registro.FromUserId));
+            this.ToUserId = ToUserId;
+            var response = await _chatManager.GetChatById(new SearchChatById(ToUserId!, CurrentUserId));
 
             if (response.Succeeded)
                 CurrentChat = response.Data.ToList();
             else
                 _snack.Add(response.Messages.First());
         }
+
 
         /// <summary>
         /// Envia un mensaje al chat correspondiente al usuario conectado y al usuario destino
@@ -157,22 +192,32 @@ namespace IGift.Client.Pages.Communication.Chat
             if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ToUserId))
             {
                 //Save Message to DBs
-                var saveChatMessage = new SaveChatMessage
+                var message = new SaveChatMessage
                 {
                     Message = CurrentMessage,
                     FromUserId = CurrentUserId,
                     ToUserId = ToUserId
                 };
 
-                var response = await _chatManager.SaveMessage(saveChatMessage);
+                var response = await _chatManager.SaveMessage(message);
 
                 if (response.Succeeded)
                 {
-                    //TODO terminar para que se pueda actualizar en pantalla al recibir o enviar un nuevo mensaje 
                     var userName = _authenticationState!.User.GetFirstName();
+
+                    CurrentChat.Add(new ChatHistoryResponse()
+                    {
+                        FromUserId = CurrentUserId,
+                        ToUserId = ToUserId,
+                        Message = CurrentMessage,
+                        Seen = false,
+                        Date = DateTime.Now,
+                    });
+                    StateHasChanged();
+
                     try
                     {
-                        await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, saveChatMessage, CurrentUserId);
+                        //await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, saveChatMessage, CurrentUserId);
 
                         //await _hubConnection!.SendAsync(AppConstants.SignalR.SendMessageAsync, chat, CurrentUserId, userName);
                     }

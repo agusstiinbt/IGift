@@ -15,8 +15,5 @@
         public string Message { get; set; } = string.Empty;
         public bool Seen { get; set; }
         public DateTime Date { get; set; }
-        public bool IsMyMessage { get; set; }
-        public byte[]? Data { get; set; }
-
     }
 }

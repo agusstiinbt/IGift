@@ -3,6 +3,7 @@ using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
+using IGift.Application.Responses.Files;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
@@ -14,6 +15,7 @@ namespace IGift.Infrastructure.Services.Communication
     public class ChatService : IChatService
     {
         #region Para cuando querramos encriptar el codigo
+
         //private readonly byte[] _key;
         //private readonly string _path;
 
@@ -111,11 +113,9 @@ namespace IGift.Infrastructure.Services.Communication
             _scopeFactory = scopeFactory;
         }
 
-        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatHistoryByIdAsync(SearchChatById info)
+        public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatMessages(SearchChatById info)
         {
             var chatHistories = await _context.ChatHistories
-                .Include(x => x.FromUser)
-                .Include(x => x.ToUser)
                 .Where(x => (x.ToUserId == info.ToUserId && x.FromUserId == info.FromUserId) || (x.ToUserId == info.FromUserId && x.FromUserId == info.ToUserId))
                 .OrderBy(x => x.CreatedDate)
                 .AsNoTracking()
@@ -135,37 +135,20 @@ namespace IGift.Infrastructure.Services.Communication
             //Usamos un select de esta manera (en ejecucion en memoria) y no una expression (ejecucion en sql) porque en este metodo evitamos el uso de AsNoTracking al tener que modificar el seen del ultimo mensaje.
             //La proyección (Select) se hace en memoria para evitar problemas de traducción en EF Core
 
-            var tasks = chatHistories.Select(async mensaje =>
+            var result = chatHistories.Select(mensaje =>
             {
-                using var scope = _scopeFactory.CreateScope();
-
-                var profileService = scope.ServiceProvider.GetRequiredService<IProfilePicture>();
                 bool soyYo = mensaje.FromUserId == info.FromUserId;
                 var otroUsuario = soyYo ? mensaje.ToUser : mensaje.FromUser;
-                var foto = await profileService.GetByUserIdAsync2(otroUsuario.Id);
 
                 return new ChatHistoryResponse
                 {
-                    IsMyMessage = mensaje.FromUserId == info.FromUserId,
                     FromUserId = mensaje.FromUserId,
                     ToUserId = mensaje.ToUserId,
                     Message = mensaje.Message,
                     Seen = mensaje.Seen,
                     Date = mensaje.CreatedDate,
-                    Data = foto?.Data,
                 };
             });
-            //var response = chatHistories.Select(e => new ChatHistoryResponse
-            //{
-            //    IsMyMessage = e.FromUserId == info.FromUserId,
-            //    FromUserId = e.FromUserId,
-            //    ToUserId = e.ToUserId,
-            //    Message = e.Message,
-            //    Seen = e.Seen,
-            //    Date = e.CreatedDate
-            //}).ToList();
-
-            var result = await Task.WhenAll(tasks);
 
             return await Result<IEnumerable<ChatHistoryResponse>>.SuccessAsync(result);
         }
@@ -207,42 +190,35 @@ namespace IGift.Infrastructure.Services.Communication
                     LastMessage = mensaje.Message,
                     Seen = mensaje.Seen,
                     IsLastMessageFromMe = soyYo,
-                    ToUserId = otroUsuario.Id,
-                    FromUserId = CurrentUserId,
                     UserName = otroUsuario.UserName,
                     Data = foto?.Data,
+                    UserId = otroUsuario.Id
                 };
             });
             var result = await Task.WhenAll(tasks);
             return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(result);
         }
 
+
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {
-            try
+            var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
+
+            if (!userResponse.Succeeded)
+                return await Result.FailAsync("El usuario no existe");
+
+            await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
             {
-                var userResponse = await _userService.GetByIdAsync(chat.ToUserId);
+                FromUserId = chat.FromUserId,
+                ToUserId = chat.ToUserId,
+                Message = chat.Message,
+                CreatedDate = DateTime.Now,
+                Seen = false
+            });
 
-                if (!userResponse.Succeeded)
-                    return await Result.FailAsync("El usuario no existe");
+            await _context.SaveChangesAsync();
 
-                await _context.ChatHistories.AddAsync(new ChatHistory<IGiftUser>
-                {
-                    FromUserId = chat.FromUserId,
-                    ToUserId = chat.ToUserId,
-                    Message = chat.Message,
-                    CreatedDate = DateTime.Now,
-                    Seen = false
-                });
-
-                await _context.SaveChangesAsync();
-
-                return await Result.SuccessAsync();
-            }
-            catch (Exception e)
-            {
-            }
-            return await Result.FailAsync();
+            return await Result.SuccessAsync();
         }
     }
 }

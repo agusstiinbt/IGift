@@ -60,10 +60,10 @@
 
                             @foreach (var registro in Chats)
                             {
-                                <MudPaper Style="background-color:#a3bacf" @onclick="()=>SelectedChatBubble(registro)">
+                                <MudPaper Style="background-color:#a3bacf" @onclick="()=>SelectedChatBubble(registro.UserId)">
 
                                     <div>
-                                        <MudFab title="Perfil" Style="@GetProfilePictureData(registro.Data)" />
+                                        <MudFab title="Perfil" Style="@GetProfilePictureData(registro.UserId)" />
                                     </div>
 
                                     <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
@@ -108,20 +108,19 @@
 
                         <MudSpacer />
                         <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
+
                     </MudToolBar>
 
                     @* Mensajes *@
                     <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;overflow-x:hidden" id="chatContainer">
 
-
                         @if (CurrentChat != null)
                         {
                             if (CurrentChat.Any())
                             {
-
                                 @foreach (var item in CurrentChat)
                                 {
-                                    if (item.IsMyMessage)
+                                    if (item.FromUserId == CurrentUserId)
                                     {
                                         <MudPaper Style="background-color:transparent" Class="d-flex justify-end">
                                             <div>
@@ -141,7 +140,7 @@
                                     {
                                         <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
                                             <MudAvatar>
-                                                <MudFab title="Perfil" Style="@GetProfilePictureData(item.Data)" />
+                                                <MudFab title="Perfil" Style="@GetProfilePictureData(item.FromUserId)" />
                                             </MudAvatar>
                                         </MudPaper>
 
@@ -166,7 +165,7 @@
 
                     <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:lightgrey">
 
-                        <MudTextField T="string" Placeholder="Enter your message..."Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
+                        <MudTextField T="string" Placeholder="Enter your message..." Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
                         <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
                     </MudPaper>
@@ -219,18 +218,14 @@
         }
     }
 
-    private string GetProfilePictureData(byte[] c)
+    private string GetProfilePictureData(string FromUserId)
     {
-        var imageBase64 = string.Empty;
-        var estilo = string.Empty;
-        if (c != null)
-        {
-            imageBase64 = Convert.ToBase64String(c);
-
+        var imageBase64 = FotosDeUsuarios.Where(x => x.Key == FromUserId).First().Value;
+        if (!string.IsNullOrEmpty(imageBase64))
             return $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
-        }
         return "";
     }
+
     private string EstiloBotones = "color:Black";
 
 }

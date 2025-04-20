@@ -12,6 +12,8 @@
 
         public string FromUserId { get; set; }
 
+        public bool IsFirstTime { get; set; }
+
         public SearchChatById(string ToUserId, string fromUserId)
         {
             this.ToUserId = ToUserId;

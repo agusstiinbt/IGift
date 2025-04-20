@@ -13,6 +13,12 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         /// <returns></returns>
         Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(SearchChatById obj);
 
+
+        /// <summary>
+        /// Carga la grilla de chats en el costado izquierdo
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(LoadChatUsers obj);
 
         /// <summary>
@@ -20,6 +26,6 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         /// </summary>
         /// <param name="saveChatMessage"></param>
         /// <returns></returns>
-        Task<IResult> SaveMessage(SaveChatMessage saveChatMessage);
+        Task<IResult<IEnumerable<ChatUserResponse>>> SaveMessage(SaveChatMessage saveChatMessage);
     }
 }
