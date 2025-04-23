@@ -26,6 +26,6 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         /// </summary>
         /// <param name="saveChatMessage"></param>
         /// <returns></returns>
-        Task<IResult<IEnumerable<ChatUserResponse>>> SaveMessage(SaveChatMessage saveChatMessage);
+        Task<IResult<IEnumerable<ChatUserResponse>>> SaveMessageAsync(SaveChatMessage saveChatMessage);
     }
 }

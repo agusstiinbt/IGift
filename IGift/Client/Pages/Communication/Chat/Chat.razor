@@ -120,34 +120,62 @@
                             {
                                 @foreach (var item in CurrentChat)
                                 {
-                                    if (item.FromUserId == CurrentUserId)
+                                    var esMio = item.FromUserId == CurrentUserId;
+
+                                    if (esMio)
                                     {
-                                        <MudPaper Style="background-color:transparent" Class="d-flex justify-end">
+                                        <MudPaper Class="d-flex justify-end" Elevation="0">
                                             <div>
                                                 <MudFab Label="@Iniciales" Style="@backgroundProfilePicture" />
                                             </div>
                                         </MudPaper>
 
-                                        <MudPaper Style="height:100px;" Class="d-flex justify-end" Elevation="0">
-                                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                                <p>@item.Date</p>
-                                                <p>@item.Message</p>
+                                        <MudPaper Outlined="false" Style="height:100px;border:hidden" Class="d-flex justify-end" Elevation="0">
+
+                                            <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
+
+                                                <div class="d-flex flex-row justify-content-end mb-2">
+                                                    <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
+
+                                                        <p style="margin: 0; font-size: 1rem;">@item.Message</p>
+
+                                                        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
+                                                            <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
+                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
                                             </MudPaper>
                                         </MudPaper>
+
                                         <br />
                                     }
                                     else
                                     {
-                                        <MudPaper Style="background-color:transparent" Class="d-flex justify-start">
+                                        <MudPaper Class="d-flex justify-start" Elevation="0">
                                             <MudAvatar>
                                                 <MudFab title="Perfil" Style="@GetProfilePictureData(item.FromUserId)" />
                                             </MudAvatar>
                                         </MudPaper>
 
-                                        <MudPaper Style="height:100px;" Class="d-flex justify-start" Elevation="0">
-                                            <MudPaper Class="mud-theme-primary" Width="124px" Height="64px">
-                                                <p>@item.Date</p>
-                                                <p>@item.Message</p>
+                                        <MudPaper Outlined="false" Style="height:100px;" Class="d-flex justify-start" Elevation="0">
+                                            <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
+                                                <div class="d-flex flex-row justify-content-end mb-2">
+                                                    <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
+
+                                                        <p style="margin: 0; font-size: 1rem;">@item.Message</p>
+
+                                                        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
+                                                            <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
+                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </MudPaper>
                                         </MudPaper>
                                         <br />

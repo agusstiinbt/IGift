@@ -41,8 +41,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
             }
         }
 
-
-        public async Task<IResult<IEnumerable<ChatUserResponse>>> SaveMessage(SaveChatMessage saveChatMessage)
+        public async Task<IResult<IEnumerable<ChatUserResponse>>> SaveMessageAsync(SaveChatMessage saveChatMessage)
         {
             var response = await _httpClient.PostAsJsonAsync(ChatController.SaveMessage, saveChatMessage);
             var result = await response.ToResult<IEnumerable<ChatUserResponse>>();

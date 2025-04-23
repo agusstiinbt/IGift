@@ -199,7 +199,6 @@ namespace IGift.Infrastructure.Services.Communication
             return await Result<IEnumerable<ChatUserResponse>>.SuccessAsync(result);
         }
 
-
         public async Task<IResult> SaveMessage(SaveChatMessage chat)
         {
             var userResponse = await _userService.GetByIdAsync(chat.ToUserId);

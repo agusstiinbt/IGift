@@ -26,6 +26,7 @@ namespace IGift.Client.Pages.Communication.Chat
         //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
         private AuthenticationState? _authenticationState { get; set; } = null;
 
+        private Queue<SaveChatMessage> _colaMensajes { get; set; }
 
         /// <summary>
         /// El Id del usuario al cual vamos a enviar o recibir mensajes
@@ -42,13 +43,15 @@ namespace IGift.Client.Pages.Communication.Chat
         private string Apellido { get; set; }
         private string Iniciales { get; set; }
 
-
         private string backgroundProfilePicture = string.Empty;
 
+        private bool Send { get; set; }=false;
+        private bool Received { get; set; } = false;    
 
         //Metodos
         protected override async Task OnInitializedAsync()
         {
+            _colaMensajes = new Queue<SaveChatMessage>();
 
             FotosDeUsuarios = new Dictionary<string, string>();
 
@@ -115,7 +118,6 @@ namespace IGift.Client.Pages.Communication.Chat
 
         //    await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
         //}
-
 
 
         /// <summary>
@@ -192,28 +194,22 @@ namespace IGift.Client.Pages.Communication.Chat
             if (!string.IsNullOrEmpty(CurrentMessage) && !string.IsNullOrEmpty(ToUserId))
             {
                 //Save Message to DBs
-                var message = new SaveChatMessage
+                var guardarMensaje = new SaveChatMessage
                 {
                     Message = CurrentMessage,
                     FromUserId = CurrentUserId,
                     ToUserId = ToUserId
                 };
 
-                var response = await _chatManager.SaveMessage(message);
+                _colaMensajes.Enqueue(guardarMensaje);
+                AgregarMensajeAlChat(CurrentMessage);
+                await ProcesarColaAsync();
+
+                var response = await _chatManager.SaveMessageAsync(guardarMensaje);
 
                 if (response.Succeeded)
                 {
                     var userName = _authenticationState!.User.GetFirstName();
-
-                    CurrentChat.Add(new ChatHistoryResponse()
-                    {
-                        FromUserId = CurrentUserId,
-                        ToUserId = ToUserId,
-                        Message = CurrentMessage,
-                        Seen = false,
-                        Date = DateTime.Now,
-                    });
-                    StateHasChanged();
 
                     try
                     {
@@ -230,6 +226,37 @@ namespace IGift.Client.Pages.Communication.Chat
                 else
                     for (int i = 0; i < response.Messages.Count; i++)
                         _snack.Add(response.Messages[i], Severity.Error);
+            }
+
+        }
+
+
+        private void AgregarMensajeAlChat(string msg)
+        {
+            CurrentChat.Add(new ChatHistoryResponse()
+            {
+                FromUserId = CurrentUserId,
+                ToUserId = ToUserId,
+                Message = msg,
+                Seen = false,
+                Date = DateTime.Now,
+            });
+            StateHasChanged();
+        }
+
+        private async Task ProcesarColaAsync()
+        {
+            while (_colaMensajes.TryDequeue(out var msg))
+            {
+                var result = await _chatManager.SaveMessageAsync(msg);
+                if (result.Succeeded)
+                {
+                    Received = true;
+                }
+                else
+                {
+                    Received = false;
+                }
             }
 
         }
