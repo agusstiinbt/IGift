@@ -6,7 +6,9 @@ using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace IGift.Client.Pages.Communication.Chat
@@ -14,7 +16,6 @@ namespace IGift.Client.Pages.Communication.Chat
     public partial class Chat
     {
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
-
 
         /// <summary>
         /// Todos los mensajes de un chat especifico
@@ -32,6 +33,8 @@ namespace IGift.Client.Pages.Communication.Chat
 
         private Queue<SaveChatMessage> _colaMensajes { get; set; }
 
+        private DotNetObjectReference<Chat>? _dotNetRef;
+
         /// <summary>
         /// El Id del usuario al cual vamos a enviar o recibir mensajes
         /// </summary>
@@ -39,7 +42,7 @@ namespace IGift.Client.Pages.Communication.Chat
         private string? CurrentMessage { get; set; }
         private string CurrentUserId { get; set; } = string.Empty;
 
-        private bool _open = false;
+        private bool _open = true;
 
         private string IdUser { get; set; } = string.Empty;
         private string Nombre { get; set; }
@@ -47,6 +50,8 @@ namespace IGift.Client.Pages.Communication.Chat
         private string Iniciales { get; set; }
 
         private string backgroundProfilePicture = string.Empty;
+
+        private bool First { get; set; } = true;
 
         //Metodos
         protected override async Task OnInitializedAsync()
@@ -70,6 +75,14 @@ namespace IGift.Client.Pages.Communication.Chat
 
             await LoadChatUsers();
             //await InitializeHub();
+        }
+
+
+        [JSInvokable]
+        public async Task SendMessageFromJs(string message)
+        {
+            CurrentMessage = message;
+            await SubmitAsync(); // tu lógica de enviar mensaje
         }
 
         ///// <summary>
@@ -157,6 +170,7 @@ namespace IGift.Client.Pages.Communication.Chat
 
                 Chats = result.Data.ToList();
 
+
                 for (int i = 0; i < Chats.Count; i++)
                 {
                     imageBase64 = Convert.ToBase64String(Chats[i].Data);
@@ -181,7 +195,20 @@ namespace IGift.Client.Pages.Communication.Chat
             var response = await _chatManager.GetChatById(new SearchChatById(ToUserId!, CurrentUserId));
 
             if (response.Succeeded)
+            {
                 CurrentChat = response.Data.ToList();
+
+                //Lo que esta aca con respecto al statehaschanged lo hacemos porque el inputtext para enviar un mensje se encuentra dentro de una clausula if y hasta que no se renderice entonces no se podra encontrar el input con el id InputChat(algo asi) entoncse no funcionara el codigo js
+                StateHasChanged();
+                if (First)
+                {
+                    _dotNetRef = DotNetObjectReference.Create(this);
+                    await _JS.InvokeVoidAsync("chatInterop.initializeEnterToSend", _dotNetRef);
+                    First = false;
+                }
+                await ScrollToBottom();
+
+            }
             else
                 _snack.Add(response.Messages.First());
         }
@@ -209,10 +236,8 @@ namespace IGift.Client.Pages.Communication.Chat
                 AgregarMensajeAlChat(guardarMensaje.Message);
 
                 await ProcesarColaAsync();
-
             }
         }
-
 
         private void AgregarMensajeAlChat(string msg)
         {
@@ -245,7 +270,20 @@ namespace IGift.Client.Pages.Communication.Chat
                         _snack.Add(result.Messages[i], Severity.Error);
                 }
             }
+            await ScrollToBottom();
+
             StateHasChanged();
+
+        }
+
+        /// <summary>
+        /// Lleva el scroll hasta abajo de todo
+        /// </summary>
+        /// <returns></returns>
+        private async Task ScrollToBottom()
+        {
+            await _JS.InvokeVoidAsync("chatInterop.scrollToBottom");
+
         }
 
         private void ToggleDrawer() => _open = !_open;

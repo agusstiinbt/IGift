@@ -102,7 +102,7 @@
 
                         <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
                             <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
-                                <MudImage Src="images/jonny.jpg" />
+                                <MudImage />
                             </MudAvatar>
                         </MudBadge>
                         @* <MudFab Label="@Iniciales" Style="@background" /> *@
@@ -113,7 +113,7 @@
                     </MudToolBar>
 
                     @* Mensajes *@
-                    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;overflow-x:hidden" id="chatContainer">
+                    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow-y:auto;overflow-x:hidden" id="chatContainer">
 
                         @if (CurrentChat != null)
                         {
@@ -207,14 +207,20 @@
                     @* Envio de mensajes *@
                     <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:#DAE8F8;height:80px">
 
-                        <MudTextField T="string" Placeholder="Enter your message..." Class="mt-10" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
+                        <MudTextField id="chatInput" T="string" Placeholder="Enter your message..." Class="mt-10" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
                         <MudButton style="margin-top:40px" OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+
                         <MudButton title="adjutar archivo" style="margin-top:40px;width:fit-content" StartIcon="@Icons.Material.Filled.Image" Color="Color.Secondary" ButtonType="ButtonType.Button" />
+
                         <MudButton style="margin-top:40px;padding-left:0px" StartIcon="@Icons.Material.Filled.AttachFile" Color="Color.Secondary" ButtonType="ButtonType.Button" />
+
                     </MudPaper>
                 }
 
+                else
+                {
+                }
             </MudPaper>
 
         </MudContainer>
