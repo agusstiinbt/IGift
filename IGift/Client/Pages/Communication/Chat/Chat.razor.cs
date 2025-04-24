@@ -15,45 +15,44 @@ namespace IGift.Client.Pages.Communication.Chat
 {
     public partial class Chat
     {
+        //Parametros
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
+        //Collections
         /// <summary>
         /// Todos los mensajes de un chat especifico
         /// </summary>
         private List<ChatHistoryResponse> CurrentChat { get; set; } = null;
         private List<ChatUserResponse> Chats { get; set; } = null;
-
         /// <summary>
         /// El Key, es el UserId. El Value tiene que ser la imagen en base 64
         /// </summary>
         private Dictionary<string, string?>? FotosDeUsuarios { get; set; } = null;
-
-        //private List<ChatHistoryResponse> _messages = new(); Creo que este se deberia de borrar
-        private AuthenticationState? _authenticationState { get; set; } = null;
-
         private Queue<SaveChatMessage> _colaMensajes { get; set; }
 
-        private DotNetObjectReference<Chat>? _dotNetRef;
+        //Otros
+        private AuthenticationState? _authenticationState { get; set; } = null;
+        private DotNetObjectReference<Chat>? _dotNetRef { get; set; }
 
+        //Strings
+        private string backgroundProfilePicture { get; set; } = string.Empty;
         /// <summary>
         /// El Id del usuario al cual vamos a enviar o recibir mensajes
         /// </summary>
         public string ToUserId { get; set; }
         private string? CurrentMessage { get; set; }
         private string CurrentUserId { get; set; } = string.Empty;
-
-        private bool _open = true;
-
         private string IdUser { get; set; } = string.Empty;
         private string Nombre { get; set; }
         private string Apellido { get; set; }
         private string Iniciales { get; set; }
 
-        private string backgroundProfilePicture = string.Empty;
-
+        //Bools
         private bool First { get; set; } = true;
+        private bool _open { get; set; } = true;
 
-        //Metodos
+
+        //Life Cycles
         protected override async Task OnInitializedAsync()
         {
             _colaMensajes = new Queue<SaveChatMessage>();
@@ -75,14 +74,6 @@ namespace IGift.Client.Pages.Communication.Chat
 
             await LoadChatUsers();
             //await InitializeHub();
-        }
-
-
-        [JSInvokable]
-        public async Task SendMessageFromJs(string message)
-        {
-            CurrentMessage = message;
-            await SubmitAsync(); // tu lógica de enviar mensaje
         }
 
         ///// <summary>
@@ -134,7 +125,7 @@ namespace IGift.Client.Pages.Communication.Chat
 
 
         /// <summary>
-        /// Cargamos NUESTRA foto de perfil
+        /// Traemos del servidor NUESTRA foto de perfil
         /// </summary>
         /// <returns></returns>
         private async Task GetProfilePicture()
@@ -230,51 +221,51 @@ namespace IGift.Client.Pages.Communication.Chat
                     ToUserId = ToUserId
                 };
 
-                CurrentMessage = string.Empty;//Lo dejamos aca para limpiar el front
+                CurrentMessage = string.Empty;//Lo dejamos aca para limpiar el front mas rapido
+
                 _colaMensajes.Enqueue(guardarMensaje);
 
-                AgregarMensajeAlChat(guardarMensaje.Message);
+                CurrentChat.Add(new ChatHistoryResponse()
+                {
+                    FromUserId = CurrentUserId,
+                    ToUserId = ToUserId,
+                    Message = guardarMensaje.Message,
+                    Seen = false,
+                    Date = DateTime.Now,
+                    Received = false,
+                    Send = false,
+                });
 
-                await ProcesarColaAsync();
+                //Procesamos la cola
+                while (_colaMensajes.TryDequeue(out var msg))
+                {
+                    var result = await _chatManager.SaveMessageAsync(msg);
+                    if (result.Succeeded)
+                    {
+                        CurrentChat.Last().Send = true;
+                        CurrentChat.Last().Received = true;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < result.Messages.Count; i++)
+                            _snack.Add(result.Messages[i], Severity.Error);
+                    }
+                }
+
+                await ScrollToBottom();
+
+                StateHasChanged();
             }
         }
 
-        private void AgregarMensajeAlChat(string msg)
+
+        [JSInvokable]
+        public async Task SendMessageFromJs(string message)
         {
-            CurrentChat.Add(new ChatHistoryResponse()
-            {
-                FromUserId = CurrentUserId,
-                ToUserId = ToUserId,
-                Message = msg,
-                Seen = false,
-                Date = DateTime.Now,
-                Received = false,
-                Send = false,
-            });
-            StateHasChanged();
+            CurrentMessage = message;
+            await SubmitAsync(); // tu lógica de enviar mensaje
         }
 
-        private async Task ProcesarColaAsync()
-        {
-            while (_colaMensajes.TryDequeue(out var msg))
-            {
-                var result = await _chatManager.SaveMessageAsync(msg);
-                if (result.Succeeded)
-                {
-                    CurrentChat.Last().Send = true;
-                    CurrentChat.Last().Received = true;
-                }
-                else
-                {
-                    for (int i = 0; i < result.Messages.Count; i++)
-                        _snack.Add(result.Messages[i], Severity.Error);
-                }
-            }
-            await ScrollToBottom();
-
-            StateHasChanged();
-
-        }
 
         /// <summary>
         /// Lleva el scroll hasta abajo de todo
@@ -285,6 +276,7 @@ namespace IGift.Client.Pages.Communication.Chat
             await _JS.InvokeVoidAsync("chatInterop.scrollToBottom");
 
         }
+
 
         private void ToggleDrawer() => _open = !_open;
     }

@@ -102,7 +102,7 @@
 
                         <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
                             <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
-                                <MudImage />
+                                <MudFab title="Perfil" Style=@OtherUserProfilePicture />
                             </MudAvatar>
                         </MudBadge>
                         @* <MudFab Label="@Iniciales" Style="@background" /> *@
@@ -217,9 +217,9 @@
 
                     </MudPaper>
                 }
-
                 else
                 {
+
                 }
             </MudPaper>
 
@@ -239,6 +239,7 @@
     private string message = "message";
     private string all = "all";
     private string group = "group";
+    private string OtherUserProfilePicture { get; set; } = string.Empty;
 
     private bool MensajesBox { get; set; } = true;
     private bool AllBox { get; set; } = false;
@@ -269,9 +270,16 @@
 
     private string GetProfilePictureData(string FromUserId)
     {
+
         var imageBase64 = FotosDeUsuarios.Where(x => x.Key == FromUserId).First().Value;
         if (!string.IsNullOrEmpty(imageBase64))
+        {
+            if (FromUserId != CurrentUserId)
+            {
+                OtherUserProfilePicture = $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
+            }
             return $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:30px;height:30px";
+        }
         return "";
     }
 
