@@ -15,6 +15,10 @@ namespace IGift.Client.Pages.Communication.Chat
     {
         [CascadingParameter] private HubConnection? _hubConnection { get; set; }
 
+
+        /// <summary>
+        /// Todos los mensajes de un chat especifico
+        /// </summary>
         private List<ChatHistoryResponse> CurrentChat = null;
         private List<ChatUserResponse> Chats { get; set; } = null;
 
@@ -36,7 +40,6 @@ namespace IGift.Client.Pages.Communication.Chat
         private string CurrentUserId { get; set; } = string.Empty;
 
         private bool _open = false;
-        private string background { get; set; }
 
         private string IdUser { get; set; } = string.Empty;
         private string Nombre { get; set; }
@@ -44,9 +47,6 @@ namespace IGift.Client.Pages.Communication.Chat
         private string Iniciales { get; set; }
 
         private string backgroundProfilePicture = string.Empty;
-
-        private bool Send { get; set; }=false;
-        private bool Received { get; set; } = false;    
 
         //Metodos
         protected override async Task OnInitializedAsync()
@@ -173,8 +173,10 @@ namespace IGift.Client.Pages.Communication.Chat
         /// </summary>
         /// <param name="ToUserId"></param>
         /// <returns></returns>
-        private async Task SelectedChatBubble(string ToUserId)
+        private async Task GetThisChatMessages(string ToUserId)
         {
+            //TODO Es conveniente siempre que se hace click en el chat buble que se cargue desde el servidor? No seria mejor directamente guardarlo en memoria y capaz que si llego una notificacion de algun chat mediante signalR entonces ahi si traer los ultimos mensajes. De hecho podemos traernos los ultimos mensajes que esten desde el ultimo mensaje ya leido de esa manera se reduce la carga de datos.
+
             this.ToUserId = ToUserId;
             var response = await _chatManager.GetChatById(new SearchChatById(ToUserId!, CurrentUserId));
 
@@ -201,33 +203,14 @@ namespace IGift.Client.Pages.Communication.Chat
                     ToUserId = ToUserId
                 };
 
+                CurrentMessage = string.Empty;//Lo dejamos aca para limpiar el front
                 _colaMensajes.Enqueue(guardarMensaje);
-                AgregarMensajeAlChat(CurrentMessage);
+
+                AgregarMensajeAlChat(guardarMensaje.Message);
+
                 await ProcesarColaAsync();
 
-                var response = await _chatManager.SaveMessageAsync(guardarMensaje);
-
-                if (response.Succeeded)
-                {
-                    var userName = _authenticationState!.User.GetFirstName();
-
-                    try
-                    {
-                        //await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, saveChatMessage, CurrentUserId);
-
-                        //await _hubConnection!.SendAsync(AppConstants.SignalR.SendMessageAsync, chat, CurrentUserId, userName);
-                    }
-                    catch (Exception)
-                    {
-                        _snack.Add("Ocurrio un problema con SignalR. Proceda con cuidado", Severity.Warning);
-                    }
-                    CurrentMessage = string.Empty;
-                }
-                else
-                    for (int i = 0; i < response.Messages.Count; i++)
-                        _snack.Add(response.Messages[i], Severity.Error);
             }
-
         }
 
 
@@ -240,6 +223,8 @@ namespace IGift.Client.Pages.Communication.Chat
                 Message = msg,
                 Seen = false,
                 Date = DateTime.Now,
+                Received = false,
+                Send = false,
             });
             StateHasChanged();
         }
@@ -251,14 +236,16 @@ namespace IGift.Client.Pages.Communication.Chat
                 var result = await _chatManager.SaveMessageAsync(msg);
                 if (result.Succeeded)
                 {
-                    Received = true;
+                    CurrentChat.Last().Send = true;
+                    CurrentChat.Last().Received = true;
                 }
                 else
                 {
-                    Received = false;
+                    for (int i = 0; i < result.Messages.Count; i++)
+                        _snack.Add(result.Messages[i], Severity.Error);
                 }
             }
-
+            StateHasChanged();
         }
 
         private void ToggleDrawer() => _open = !_open;

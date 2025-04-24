@@ -60,7 +60,7 @@
 
                             @foreach (var registro in Chats)
                             {
-                                <MudPaper Style="background-color:#a3bacf" @onclick="()=>SelectedChatBubble(registro.UserId)">
+                                <MudPaper Style="background-color:#a3bacf" @onclick="()=>GetThisChatMessages(registro.UserId)">
 
                                     <div>
                                         <MudFab title="Perfil" Style="@GetProfilePictureData(registro.UserId)" />
@@ -141,14 +141,25 @@
 
                                                         <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
                                                             <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
-                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
-                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+
+                                                            @if (item.Send)
+                                                            {
+                                                                <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                                if (item.Received)
+                                                                {
+                                                                    <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                                }
+                                                            }
+                                                            else{
+                                                                <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.WatchLater" />
+                                                            }
                                                         </div>
 
                                                     </div>
                                                 </div>
 
                                             </MudPaper>
+
                                         </MudPaper>
 
                                         <br />

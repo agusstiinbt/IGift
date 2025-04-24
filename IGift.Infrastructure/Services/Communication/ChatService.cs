@@ -147,6 +147,8 @@ namespace IGift.Infrastructure.Services.Communication
                     Message = mensaje.Message,
                     Seen = mensaje.Seen,
                     Date = mensaje.CreatedDate,
+                    Send = true,
+                    Received=mensaje.Received,
                 };
             });
 
@@ -212,7 +214,9 @@ namespace IGift.Infrastructure.Services.Communication
                 ToUserId = chat.ToUserId,
                 Message = chat.Message,
                 CreatedDate = DateTime.Now,
-                Seen = false
+                Seen = false,
+                Send = true,
+                Received = false
             });
 
             await _context.SaveChangesAsync();

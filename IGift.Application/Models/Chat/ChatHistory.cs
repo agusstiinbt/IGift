@@ -8,8 +8,10 @@ namespace IGift.Application.Models.Chat
         public required string FromUserId { get; set; }
         public required string ToUserId { get; set; }
         public required string Message { get; set; }
-        public required bool Seen { get; set; }
         public DateTime CreatedDate { get; set; }
+        public required bool Send { get; set; }
+        public required bool Received { get; set; }
+        public required bool Seen { get; set; }
         public TUser FromUser { get; set; }
         public TUser ToUser { get; set; }
     }
