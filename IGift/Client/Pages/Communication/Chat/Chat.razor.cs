@@ -19,7 +19,7 @@ namespace IGift.Client.Pages.Communication.Chat
         /// <summary>
         /// Todos los mensajes de un chat especifico
         /// </summary>
-        private List<ChatHistoryResponse> CurrentChat = null;
+        private List<ChatHistoryResponse> CurrentChat { get; set; } = null;
         private List<ChatUserResponse> Chats { get; set; } = null;
 
         /// <summary>

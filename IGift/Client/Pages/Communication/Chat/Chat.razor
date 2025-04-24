@@ -95,8 +95,9 @@
 
             <MudPaper Style="background-color:transparent" Width="100%" Square="true">
 
-                @if (true)
+                @if (CurrentChat != null)
                 {
+                    @* Barra de herramientas superior *@
                     <MudToolBar Style="width:100%;background-color:transparent;" Class="align-self-start">
 
                         <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
@@ -150,7 +151,8 @@
                                                                     <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
                                                                 }
                                                             }
-                                                            else{
+                                                            else
+                                                            {
                                                                 <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.WatchLater" />
                                                             }
                                                         </div>
@@ -202,13 +204,15 @@
 
                     </div>
 
-                    <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:lightgrey">
+                    @* Envio de mensajes *@
+                    <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:#DAE8F8;height:80px">
 
-                        <MudTextField T="string" Placeholder="Enter your message..." Class="mt-n2 mx-4" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
+                        <MudTextField T="string" Placeholder="Enter your message..." Class="mt-10" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
-                        <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+                        <MudButton style="margin-top:40px" OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+                        <MudButton title="adjutar archivo" style="margin-top:40px;width:fit-content" StartIcon="@Icons.Material.Filled.Image" Color="Color.Secondary" ButtonType="ButtonType.Button" />
+                        <MudButton style="margin-top:40px;padding-left:0px" StartIcon="@Icons.Material.Filled.AttachFile" Color="Color.Secondary" ButtonType="ButtonType.Button" />
                     </MudPaper>
-
                 }
 
             </MudPaper>
