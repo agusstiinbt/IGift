@@ -1,12 +1,10 @@
-﻿using System.Security.Claims;
-using Client.Infrastructure.Authentication;
+﻿using Client.Infrastructure.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
 using MudBlazor;
@@ -16,7 +14,8 @@ namespace IGift.Client.Pages.Communication.Chat
     public partial class Chat
     {
         //Parametros
-        [CascadingParameter] private HubConnection? _hubConnection { get; set; }
+        [CascadingParameter] public required Task<AuthenticationState> AuthenticationState { get; set; }
+
 
         //Collections
         /// <summary>
@@ -28,9 +27,10 @@ namespace IGift.Client.Pages.Communication.Chat
         /// El Key, es el UserId. El Value tiene que ser la imagen en base 64
         /// </summary>
         private Dictionary<string, string?>? FotosDeUsuarios { get; set; } = null;
-        private Queue<SaveChatMessage> _colaMensajes { get; set; }
+        private Queue<SaveChatMessage>? _colaMensajes { get; set; } = null;
 
         //Otros
+        public HubConnection? _hubConnection { get; set; }
         private AuthenticationState? _authenticationState { get; set; } = null;
         private DotNetObjectReference<Chat>? _dotNetRef { get; set; }
 
@@ -39,22 +39,21 @@ namespace IGift.Client.Pages.Communication.Chat
         /// <summary>
         /// El Id del usuario al cual vamos a enviar o recibir mensajes
         /// </summary>
-        public string ToUserId { get; set; }
-        private string? CurrentMessage { get; set; }
+        public string ToUserId { get; set; } = string.Empty;
+        private string CurrentMessage { get; set; } = string.Empty;
         private string CurrentUserId { get; set; } = string.Empty;
-        private string IdUser { get; set; } = string.Empty;
-        private string Nombre { get; set; }
-        private string Apellido { get; set; }
-        private string Iniciales { get; set; }
 
         //Bools
         private bool First { get; set; } = true;
         private bool _open { get; set; } = true;
+        public bool IsHubConnected { get; set; } = false;
 
 
         //Life Cycles
         protected override async Task OnInitializedAsync()
         {
+            await InitializeHub();
+
             _colaMensajes = new Queue<SaveChatMessage>();
 
             FotosDeUsuarios = new Dictionary<string, string>();
@@ -62,66 +61,67 @@ namespace IGift.Client.Pages.Communication.Chat
             _authenticationState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
             CurrentUserId = _authenticationState.User.GetUserId();
 
-            var user = _authenticationState.User;
-
-            if (_authenticationState != null && user.Identity.IsAuthenticated)
-            {
-                Nombre = user.FindFirst(c => c.Type == ClaimTypes.Name)?.Value!;
-                Apellido = user.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value!;
-                IdUser = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-            }
             await GetProfilePicture();
 
             await LoadChatUsers();
-            //await InitializeHub();
         }
 
-        ///// <summary>
-        ///// Inicializamos todas las conexiones de tipo Hub
-        ///// </summary>
-        ///// <returns></returns>
-        //private async Task InitializeHub()
-        //{
-        //    //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
-        //    //_hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
-        //    //{
-        //    //    // var connectedUser= userli
-        //    //});
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await ScrollToBottom();
+        }
 
+        /// <summary>
+        /// Inicializamos todas las conexiones de tipo Hub
+        /// </summary>
+        /// <returns></returns>
+        private async Task InitializeHub()
+        {
+            //TODO finalizar; Esto se encarga ( entre otras subscripciones más) de dejar en online/offline a los usuarios recibidos por parámetro
+            //_hubConnection.On<string>(AppConstants.SignalR.ConnectUser, (userId) =>
+            //{
+            //    // var connectedUser= userli
+            //});
 
-        //    _hubConnection.On<SaveChatMessage, string>(AppConstants.SignalR.ReceiveMessageAsync, async (chatHistory, userName) =>
-        //    {
-        //        if (CurrentUserId == chatHistory.FromUserId)
-        //        {
-        //            if (ChatId == chatHistory.ToUserId && CurrentUserId == chatHistory.FromUserId)
-        //            {
-        //                _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = CurrentUserImageUrl });
-        //                await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotification, "New Message From " + userName, ChatId, CurrentUserId);
-        //            }
-        //            else if (ChatId == chatHistory.FromUserId && CurrentUserId == chatHistory.ToUserId)
-        //            {
-        //                _messages.Add(new ChatHistoryResponse { Message = chatHistory.Message, CreatedDate = chatHistory.CreatedDate, FromUserImageURL = ChatImageUrl });
-        //            }
-        //            //TODO finalizar await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatContainer");
-        //            StateHasChanged();
-        //        }
-        //        ;
-        //    }
-        //    );
-        //    //await GetUsersAsync(); Esto se usaría para traer todos los chats que tenemos 
+            try
+            {
+                _hubConnection = await _hubConnection.TryInitialize(_nav, _authService, _localStorage);
 
-        //    var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        //    CurrentUserId = state.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+                if (_hubConnection != null)
+                {
+                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveMessageAsync, (chatHistory) =>
+                     {
+                         if (CurrentUserId == chatHistory.ToUserId && ToUserId == chatHistory.FromUserId)
+                         {
+                             _snack.Add("Has recibido un mensaje de otro usuario1");
 
-        //    CurrentUserImageUrl = await _localStorage.GetItemAsync<string>(AppConstants.Local.UserImageURL);
+                             CurrentChat.Add(chatHistory);
 
-        //    if (!string.IsNullOrEmpty(ChatId))
-        //    {
-        //        await LoadUserChat(ChatId);
-        //    }
+                             //await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, "Nuevo mensaje de " + userName, ToUserId, CurrentUserId);
+                         }
 
-        //    await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
-        //}
+                         StateHasChanged();
+                     });
+                    IsHubConnected = true;
+                }
+            }
+            catch (Exception e)
+            {
+                IsHubConnected = false;
+                if (e.Message.Contains("401"))
+                    _snack.Add("Conexion con SignalR perdida. Proceda con cuidado", Severity.Info, config =>
+                    {
+                        config.VisibleStateDuration = 3000;
+                        config.HideTransitionDuration = 500;
+                        config.ShowTransitionDuration = 500;
+                        config.ActionColor = Color.Primary;
+                    });
+                else
+                    _snack.Add(e.Message);
+            }
+
+            //await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
+        }
 
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace IGift.Client.Pages.Communication.Chat
         /// <returns></returns>
         private async Task GetProfilePicture()
         {
-            var result = await _profileService.GetByIdAsync(IdUser!);
+            var result = await _profileService.GetByIdAsync(CurrentUserId!);
 
             if (result.Succeeded)
             {
@@ -142,7 +142,7 @@ namespace IGift.Client.Pages.Communication.Chat
             }
             else
             {
-                Iniciales = Nombre.Substring(0, 1).ToUpper() + Apellido.Substring(0, 1).ToUpper();
+                _snack.Add(result.Messages.First(), Severity.Error);
             }
         }
 
@@ -161,7 +161,6 @@ namespace IGift.Client.Pages.Communication.Chat
 
                 Chats = result.Data.ToList();
 
-
                 for (int i = 0; i < Chats.Count; i++)
                 {
                     imageBase64 = Convert.ToBase64String(Chats[i].Data);
@@ -178,7 +177,7 @@ namespace IGift.Client.Pages.Communication.Chat
         /// </summary>
         /// <param name="ToUserId"></param>
         /// <returns></returns>
-        private async Task GetThisChatMessages(string ToUserId)
+        private async Task SelectChatBubble(string ToUserId)
         {
             //TODO Es conveniente siempre que se hace click en el chat buble que se cargue desde el servidor? No seria mejor directamente guardarlo en memoria y capaz que si llego una notificacion de algun chat mediante signalR entonces ahi si traer los ultimos mensajes. De hecho podemos traernos los ultimos mensajes que esten desde el ultimo mensaje ya leido de esa manera se reduce la carga de datos.
 
@@ -197,8 +196,7 @@ namespace IGift.Client.Pages.Communication.Chat
                     await _JS.InvokeVoidAsync("chatInterop.initializeEnterToSend", _dotNetRef);
                     First = false;
                 }
-                await ScrollToBottom();
-
+                StateHasChanged();
             }
             else
                 _snack.Add(response.Messages.First());
@@ -221,22 +219,24 @@ namespace IGift.Client.Pages.Communication.Chat
                     ToUserId = ToUserId
                 };
 
-                CurrentMessage = string.Empty;//Lo dejamos aca para limpiar el front mas rapido
-
-                _colaMensajes.Enqueue(guardarMensaje);
-
-                CurrentChat.Add(new ChatHistoryResponse()
+                var chatHistory = new ChatHistoryResponse()
                 {
                     FromUserId = CurrentUserId,
                     ToUserId = ToUserId,
-                    Message = guardarMensaje.Message,
+                    Message = CurrentMessage,
                     Seen = false,
                     Date = DateTime.Now,
                     Received = false,
                     Send = false,
-                });
+                };
+
+                CurrentChat.Add(chatHistory);
+                CurrentMessage = string.Empty;//Lo dejamos aca para limpiar el front mas rapido
+                StateHasChanged();
 
                 //Procesamos la cola
+                _colaMensajes!.Enqueue(guardarMensaje);
+
                 while (_colaMensajes.TryDequeue(out var msg))
                 {
                     var result = await _chatManager.SaveMessageAsync(msg);
@@ -244,6 +244,8 @@ namespace IGift.Client.Pages.Communication.Chat
                     {
                         CurrentChat.Last().Send = true;
                         CurrentChat.Last().Received = true;
+                        StateHasChanged();
+                        await _hubConnection.SendAsync(AppConstants.SignalR.SendMessageAsync, chatHistory);
                     }
                     else
                     {
@@ -252,9 +254,6 @@ namespace IGift.Client.Pages.Communication.Chat
                     }
                 }
 
-                await ScrollToBottom();
-
-                StateHasChanged();
             }
         }
 
@@ -263,7 +262,7 @@ namespace IGift.Client.Pages.Communication.Chat
         public async Task SendMessageFromJs(string message)
         {
             CurrentMessage = message;
-            await SubmitAsync(); // tu lógica de enviar mensaje
+            await SubmitAsync();
         }
 
 
@@ -271,11 +270,7 @@ namespace IGift.Client.Pages.Communication.Chat
         /// Lleva el scroll hasta abajo de todo
         /// </summary>
         /// <returns></returns>
-        private async Task ScrollToBottom()
-        {
-            await _JS.InvokeVoidAsync("chatInterop.scrollToBottom");
-
-        }
+        private async Task ScrollToBottom() => await _JS.InvokeVoidAsync("chatInterop.scrollToBottom");
 
 
         private void ToggleDrawer() => _open = !_open;

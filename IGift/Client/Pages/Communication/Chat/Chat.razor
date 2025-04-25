@@ -4,241 +4,239 @@
 
 <MudLayout Style="height:100vh;background-color:#DBE4F5;">
 
-    @* Barra herramientas superior con boton para abrir "barra de herramientas deslizable" *@
-    <MudToolBar Style="background-color:#CFD9EF;border-width:3px;">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Error" />
-    </MudToolBar>
+    @if (IsHubConnected)
+    {
 
-    @* Barra de herramientas deslizable *@
-    <MudDrawer Style="background:radial-gradient(black, transparent);" @bind-Open="@_open" Elevation="1">
+        @* Barra herramientas superior con boton para abrir "barra de herramientas deslizable" *@
+        <MudToolBar Style="background-color:#CFD9EF;border-width:3px;">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Error" />
+        </MudToolBar>
 
-        <MudDrawerHeader Style="">
-        </MudDrawerHeader>
+        @* Barra de herramientas deslizable *@
+        <MudDrawer Style="background:radial-gradient(black, transparent);" @bind-Open="@_open" Elevation="1">
 
-        <MudNavMenu Style="background-color:transparent">
+            <MudDrawerHeader Style="">
+            </MudDrawerHeader>
 
-            <MudDivider Class="my-2" />
+            <MudNavMenu Style="background-color:transparent">
 
-            @* Botones All, Mensajes y Group *@
-            <MudPaper Class=" pa-4 align-start d-flex" Style="width: 250px; background-color:transparent" Outlined="true">
+                <MudDivider Class="my-2" />
+
+                @* Botones All, Mensajes y Group *@
+                <MudPaper Class=" pa-4 align-start d-flex" Style="width: 250px; background-color:transparent" Outlined="true">
 
 
-                <MudPaper @onclick="()=>SelectText(all)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
-                    <MudText Typo="Typo.button" HtmlTag="h3" style=@(AllBox ? "border-bottom-width: 2px;" : "")>
-                        All
-                    </MudText>
+                    <MudPaper @onclick="()=>SelectText(all)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                        <MudText Typo="Typo.button" HtmlTag="h3" style=@(AllBox ? "border-bottom-width: 2px;" : "")>
+                            All
+                        </MudText>
+                    </MudPaper>
+
+                    <MudSpacer />
+
+                    <MudPaper @onclick="()=>SelectText(message)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                        <MudText Typo="Typo.button" HtmlTag="h3" style=@(MensajesBox ? "border-bottom-width: 2px;" : "")>
+                            Mensajes
+                        </MudText>
+                    </MudPaper>
+
+                    <MudSpacer />
+
+                    <MudPaper @onclick="()=>SelectText(group)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                        <MudText Typo="Typo.button" HtmlTag="h3" style=@(GroupBox ? "border-bottom-width: 2px;" : "")>
+                            Group
+                        </MudText>
+                    </MudPaper>
+
                 </MudPaper>
 
-                <MudSpacer />
+                <MudDivider Class="my-2" />
 
-                <MudPaper @onclick="()=>SelectText(message)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
-                    <MudText Typo="Typo.button" HtmlTag="h3" style=@(MensajesBox ? "border-bottom-width: 2px;" : "")>
-                        Mensajes
-                    </MudText>
-                </MudPaper>
-
-                <MudSpacer />
-
-                <MudPaper @onclick="()=>SelectText(group)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
-                    <MudText Typo="Typo.button" HtmlTag="h3" style=@(GroupBox ? "border-bottom-width: 2px;" : "")>
-                        Group
-                    </MudText>
-                </MudPaper>
-
-            </MudPaper>
-
-            <MudDivider Class="my-2" />
-
-            @if (Chats != null && Chats.Any())
-            {
-                @if (MensajesBox || AllBox)
+                @if (Chats != null && Chats.Any())
                 {
-                    <MudContainer Style="overflow:auto;">
-                        <MudStack>
-
-                            @foreach (var registro in Chats)
-                            {
-                                <MudPaper Style="background-color:#a3bacf" @onclick="()=>GetThisChatMessages(registro.UserId)">
-
-                                    <div>
-                                        <MudFab title="Perfil" Style="@GetProfilePictureData(registro.UserId)" />
-                                    </div>
-
-                                    <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
-                                        <p><b></b></p>
-                                        <MudText Align="Align.Center"><b>@registro.UserName</b></MudText>
-                                        <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black" : "inherit")">
-                                            @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
-                                        </p>
-                                    </MudPaper>
-                                </MudPaper>
-
-                            }
-                        </MudStack>
-
-                    </MudContainer>
-                }
-            }
-
-            <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
-
-        </MudNavMenu>
-
-    </MudDrawer>
-
-    @* En este contenedor tendremos todo lo que corresponde al "Chat" *@
-    <MudMainContent Style="background-color:#FAFAFA">
-
-        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-grow-1 flex-row">
-
-            <MudPaper Style="background-color:transparent" Width="100%" Square="true">
-
-                @if (CurrentChat != null)
-                {
-                    @* Barra de herramientas superior *@
-                    <MudToolBar Style="width:100%;background-color:transparent;" Class="align-self-start">
-
-                        <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
-                            <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
-                                <MudFab title="Perfil" Style=@OtherUserProfilePicture />
-                            </MudAvatar>
-                        </MudBadge>
-                        @* <MudFab Label="@Iniciales" Style="@background" /> *@
-
-                        <MudSpacer />
-                        <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
-
-                    </MudToolBar>
-
-                    @* Mensajes *@
-                    <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow-y:auto;overflow-x:hidden" id="chatContainer">
-
-                        @if (CurrentChat != null)
-                        {
-                            if (CurrentChat.Any())
-                            {
-                                @foreach (var item in CurrentChat)
+                    @if (MensajesBox || AllBox)
+                    {
+                        <MudContainer Style="overflow:auto;">
+                            <MudStack>
+                                @foreach (var registro in Chats)
                                 {
-                                    var esMio = item.FromUserId == CurrentUserId;
+                                    <MudPaper Style="background-color:#a3bacf" @onclick="()=>SelectChatBubble(registro.UserId)">
 
-                                    if (esMio)
-                                    {
-                                        <MudPaper Class="d-flex justify-end" Elevation="0">
-                                            <div>
-                                                <MudFab Label="@Iniciales" Style="@backgroundProfilePicture" />
-                                            </div>
+                                        <div>
+                                            <MudFab title="Perfil" Style="@GetProfilePictureData(registro.UserId)" />
+                                        </div>
+
+                                        <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
+                                            <p><b></b></p>
+                                            <MudText Align="Align.Center"><b>@registro.UserName</b></MudText>
+                                            <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black" : "inherit")">
+                                                @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
+                                            </p>
                                         </MudPaper>
-
-                                        <MudPaper Outlined="false" Style="height:100px;border:hidden" Class="d-flex justify-end" Elevation="0">
-
-                                            <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
-
-                                                <div class="d-flex flex-row justify-content-end mb-2">
-                                                    <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
-
-                                                        <p style="margin: 0; font-size: 1rem;">@item.Message</p>
-
-                                                        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
-                                                            <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
-
-                                                            @if (item.Send)
-                                                            {
-                                                                <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
-                                                                if (item.Received)
-                                                                {
-                                                                    <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.WatchLater" />
-                                                            }
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </MudPaper>
-
-                                        </MudPaper>
-
-                                        <br />
-                                    }
-                                    else
-                                    {
-                                        <MudPaper Class="d-flex justify-start" Elevation="0">
-                                            <MudAvatar>
-                                                <MudFab title="Perfil" Style="@GetProfilePictureData(item.FromUserId)" />
-                                            </MudAvatar>
-                                        </MudPaper>
-
-                                        <MudPaper Outlined="false" Style="height:100px;" Class="d-flex justify-start" Elevation="0">
-                                            <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
-                                                <div class="d-flex flex-row justify-content-end mb-2">
-                                                    <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
-
-                                                        <p style="margin: 0; font-size: 1rem;">@item.Message</p>
-
-                                                        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
-                                                            <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
-                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
-                                                            <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </MudPaper>
-                                        </MudPaper>
-                                        <br />
-                                    }
+                                    </MudPaper>
 
                                 }
-                            }
-                            else
+                            </MudStack>
+
+                        </MudContainer>
+                    }
+                }
+
+                <MudNavLink Style=@EstiloBotones Href="/about">About</MudNavLink>
+
+            </MudNavMenu>
+
+        </MudDrawer>
+
+        @* En este contenedor tendremos todo lo que corresponde al "Chat" *@
+        <MudMainContent Style="background-color:#FAFAFA">
+
+            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-grow-1 flex-row">
+
+                <MudPaper Style="background-color:transparent" Width="100%" Square="true">
+
+                    @if (CurrentChat != null)
+                    {
+                        @* Barra de herramientas superior *@
+                        <MudToolBar Style="width:100%;background-color:transparent;" Class="align-self-start">
+
+                            <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
+                                <MudAvatar Style="height:50px; width:50px; font-size:2rem;">
+                                    <MudFab title="Perfil" Style=@OtherUserProfilePicture />
+                                </MudAvatar>
+                            </MudBadge>
+
+                            <MudSpacer />
+                            <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
+
+                        </MudToolBar>
+
+                        @* Mensajes *@
+                        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow-y:auto;overflow-x:hidden" id="chatContainer">
+
+                            @if (CurrentChat != null)
                             {
-                                <p>Seleccione un chat</p>
+                                if (CurrentChat.Any())
+                                {
+                                    @foreach (var item in CurrentChat)
+                                    {
+                                        var esMio = item.FromUserId == CurrentUserId;
+
+                                        if (esMio)
+                                        {
+                                            <MudPaper Class="d-flex justify-end" Elevation="0">
+                                                <div>
+                                                    <MudFab Style="@backgroundProfilePicture" />
+                                                </div>
+                                            </MudPaper>
+
+                                            <MudPaper Outlined="false" Style="height:100px;border:hidden" Class="d-flex justify-end" Elevation="0">
+
+                                                <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
+
+                                                    <div class="d-flex flex-row justify-content-end mb-2">
+                                                        <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
+
+                                                            <p style="margin: 0; font-size: 1rem;">@item.Message</p>
+
+                                                            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
+                                                                <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
+
+                                                                @if (item.Send)
+                                                                {
+                                                                    <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                                    if (item.Received)
+                                                                    {
+                                                                        <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.Check" />
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <MudIcon Style="font-size: 1rem;" Icon="@Icons.Material.Filled.WatchLater" />
+                                                                }
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </MudPaper>
+
+                                            </MudPaper>
+
+                                            <br />
+                                        }
+                                        else
+                                        {
+                                            <MudPaper Class="d-flex justify-start" Elevation="0">
+                                                <MudAvatar>
+                                                    <MudFab title="Perfil" Style="@GetProfilePictureData(item.FromUserId)" />
+                                                </MudAvatar>
+                                            </MudPaper>
+
+                                            <MudPaper Outlined="false" Style="height:100px;" Class="d-flex justify-start" Elevation="0">
+                                                <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
+                                                    <div class="d-flex flex-row justify-content-end mb-2">
+                                                        <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
+
+                                                            <p style="margin: 0; font-size: 1rem;">@item.Message</p>
+
+                                                            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
+                                                                <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </MudPaper>
+                                            </MudPaper>
+                                            <br />
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Seleccione un chat</p>
+                                }
                             }
-                        }
 
-                    </div>
+                        </div>
 
-                    @* Envio de mensajes *@
-                    <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:#DAE8F8;height:80px">
+                        @* Envio de mensajes *@
+                        <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:#DAE8F8;height:80px">
 
-                        <MudTextField id="chatInput" T="string" Placeholder="Enter your message..." Class="mt-10" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
+                            <MudTextField id="chatInput" T="string" Placeholder="Enter your message..." Class="mt-10" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
-                        <MudButton style="margin-top:40px" OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+                            <MudButton style="margin-top:40px" OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
 
-                        <MudButton title="adjutar archivo" style="margin-top:40px;width:fit-content" StartIcon="@Icons.Material.Filled.Image" Color="Color.Secondary" ButtonType="ButtonType.Button" />
+                            <MudButton title="adjutar archivo" style="margin-top:40px;width:fit-content" StartIcon="@Icons.Material.Filled.Image" Color="Color.Secondary" ButtonType="ButtonType.Button" />
 
-                        <MudButton style="margin-top:40px;padding-left:0px" StartIcon="@Icons.Material.Filled.AttachFile" Color="Color.Secondary" ButtonType="ButtonType.Button" />
+                            <MudButton style="margin-top:40px;padding-left:0px" StartIcon="@Icons.Material.Filled.AttachFile" Color="Color.Secondary" ButtonType="ButtonType.Button" />
 
-                    </MudPaper>
-                }
-                else
-                {
+                        </MudPaper>
+                    }
+                    else
+                    {
 
-                }
-            </MudPaper>
+                    }
+                </MudPaper>
 
-        </MudContainer>
+            </MudContainer>
 
-    </MudMainContent>
+        </MudMainContent>
+    }
+    else
+    {
+        <MudSkeleton />
+        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="50px" Height="50px" />
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="200px" Height="110px" />
+    }
 
 </MudLayout>
 
 @code {
 
-    private List<string> MenusInChat = new List<string>()
-    {
-        "message","all","group"
-    };
-
-    private string message = "message";
-    private string all = "all";
-    private string group = "group";
     private string OtherUserProfilePicture { get; set; } = string.Empty;
 
     private bool MensajesBox { get; set; } = true;
@@ -270,7 +268,6 @@
 
     private string GetProfilePictureData(string FromUserId)
     {
-
         var imageBase64 = FotosDeUsuarios.Where(x => x.Key == FromUserId).First().Value;
         if (!string.IsNullOrEmpty(imageBase64))
         {

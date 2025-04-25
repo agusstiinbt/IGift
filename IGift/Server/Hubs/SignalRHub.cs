@@ -34,14 +34,11 @@ namespace IGift.Server.Hubs
             await Clients.All.SendAsync(AppConstants.SignalR.ReceiveRegenerateTokensAsync);
         }
 
-        public async Task SendMessageAsync(SaveChatMessage chat, string CurrentUserId, string userName)
+        public async Task SendMessageAsync(ChatHistoryResponse chatHistory)
         {
-            //await Clients.All.SendAsync("ReceiveMessage", userName);
-
-            await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chat, userName);
-            await Clients.User(chat.FromUserId).SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chat, userName);
+            //await Clients.All.SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chatHistory);
+            await Clients.User(chatHistory.ToUserId).SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chatHistory);
         }
-
 
         public async Task SendChatNotificationAsync(SaveChatMessage chat, string receiverUserId)
         {

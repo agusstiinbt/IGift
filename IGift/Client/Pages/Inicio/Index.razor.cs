@@ -60,8 +60,8 @@ namespace IGift.Client.Pages.Inicio
             var authState = await AuthenticationState;
             if (authState.User.Identity!.IsAuthenticated)
             {
-                _interceptor.RegisterEvent();
-                IsHubConnected = await InitializeHub();
+                //_interceptor.RegisterEvent(); //TODO quitar? Leer la descripcion de ese metodo
+                await InitializeHub();
 
                 if (!IsHubConnected)
                 {
@@ -212,7 +212,7 @@ namespace IGift.Client.Pages.Inicio
         /// Inicializamos todas las conexiones de tipo Hub
         /// </summary>
         /// <returns></returns>
-        private async Task<bool> InitializeHub()
+        private async Task InitializeHub()
         {
             try
             {
@@ -304,7 +304,6 @@ namespace IGift.Client.Pages.Inicio
                 else
                     _snack.Add(e.Message);
             }
-            return IsHubConnected;
         }
 
         /// <summary>

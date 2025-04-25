@@ -22,7 +22,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         Task<IResult<IEnumerable<ChatUserResponse>>> LoadChatUsers(LoadChatUsers obj);
 
         /// <summary>
-        /// Guarda un mensaje al chat entre usuarios
+        /// Guarda un mensaje de chat en la bbdd
         /// </summary>
         /// <param name="saveChatMessage"></param>
         /// <returns></returns>

@@ -3,7 +3,6 @@ using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
 using IGift.Application.Models.Chat;
-using IGift.Application.Responses.Files;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;
@@ -148,7 +147,7 @@ namespace IGift.Infrastructure.Services.Communication
                     Seen = mensaje.Seen,
                     Date = mensaje.CreatedDate,
                     Send = true,
-                    Received=mensaje.Received,
+                    Received = mensaje.Received,
                 };
             });
 
