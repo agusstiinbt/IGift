@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
 using Client.Infrastructure.Authentication;
+using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
@@ -63,7 +64,21 @@ namespace IGift.Client.Pages.Inicio
                 //_interceptor.RegisterEvent(); //TODO quitar? Leer la descripcion de ese metodo
                 await InitializeHub();
 
-                if (!IsHubConnected)
+                if (IsHubConnected)
+                {
+                    await _authService.Disconnect(DotNetObjectReference.Create(this));
+                    var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
+
+                    var response = await _titulosService.LoadConectado();
+                    if (response.Succeeded)
+                    {
+                        titulosConectado = response.Data.Titulos.ToList();
+                        listaCategorias = response.Data.Categorias.ToList();
+
+                        UserName = state.User.GetFirstName();
+                    }
+                }
+                else
                 {
                     try
                     {
@@ -77,20 +92,6 @@ namespace IGift.Client.Pages.Inicio
                         await Logout();
                     }
                 }
-                else
-                {
-                    //await _authService.Disconnect(DotNetObjectReference.Create(this));
-                    var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-
-                    var response = await _titulosService.LoadConectado();
-                    if (response.Succeeded)
-                    {
-                        titulosConectado = response.Data.Titulos.ToList();
-                        listaCategorias = response.Data.Categorias.ToList();
-
-                        UserName = state.User.GetFirstName();
-                    }
-                }
             }
             else
             {
@@ -98,7 +99,6 @@ namespace IGift.Client.Pages.Inicio
             }
 
         }
-
 
         private void SeleccionarBoton(string boton)
         {
@@ -219,22 +219,6 @@ namespace IGift.Client.Pages.Inicio
                 _hubConnection = await _hubConnection.TryInitialize(_nav, _authService, _localStorage);
                 if (_hubConnection != null)
                 {
-                    _hubConnection.On<SaveChatMessage, string>(AppConstants.SignalR.ReceiveChatNotificationAsync, (Chat, receiverUserId) =>
-                    {
-                        if (CurrentUserId != receiverUserId)
-                        {
-                            //TODO implementar:..._jsRuntime.InvokeAsync<string>("PlayAudio", "notification");
-                            _snack.Add(Chat.Message, Severity.Info, config =>
-                            {
-                                config.VisibleStateDuration = 10000;
-                                config.HideTransitionDuration = 500;
-                                config.ShowTransitionDuration = 500;
-                                config.Action = "Chat?";
-                                config.ActionColor = Color.Primary;
-                            });
-                        }
-                    });
-
                     _hubConnection.On(AppConstants.SignalR.ReceiveRegenerateTokensAsync, async () =>
                     {
                         try
@@ -253,6 +237,28 @@ namespace IGift.Client.Pages.Inicio
                             _nav.NavigateTo("/");
                         }
                     });
+
+                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveChatNotificationAsync, (chatHistory) =>
+                    {
+                        if (CurrentUserId == chatHistory.ToUserId)
+                        {
+                            _JS.InvokeAsync<string>("PlayAudio", "notification");
+                            _snack.Add("Has recibido un mensaje de " + chatHistory.NombreYApellido, Severity.Info, config =>
+                            {
+                                config.VisibleStateDuration = 10000;
+                                config.Onclick = snackbar =>
+                                {
+                                    _nav.NavigateTo($"chat/{chatHistory.FromUserId}");
+                                    return Task.CompletedTask;
+                                };
+                            });
+
+
+                            //await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, "Nuevo mensaje de " + userName, ToUserId, CurrentUserId);
+                        }
+                        StateHasChanged();
+                    });
+
 
                     //TODO investigar sobre esto porque puede ser util para desloguer automaticamente cuando se le haya cambiado permisos o roles a un usuario
                     //_hubConnection.On<string, string>(AppConstants.SignalR.LogoutUsersByRole, async (userId, roleId) =>

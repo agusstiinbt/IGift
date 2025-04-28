@@ -15,7 +15,7 @@ namespace IGift.Client.Pages.Communication.Chat
     {
         //Parametros
         [CascadingParameter] public required Task<AuthenticationState> AuthenticationState { get; set; }
-
+        [Parameter] public string CId { get; set; }
 
         //Collections
         /// <summary>
@@ -44,9 +44,10 @@ namespace IGift.Client.Pages.Communication.Chat
         private string CurrentUserId { get; set; } = string.Empty;
 
         //Bools
-        private bool First { get; set; } = true;
+        private bool FirstRender { get; set; } = true;
         private bool _open { get; set; } = true;
         public bool IsHubConnected { get; set; } = false;
+        private bool ChatChanged { get; set; } = true;
 
 
         //Life Cycles
@@ -54,16 +55,25 @@ namespace IGift.Client.Pages.Communication.Chat
         {
             await InitializeHub();
 
-            _colaMensajes = new Queue<SaveChatMessage>();
+            if (IsHubConnected)
+            {
 
-            FotosDeUsuarios = new Dictionary<string, string>();
+                _colaMensajes = new Queue<SaveChatMessage>();
+                CurrentChat = new List<ChatHistoryResponse>();
+                FotosDeUsuarios = new Dictionary<string, string>();
 
-            _authenticationState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
-            CurrentUserId = _authenticationState.User.GetUserId();
+                _authenticationState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
 
-            await GetProfilePicture();
+                CurrentUserId = _authenticationState.User.GetUserId();
 
-            await LoadChatUsers();
+                await GetProfilePicture();
+
+                await LoadChatUsers();
+
+                if (!string.IsNullOrEmpty(CId))
+                    await SelectChatBubble(CId);
+            }
+
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -99,9 +109,10 @@ namespace IGift.Client.Pages.Communication.Chat
 
                              //await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, "Nuevo mensaje de " + userName, ToUserId, CurrentUserId);
                          }
-
                          StateHasChanged();
                      });
+
+
                     IsHubConnected = true;
                 }
             }
@@ -179,27 +190,29 @@ namespace IGift.Client.Pages.Communication.Chat
         /// <returns></returns>
         private async Task SelectChatBubble(string ToUserId)
         {
-            //TODO Es conveniente siempre que se hace click en el chat buble que se cargue desde el servidor? No seria mejor directamente guardarlo en memoria y capaz que si llego una notificacion de algun chat mediante signalR entonces ahi si traer los ultimos mensajes. De hecho podemos traernos los ultimos mensajes que esten desde el ultimo mensaje ya leido de esa manera se reduce la carga de datos.
-
-            this.ToUserId = ToUserId;
-            var response = await _chatManager.GetChatById(new SearchChatById(ToUserId!, CurrentUserId));
-
-            if (response.Succeeded)
+            if (!CurrentChat.Any(x => x.ToUserId == ToUserId))
             {
-                CurrentChat = response.Data.ToList();
+                this.ToUserId = ToUserId;
+                var response = await _chatManager.GetChatById(new SearchChatById(ToUserId!, CurrentUserId));
 
-                //Lo que esta aca con respecto al statehaschanged lo hacemos porque el inputtext para enviar un mensje se encuentra dentro de una clausula if y hasta que no se renderice entonces no se podra encontrar el input con el id InputChat(algo asi) entoncse no funcionara el codigo js
-                StateHasChanged();
-                if (First)
+                if (response.Succeeded)
                 {
-                    _dotNetRef = DotNetObjectReference.Create(this);
-                    await _JS.InvokeVoidAsync("chatInterop.initializeEnterToSend", _dotNetRef);
-                    First = false;
+                    CurrentChat = response.Data.ToList();
+
+                    //Lo que esta aca con respecto al statehaschanged lo hacemos porque el inputtext para enviar un mensje se encuentra dentro de una clausula if y hasta que no se renderice entonces no se podra encontrar el input con el id InputChat(algo asi) entoncse no funcionara el codigo js
+                    StateHasChanged();
+                    if (FirstRender)
+                    {
+                        _dotNetRef = DotNetObjectReference.Create(this);
+                        await _JS.InvokeVoidAsync("chatInterop.initializeEnterToSend", _dotNetRef);
+                        FirstRender = false;
+                    }
+                    StateHasChanged();
+                    ChatChanged = true;
                 }
-                StateHasChanged();
+                else
+                    _snack.Add(response.Messages.First());
             }
-            else
-                _snack.Add(response.Messages.First());
         }
 
 
@@ -224,28 +237,27 @@ namespace IGift.Client.Pages.Communication.Chat
                     FromUserId = CurrentUserId,
                     ToUserId = ToUserId,
                     Message = CurrentMessage,
-                    Seen = false,
                     Date = DateTime.Now,
+                    Seen = false,
                     Received = false,
                     Send = false,
                 };
 
-                CurrentChat.Add(chatHistory);
-                CurrentMessage = string.Empty;//Lo dejamos aca para limpiar el front mas rapido
-                StateHasChanged();
-
-                //Procesamos la cola
+                //Agregamos el mensaje a la cola
                 _colaMensajes!.Enqueue(guardarMensaje);
-
+                CurrentMessage = string.Empty;
+                //Procesamos la cola
                 while (_colaMensajes.TryDequeue(out var msg))
                 {
+                    CurrentChat.Add(chatHistory);
+
                     var result = await _chatManager.SaveMessageAsync(msg);
                     if (result.Succeeded)
                     {
                         CurrentChat.Last().Send = true;
                         CurrentChat.Last().Received = true;
                         StateHasChanged();
-                        await _hubConnection.SendAsync(AppConstants.SignalR.SendMessageAsync, chatHistory);
+                        await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, chatHistory);
                     }
                     else
                     {
@@ -253,7 +265,6 @@ namespace IGift.Client.Pages.Communication.Chat
                             _snack.Add(result.Messages[i], Severity.Error);
                     }
                 }
-
             }
         }
 

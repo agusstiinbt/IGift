@@ -13,4 +13,9 @@
             public static string UserProfile = "/UserProfile";
         }
     }
+
+    public class GetChatById
+    {
+        public string IdUser { get; set; } = string.Empty;
+    }
 }

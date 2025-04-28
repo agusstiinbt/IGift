@@ -115,6 +115,8 @@ namespace IGift.Infrastructure.Services.Communication
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatMessages(SearchChatById info)
         {
             var chatHistories = await _context.ChatHistories
+                .Include(x => x.FromUser)
+                .Include(x => x.ToUser)
                 .Where(x => (x.ToUserId == info.ToUserId && x.FromUserId == info.FromUserId) || (x.ToUserId == info.FromUserId && x.FromUserId == info.ToUserId))
                 .OrderBy(x => x.CreatedDate)
                 .AsNoTracking()
@@ -148,6 +150,7 @@ namespace IGift.Infrastructure.Services.Communication
                     Date = mensaje.CreatedDate,
                     Send = true,
                     Received = mensaje.Received,
+                    NombreYApellido = soyYo ? "" : otroUsuario.FirstName + " " + otroUsuario.LastName
                 };
             });
 

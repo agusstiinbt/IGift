@@ -8,7 +8,6 @@ namespace IGift.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;

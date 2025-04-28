@@ -40,9 +40,9 @@ namespace IGift.Server.Hubs
             await Clients.User(chatHistory.ToUserId).SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chatHistory);
         }
 
-        public async Task SendChatNotificationAsync(SaveChatMessage chat, string receiverUserId)
+        public async Task SendChatNotificationAsync(ChatHistoryResponse chat)
         {
-            await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotificationAsync, chat, receiverUserId);
+            await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotificationAsync, chat);
         }
     }
 }
