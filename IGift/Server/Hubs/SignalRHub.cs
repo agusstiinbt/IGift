@@ -19,9 +19,16 @@ namespace IGift.Server.Hubs
             await Clients.All.SendAsync(AppConstants.SignalR.DisconnectUserAsync, userId);
         }
 
-        public async Task ChatNotificationAsync(string message, string receiverUserId, string senderUserId)
+        /// <summary>
+        /// Actualiza los ultimos mensajes de un chat
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="receiverUserId"></param>
+        /// <param name="senderUserId"></param>
+        /// <returns></returns>
+        public async Task SendChatMessageAsync(ChatHistoryResponse chatHistory)
         {
-            await Clients.User(receiverUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotificationAsync, message, receiverUserId, senderUserId);
+            await Clients.User(chatHistory.ToUserId).SendAsync(AppConstants.SignalR.ReceiveChatMessageAsync, chatHistory);
         }
 
         public async Task SendShopCartNotificationAsync(PeticionesResponse p, string UserId)
@@ -34,12 +41,11 @@ namespace IGift.Server.Hubs
             await Clients.All.SendAsync(AppConstants.SignalR.ReceiveRegenerateTokensAsync);
         }
 
-        public async Task SendMessageAsync(ChatHistoryResponse chatHistory)
-        {
-            //await Clients.All.SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chatHistory);
-            await Clients.User(chatHistory.ToUserId).SendAsync(AppConstants.SignalR.ReceiveMessageAsync, chatHistory);
-        }
-
+        /// <summary>
+        /// Este metodo se encarga de notificar con un SnackBar con el mensaje de "llego un mensaje nuevo"
+        /// </summary>
+        /// <param name="chat"></param>
+        /// <returns></returns>
         public async Task SendChatNotificationAsync(ChatHistoryResponse chat)
         {
             await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotificationAsync, chat);

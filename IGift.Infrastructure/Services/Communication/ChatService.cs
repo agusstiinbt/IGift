@@ -150,7 +150,6 @@ namespace IGift.Infrastructure.Services.Communication
                     Date = mensaje.CreatedDate,
                     Send = true,
                     Received = mensaje.Received,
-                    NombreYApellido = soyYo ? "" : otroUsuario.FirstName + " " + otroUsuario.LastName
                 };
             });
 

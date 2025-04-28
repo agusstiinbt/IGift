@@ -12,14 +12,19 @@
             public const string RegenerateTokensAsync = "RegenerateTokensAsync";
             public const string ReceiveRegenerateTokensAsync = "ReceiveRegenerateTokensAsync";
 
+            //Chat
             public const string ReceiveChatNotificationAsync = "ReceiveChatNotificationAsync";
             public const string SendChatNotificationAsync = "SendChatNotificationAsync";
+
+            public const string ReceiveChatMessageAsync = "ReceiveChatMessageAsync";
+            public const string SendChatMessageAsync = "SendChatMessageAsync";
+
+
 
             public const string ReceiveShopCartNotificationAsync = "ReceiveShopCartNotificationAsync";
             public const string SendShopCartNotificationAsync = "SendShopCartNotificationAsync";
 
-            public const string ReceiveMessageAsync = "ReceiveMessageAsync";
-            public const string SendMessageAsync = "SendMessageAsync";
+  
 
 
 

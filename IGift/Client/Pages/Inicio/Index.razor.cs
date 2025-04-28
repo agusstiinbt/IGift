@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
 using Client.Infrastructure.Authentication;
+using Client.Infrastructure.Extensions;
 using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.CQRS.Peticiones.Query;
@@ -66,7 +67,8 @@ namespace IGift.Client.Pages.Inicio
 
                 if (IsHubConnected)
                 {
-                    await _authService.Disconnect(DotNetObjectReference.Create(this));
+                    await _JS.InitializeInactivityTimer(DotNetObjectReference.Create(this));
+
                     var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
 
                     var response = await _titulosService.LoadConectado();
@@ -243,8 +245,9 @@ namespace IGift.Client.Pages.Inicio
                         if (CurrentUserId == chatHistory.ToUserId)
                         {
                             _JS.InvokeAsync<string>("PlayAudio", "notification");
-                            _snack.Add("Has recibido un mensaje de " + chatHistory.NombreYApellido, Severity.Info, config =>
+                            _snack.Add("Has recibido un mensaje de " + chatHistory.UserName, Severity.Info, config =>
                             {
+                                config.DuplicatesBehavior = SnackbarDuplicatesBehavior.Prevent;
                                 config.VisibleStateDuration = 10000;
                                 config.Onclick = snackbar =>
                                 {

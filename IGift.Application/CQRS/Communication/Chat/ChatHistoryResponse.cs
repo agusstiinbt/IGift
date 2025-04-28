@@ -6,6 +6,7 @@
     public class ChatHistoryResponse
     {
         //public long Id { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public string? NombreYApellido { get; set; }=string.Empty;
         public string FromUserId { get; set; } = string.Empty;
         //public string FromUserImageURL { get; set; } = string.Empty;

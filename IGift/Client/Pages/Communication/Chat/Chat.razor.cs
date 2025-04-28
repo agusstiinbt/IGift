@@ -99,19 +99,22 @@ namespace IGift.Client.Pages.Communication.Chat
 
                 if (_hubConnection != null)
                 {
-                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveMessageAsync, (chatHistory) =>
+                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveChatMessageAsync, (chatHistory) =>
                      {
-                         if (CurrentUserId == chatHistory.ToUserId && ToUserId == chatHistory.FromUserId)
+                         if (CurrentUserId == chatHistory.ToUserId &&//Si el usuario logeado actual es el destinatario del mensaje
+                         ToUserId == chatHistory.FromUserId)//Si el receptor es actual es quien envia el mensaje 
                          {
-                             _snack.Add("Has recibido un mensaje de otro usuario1");
-
                              CurrentChat.Add(chatHistory);
-
-                             //await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, "Nuevo mensaje de " + userName, ToUserId, CurrentUserId);
+                             var chat = Chats.FirstOrDefault(x => x.UserId == chatHistory.FromUserId);
+                             if (chat != null)
+                             {
+                                 chat.LastMessage = chatHistory.Message;
+                                 chat.Seen = true;
+                                 chat.IsLastMessageFromMe = false;
+                             }
+                             StateHasChanged();
                          }
-                         StateHasChanged();
                      });
-
 
                     IsHubConnected = true;
                 }
@@ -241,6 +244,7 @@ namespace IGift.Client.Pages.Communication.Chat
                     Seen = false,
                     Received = false,
                     Send = false,
+                    UserName = Chats.Where(x => x.UserId == ToUserId).First().UserName!
                 };
 
                 //Agregamos el mensaje a la cola
@@ -257,7 +261,8 @@ namespace IGift.Client.Pages.Communication.Chat
                         CurrentChat.Last().Send = true;
                         CurrentChat.Last().Received = true;
                         StateHasChanged();
-                        await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, chatHistory);
+                        await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, chatHistory);
+                        await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatMessageAsync, chatHistory);
                     }
                     else
                     {

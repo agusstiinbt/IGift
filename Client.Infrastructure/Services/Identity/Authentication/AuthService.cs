@@ -18,15 +18,13 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         private readonly HttpClient _httpClient;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly ILocalStorageService _localStorage;
-        private readonly IJSRuntime _js;
         private readonly ISnackbar _snackBar;
 
-        public AuthService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorage, IJSRuntime js, ISnackbar snackBar)
+        public AuthService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorage,  ISnackbar snackBar)
         {
             _httpClient = httpClient;
             _authenticationStateProvider = authenticationStateProvider;
             _localStorage = localStorage;
-            _js = js;
             _snackBar = snackBar;
         }
 
@@ -76,11 +74,6 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
             _httpClient.DefaultRequestHeaders.Authorization = null;
             return await Result.SuccessAsync();
-        }
-
-        public async Task Disconnect<T>(DotNetObjectReference<T> dotNetObjectReference) where T : class
-        {
-            await _js.InitializeInactivityTimer(dotNetObjectReference);
         }
 
         /// <summary>
