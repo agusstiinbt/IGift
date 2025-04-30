@@ -1,6 +1,5 @@
 ﻿using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Interfaces.Communication.Chat;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 

@@ -2,14 +2,12 @@
 using System.Security.Claims;
 using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Extensions;
-using Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Client.Extensions;
-using IGift.Client.Pages.Communication.Chat;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
@@ -47,18 +45,16 @@ namespace IGift.Client.Pages.Inicio
         private string Venta { get; set; } = "Venta";
         private string EstiloBotonComprarPeticion { get; set; } = "background-color:#2A3038;color:white;";
         private string EstiloBotonCrear { get; set; } = "color:white;";
-        private string EstiloCrypto { get; set; } = "background-color:#181A20;color:white;";
         private string BotonSeleccionado { get; set; } = "USDT";
-        public string UserName { get; set; }
-        private string href { get; set; }
 
         //Booleans
         public bool ShowTablePeticiones { get; set; } = false;
         public bool IsHubConnected { get; set; } = false;
 
         //Ints
-        private int _totalItems;
-        private int _currentPage;
+        private int _totalItems { get; set; }
+        private int _currentPage { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             var authState = await AuthenticationState;
@@ -107,19 +103,9 @@ namespace IGift.Client.Pages.Inicio
 
         }
 
-        private void SeleccionarBoton(string boton)
-        {
-            BotonSeleccionado = boton;
-        }
+        private void SeleccionarBoton(string boton) => BotonSeleccionado = boton;
+        private string GetEstiloBoton(string boton) => BotonSeleccionado == boton ? "background-color:#181A20;color:yellow;" : "background-color:#181A20;color:white;";
 
-        private string GetEstiloBoton(string boton)
-        {
-            if (BotonSeleccionado == boton)
-            {
-                return "background-color:#181A20;color:yellow;";
-            }
-            return EstiloCrypto;
-        }
 
         private void TipoOperacion(string boton)
         {
@@ -329,6 +315,7 @@ namespace IGift.Client.Pages.Inicio
         {
             _snack.Add("Sesion terminada. Vuelva a iniciar sesion por favor");
             await Task.Delay(3000);
+            await DisposeAsync();
             _nav.NavigateTo(AppConstants.Routes.Logout);
         }
 

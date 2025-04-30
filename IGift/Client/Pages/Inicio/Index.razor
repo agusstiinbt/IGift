@@ -36,7 +36,9 @@
                                 }
                                 else
                                 {
-                                    href = "/" + item.Descripcion;
+                                    @{
+                                        var href = "/" + item.Descripcion;
+                                    }
                                     <MudButton Href="@href" Style="color:black">@item.Descripcion</MudButton>
                                 }
                             }

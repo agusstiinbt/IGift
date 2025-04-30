@@ -9,7 +9,6 @@ using IGift.Client.Infrastructure.Services.Identity.Authentication;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
 using MudBlazor;
 namespace Client.Infrastructure.Services.Identity.Authentication
 {

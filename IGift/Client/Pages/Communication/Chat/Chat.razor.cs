@@ -1,9 +1,7 @@
-﻿using Client.Infrastructure.Authentication;
-using IGift.Application.CQRS.Communication.Chat;
+﻿using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
-using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
