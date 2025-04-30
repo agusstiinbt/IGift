@@ -323,7 +323,7 @@ namespace IGift.Client.Pages.Communication.Chat
 
         public async ValueTask DisposeAsync()
         {
-            await _JS.InvokeVoidAsync("removeChatScrollListener");
+            //await _JS.InvokeVoidAsync("removeChatScrollListener");
             _dotNetRef?.Dispose();
         }
     }

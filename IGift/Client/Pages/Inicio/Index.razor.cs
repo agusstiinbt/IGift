@@ -9,6 +9,7 @@ using IGift.Application.Responses.Peticiones;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Client.Extensions;
+using IGift.Client.Pages.Communication.Chat;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
@@ -19,7 +20,7 @@ using MudBlazor;
 
 namespace IGift.Client.Pages.Inicio
 {
-    public partial class Index
+    public partial class Index : IAsyncDisposable
     {
         // Parametros
         [CascadingParameter] public required Task<AuthenticationState> AuthenticationState { get; set; }
@@ -30,6 +31,7 @@ namespace IGift.Client.Pages.Inicio
         //Propiedades
 
         public HubConnection? _hubConnection { get; set; }
+        private DotNetObjectReference<Index>? _dotNetRef { get; set; }
 
         private MudTable<PeticionesResponse> _table;
         private PaginatedResult<PeticionesResponse>? peticiones { get; set; } = null;
@@ -67,7 +69,9 @@ namespace IGift.Client.Pages.Inicio
 
                 if (IsHubConnected)
                 {
-                    await _JS.InitializeInactivityTimer(DotNetObjectReference.Create(this));
+                    _dotNetRef = DotNetObjectReference.Create(this);
+
+                    await _JS.InitializeInactivityTimer(_dotNetRef);
 
                     var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
 
@@ -79,6 +83,7 @@ namespace IGift.Client.Pages.Inicio
 
                         UserName = state.User.GetFirstName();
                     }
+
                 }
                 else
                 {
@@ -341,9 +346,11 @@ namespace IGift.Client.Pages.Inicio
             }
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
+            _dotNetRef?.Dispose();
             _interceptor.DisposeEvent();
+            await _hubConnection!.DisposeAsync();
         }
     }
 }

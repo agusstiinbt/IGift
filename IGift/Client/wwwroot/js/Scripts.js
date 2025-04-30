@@ -87,7 +87,6 @@ window.chatInterop.scrollToMiddle = function () {
     }
 };
 
-
 //Audio
 window.PlayAudio = (elementName) => {
     document.getElementById(elementName).play();
@@ -95,11 +94,11 @@ window.PlayAudio = (elementName) => {
 
 function PlayAudioReceiveMessage(elementName) {
     document.getElementById(elementName).play();
-
 }
+
 //function RemovePlayAudio() {
 //    const audioContainer = document.getElementById('notification');
 //    if (audioContainer) {
 
 //    }
-}
+//}
