@@ -148,7 +148,7 @@ namespace IGift.Infrastructure.Services.Communication
                 return await Result<IEnumerable<ChatHistoryResponse>>.FailAsync("No existen chats con el usuario");
 
             // Marcar como leído solo el primer mensaje más antiguo
-            var firstMessage = chatHistories.OrderByDescending(x=>x.CreatedDate).FirstOrDefault();
+            var firstMessage = chatHistories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
             if (firstMessage != null && !firstMessage.Seen && firstMessage.ToUserId == info.FromUserId)
             {
                 firstMessage.Seen = true;
