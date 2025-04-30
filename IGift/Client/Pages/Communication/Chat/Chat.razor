@@ -73,7 +73,7 @@
                                         <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
                                             <p><b></b></p>
                                             <MudText Align="Align.Center"><b>@registro.UserName</b></MudText>
-                                            <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black" : "inherit")">
+                                            <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black;font-weight: bold;" : "inherit")">
                                                 @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
                                             </p>
                                         </MudPaper>
@@ -196,13 +196,8 @@
                                     </MudPaper>
                                     <br />
                                 }
-
                             }
-                            <MudScrollToTop TopOffset="100">
-                                <MudAvatar Size="Size.Large">
-                                    <MudImage Src="img/MainLogo.png"></MudImage>
-                                </MudAvatar>
-                            </MudScrollToTop>
+                           
                         </div>
 
                         @* Envio de mensajes *@

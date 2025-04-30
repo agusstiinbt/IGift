@@ -58,6 +58,7 @@ namespace IGift.Client.Pages.Inicio
         protected override async Task OnInitializedAsync()
         {
             var authState = await AuthenticationState;
+
             if (authState.User.Identity!.IsAuthenticated)
             {
                 //_interceptor.RegisterEvent(); //TODO quitar? Leer la descripcion de ese metodo
@@ -69,43 +70,38 @@ namespace IGift.Client.Pages.Inicio
 
                     await _JS.InitializeInactivityTimer(_dotNetRef);
 
-                    var state = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider!).GetAuthenticationStateAsync();
-
                     var response = await _titulosService.LoadConectado();
                     if (response.Succeeded)
                     {
                         titulosConectado = response.Data.Titulos.ToList();
                         listaCategorias = response.Data.Categorias.ToList();
-
-                        UserName = state.User.GetFirstName();
                     }
-
                 }
                 else
-                {
-                    try
-                    {
-                        var tokenRenovado = await _authService.TryForceRefreshToken();
-                        _snack.Add("Token renovado");
-                        await Task.Delay(1500);
-                        _nav.NavigateTo(AppConstants.Routes.Home);
-                    }
-                    catch (Exception e)
-                    {
-                        await Logout();
-                    }
-                }
+                    await RenovarToken();
             }
             else
-            {
                 _nav.ToAbsoluteUri(AppConstants.Routes.Logout);
-            }
-
         }
 
         private void SeleccionarBoton(string boton) => BotonSeleccionado = boton;
         private string GetEstiloBoton(string boton) => BotonSeleccionado == boton ? "background-color:#181A20;color:yellow;" : "background-color:#181A20;color:white;";
 
+
+        private async Task RenovarToken()
+        {
+            try
+            {
+                var tokenRenovado = await _authService.TryForceRefreshToken();
+                _snack.Add("Token renovado");
+                await Task.Delay(1500);
+                _nav.NavigateTo(AppConstants.Routes.Home);
+            }
+            catch (Exception e)
+            {
+                await Logout();
+            }
+        }
 
         private void TipoOperacion(string boton)
         {
@@ -337,7 +333,8 @@ namespace IGift.Client.Pages.Inicio
         {
             _dotNetRef?.Dispose();
             _interceptor.DisposeEvent();
-            await _hubConnection!.DisposeAsync();
+            if (_hubConnection != null)
+                await _hubConnection!.DisposeAsync();
         }
     }
 }

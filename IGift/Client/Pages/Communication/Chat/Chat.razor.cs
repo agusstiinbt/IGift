@@ -1,4 +1,5 @@
-﻿using IGift.Application.CQRS.Communication.Chat;
+﻿using System.Data.SqlTypes;
+using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
@@ -33,6 +34,9 @@ namespace IGift.Client.Pages.Communication.Chat
         private DotNetObjectReference<Chat>? _dotNetRef { get; set; }
 
         //Strings
+        /// <summary>
+        /// Persona con la que estamos hablando 
+        /// </summary>
         public string ToUserId { get; set; } = string.Empty;
         private string CurrentMessage { get; set; } = string.Empty;
         private string CurrentUserId { get; set; } = string.Empty;
@@ -103,29 +107,33 @@ namespace IGift.Client.Pages.Communication.Chat
 
                 if (_hubConnection != null)
                 {
-                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveChatMessageAsync, (chatHistory) =>
+                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveChatMessageAsync, async (chatHistory) =>
                      {
-                         if (CurrentUserId == chatHistory.ToUserId &&//Si el usuario logeado actual es el destinatario del mensaje
-                         ToUserId == chatHistory.FromUserId)//Si el receptor es actual es quien envia el mensaje 
+                         var chat = Chats.FirstOrDefault(x => x.UserId == chatHistory.FromUserId);
+                         if (chat != null)
+                         {
+                             chat.LastMessage = chatHistory.Message;
+                             chat.Seen = true;
+                             chat.IsLastMessageFromMe = false;
+                         }
+
+                         if (ToUserId == chatHistory.FromUserId)//Es decir si esta el chat abierto
                          {
                              CurrentChat.Add(chatHistory);
-                             var chat = Chats.FirstOrDefault(x => x.UserId == chatHistory.FromUserId);
-                             if (chat != null)
-                             {
-                                 chat.LastMessage = chatHistory.Message;
-                                 chat.Seen = true;
-                                 chat.IsLastMessageFromMe = false;
-                             }
+
+                             await _hubConnection!.SendAsync(AppConstants.SignalR.SetLastMessageToSeen, chatHistory.FromUserId);
+
                              ScrollToBottom = true;
-                             StateHasChanged();
                          }
+                         StateHasChanged();
                      });
 
                     _hubConnection.On<string>(AppConstants.SignalR.SetLastMessageToSeen, (ToUserId) =>
                     {
                         if (CurrentUserId == ToUserId)
                         {
-                            CurrentChat.OrderByDescending(x => x.Date).Last().Seen = true;
+                            if (CurrentChat.Any())
+                                CurrentChat.OrderByDescending(x => x.Date).First().Seen = true;
                             ScrollToBottom = true;
                             StateHasChanged();
                         }
@@ -264,6 +272,13 @@ namespace IGift.Client.Pages.Communication.Chat
                     var result = await _chatManager.SaveMessageAsync(msg);
                     if (result.Succeeded)
                     {
+                        var chat = Chats.Where(x => x.UserId == ToUserId).FirstOrDefault();
+                        if (chat != null)
+                        {
+                            chat.LastMessage = guardarMensaje.Message;
+                            chat.IsLastMessageFromMe = true;
+                            chat.Seen = false;
+                        }
                         CurrentChat.Last().Send = true;
                         CurrentChat.Last().Received = true;
                         ScrollToBottom = true;
@@ -318,10 +333,9 @@ namespace IGift.Client.Pages.Communication.Chat
 
         private void ToggleDrawer() => _open = !_open;
 
-
         public async ValueTask DisposeAsync()
         {
-            //await _JS.InvokeVoidAsync("removeChatScrollListener");
+            await _JS.InvokeVoidAsync("removeChatScrollListener");
             _dotNetRef?.Dispose();
         }
     }
