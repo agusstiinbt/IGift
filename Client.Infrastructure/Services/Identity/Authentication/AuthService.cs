@@ -20,7 +20,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         private readonly ILocalStorageService _localStorage;
         private readonly ISnackbar _snackBar;
 
-        public AuthService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorage,  ISnackbar snackBar)
+        public AuthService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorage, ISnackbar snackBar)
         {
             _httpClient = httpClient;
             _authenticationStateProvider = authenticationStateProvider;
@@ -64,7 +64,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
         public async Task<IResult> Logout()
         {
             //Usamos entre paréntesis porque el método MarkUserAsLoggedOut es propio de IGIft...provider
-
+            //TODO fijarse que se puede hacer porque cuando se desloguea el usuario y el otro usuario le envia un mensaje de chat, todavia sigue recibiendo la notificacion. Debe ser algun problema de cache porque cuando se hace ctrl F5 no sucede mas
             await _localStorage.RemoveItemAsync(AppConstants.Local.AuthToken);
             await _localStorage.RemoveItemAsync(AppConstants.Local.RefreshToken);
             await _localStorage.RemoveItemAsync(AppConstants.Local.UserImageURL);

@@ -1,4 +1,35 @@
 ﻿
+
+
+
+//Escucha cuando se llega arriba de todo del chat con el scroll
+let scrollHandler = null;
+function registerChatScrollListener(dotNetObj) {
+    const chatContainer = document.getElementById('chatContainer');
+    if (!chatContainer) return;
+
+    if (scrollHandler) {
+        chatContainer.removeEventListener('scroll', scrollHandler);
+    }
+
+    scrollHandler = () => {
+        if (chatContainer.scrollTop === 0) {
+            dotNetObj.invokeMethodAsync('OnTopReached');
+        }
+    };
+
+    chatContainer.addEventListener('scroll', scrollHandler);
+}
+
+function removeChatScrollListener() {
+    const chatContainer = document.getElementById('chatContainer');
+    if (chatContainer && scrollHandler) {
+        chatContainer.removeEventListener('scroll', scrollHandler);
+        scrollHandler = null;
+    }
+}
+
+
 //Desconectar al usuario despues de tiempo inactivo
 function InitializeInactivityTimer(dotnetHelper) {
     var timer;
@@ -45,13 +76,21 @@ window.chatInterop = {
     }
 };
 
-//Scroll
+//Scrolls
 window.chatInterop.scrollToBottom = function () {
     const container = document.getElementById("chatContainer");
     if (container) {
         container.scrollTop = container.scrollHeight;
     }
 };
+
+window.chatInterop.scrollToMiddle = function () {
+    const container = document.getElementById("chatContainer");
+    if (container) {
+        container.scrollTop = container.scrollHeight/3.5;
+    }
+};
+
 
 //Audio
 window.PlayAudio = (elementName) => {

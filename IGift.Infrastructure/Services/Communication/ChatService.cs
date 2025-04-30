@@ -114,25 +114,48 @@ namespace IGift.Infrastructure.Services.Communication
 
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatMessages(SearchChatById info)
         {
-            var chatHistories = await _context.ChatHistories
-                .Include(x => x.FromUser)
-                .Include(x => x.ToUser)
-                .Where(x => (x.ToUserId == info.ToUserId && x.FromUserId == info.FromUserId) || (x.ToUserId == info.FromUserId && x.FromUserId == info.ToUserId))
-                .OrderBy(x => x.CreatedDate)
-                .AsNoTracking()
-                .ToListAsync(); // Traemos todos los mensajes en una sola consulta
+            List<ChatHistory<IGiftUser>> chatHistories = null;
 
+            if (info.IsFirstTime)
+            {
+                chatHistories = await _context.ChatHistories
+                                .Include(x => x.FromUser)
+                                .Include(x => x.ToUser)
+                                .Where(x =>
+                                    (x.ToUserId == info.ToUserId && x.FromUserId == info.FromUserId) ||
+                                    (x.ToUserId == info.FromUserId && x.FromUserId == info.ToUserId))
+                                .OrderByDescending(x => x.CreatedDate)
+                                .Take(5)
+                                //.AsNoTracking()
+                                .ToListAsync(); // Traemos todos los mensajes en una sola consulta
+            }
+            else
+            {
+                chatHistories = await _context.ChatHistories
+                             .Include(x => x.FromUser)
+                             .Include(x => x.ToUser)
+                             .Where(
+                                x => (
+                            (x.ToUserId == info.ToUserId && x.FromUserId == info.FromUserId) || (x.ToUserId == info.FromUserId && x.FromUserId == info.ToUserId))
+                            && (x.CreatedDate < info.LastMessageDate)
+                                )
+                             .OrderByDescending(x => x.CreatedDate)
+                             .Take(5)
+                             //.AsNoTracking()
+                             .ToListAsync(); // Traemos todos los mensajes en una sola consulta
+            }
             if (!chatHistories.Any())
                 return await Result<IEnumerable<ChatHistoryResponse>>.FailAsync("No existen chats con el usuario");
 
             // Marcar como leído solo el primer mensaje más antiguo
-            var firstMessage = chatHistories.FirstOrDefault();
-            if (firstMessage != null && !firstMessage.Seen)
+            var firstMessage = chatHistories.OrderByDescending(x=>x.CreatedDate).FirstOrDefault();
+            if (firstMessage != null && !firstMessage.Seen && firstMessage.ToUserId == info.FromUserId)
             {
                 firstMessage.Seen = true;
                 await _context.SaveChangesAsync();
             }
 
+            //Importante:!!
             //Usamos un select de esta manera (en ejecucion en memoria) y no una expression (ejecucion en sql) porque en este metodo evitamos el uso de AsNoTracking al tener que modificar el seen del ultimo mensaje.
             //La proyección (Select) se hace en memoria para evitar problemas de traducción en EF Core
 
@@ -217,7 +240,7 @@ namespace IGift.Infrastructure.Services.Communication
                 CreatedDate = DateTime.Now,
                 Seen = false,
                 Send = true,
-                Received = false
+                Received = true
             });
 
             await _context.SaveChangesAsync();

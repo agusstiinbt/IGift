@@ -19,6 +19,8 @@
             public const string ReceiveChatMessageAsync = "ReceiveChatMessageAsync";
             public const string SendChatMessageAsync = "SendChatMessageAsync";
 
+            public const string SetLastMessageToSeen = "SetLastMessageToSeen";
+
 
 
             public const string ReceiveShopCartNotificationAsync = "ReceiveShopCartNotificationAsync";

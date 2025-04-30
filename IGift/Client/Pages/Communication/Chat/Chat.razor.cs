@@ -3,6 +3,7 @@ using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
+using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -11,7 +12,7 @@ using MudBlazor;
 
 namespace IGift.Client.Pages.Communication.Chat
 {
-    public partial class Chat
+    public partial class Chat : IAsyncDisposable
     {
         //Parametros
         [CascadingParameter] public required Task<AuthenticationState> AuthenticationState { get; set; }
@@ -43,11 +44,14 @@ namespace IGift.Client.Pages.Communication.Chat
         private string CurrentMessage { get; set; } = string.Empty;
         private string CurrentUserId { get; set; } = string.Empty;
 
+        //Ints
+        private int TotalMessages { get; set; } = 10;
+
         //Bools
-        private bool FirstRender { get; set; } = true;
         private bool _open { get; set; } = true;
         public bool IsHubConnected { get; set; } = false;
-        private bool ChatChanged { get; set; } = true;
+        private bool _isLoadingMore = false;
+        private bool ScrollToBottom { get; set; } = false;
 
 
         //Life Cycles
@@ -72,13 +76,23 @@ namespace IGift.Client.Pages.Communication.Chat
 
                 if (!string.IsNullOrEmpty(CId))
                     await SelectChatBubble(CId);
-            }
 
+                _dotNetRef = DotNetObjectReference.Create(this);
+            }
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await ScrollToBottom();
+            if (!firstRender)
+            {
+                await _JS.InvokeVoidAsync("chatInterop.initializeEnterToSend", _dotNetRef);
+                await _JS.InvokeVoidAsync("registerChatScrollListener", _dotNetRef);
+                if (ScrollToBottom)
+                    await _JS.InvokeVoidAsync("chatInterop.scrollToBottom");
+                else
+                    await _JS.InvokeVoidAsync("chatInterop.scrollToMiddle");
+
+            }
         }
 
         /// <summary>
@@ -112,9 +126,22 @@ namespace IGift.Client.Pages.Communication.Chat
                                  chat.Seen = true;
                                  chat.IsLastMessageFromMe = false;
                              }
+                             ScrollToBottom = true;
                              StateHasChanged();
                          }
                      });
+
+                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.SetLastMessageToSeen, (chatHistory) =>
+                    {
+                        if (CurrentUserId == chatHistory.ToUserId &&
+                        ToUserId == chatHistory.FromUserId)
+                        {
+                            CurrentChat.OrderByDescending(x=>x.Date).Last().Seen = true;
+                            ScrollToBottom = true;
+                            StateHasChanged();
+                        }
+                    });
+
 
                     IsHubConnected = true;
                 }
@@ -196,22 +223,13 @@ namespace IGift.Client.Pages.Communication.Chat
             if (!CurrentChat.Any(x => x.ToUserId == ToUserId))
             {
                 this.ToUserId = ToUserId;
-                var response = await _chatManager.GetChatById(new SearchChatById(ToUserId!, CurrentUserId));
+                var response = await _chatManager.GetChatById(new SearchChatById() { ToUserId = this.ToUserId, FromUserId = CurrentUserId, IsFirstTime = true });
 
                 if (response.Succeeded)
                 {
                     CurrentChat = response.Data.ToList();
-
                     //Lo que esta aca con respecto al statehaschanged lo hacemos porque el inputtext para enviar un mensje se encuentra dentro de una clausula if y hasta que no se renderice entonces no se podra encontrar el input con el id InputChat(algo asi) entoncse no funcionara el codigo js
                     StateHasChanged();
-                    if (FirstRender)
-                    {
-                        _dotNetRef = DotNetObjectReference.Create(this);
-                        await _JS.InvokeVoidAsync("chatInterop.initializeEnterToSend", _dotNetRef);
-                        FirstRender = false;
-                    }
-                    StateHasChanged();
-                    ChatChanged = true;
                 }
                 else
                     _snack.Add(response.Messages.First());
@@ -260,6 +278,7 @@ namespace IGift.Client.Pages.Communication.Chat
                     {
                         CurrentChat.Last().Send = true;
                         CurrentChat.Last().Received = true;
+                        ScrollToBottom = true;
                         StateHasChanged();
                         await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, chatHistory);
                         await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatMessageAsync, chatHistory);
@@ -281,14 +300,44 @@ namespace IGift.Client.Pages.Communication.Chat
             await SubmitAsync();
         }
 
+        [JSInvokable]
+        public async Task OnTopReached()
+        {
+            if (_isLoadingMore) return;
 
-        /// <summary>
-        /// Lleva el scroll hasta abajo de todo
-        /// </summary>
-        /// <returns></returns>
-        private async Task ScrollToBottom() => await _JS.InvokeVoidAsync("chatInterop.scrollToBottom");
+            _isLoadingMore = true;
 
+            // Lógica para cargar mensajes más viejos
+            var ultimoMensaje = CurrentChat.OrderByDescending(x => x.Date).Last();
+            var response = await _chatManager.GetChatById(new SearchChatById() { ToUserId = this.ToUserId, FromUserId = CurrentUserId, LastMessageDate = ultimoMensaje.Date, IsFirstTime = false });
+
+            if (response.Succeeded)
+            {
+                var lista = response.Data.ToList();
+
+                for (int i = 0; i < lista.Count; i++)
+                {
+                    CurrentChat.Add(lista[i]);
+                }
+
+                ScrollToBottom = false;
+
+                StateHasChanged();
+            }
+            else
+                _snack.Add(response.Messages.First());
+
+
+            _isLoadingMore = false;
+        }
 
         private void ToggleDrawer() => _open = !_open;
+
+
+        public async ValueTask DisposeAsync()
+        {
+            await _JS.InvokeVoidAsync("removeChatScrollListener");
+            _dotNetRef?.Dispose();
+        }
     }
 }
