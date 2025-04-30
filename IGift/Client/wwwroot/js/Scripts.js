@@ -1,8 +1,5 @@
 ﻿
-
-
-
-//Escucha cuando se llega arriba de todo del chat con el scroll
+//Scroll
 let scrollHandler = null;
 function registerChatScrollListener(dotNetObj) {
     const chatContainer = document.getElementById('chatContainer');
@@ -20,7 +17,6 @@ function registerChatScrollListener(dotNetObj) {
 
     chatContainer.addEventListener('scroll', scrollHandler);
 }
-
 function removeChatScrollListener() {
     const chatContainer = document.getElementById('chatContainer');
     if (chatContainer && scrollHandler) {
@@ -87,7 +83,7 @@ window.chatInterop.scrollToBottom = function () {
 window.chatInterop.scrollToMiddle = function () {
     const container = document.getElementById("chatContainer");
     if (container) {
-        container.scrollTop = container.scrollHeight/3.5;
+        container.scrollTop = container.scrollHeight / 3.5;
     }
 };
 
@@ -95,4 +91,15 @@ window.chatInterop.scrollToMiddle = function () {
 //Audio
 window.PlayAudio = (elementName) => {
     document.getElementById(elementName).play();
+}
+
+function PlayAudioReceiveMessage(elementName) {
+    document.getElementById(elementName).play();
+
+}
+//function RemovePlayAudio() {
+//    const audioContainer = document.getElementById('notification');
+//    if (audioContainer) {
+
+//    }
 }

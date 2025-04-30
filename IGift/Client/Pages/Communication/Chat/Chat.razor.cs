@@ -15,7 +15,7 @@ namespace IGift.Client.Pages.Communication.Chat
     public partial class Chat : IAsyncDisposable
     {
         //Parametros
-        [CascadingParameter] public required Task<AuthenticationState> AuthenticationState { get; set; }
+        [CascadingParameter] public required Task<AuthenticationState> _authenticationState { get; set; }
         [Parameter] public string CId { get; set; }
 
         //Collections
@@ -32,20 +32,15 @@ namespace IGift.Client.Pages.Communication.Chat
 
         //Otros
         public HubConnection? _hubConnection { get; set; }
-        private AuthenticationState? _authenticationState { get; set; } = null;
         private DotNetObjectReference<Chat>? _dotNetRef { get; set; }
 
         //Strings
-        private string backgroundProfilePicture { get; set; } = string.Empty;
-        /// <summary>
-        /// El Id del usuario al cual vamos a enviar o recibir mensajes
-        /// </summary>
         public string ToUserId { get; set; } = string.Empty;
         private string CurrentMessage { get; set; } = string.Empty;
         private string CurrentUserId { get; set; } = string.Empty;
 
         //Ints
-        private int TotalMessages { get; set; } = 10;
+
 
         //Bools
         private bool _open { get; set; } = true;
@@ -61,14 +56,11 @@ namespace IGift.Client.Pages.Communication.Chat
 
             if (IsHubConnected)
             {
-
                 _colaMensajes = new Queue<SaveChatMessage>();
                 CurrentChat = new List<ChatHistoryResponse>();
                 FotosDeUsuarios = new Dictionary<string, string>();
 
-                _authenticationState = await ((IGiftAuthenticationStateProvider)_authenticationStateProvider).GetAuthenticationStateAsync();
-
-                CurrentUserId = _authenticationState.User.GetUserId();
+                CurrentUserId = _authenticationState.Result.User.GetUserId();
 
                 await GetProfilePicture();
 
@@ -131,17 +123,15 @@ namespace IGift.Client.Pages.Communication.Chat
                          }
                      });
 
-                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.SetLastMessageToSeen, (chatHistory) =>
+                    _hubConnection.On<string>(AppConstants.SignalR.SetLastMessageToSeen, (ToUserId) =>
                     {
-                        if (CurrentUserId == chatHistory.ToUserId &&
-                        ToUserId == chatHistory.FromUserId)
+                        if (CurrentUserId == ToUserId)
                         {
-                            CurrentChat.OrderByDescending(x=>x.Date).Last().Seen = true;
+                            CurrentChat.OrderByDescending(x => x.Date).Last().Seen = true;
                             ScrollToBottom = true;
                             StateHasChanged();
                         }
                     });
-
 
                     IsHubConnected = true;
                 }
@@ -176,15 +166,13 @@ namespace IGift.Client.Pages.Communication.Chat
             if (result.Succeeded)
             {
                 var imageBase64 = Convert.ToBase64String(result.Data.Data);
-
-                backgroundProfilePicture = $"width: 80px; height: 60px; background-image: url('data:image/jpg;base64,{imageBase64}'); background-size: cover;";
-
-                FotosDeUsuarios!.Add(CurrentUserId, imageBase64);
+                if (imageBase64 != null)
+                    FotosDeUsuarios!.Add(CurrentUserId, imageBase64);
+                else
+                    FotosDeUsuarios!.Add(CurrentUserId, "");
             }
             else
-            {
                 _snack.Add(result.Messages.First(), Severity.Error);
-            }
         }
 
 
@@ -228,7 +216,9 @@ namespace IGift.Client.Pages.Communication.Chat
                 if (response.Succeeded)
                 {
                     CurrentChat = response.Data.ToList();
-                    //Lo que esta aca con respecto al statehaschanged lo hacemos porque el inputtext para enviar un mensje se encuentra dentro de una clausula if y hasta que no se renderice entonces no se podra encontrar el input con el id InputChat(algo asi) entoncse no funcionara el codigo js
+
+                    await _hubConnection!.SendAsync(AppConstants.SignalR.SetLastMessageToSeen, this.ToUserId);
+
                     StateHasChanged();
                 }
                 else
@@ -284,14 +274,11 @@ namespace IGift.Client.Pages.Communication.Chat
                         await _hubConnection!.SendAsync(AppConstants.SignalR.SendChatMessageAsync, chatHistory);
                     }
                     else
-                    {
                         for (int i = 0; i < result.Messages.Count; i++)
                             _snack.Add(result.Messages[i], Severity.Error);
-                    }
                 }
             }
         }
-
 
         [JSInvokable]
         public async Task SendMessageFromJs(string message)
@@ -336,6 +323,7 @@ namespace IGift.Client.Pages.Communication.Chat
 
         public async ValueTask DisposeAsync()
         {
+            await _JS.InvokeVoidAsync("removeChatScrollListener");
             _dotNetRef?.Dispose();
         }
     }

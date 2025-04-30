@@ -52,9 +52,9 @@ namespace IGift.Server.Hubs
         }
 
         //TODO revisar esto
-        public async Task SetLastMessageToSeen(ChatHistoryResponse chat)
+        public async Task SetLastMessageToSeen(string ToUserId)
         {
-            await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.SetLastMessageToSeen, chat);
+            await Clients.User(ToUserId).SendAsync(AppConstants.SignalR.SetLastMessageToSeen, ToUserId);
         }
     }
 }
