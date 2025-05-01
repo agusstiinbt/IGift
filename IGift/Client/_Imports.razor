@@ -51,8 +51,6 @@
 
 
 
-
-
 @using IGift.Client.Infrastructure.Services;
 @using IGift.Client.Infrastructure.Services.Peticiones;
 @using IGift.Client.Infrastructure.Services.Interceptor;
@@ -62,21 +60,24 @@
 @using IGift.Client.Infrastructure.Services.Identity.Authentication;
 
 @using global::Client.Infrastructure.Services.Identity.Users
+@using global::Client.Infrastructure.Services.Notification
 @using global::IGift.Client.Infrastructure.Services.Files
 
 
 @inject NavigationManager _nav;
+@inject HttpClient _httpClient;
+@inject AuthenticationStateProvider _authenticationStateProvider;
+
 @inject ISnackbar _snack;
 @inject IChatManager _chatManager;
 @inject IDialogService _dialogService;
 @inject IAuthService _authService;
 @inject IHttpInterceptorManager _interceptor;
-@inject HttpClient _httpClient;
 @inject IPeticionesService _peticionesService;
 @inject ITitulosService _titulosService ;
 @inject IShopCart _shopCartService;
 @inject IUserManager _userManager;
-@inject AuthenticationStateProvider _authenticationStateProvider;
 @inject IProfilePicture _profileService;
 @inject ILocalStorageService _localStorage;
 @inject IJSRuntime _JS
+@inject INotificationService _notificationService

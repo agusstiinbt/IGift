@@ -1,44 +1,68 @@
-﻿using Client.Infrastructure.Services.Notification;
+﻿using IGift.Application.CQRS.Communication.Chat;
+using IGift.Application.Enums;
 using IGift.Application.Responses.Notification;
+using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.JSInterop;
+using MudBlazor;
 namespace IGift.Client.Layouts.Main.ToolBar
 {
     public partial class Notificaciones
     {
-        [Inject] INotificationService _notificationService { get; set; }
         [CascadingParameter] private HubConnection _hubConnection { get; set; }
         [CascadingParameter] public required Task<AuthenticationState> AuthenticationState { get; set; }
 
-
         private List<NotificationResponse> list { get; set; } = new();
 
-        private int _notifications { get; set; } = 0;
-        private string CurrentUserId { get; set; } = string.Empty;
-
-        public bool _open;
+        private bool _open { get; set; }
         private bool _visible { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
+            await InitializeHub();
             var result = await _notificationService.GetAll();
             if (result.Succeeded)
             {
                 list = result.Data.ToList();
-                _notifications = list.Count;
             }
-            _visible = _notifications > 0;
+            _visible = list.Count > 0;
 
 
         }
         private async Task InitializeHub()
         {
-            //TODO implementar una funcionalidad de signalR para recibir notificaciones de todo tipo, correo electronico o chat tambien. En el archivo index.razor.cs tenemos el codigo que levanta un snackbar cuando se recibe una notificacion de tipo chat y ese snackbar tiene una funcionalidad de tipo click que nos re dirigiria a el chat en cuestion. Pero ese snackbar se desaparece en 5 segundos entonces hay que hacer una notificacion en la campanita que haga lo mismo con la funcionalidad de click pero que en este caso no desapareceria
+            try
+            {
+                _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveChatNotificationAsync, (chatHistory) =>
+                {
+                    var mensaje = "Has recibido un mensaje de " + chatHistory.UserName;
+                    list.Add(new NotificationResponse() { DateTime = chatHistory.Date, Message = mensaje, Type = TypeNotification.Chat });
+
+                    _JS.InvokeAsync<string>("PlayAudio", "notification");
+
+                    _snack.Add(mensaje, Severity.Info, config =>
+                    {
+                        config.DuplicatesBehavior = SnackbarDuplicatesBehavior.Prevent;
+                        config.VisibleStateDuration = 10000;
+                        config.Onclick = snackbar =>
+                        {
+                            _nav.NavigateTo($"chat/{chatHistory.FromUserId}");
+                            return Task.CompletedTask;
+                        };
+                    });
+
+                    StateHasChanged();
+                });
+
+            }
+            catch (Exception e)
+            {
+                _snack.Add("Error con el hubconnection en el notificaciones " + e.Message, Severity.Error);
+            }
         }
 
         private void ToggleOpen() => _open = !_open;
-
     }
-
 }

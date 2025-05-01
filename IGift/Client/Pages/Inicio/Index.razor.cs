@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
 using Client.Infrastructure.Extensions;
-using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.CQRS.Peticiones.Query;
 using IGift.Application.Responses.Peticiones;
 using IGift.Application.Responses.Titulos.Categoria;
@@ -60,7 +59,7 @@ namespace IGift.Client.Pages.Inicio
 
             if (authState.User.Identity!.IsAuthenticated)
             {
-                //_interceptor.RegisterEvent(); //TODO quitar? Leer la descripcion de ese metodo
+                _interceptor.RegisterEvent(); //TODO quitar? Leer la descripcion de ese metodo
                 await InitializeHub();
 
                 if (IsHubConnected)
@@ -224,28 +223,6 @@ namespace IGift.Client.Pages.Inicio
                             await _authService.Logout();
                             _nav.NavigateTo("/");
                         }
-                    });
-
-                    _hubConnection.On<ChatHistoryResponse>(AppConstants.SignalR.ReceiveChatNotificationAsync, (chatHistory) =>
-                    {
-                        if (CurrentUserId == chatHistory.ToUserId)
-                        {
-                            _JS.InvokeAsync<string>("PlayAudio", "notification");
-                            _snack.Add("Has recibido un mensaje de " + chatHistory.UserName, Severity.Info, config =>
-                            {
-                                config.DuplicatesBehavior = SnackbarDuplicatesBehavior.Prevent;
-                                config.VisibleStateDuration = 10000;
-                                config.Onclick = snackbar =>
-                                {
-                                    _nav.NavigateTo($"chat/{chatHistory.FromUserId}");
-                                    return Task.CompletedTask;
-                                };
-                            });
-
-
-                            //await _hubConnection.SendAsync(AppConstants.SignalR.SendChatNotificationAsync, "Nuevo mensaje de " + userName, ToUserId, CurrentUserId);
-                        }
-                        StateHasChanged();
                     });
 
 

@@ -13,7 +13,7 @@ namespace IGift.Application.CQRS.LocalesAdheridos.Query
     public class GetAllLocalAdheridoQuery : IRequest<IResult<PaginatedResult<LocalAdheridoResponse>>>
     {
         public int PageNumber { get; set; }
-        public int PageSize { get; set; }//TODO documentar que en el front cuando usamos un tablestate siempre tiene por defecto un 10. No hay que usar en el front un pagination, sino que debemos usar un MudTablePager porque este otorga siempre por defecto 10. Ver el código de Blazor Hero la parte de Products para ver cómo se comporta    
+        public int PageSize { get; set; }//En el front cuando usamos un tablestate siempre tiene por defecto un 10. No hay que usar en el front un pagination, sino que debemos usar un MudTablePager porque este otorga siempre por defecto 10. Ver el código de Blazor Hero la parte de Products para ver cómo se comporta    
         public string SearchString { get; set; }
 
         public GetAllLocalAdheridoQuery(int pageNumber, int pageSize, string searchString)

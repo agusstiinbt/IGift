@@ -51,7 +51,6 @@ namespace IGift.Server.Hubs
             await Clients.User(chat.ToUserId).SendAsync(AppConstants.SignalR.ReceiveChatNotificationAsync, chat);
         }
 
-        //TODO revisar esto
         public async Task SetLastMessageToSeen(string ToUserId)
         {
             await Clients.User(ToUserId).SendAsync(AppConstants.SignalR.SetLastMessageToSeen, ToUserId);

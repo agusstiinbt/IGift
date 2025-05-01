@@ -9,11 +9,7 @@
         public string UserName { get; set; } = string.Empty;
         public string? NombreYApellido { get; set; } = string.Empty;
         public string FromUserId { get; set; } = string.Empty;
-        //public string FromUserImageURL { get; set; } = string.Empty;
-        //public string FromUserFullName { get; set; } = string.Empty;
         public string ToUserId { get; set; } = string.Empty;
-        //public string ToUserImageURL { get; set; } = string.Empty;
-        //public string ToUserFullName { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
         public bool Seen { get; set; }
         public bool Send { get; set; }

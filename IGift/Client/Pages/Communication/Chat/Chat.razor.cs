@@ -50,7 +50,6 @@ namespace IGift.Client.Pages.Communication.Chat
         private bool _isLoadingMore = false;
         private bool ScrollToBottom { get; set; } = false;
 
-
         //Life Cycles
         protected override async Task OnInitializedAsync()
         {
