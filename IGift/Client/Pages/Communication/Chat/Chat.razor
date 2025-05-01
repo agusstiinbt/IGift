@@ -3,33 +3,37 @@
 @using IGift.Application.Models.Chat
 @attribute [Authorize]
 
-<MudLayout Style="height:100vh;background-color:#DBE4F5;">
+        @* style=@(AllBox ? "border-bottom-width: 2px;" : "")> *@
+
+<MudLayout Style=@(DarkMode ? "height:100vh;background-color:#101218;":"height:100vh;background-color:white;")>
 
     @if (IsHubConnected)
     {
-
-        @* Barra herramientas superior con boton para abrir "barra de herramientas deslizable" *@
-        <MudToolBar Style="background-color:#CFD9EF;border-width:3px;">
+        @* Barra herramientas SUPERIOR *@
+        <MudToolBar Style=@(DarkMode ? "background-color:#101218;border-width:3px;" :"background-color:#CFD9EF;border-width:3px;")>
             <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
             <MudSpacer />
-            <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Error" />
+            <MudIconButton Icon="@Icons.Material.Filled.DarkMode" Color="Color.Error" OnClick="@ChangeToDarkMode" />
         </MudToolBar>
 
         @* Barra de herramientas deslizable *@
-        <MudDrawer Style="background:radial-gradient(black, transparent);" @bind-Open="@_open" Elevation="1">
+        <MudDrawer Style="background:radial-gradient(#b8becd, transparent);" @bind-Open="@_open" Elevation="1">
 
+            @* BUSCADOR de contactos *@
             <MudDrawerHeader Style="">
+
+                <MudTextField Class="rounded-pill" @bind-Value="SearchContact" Label="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" Immediate="false" AdornmentColor="Color.Secondary" />
+
             </MudDrawerHeader>
 
-            <MudNavMenu Style="background-color:transparent">
+            <MudNavMenu Style="">
 
                 <MudDivider Class="my-2" />
 
-                @* Botones All, Mensajes y Group *@
-                <MudPaper Class=" pa-4 align-start d-flex" Style="width: 250px; background-color:transparent" Outlined="true">
+                @* BOTONES => All, Mensajes, Group*@
+                <MudPaper Class=" pa-4 align-start d-flex" Style="width: 250px;background-color:transparent" Outlined="true">
 
-
-                    <MudPaper @onclick="()=>SelectText(all)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                    <MudPaper @onclick="()=>SelectText(all)" Class="pa-3 cursor-pointer" Style="background-color:transparent" Elevation="0">
                         <MudText Typo="Typo.button" HtmlTag="h3" style=@(AllBox ? "border-bottom-width: 2px;" : "")>
                             All
                         </MudText>
@@ -37,7 +41,7 @@
 
                     <MudSpacer />
 
-                    <MudPaper @onclick="()=>SelectText(message)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                    <MudPaper @onclick="()=>SelectText(message)" Class="pa-3 cursor-pointer" Style="background-color:transparent" Elevation="0">
                         <MudText Typo="Typo.button" HtmlTag="h3" style=@(MensajesBox ? "border-bottom-width: 2px;" : "")>
                             Mensajes
                         </MudText>
@@ -45,7 +49,7 @@
 
                     <MudSpacer />
 
-                    <MudPaper @onclick="()=>SelectText(group)" Class="pa-3 cursor-pointer" Style="background-color:#b8becd" Elevation="0">
+                    <MudPaper @onclick="()=>SelectText(group)" Class="pa-3 cursor-pointer" Style="background-color:transparent" Elevation="0">
                         <MudText Typo="Typo.button" HtmlTag="h3" style=@(GroupBox ? "border-bottom-width: 2px;" : "")>
                             Group
                         </MudText>
@@ -59,25 +63,38 @@
                 {
                     @if (MensajesBox || AllBox)
                     {
-                        <MudContainer Style="overflow:auto;">
+                        <MudContainer Style="overflow:auto;background-color:transparent">
 
                             <MudStack>
-                                @foreach (var registro in Chats)
+                                @foreach (var item in Chats)
                                 {
-                                    <MudPaper Style="background-color:#a3bacf" @onclick="()=>SelectChatBubble(registro.UserId)">
+                                    <MudPaper Elevation="0" Style="background-color:transparent;" @onclick="()=>SelectChatBubble(item.UserId)">
 
-                                        <div>
-                                            <MudFab title="Perfil" Style="@GetProfilePictureData(registro.UserId)" />
+                                        <div style="text-align:center">
+                                            <MudFab title="Perfil" Style="@GetProfilePictureData(item.UserId)" />
                                         </div>
 
-                                        <MudPaper Class="mt-2 mb-2" Elevation="3" Style="background-color:aliceblue">
-                                            <p><b></b></p>
-                                            <MudText Align="Align.Center"><b>@registro.UserName</b></MudText>
-                                            <p style="color:@(registro.IsLastMessageFromMe && !registro.Seen ? "black;font-weight: bold;" : "inherit")">
-                                                @(registro.IsLastMessageFromMe ? $"You: {registro.LastMessage}" : registro.LastMessage)
+                                        <MudPaper Class="mt-2 mb-2" Style="background-color:transparent;" Elevation="0">
+
+                                            <MudText Align="Align.Center" Style="color:darkblue">
+
+                                                <b>
+                                                    <MudHighlighter UntilNextBoundary="false" Text="@item.UserName" HighlightedText="@SearchContact" />
+                                                </b>
+
+                                            </MudText>
+
+                                            <p style="color:@(item.IsLastMessageFromMe && !item.Seen ? "black;font-weight: bold;" : "inherit")">
+                                                @(item.IsLastMessageFromMe ? $"You: {item.LastMessage}" : item.LastMessage)
                                             </p>
+
+                                            <p>@FormatearFecha(item.Date)</p>
+
                                         </MudPaper>
+
                                     </MudPaper>
+
+                                    <MudDivider Style="border:0.8px;border-color:black;color:black;" Class="border-solid" />
 
                                 }
                             </MudStack>
@@ -93,7 +110,7 @@
         </MudDrawer>
 
         @* En este contenedor tendremos todo lo que corresponde al "Chat" *@
-        <MudMainContent Style="background-color:#FAFAFA">
+        <MudMainContent Style=@(DarkMode ? "background-color:#101218":"background-color:white")>
 
             <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="d-flex flex-grow-1 flex-row">
 
@@ -111,7 +128,9 @@
                             </MudBadge>
 
                             <MudSpacer />
-                            <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Primary" />
+
+                            <MudTextField @bind-Value="SearchMessage" AdornmentIcon="@Icons.Material.Filled.Search"
+                                          Adornment="Adornment.End" Immediate="false" Variant="Variant.Outlined" />
 
                         </MudToolBar>
 
@@ -124,20 +143,22 @@
 
                                 if (esMio)
                                 {
-                                    <MudPaper Class="d-flex justify-end" Elevation="0">
+                                    <MudPaper Style="@(DarkMode ? "background-color:#101218": "")" Class="d-flex justify-end" Elevation="0">
                                         <div>
                                             <MudFab Style="@GetProfilePictureData(CurrentUserId)" />
                                         </div>
                                     </MudPaper>
 
-                                    <MudPaper Outlined="false" Style="height:100px;border:hidden" Class="d-flex justify-end" Elevation="0">
+                                    <MudPaper Outlined="false" Style="@(DarkMode ? "background-color:#101218;": "height:100px;")" Class="d-flex justify-end" Elevation="0">
 
-                                        <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
+                                        <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden;background-color:transparent" Elevation="0">
+
 
                                             <div class="d-flex flex-row justify-content-end mb-2">
-                                                <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
 
-                                                    <p style="margin: 0; font-size: 1rem;">@item.Message</p>
+                                                <div style="@(DarkMode ?"background-color: #101218; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;" :"background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;")">
+
+                                                    <MudHighlighter Text="@item.Message" HighlightedText="@SearchMessage" />
 
                                                     <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
                                                         <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
@@ -173,18 +194,20 @@
                                 }
                                 else
                                 {
-                                    <MudPaper Class="d-flex justify-start" Elevation="0">
+                                    <MudPaper Style="@(DarkMode ? "background-color:#101218": "")" Class="d-flex justify-start" Elevation="0">
                                         <MudAvatar>
                                             <MudFab title="Perfil" Style="@GetProfilePictureData(item.FromUserId)" />
                                         </MudAvatar>
                                     </MudPaper>
 
-                                    <MudPaper Outlined="false" Style="height:100px;" Class="d-flex justify-start" Elevation="0">
-                                        <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden" Elevation="0">
-                                            <div class="d-flex flex-row justify-content-end mb-2">
-                                                <div style="background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;">
+                                    <MudPaper Outlined="false" Style="@(DarkMode ? "background-color:#101218;": "height:100px;")" Class="d-flex justify-start" Elevation="0">
+                                        <MudPaper Outlined="false" style="width:auto;height:auto;border:hidden;background-color:transparent" Elevation="0">
 
-                                                    <p style="margin: 0; font-size: 1rem;">@item.Message</p>
+                                            <div class="d-flex flex-row justify-content-end mb-2">
+
+                                                <div style="@(DarkMode ?"background-color: #101218; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;" :"background-color: #DCF8C6; border-radius: 8px; padding: 8px 12px; width:auto; position: relative;")">
+
+                                                    <MudHighlighter Text="@item.Message" HighlightedText="@SearchMessage" />
 
                                                     <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; font-size: 0.75rem; color: gray; margin-top: 4px;">
                                                         <span>@item.Date.ToString("hh:mm tt", CultureInfo.InvariantCulture)</span>
@@ -197,11 +220,11 @@
                                     <br />
                                 }
                             }
-                           
+
                         </div>
 
                         @* Envio de mensajes *@
-                        <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:#DAE8F8;height:80px">
+                        <MudPaper Class="d-flex flex-row px-2 mx-4" Style="background-color:transparent;height:80px">
 
                             <MudTextField id="chatInput" T="string" Placeholder="Enter your message..." Class="mt-10" @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" />
 
@@ -237,8 +260,9 @@
     private string all = "all";
     private string group = "group";
     private string EstiloBotones = "color:Black";
+    private string? SearchContact { get; set; } = string.Empty;
 
-
+    private bool DarkMode = false;
     private bool MensajesBox { get; set; } = true;
     private bool AllBox { get; set; } = false;
     private bool GroupBox { get; set; } = false;
@@ -273,5 +297,38 @@
             return $"background-image: url('data:image/jpg;base64,{imageBase64}');background-size:cover;width:80px;height:30px;";
         return "";
     }
+
+    private static string FormatearFecha(DateTime fecha)
+    {
+        var ahora = DateTime.Now;
+        var diferencia = ahora - fecha;
+
+        // Hoy
+        if (fecha.Date == ahora.Date)
+            return fecha.ToString("h:mm tt"); // Ej: 3:45 PM
+        // Ayer
+        else if (fecha.Date == ahora.Date.AddDays(-1))
+            return "Yesterday";
+        // Días atrás
+        else if (diferencia.TotalDays < 7)
+        {
+            int dias = (int)Math.Floor(diferencia.TotalDays);
+            return dias + (dias == 1 ? " day ago" : " days ago");
+        }
+        // Semanas atrás
+        else if (diferencia.TotalDays < 30)
+        {
+            int semanas = (int)Math.Floor(diferencia.TotalDays / 7);
+            return semanas + (semanas == 1 ? " week ago" : " weeks ago");
+        }
+        // Meses atrás
+        else
+        {
+            int meses = (int)Math.Floor(diferencia.TotalDays / 30);
+            return meses + (meses == 1 ? " month ago" : " months ago");
+        }
+    }
+
+    private void ChangeToDarkMode() => DarkMode = !DarkMode;
 
 }

@@ -1,5 +1,4 @@
-﻿using System.Data.SqlTypes;
-using IGift.Application.CQRS.Communication.Chat;
+﻿using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
@@ -30,23 +29,24 @@ namespace IGift.Client.Pages.Communication.Chat
         private Queue<SaveChatMessage>? _colaMensajes { get; set; } = null;
 
         //Otros
-        public HubConnection? _hubConnection { get; set; }
+        private HubConnection? _hubConnection { get; set; }
         private DotNetObjectReference<Chat>? _dotNetRef { get; set; }
 
         //Strings
         /// <summary>
         /// Persona con la que estamos hablando 
         /// </summary>
-        public string ToUserId { get; set; } = string.Empty;
+        private string ToUserId { get; set; } = string.Empty;
         private string CurrentMessage { get; set; } = string.Empty;
         private string CurrentUserId { get; set; } = string.Empty;
+        private string? SearchMessage { get; set; } = string.Empty;
 
         //Ints
 
 
         //Bools
         private bool _open { get; set; } = true;
-        public bool IsHubConnected { get; set; } = false;
+        private bool IsHubConnected { get; set; } = false;
         private bool _isLoadingMore = false;
         private bool ScrollToBottom { get; set; } = false;
 
@@ -82,10 +82,9 @@ namespace IGift.Client.Pages.Communication.Chat
                 await _JS.InvokeVoidAsync("chatInterop.initializeEnterToSend", _dotNetRef);
                 await _JS.InvokeVoidAsync("registerChatScrollListener", _dotNetRef);
                 if (ScrollToBottom)
-                    await _JS.InvokeVoidAsync("chatInterop.scrollToBottom");
+                    await _JS.InvokeVoidAsync("chatInterop.scrollToBottom", _dotNetRef);
                 else
-                    await _JS.InvokeVoidAsync("chatInterop.scrollToMiddle");
-
+                    await _JS.InvokeVoidAsync("chatInterop.scrollToMiddle", _dotNetRef);
             }
         }
 
@@ -115,6 +114,7 @@ namespace IGift.Client.Pages.Communication.Chat
                              chat.LastMessage = chatHistory.Message;
                              chat.Seen = true;
                              chat.IsLastMessageFromMe = false;
+                             chat.Date = chatHistory.Date;
                          }
 
                          if (ToUserId == chatHistory.FromUserId)//Es decir si esta el chat abierto
@@ -159,7 +159,6 @@ namespace IGift.Client.Pages.Communication.Chat
 
             //await _hubConnection.SendAsync(AppConstants.SignalR.PingRequest, CurrentUserId);
         }
-
 
         /// <summary>
         /// Traemos del servidor NUESTRA foto de perfil
@@ -224,7 +223,7 @@ namespace IGift.Client.Pages.Communication.Chat
                     CurrentChat = response.Data.ToList();
 
                     await _hubConnection!.SendAsync(AppConstants.SignalR.SetLastMessageToSeen, this.ToUserId);
-
+                    ScrollToBottom = true;
                     StateHasChanged();
                 }
                 else
@@ -278,6 +277,7 @@ namespace IGift.Client.Pages.Communication.Chat
                             chat.LastMessage = guardarMensaje.Message;
                             chat.IsLastMessageFromMe = true;
                             chat.Seen = false;
+                            chat.Date = DateTime.Now;
                         }
                         CurrentChat.Last().Send = true;
                         CurrentChat.Last().Received = true;

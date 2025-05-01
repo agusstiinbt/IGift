@@ -14,5 +14,6 @@
         /// Este es el Id del otro usuario
         /// </summary>
         public string UserId { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
     }
 }

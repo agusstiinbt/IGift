@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
-using Client.Infrastructure.Authentication;
 using Client.Infrastructure.Extensions;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.CQRS.Peticiones.Query;

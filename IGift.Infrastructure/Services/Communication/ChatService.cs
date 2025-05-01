@@ -125,7 +125,7 @@ namespace IGift.Infrastructure.Services.Communication
                                     (x.ToUserId == info.ToUserId && x.FromUserId == info.FromUserId) ||
                                     (x.ToUserId == info.FromUserId && x.FromUserId == info.ToUserId))
                                 .OrderByDescending(x => x.CreatedDate)
-                                .Take(5)
+                                .Take(20)
                                 //.AsNoTracking()
                                 .ToListAsync(); // Traemos todos los mensajes en una sola consulta
             }
@@ -140,7 +140,7 @@ namespace IGift.Infrastructure.Services.Communication
                             && (x.CreatedDate < info.LastMessageDate)
                                 )
                              .OrderByDescending(x => x.CreatedDate)
-                             .Take(5)
+                             .Take(10)
                              //.AsNoTracking()
                              .ToListAsync(); // Traemos todos los mensajes en una sola consulta
             }
@@ -218,7 +218,8 @@ namespace IGift.Infrastructure.Services.Communication
                     IsLastMessageFromMe = soyYo,
                     UserName = otroUsuario.UserName,
                     Data = foto?.Data,
-                    UserId = otroUsuario.Id
+                    UserId = otroUsuario.Id,
+                    Date = mensaje.CreatedDate
                 };
             });
             var result = await Task.WhenAll(tasks);
