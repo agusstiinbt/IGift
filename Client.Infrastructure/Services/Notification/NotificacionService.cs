@@ -5,6 +5,7 @@ using IGift.Application.CQRS.Notifications.Query;
 using IGift.Application.Responses.Notification;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
+using static IGift.Shared.Constants.AppConstants.Controller;
 
 namespace Client.Infrastructure.Services.Notification
 {
@@ -31,7 +32,7 @@ namespace Client.Infrastructure.Services.Notification
                 IdUser = idUser!
             };
 
-            var url = ConstNotificationController.GetAll;
+            var url = AppConstants.Controller.Notification.GetAll;
 
             var response = await _httpClient.PostAsJsonAsync(url, query);
             var result = await response.ToResult<IEnumerable<NotificationResponse>>();

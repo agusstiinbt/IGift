@@ -33,7 +33,6 @@
 
 	<ItemGroup>
 		<Folder Include="CQRS\Communication\Email\" />
-		<Folder Include="CQRS\Notifications\Command\" />
 		<Folder Include="Responses\Identity\Token\" />
 	</ItemGroup>
 

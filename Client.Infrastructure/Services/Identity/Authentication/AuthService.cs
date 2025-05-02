@@ -10,6 +10,7 @@ using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using static IGift.Shared.Constants.AppConstants.Controller;
 namespace Client.Infrastructure.Services.Identity.Authentication
 {
     public class AuthService : IAuthService
@@ -29,13 +30,13 @@ namespace Client.Infrastructure.Services.Identity.Authentication
 
         public async Task<IResult> Register(UserCreateRequest registerModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(ConstUsersController.Register, registerModel);
+            var response = await _httpClient.PostAsJsonAsync(AppConstants.Controller.Users.Register, registerModel);
             return await response.ToResult<IResult>();
         }
 
         public async Task<IResult> Login(UserLoginRequest loginModel)
         {
-            var response = await _httpClient.PostAsJsonAsync(ConstTokenController.LogIn, loginModel);
+            var response = await _httpClient.PostAsJsonAsync(Token.LogIn, loginModel);
             var result = await response.ToResult<TokenResponse>();
 
             if (result.Succeeded)
@@ -86,7 +87,7 @@ namespace Client.Infrastructure.Services.Identity.Authentication
             var refreshToken = await _localStorage.GetItemAsync<string>(AppConstants.Local.RefreshToken);
 
 
-            var response = await _httpClient.PostAsJsonAsync(ConstTokenController.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
+            var response = await _httpClient.PostAsJsonAsync(Token.RefreshToken, new TokenRequest { Token = token!, RefreshToken = refreshToken! });
             var result = await response.ToResult<TokenResponse>();
 
             if (!result.Succeeded)

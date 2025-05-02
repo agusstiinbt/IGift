@@ -2,8 +2,8 @@
 using Client.Infrastructure.Extensions;
 using IGift.Application.CQRS.Files.ProfilePicture;
 using IGift.Application.Responses.Files;
-using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
+using static IGift.Shared.Constants.AppConstants.Controller;
 
 namespace IGift.Client.Infrastructure.Services.Files
 {
@@ -19,13 +19,13 @@ namespace IGift.Client.Infrastructure.Services.Files
         public async Task<IResult<ProfilePictureResponse>> GetByIdAsync(string Id)
         {
             var request = new ProfilePictureById { Id = Id };
-            var response = await _httpClient.PostAsJsonAsync(ConstFilesController.GetProfilePictureById, request);
+            var response = await _httpClient.PostAsJsonAsync(Shared.Constants.AppConstants.Controller.Files.GetProfilePictureById, request);
             return await response.ToResult<ProfilePictureResponse>();
         }
 
         public async Task<IResult> UploadAsync(ProfilePictureUpload file)
         {
-            var response = await _httpClient.PostAsJsonAsync(ConstFilesController.UploadProfilePicture, file);
+            var response = await _httpClient.PostAsJsonAsync(Shared.Constants.AppConstants.Controller.Files.UploadProfilePicture, file);
             return await response.ToResult();
         }
     }

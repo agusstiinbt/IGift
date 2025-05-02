@@ -59,7 +59,7 @@ namespace IGift.Infrastructure.Repositories.Generic.Auditable
         public async Task UpdateAsync(T entity)
         {
             T exist = _context.Set<T>().Find(entity.Id)!;
-            _context.Entry(exist).CurrentValues.SetValues(entity);
+            _context.Entry(exist).CurrentValues.SetValues(entity);//por qué usar SetValues? Porque solamente actualiza las propiedades escalares y no las de navegacion en el caso de que pasemos com oparamtro una clase que tiene uan propiedad de navegacion EF si usamos UPDATE puede hacer macanas al no haberle pasado la propiedad de navegacion completa. Incluso podemos usar una clase DTO con el setValues. Update lo que hace es modificar TODA la entidad.
             await _context.SaveChangesAsync();
         }
 

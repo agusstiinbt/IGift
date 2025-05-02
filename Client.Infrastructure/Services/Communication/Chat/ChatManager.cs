@@ -2,10 +2,9 @@
 using Client.Infrastructure.Extensions;
 using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
-using IGift.Shared.Constants.Apis;
 using IGift.Shared.Wrapper;
 using Microsoft.Extensions.Logging;
-
+using static IGift.Shared.Constants.AppConstants.Controller;
 namespace IGift.Client.Infrastructure.Services.Communication.Chat
 {
     public class ChatManager : IChatManager
@@ -21,7 +20,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
 
         public async Task<IResult<IEnumerable<ChatHistoryResponse>>> GetChatById(SearchChatById obj)
         {
-            var response = await _httpClient.PostAsJsonAsync(ChatController.GetChatById, obj);
+            var response = await _httpClient.PostAsJsonAsync(Shared.Constants.AppConstants.Controller.Chat.GetChatById, obj);
             var result = await response.ToResult<IEnumerable<ChatHistoryResponse>>();
             return result;
         }
@@ -30,7 +29,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync(ChatController.LoadChatUsers, obj);
+                var response = await _httpClient.PostAsJsonAsync(Shared.Constants.AppConstants.Controller.Chat.LoadChatUsers, obj);
                 var result = await response.ToResult<IEnumerable<ChatUserResponse>>();
                 return result;
             }
@@ -43,7 +42,7 @@ namespace IGift.Client.Infrastructure.Services.Communication.Chat
 
         public async Task<IResult> SaveMessageAsync(SaveChatMessage saveChatMessage)
         {
-            var response = await _httpClient.PostAsJsonAsync(ChatController.SaveMessage, saveChatMessage);
+            var response = await _httpClient.PostAsJsonAsync(Shared.Constants.AppConstants.Controller.Chat.SaveMessage, saveChatMessage);
             var result = await response.ToResult();
             return result;
         }

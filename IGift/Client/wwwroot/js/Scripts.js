@@ -1,20 +1,16 @@
-﻿
-//Scroll
+﻿//Scroll
 let scrollHandler = null;
 function registerChatScrollListener(dotNetObj) {
     const chatContainer = document.getElementById('chatContainer');
     if (!chatContainer) return;
-
     if (scrollHandler) {
         chatContainer.removeEventListener('scroll', scrollHandler);
     }
-
     scrollHandler = () => {
         if (chatContainer.scrollTop === 0) {
             dotNetObj.invokeMethodAsync('OnTopReached');
         }
     };
-
     chatContainer.addEventListener('scroll', scrollHandler);
 }
 function removeChatScrollListener() {
@@ -24,8 +20,6 @@ function removeChatScrollListener() {
         scrollHandler = null;
     }
 }
-
-
 //Desconectar al usuario despues de tiempo inactivo
 function InitializeInactivityTimer(dotnetHelper) {
     var timer;
@@ -39,11 +33,9 @@ function InitializeInactivityTimer(dotnetHelper) {
         timer = setTimeout(Logout, 180000);
         timerMessage = setTimeout(ShowMessage, 160000);
     }
-
     function Logout() {
         dotnetHelper.invokeMethodAsync("Logout");
     }
-
     function ShowMessage() {
         dotnetHelper.invokeMethodAsync("ShowMessage");
     }
@@ -58,7 +50,6 @@ window.chatInterop = {
             console.warn("chatInterop: no se encontró el input");
             return;
         }
-
         input.addEventListener("keydown", function (e) {
             if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -71,7 +62,6 @@ window.chatInterop = {
         });
     }
 };
-
 //Scrolls
 window.chatInterop.scrollToBottom = function () {
     const container = document.getElementById("chatContainer");
@@ -86,19 +76,10 @@ window.chatInterop.scrollToMiddle = function () {
         container.scrollTop = container.scrollHeight / 3.5;
     }
 };
-
 //Audio
 window.PlayAudio = (elementName) => {
     document.getElementById(elementName).play();
 }
-
 function PlayAudioReceiveMessage(elementName) {
     document.getElementById(elementName).play();
 }
-
-//function RemovePlayAudio() {
-//    const audioContainer = document.getElementById('notification');
-//    if (audioContainer) {
-
-//    }
-//}
