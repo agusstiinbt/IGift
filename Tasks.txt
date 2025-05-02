@@ -1,10 +1,9 @@
-2) La última tarea de las anteriores nos va a dar paso a iniciar la lógica e interfaz del chat;
 
-	b)Implementar una campanita de notificaciones; esto es signalR y debería de estar en alguna 
-		parte del código que se comparta. Fijarse el código de Blazor Hero para más detalles
 	d)Crear un perfil de usuario con las opciones que tenemos para utilizar en el servicio de 
 		UserService.
+
 	e)Hasta acá deberíamos de tener TODOS los TODO finalizados
+
 	f)Luego de completar el punto e), debemos estudiar la parte de SmartContracts y lograr 
 		generar un smart contract que genere una tarjeta de regalo ficticia.
 
@@ -14,25 +13,14 @@ por un servicio en la Nube como Azure o AWS
 Pasos para hacer el chat:
 
 
-3) El método de comprar debe enviar una notificación a Agustín. Esa notificación (snackBar) al hacer click
-se debe dirigir al chat/UserId 
-Existe un método en blazor Hero que hacía eso al hacer click en uan notificacion. Buscarlo
-
 4) Al cargar el usuario Id en la página de chat.razor se debe ejecutar un método que busque un archivo con el chat
 id del usuario en cuestión 
 si no existe entonces se creará uno nuevo en el caso de que exista entonces se deberá de cargar dentro de la vista
 
-
-7) Enviar un hola mundo y que ese mensaje se ponga en el archivo de texto
-
-8) Ese hola mundo debe guardarse como toda una clase ChatHistoryResponse en el archivo de texto en la ubicación que deseamos
-
 10) FINALIZADO PERO SE PUEDE IMPLEMENTAR RABBITMQ ===> Una vez que se implemente la cola de mensajes en espera para ser guardados entonces debemos corroborrar que se carguen todos los mensajes
 al actualizar la página. 
 
-11) Implementar la función para que automáticamente que se envían los mensajes se debe mostrar en el chat (capaz sea mejor primero mostrarlo
-en el chat y luego guardarlo en el archivo. Preguntarle a chatGpt eso)
 
 
-15) Empezar lógica para encriptar y desencriptar mensajes
+15) Empezar lógica para encriptar y desencriptar mensajes. Recoordar lo del archivo y lo de la clave publica y privada como hace whatsapp de extremo a extremo
 

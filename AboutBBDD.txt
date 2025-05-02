@@ -101,10 +101,6 @@ Esta distribución muestra cómo aprovechar las fortalezas de cada base de datos m
 
 
 
-
-
-
-
 ### 1) **Clarificación sobre PostgreSQL**
 
 #### a) **Metadatos:**
