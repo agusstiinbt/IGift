@@ -105,7 +105,6 @@
             /// </summary>
             public const string PingResponse = "PingResponseAsync";
         }
-
         public static class Controller
         {
             public class Chat
@@ -126,8 +125,8 @@
             public static partial class Notification
             {
                 private static string route = "api/Notification/";
-                public static string GetAll = route+"GetAll";
-                public static string SaveNotificationAsync = route+ "SaveNotificationAsync";
+                public static string GetAll = route + "GetAll";
+                public static string SaveNotificationAsync = route + "SaveNotificationAsync";
             }
             public static partial class Peticiones
             {

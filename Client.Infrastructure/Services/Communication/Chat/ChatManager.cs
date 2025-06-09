@@ -4,7 +4,6 @@ using IGift.Application.CQRS.Communication.Chat;
 using IGift.Application.Models.Chat;
 using IGift.Shared.Wrapper;
 using Microsoft.Extensions.Logging;
-using static IGift.Shared.Constants.AppConstants.Controller;
 namespace IGift.Client.Infrastructure.Services.Communication.Chat
 {
     public class ChatManager : IChatManager

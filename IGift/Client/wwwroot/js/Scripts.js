@@ -80,6 +80,3 @@ window.chatInterop.scrollToMiddle = function () {
 window.PlayAudio = (elementName) => {
     document.getElementById(elementName).play();
 }
-function PlayAudioReceiveMessage(elementName) {
-    document.getElementById(elementName).play();
-}

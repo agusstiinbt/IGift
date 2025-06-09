@@ -5,7 +5,6 @@ using IGift.Application.CQRS.Notifications.Query;
 using IGift.Application.Responses.Notification;
 using IGift.Shared.Constants;
 using IGift.Shared.Wrapper;
-using static IGift.Shared.Constants.AppConstants.Controller;
 
 namespace Client.Infrastructure.Services.Notification
 {

@@ -1,30 +1,28 @@
-°Interesante proyecto! Para organizar los datos en las distintas bases de datos y aprovechar sus puntos fuertes, he diseÒado un esquema que combina las fortalezas de cada tecnologÌa con las necesidades de tu soluciÛn. Aunque en un entorno real no siempre serÌa necesario usar tantas bases de datos, esto te permitir· demostrar tus habilidades en m˙ltiples tecnologÌas.
+Ôªø
 
----
-
-### **DistribuciÛn de las bases de datos**
+### **Distribuci√≥n de las bases de datos**
 1. **SQL Server (Relacional con datos estructurados y transacciones robustas)**
-   - **Usuarios**: InformaciÛn de usuarios como nombre, email, contraseÒa (hash), direcciÛn, roles, y dem·s datos personales.
-   - **Operaciones de intercambio**: Datos relacionados con las operaciones entre usuarios (pactos, estados de transacciÛn).
+   - **Usuarios**: Informaci√≥n de usuarios como nombre, email, contrase√±a (hash), direcci√≥n, roles, y dem√°s datos personales.
+   - **Operaciones de intercambio**: Datos relacionados con las operaciones entre usuarios (pactos, estados de transacci√≥n).
    - **Smart Contracts**: Almacenamiento de contratos vinculados a las operaciones.
-   - **GiftCards**: Detalles de cada tarjeta generada (monto, ID ˙nico, fechas).
+   - **GiftCards**: Detalles de cada tarjeta generada (monto, ID √∫nico, fechas).
 
-   **Motivo**: SQL Server maneja bien transacciones crÌticas y asegura consistencia en datos complejos como operaciones y contratos.
+   **Motivo**: SQL Server maneja bien transacciones cr√≠ticas y asegura consistencia en datos complejos como operaciones y contratos.
 
 ---
 
-2. **Oracle (Ideal para datos histÛricos y reportes analÌticos)**
+2. **Oracle (Ideal para datos hist√≥ricos y reportes anal√≠ticos)**
    - **Historial de transacciones**: Registro de todas las operaciones completadas o canceladas, incluyendo los detalles de usuarios, montos y fechas.
-   - **Logs del sistema**: InformaciÛn para auditorÌas y reportes.
-   - **EstadÌsticas del sistema**: Datos agregados como volumen de operaciones por dÌa/semana, montos totales gestionados, y usuarios activos.
+   - **Logs del sistema**: Informaci√≥n para auditor√≠as y reportes.
+   - **Estad√≠sticas del sistema**: Datos agregados como volumen de operaciones por d√≠a/semana, montos totales gestionados, y usuarios activos.
 
-   **Motivo**: Oracle se destaca en procesamiento analÌtico y consultas complejas, ideal para reportes histÛricos y de negocio.
+   **Motivo**: Oracle se destaca en procesamiento anal√≠tico y consultas complejas, ideal para reportes hist√≥ricos y de negocio.
 
 ---
 
 3. **MySQL (Ligero y flexible, ideal para datos maestros)**
-   - **Locales adheridos**: Detalles de locales y comercios asociados (nombre, direcciÛn, categorÌas).
-   - **Peticiones de regalo**: Datos sobre quÈ solicita cada usuario (descripciÛn, categorÌa, precio estimado).
+   - **Locales adheridos**: Detalles de locales y comercios asociados (nombre, direcci√≥n, categor√≠as).
+   - **Peticiones de regalo**: Datos sobre qu√© solicita cada usuario (descripci√≥n, categor√≠a, precio estimado).
 
    **Motivo**: MySQL es eficiente para datos estructurados no muy complejos, como listas de locales y solicitudes.
 
@@ -32,91 +30,92 @@
 
 4. **MongoDB (NoSQL para datos semiestructurados y documentos)**
    - **Chats**: Mensajes enviados entre usuarios, estructurados en documentos JSON (conversaciones completas con remitente, destinatario, timestamp).
-   - **Notificaciones**: Notificaciones de eventos importantes (peticiÛn aceptada, transacciÛn completada).
+   - **Notificaciones**: Notificaciones de eventos importantes (petici√≥n aceptada, transacci√≥n completada).
 
-   **Motivo**: MongoDB es excelente para datos jer·rquicos como chats y notificaciones, y su esquema flexible permite cambios futuros.
+   **Motivo**: MongoDB es excelente para datos jer√°rquicos como chats y notificaciones, y su esquema flexible permite cambios futuros.
 
 ---
 
 5. **PostgreSQL (Relacional con soporte para JSON y extensibilidad)**
-   - **Fotos de perfil**: Almacena metadatos sobre las fotos de los usuarios (nombre de archivo, tamaÒo, URL de almacenamiento).
-   - **Metadatos generales**: InformaciÛn adicional no crÌtica que puede estar en formato JSON, como preferencias de usuario o configuraciones personalizadas.
+   - **Fotos de perfil**: Almacena metadatos sobre las fotos de los usuarios (nombre de archivo, tama√±o, URL de almacenamiento).
+   - **Metadatos generales**: Informaci√≥n adicional no cr√≠tica que puede estar en formato JSON, como preferencias de usuario o configuraciones personalizadas.
 
    **Motivo**: PostgreSQL combina bien datos relacionales y semiestructurados, lo que lo hace ideal para gestionar datos complementarios como metadatos.
 
 ---
 
-### **CÛmo interact˙an las bases de datos**
-La interacciÛn entre las bases puede lograrse mediante los siguientes enfoques:
-1. **Interacciones asincrÛnicas**: 
-   - Usa mensajes a travÈs de una cola (como RabbitMQ o Azure Service Bus) para notificar eventos entre microservicios.
-   - Ejemplo: Cuando una transacciÛn se completa en SQL Server, el microservicio asociado envÌa un mensaje que el servicio de chat (MongoDB) usa para notificar a los usuarios.
+### **C√≥mo interact√∫an las bases de datos**
+La interacci√≥n entre las bases puede lograrse mediante los siguientes enfoques:
+1. **Interacciones asincr√≥nicas**: 
+   - Usa mensajes a trav√©s de una cola (como RabbitMQ o Azure Service Bus) para notificar eventos entre microservicios.
+   - Ejemplo: Cuando una transacci√≥n se completa en SQL Server, el microservicio asociado env√≠a un mensaje que el servicio de chat (MongoDB) usa para notificar a los usuarios.
 
-2. **APIs especÌficas para cada servicio**:
+2. **APIs espec√≠ficas para cada servicio**:
    - Cada microservicio que gestiona una base de datos expone una API para consultar datos o realizar operaciones relacionadas.
    - Ejemplo: El microservicio de usuarios consulta SQL Server, mientras el de notificaciones accede a MongoDB.
 
 ---
 
-### **Cosas a considerar en la implementaciÛn**
+### **Cosas a considerar en la implementaci√≥n**
 1. **Coherencia eventual vs. fuerte:**
-   - La coherencia fuerte es necesaria para operaciones crÌticas como las transacciones y los smart contracts (SQL Server).
-   - Para elementos menos crÌticos como notificaciones o chats, la coherencia eventual es suficiente (MongoDB).
+   - La coherencia fuerte es necesaria para operaciones cr√≠ticas como las transacciones y los smart contracts (SQL Server).
+   - Para elementos menos cr√≠ticos como notificaciones o chats, la coherencia eventual es suficiente (MongoDB).
 
-2. **Backups y restauraciÛn:**
-   - Configura estrategias de backup adecuadas para cada base. Por ejemplo, un backup m·s frecuente para SQL Server debido a las transacciones crÌticas.
+2. **Backups y restauraci√≥n:**
+   - Configura estrategias de backup adecuadas para cada base. Por ejemplo, un backup m√°s frecuente para SQL Server debido a las transacciones cr√≠ticas.
 
 3. **Seguridad:**
-   - Usa encriptaciÛn para datos sensibles como contraseÒas, claves de smart contracts, y mensajes crÌticos.
-   - Implementa autenticaciÛn y autorizaciÛn en cada microservicio.
+   - Usa encriptaci√≥n para datos sensibles como contrase√±as, claves de smart contracts, y mensajes cr√≠ticos.
+   - Implementa autenticaci√≥n y autorizaci√≥n en cada microservicio.
 
-4. **MÈtricas de rendimiento:**
-   - Monitorea cada base de datos para asegurarte de que el rendimiento sea adecuado (especialmente si PostgreSQL almacena archivos grandes como im·genes).
+4. **M√©tricas de rendimiento:**
+   - Monitorea cada base de datos para asegurarte de que el rendimiento sea adecuado (especialmente si PostgreSQL almacena archivos grandes como im√°genes).
 
 ---
 
-### **Flujo tÌpico en la aplicaciÛn**
+### **Flujo t√≠pico en la aplicaci√≥n**
 1. **Juan crea una cuenta:**
    - Los datos de Juan se guardan en SQL Server.
 
-2. **Juan publica una peticiÛn:**
-   - La peticiÛn se guarda en MySQL.
+2. **Juan publica una petici√≥n:**
+   - La petici√≥n se guarda en MySQL.
 
-3. **AgustÌn responde a la peticiÛn:**
+3. **Agust√≠n responde a la petici√≥n:**
    - Se inicia un chat, almacenado en MongoDB.
 
 4. **Se pacta un intercambio:**
    - Los datos del pacto y el smart contract se guardan en SQL Server.
 
-5. **La transacciÛn se completa:**
+5. **La transacci√≥n se completa:**
    - Se genera una GiftCard, almacenada en SQL Server.
-   - El historial de la transacciÛn se guarda en Oracle para reportes futuros.
+   - El historial de la transacci√≥n se guarda en Oracle para reportes futuros.
 
 6. **Notificaciones:**
    - MongoDB registra notificaciones para ambos usuarios.
 
 ---
 
-Esta distribuciÛn muestra cÛmo aprovechar las fortalezas de cada base de datos mientras mantienes la escalabilidad y modularidad de la soluciÛn. Si deseas ajustar o expandir alg˙n aspecto, °puedo ayudarte!
+Esta distribuci√≥n muestra c√≥mo aprovechar las fortalezas de cada base de datos mientras mantienes la escalabilidad y modularidad de la soluci√≥n. Si deseas ajustar o expandir alg√∫n aspecto,
+¬°puedo ayudarte!
 
 
 
-### 1) **ClarificaciÛn sobre PostgreSQL**
+### 1) **Clarificaci√≥n sobre PostgreSQL**
 
 #### a) **Metadatos:**
-Metadatos son "datos sobre datos". En este caso, los metadatos de las fotos de perfil incluirÌan informaciÛn descriptiva sobre cada archivo, como:
+Metadatos son "datos sobre datos". En este caso, los metadatos de las fotos de perfil incluir√≠an informaci√≥n descriptiva sobre cada archivo, como:
 - **Nombre del archivo:** "foto_perfil_juan.jpg"
-- **TamaÒo:** 256 KB
-- **ExtensiÛn:** .jpg
+- **Tama√±o:** 256 KB
+- **Extensi√≥n:** .jpg
 - **Ruta de almacenamiento:** `/media/uploads/usuarios/123/`
 - **Fecha de carga:** 2024-12-24
 - **ID del usuario asociado:** 123
 
-**Nota:** Estos datos no son la imagen en sÌ, sino informaciÛn que permite localizarla, validar su tipo y manejarla en la aplicaciÛn.
+**Nota:** Estos datos no son la imagen en s√≠, sino informaci√≥n que permite localizarla, validar su tipo y manejarla en la aplicaci√≥n.
 
-#### b) **øGuardar los bytes de la imagen o solo la informaciÛn?**
+#### b) **¬øGuardar los bytes de la imagen o solo la informaci√≥n?**
 Hay dos enfoques principales:
-1. **Guardar solo la informaciÛn en PostgreSQL y almacenar el archivo en el servidor (o un sistema de almacenamiento como AWS S3, Azure Blob Storage, o Google Cloud Storage):**
+1. **Guardar solo la informaci√≥n en PostgreSQL y almacenar el archivo en el servidor (o un sistema de almacenamiento como AWS S3, Azure Blob Storage, o Google Cloud Storage):**
    - Ventajas:
      - Mejor rendimiento al evitar que la base de datos crezca mucho.
      - Escalabilidad al usar servicios de almacenamiento.
@@ -126,25 +125,26 @@ Hay dos enfoques principales:
 2. **Guardar los bytes de la imagen directamente en PostgreSQL (en una columna tipo `bytea` o usando extensiones como `pg_largeobject`):**
    - Ventajas:
      - Todo queda centralizado en la base de datos.
-     - M·s sencillo para respaldos (se respalda todo junto).
+     - M√°s sencillo para respaldos (se respalda todo junto).
    - Desventajas:
-     - Aumenta el tamaÒo de la base de datos r·pidamente.
-     - Posible impacto en el rendimiento si tienes muchas im·genes grandes.
+     - Aumenta el tama√±o de la base de datos r√°pidamente.
+     - Posible impacto en el rendimiento si tienes muchas im√°genes grandes.
 
-**RecomendaciÛn:** 
-En tu caso, como es un proyecto para pr·ctica, puedes experimentar guardando solo los metadatos en PostgreSQL y dejando las im·genes fÌsicas en carpetas locales en el servidor. Esto te permitir· simular un esquema m·s realista sin complicarte demasiado.
+**Recomendaci√≥n:** 
+En tu caso, como es un proyecto para pr√°ctica, puedes experimentar guardando solo los metadatos en PostgreSQL y dejando las im√°genes f√≠sicas en carpetas locales en el servidor. Esto te 
+permitir√° simular un esquema m√°s realista sin complicarte demasiado.
 
 ---
 
-### 2) **MÈtricas de rendimiento**
+### 2) **M√©tricas de rendimiento**
 
-#### a) **øQuÈ son las mÈtricas de rendimiento?**
-Las mÈtricas de rendimiento son datos que te ayudan a medir cÛmo se comportan tus sistemas. En el contexto de bases de datos y aplicaciones, puedes medir:
-- **Latencia:** Tiempo que toma una operaciÛn (lectura/escritura).
-- **Tasa de consultas por segundo (QPS):** Cu·ntas consultas se manejan en un perÌodo.
+#### a) **¬øQu√© son las m√©tricas de rendimiento?**
+Las m√©tricas de rendimiento son datos que te ayudan a medir c√≥mo se comportan tus sistemas. En el contexto de bases de datos y aplicaciones, puedes medir:
+- **Latencia:** Tiempo que toma una operaci√≥n (lectura/escritura).
+- **Tasa de consultas por segundo (QPS):** Cu√°ntas consultas se manejan en un per√≠odo.
 - **Uso de CPU/memoria:** Recursos consumidos por el servidor de la base de datos.
-- **Õndices fragmentados:** Impacto en la velocidad de consultas.
-- **Conexiones activas:** Cu·ntas conexiones a la base de datos hay abiertas en un momento dado.
+- **√çndices fragmentados:** Impacto en la velocidad de consultas.
+- **Conexiones activas:** Cu√°ntas conexiones a la base de datos hay abiertas en un momento dado.
 
 ---
 
@@ -152,45 +152,87 @@ Las mÈtricas de rendimiento son datos que te ayudan a medir cÛmo se comportan tu
 Existen muchas herramientas para monitorear bases de datos y sistemas. Algunas populares incluyen:
 
 - **Para bases de datos:**
-  1. **pgAdmin (PostgreSQL):** Tiene estadÌsticas b·sicas.
+  1. **pgAdmin (PostgreSQL):** Tiene estad√≠sticas b√°sicas.
   2. **SQL Server Management Studio (SQL Server):** Incluye herramientas como el Query Store para monitorear rendimiento.
-  3. **Oracle Enterprise Manager (Oracle):** Proporciona an·lisis detallado.
+  3. **Oracle Enterprise Manager (Oracle):** Proporciona an√°lisis detallado.
   4. **Percona Monitoring and Management (MySQL, MongoDB, PostgreSQL):** Plataforma especializada en monitoreo.
   5. **Grafana + Prometheus:** Usados juntos, permiten crear dashboards personalizados para monitorear cualquier base de datos.
 
 - **Para monitoreo general:**
   1. **New Relic:** Servicio SaaS para monitoreo completo de aplicaciones y bases de datos.
   2. **Datadog:** Similar a New Relic, permite monitorear rendimiento a nivel de infraestructura, bases de datos y aplicaciones.
-  3. **Elastic Stack (ELK):** Muy flexible para monitoreo, logs y an·lisis de datos.
+  3. **Elastic Stack (ELK):** Muy flexible para monitoreo, logs y an√°lisis de datos.
 
 ---
 
-#### c) **CÛmo empezar con mÈtricas**
-1. **Entender quÈ necesitas medir:**
-   - Identifica las operaciones crÌticas en tu aplicaciÛn. Ejemplo: latencia en transacciones, tiempo de respuesta del chat.
+#### c) **C√≥mo empezar con m√©tricas**
+1. **Entender qu√© necesitas medir:**
+   - Identifica las operaciones cr√≠ticas en tu aplicaci√≥n. Ejemplo: latencia en transacciones, tiempo de respuesta del chat.
 
-2. **Configurar herramientas b·sicas:**
-   - Para PostgreSQL: Instala y configura `pg_stat_statements`, una extensiÛn para monitoreo de consultas.
-   - Para SQL Server: FamiliarÌzate con el Query Store y Performance Monitor.
+2. **Configurar herramientas b√°sicas:**
+   - Para PostgreSQL: Instala y configura `pg_stat_statements`, una extensi√≥n para monitoreo de consultas.
+   - Para SQL Server: Familiar√≠zate con el Query Store y Performance Monitor.
 
 3. **Aprender sobre sistemas de monitoreo:**
    - Explora herramientas como Grafana y Prometheus, que son gratuitas y ampliamente usadas.
-   - Usa dashboards preconfigurados para mÈtricas de bases de datos.
+   - Usa dashboards preconfigurados para m√©tricas de bases de datos.
 
 4. **Probar y optimizar:**
    - Genera una carga en la base de datos (usando scripts o herramientas como Apache JMeter).
    - Recolecta datos y busca cuellos de botella.
 
-#### Recursos para aprender m·s:
-- **Cursos en lÌnea:**
+#### Recursos para aprender m√°s:
+- **Cursos en l√≠nea:**
   - [Udemy: Monitoring and Tuning Databases](https://www.udemy.com/) (varias opciones para cada tipo de base de datos).
-- **DocumentaciÛn oficial:**
+- **Documentaci√≥n oficial:**
   - PostgreSQL: [pg_stat_statements](https://www.postgresql.org/docs/current/pgstatstatements.html).
   - SQL Server: [Query Store](https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store).
 - **Blogs y tutoriales:**
-  - **Grafana Labs Blog:** Tutoriales de configuraciÛn y ejemplos pr·cticos.
-  - **Percona Blog:** Contenido tÈcnico sobre monitoreo y optimizaciÛn de bases de datos.
+  - **Grafana Labs Blog:** Tutoriales de configuraci√≥n y ejemplos pr√°cticos.
+  - **Percona Blog:** Contenido t√©cnico sobre monitoreo y optimizaci√≥n de bases de datos.
 
 ---
 
-øTe gustarÌa ayuda para configurar una de estas herramientas en tu proyecto?
+¬øTe gustar√≠a ayuda para configurar una de estas herramientas en tu proyecto?
+
+
+3) Clarificacion sobre MongoDB:
+
+Si por ejemplo Usuarios y dentro una propiedad de navegacion ICollection Compras,  las propiedades de navegaci√≥n como ICollection<Compras> no funcionan autom√°ticamente
+si los datos est√°n en otra base de datos (como MongoDB u Oracle). Eso solo funciona en EF con entidades mapeadas a la misma base de datos y contexto.
+
+ üîπ A. SQL Server / PostgreSQL / MySQL
+    (Ej: Usuarios y Compras en la misma base relacional)
+
+    ‚úÖ S√≠ funciona directamente con propiedades de navegaci√≥n (ICollection<Compras>), siempre que est√©n en el mismo DbContext y haya claves for√°neas bien definidas.
+
+üîπ B. MongoDB
+    ‚ùå No funciona con propiedades de navegaci√≥n autom√°ticas.
+
+    MongoDB es NoSQL, sin joins.
+
+    EF no puede mapearlo.
+
+    Us√°s el MongoDB C# Driver con consultas manuales.
+
+    üß† Soluci√≥n: hac√©s la agregaci√≥n de datos manual en tu servicio, como te mostr√© antes.
+
+ üîπ B. Oracle
+    ‚úÖ o ‚ùå Depende.
+
+    Si us√°s EF Core con el provider de Oracle (como Oracle.EntityFrameworkCore), s√≠ pod√©s tener navegaci√≥n, pero dentro de esa misma base y contexto.
+
+    Si ten√©s entidades en bases separadas (SQL Server y Oracle), no se pueden relacionar directamente con propiedades de navegaci√≥n en EF.
+
+    üìå Pod√©s tener navegaci√≥n dentro de cada base si us√°s un DbContext por base.
+
+        üîπ Conclusi√≥n
+    Las propiedades de navegaci√≥n (ICollection<T>, T) solo funcionan dentro del mismo DbContext y base relacional.
+
+    Si est√°s usando m√∫ltiples bases (ej: SQL Server + MongoDB + Oracle), entonces deb√©s usar:
+
+    üî∏ Un DbContext por base relacional
+
+    üî∏ Repositorios separados por tipo de base
+
+    üî∏ Agregaci√≥n de datos a mano en los servicios de aplicaci√≥n

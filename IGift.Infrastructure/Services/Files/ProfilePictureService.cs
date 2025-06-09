@@ -102,19 +102,15 @@ namespace IGift.Infrastructure.Services.Files
 
 
         /// <summary>
-        /// Guarda una foto de perfil en una carpeta del servidor y en el caso de sea de un nuevo usuario se crea la informacion en la bbdd
+        /// Guarda una foto de perfil en una carpeta del servidor y en el caso de que sea de un nuevo usuario se crea la informacion en la bbdd
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public async Task<IResult> SaveProfilePictureAsync(ProfilePictureUpload request)
         {
-            //Si estamos subiendo una foto de perfil entonces el nombre debe ser el IdUser
-            //TODO esto de acá arriba lo estamos haciendo porque si mandamos el archivo desde el cliente con un fileName = al IdUSer entonces el nombre del archivo va a ser muy largo porque Los IdUser son largos. Fijarse si podemos cambiar el tamaño de los Id de los usuarios por un int mejor
 
-            if (request.UploadRequest.UploadType == UploadType.ProfilePicture)
-            {
-                request.UploadRequest.FileName = request.IdUser;
-            }
+            if (request.UploadRequest.UploadType != UploadType.ProfilePicture)
+                return await Result<IResult>.FailAsync();
 
             //Las fotos de perfil siempre las pisamos, es decir eliminamos la anterior
             var pathResponse = await _uploadService.UploadAsync(request.UploadRequest, true);
@@ -137,7 +133,6 @@ namespace IGift.Infrastructure.Services.Files
                     throw new Exception("Error al subir foto de perfil");
                 }
                 //Si no existe una foto de perfil con el IdUser del 'request' entonces creamos una nueva fila
-
 
                 var user = await _dbContext.Users.Where(x => x.Id == request.IdUser).FirstAsync();
 

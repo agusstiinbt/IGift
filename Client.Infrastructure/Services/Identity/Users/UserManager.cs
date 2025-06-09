@@ -4,7 +4,6 @@ using IGift.Application.CQRS.Identity.Users;
 using IGift.Application.Responses.Identity.Users;
 using IGift.Shared.Wrapper;
 using Microsoft.JSInterop;
-using static IGift.Shared.Constants.AppConstants.Controller;
 
 namespace Client.Infrastructure.Services.Identity.Users
 {

@@ -3,7 +3,6 @@ using Client.Infrastructure.Extensions;
 using IGift.Application.CQRS.Files.ProfilePicture;
 using IGift.Application.Responses.Files;
 using IGift.Shared.Wrapper;
-using static IGift.Shared.Constants.AppConstants.Controller;
 
 namespace IGift.Client.Infrastructure.Services.Files
 {

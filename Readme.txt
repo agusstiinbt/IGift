@@ -12,17 +12,6 @@ Keys: Utilizada para almacenar claves de seguridad, como claves de autenticación
 PersistedGrants: Utilizada para almacenar tokens OAuth 2.0 y datos relacionados con la autorización persistente.
 
 
-
-¿Cómo trabajamos en la aplicación?
-
-La lógica tratamos de dejarla siempre en el código C# antes que en la base de datos.
-
-Con los modelos de Infrastructure, fijarse cuáles son los campos que tiene en su respectiva tabla y después de eso llenarlos siempre desde el front.
-
-En las tablas de identity como por ejemplo Users, hay campos que debemos fijarnos que permiten un Null, entonces esos campos no hace falta llenarlos al momento de una creación de usuario. Pero sin embargo
-hay que fijarse en qué métodos de su clase servicio (UserService en este caso) sí son necesarios completarlos
-
-
 Explicación de ClockSkew
 Por defecto, el TokenValidationParameters.ClockSkew está configurado con un valor de 5 minutos para permitir una pequeña discrepancia
 en el tiempo entre el emisor del token y el validador. Esto es útil en entornos de producción donde puede haber ligeras diferencias
