@@ -1,6 +1,6 @@
 ﻿using IGift.Application.Interfaces.Chat;
 
-namespace IGift.Application.Models.Chat
+namespace IGift.Application.Models.MongoDBModels.Chat
 {
     public class ChatHistory<TUser> : IChatHistory<TUser> where TUser : IChatUser
     {

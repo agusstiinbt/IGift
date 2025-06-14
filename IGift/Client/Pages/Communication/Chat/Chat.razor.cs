@@ -1,5 +1,5 @@
 ﻿using IGift.Application.CQRS.Communication.Chat;
-using IGift.Application.Models.Chat;
+using IGift.Application.Models.MongoDBModels.Chat;
 using IGift.Client.Extensions;
 using IGift.Shared.Constants;
 using Microsoft.AspNetCore.Components;

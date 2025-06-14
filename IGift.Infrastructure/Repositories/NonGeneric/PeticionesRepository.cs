@@ -8,9 +8,9 @@ namespace IGift.Infrastructure.Repositories.NonGeneric
 {
     public class PeticionesRepository : IPeticionesRepository
     {
-        private readonly IAuditableRepository<Peticiones, int> _repository;
+        private readonly IAuditableRepository<Petitions, int> _repository;
 
-        public PeticionesRepository(IAuditableRepository<Peticiones, int> repository)
+        public PeticionesRepository(IAuditableRepository<Petitions, int> repository)
         {
             _repository = repository;
         }

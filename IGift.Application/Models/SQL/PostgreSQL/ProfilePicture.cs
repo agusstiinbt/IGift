@@ -1,6 +1,6 @@
 ﻿using IGift.Domain.Contracts;
 
-namespace IGift.Application.Models
+namespace IGift.Application.Models.SQL.PostgreSQL
 {
     /// <summary>
     /// Metadata de foto perfil. PostgreSQL

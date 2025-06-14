@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
+using IGift.Application.Models.MongoDBModels.Titulos;
+using IGift.Application.Models.SQL.MySQL;
 using IGift.Application.Responses.Titulos.Categoria;
 using IGift.Application.Responses.Titulos.Conectado;
 using IGift.Shared.Wrapper;
@@ -23,9 +25,9 @@ namespace IGift.Application.CQRS.Titulos.Conectado
 
         public async Task<IResult<BarraHerramientasConectadoResponse>> Handle(GetBarraConectadoQuery request, CancellationToken cancellationToken)
         {
-            var titulos = await _unitOfWork.Repository<Models.Titulos.TitulosConectado>().GetAllMapAsyncQuery<TitulosConectadoResponse>(_mapper);
+            var titulos = await _unitOfWork.Repository<TitulosConectado>().GetAllMapAsyncQuery<TitulosConectadoResponse>(_mapper);
 
-            var categorias = await _unitOfWork.Repository<Models.Titulos.Categoria>().GetAllMapAsyncQuery<CategoriaResponse>(_mapper);
+            var categorias = await _unitOfWork.Repository<Category>().GetAllMapAsyncQuery<CategoriaResponse>(_mapper);
 
             var response = new BarraHerramientasConectadoResponse()
             {

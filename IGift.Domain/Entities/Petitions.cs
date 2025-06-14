@@ -2,7 +2,7 @@
 
 namespace IGift.Domain.Entities
 {
-    public class Peticiones : AuditableEntity<int>
+    public class Petitions : AuditableEntity<int>
     {
         /// <summary>
         /// Id del usuario creador

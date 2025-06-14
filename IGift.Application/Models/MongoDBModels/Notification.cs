@@ -1,7 +1,7 @@
 ﻿using IGift.Application.Enums;
 using IGift.Domain.Contracts;
 
-namespace IGift.Application.Models
+namespace IGift.Application.Models.MongoDBModels
 {
     public class Notification : Entity<int>
     {

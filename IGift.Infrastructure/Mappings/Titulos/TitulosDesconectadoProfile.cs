@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IGift.Application.Models.Titulos;
+using IGift.Application.Models.MongoDBModels.Titulos;
 using IGift.Application.Responses.Titulos.Desconectado;
 
 namespace IGift.Infrastructure.Mappings.Titulos

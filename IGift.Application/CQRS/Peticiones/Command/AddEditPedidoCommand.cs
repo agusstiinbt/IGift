@@ -30,7 +30,7 @@ namespace IGift.Application.CQRS.Peticiones.Command
 
         public async Task<IResult> Handle(AddEditPeticionesCommand request, CancellationToken cancellationToken)
         {
-            var pedido = new Domain.Entities.Peticiones//TODO fijarse si se puede mapear
+            var pedido = new Domain.Entities.Petitions//TODO fijarse si se puede mapear
             {
                 IdUser = request.IdUser,
                 Descripcion = request.Descripcion,
@@ -44,15 +44,15 @@ namespace IGift.Application.CQRS.Peticiones.Command
             };
             if (request.Id == 0)
             {
-                var result = await _unitOfWork.Repository<Domain.Entities.Peticiones>().AddAsync(pedido);
+                var result = await _unitOfWork.Repository<Domain.Entities.Petitions>().AddAsync(pedido);
                 return await _unitOfWork.Commit("Pedido agregado con éxito", cancellationToken);
             }
             else
             {
-                var peticion = await _unitOfWork.Repository<Domain.Entities.Peticiones>().GetByIdAsync(request.Id);
+                var peticion = await _unitOfWork.Repository<Domain.Entities.Petitions>().GetByIdAsync(request.Id);
                 if (peticion != null)
                 {
-                    await _unitOfWork.Repository<Domain.Entities.Peticiones>().UpdateAsync(pedido);
+                    await _unitOfWork.Repository<Domain.Entities.Petitions>().UpdateAsync(pedido);
                     return await Result.SuccessAsync("Pedido modificado con éxito");
                 }
                 return await Result.FailAsync("pedido no encontrado");

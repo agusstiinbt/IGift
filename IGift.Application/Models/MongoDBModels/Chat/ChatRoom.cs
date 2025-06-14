@@ -1,4 +1,4 @@
-﻿namespace IGift.Application.Models.Chat
+﻿namespace IGift.Application.Models.MongoDBModels.Chat
 {
     public class ChatRoom
     {

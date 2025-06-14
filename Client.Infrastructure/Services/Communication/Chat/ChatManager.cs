@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Client.Infrastructure.Extensions;
 using IGift.Application.CQRS.Communication.Chat;
-using IGift.Application.Models.Chat;
+using IGift.Application.Models.MongoDBModels.Chat;
 using IGift.Shared.Wrapper;
 using Microsoft.Extensions.Logging;
 namespace IGift.Client.Infrastructure.Services.Communication.Chat

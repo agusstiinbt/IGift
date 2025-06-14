@@ -1,11 +1,8 @@
 ﻿using IGift.Domain.Contracts;
 
-namespace IGift.Application.Models
+namespace IGift.Application.Models.SQL.MySQL
 {
-    /// <summary>
-    /// Guardar en Oracle.
-    /// </summary>
-    public class OperacionesIntercambio : Entity<int>
+    public class ExchangeOperations : Entity<int>
     {
         public DateTime CreatedOn { get; set; }
         public required int IdGiftCard { get; set; }

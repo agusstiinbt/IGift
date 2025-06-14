@@ -50,7 +50,7 @@ namespace IGift.Application.CQRS.Peticiones.Query
         {
             if (!string.IsNullOrEmpty(request.SearchString))
             {
-                Expression<Func<Domain.Entities.Peticiones, PeticionesResponse>> expression = e => new PeticionesResponse
+                Expression<Func<Domain.Entities.Petitions, PeticionesResponse>> expression = e => new PeticionesResponse
                 {
                     Descripcion = e.Descripcion,
                     Moneda = e.Moneda,
@@ -59,7 +59,7 @@ namespace IGift.Application.CQRS.Peticiones.Query
 
                 var filtro = new PeticionesFilter(request.SearchString);
 
-                var response1 = await _unitOfWork.Repository<Domain.Entities.Peticiones>().Query
+                var response1 = await _unitOfWork.Repository<Domain.Entities.Petitions>().Query
                .Specify(filtro)
                 .Select(expression)
                 .ToPaginatedListAsync(request.PageNumber, request.PageSize);
@@ -67,7 +67,7 @@ namespace IGift.Application.CQRS.Peticiones.Query
                 return response1;
             }
 
-            var query = await _unitOfWork.Repository<Domain.Entities.Peticiones>().FindAndMapByQuery<PeticionesResponse>(_mapper);
+            var query = await _unitOfWork.Repository<Domain.Entities.Petitions>().FindAndMapByQuery<PeticionesResponse>(_mapper);
 
             if (!string.IsNullOrEmpty(request.Descripcion))
                 query = query.Where(x => x.Descripcion == request.Descripcion);

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using IGift.Application.Enums;
 using IGift.Application.Interfaces.Repositories.Generic.NonAuditable;
-using IGift.Application.Models;
+using IGift.Application.Models.MongoDBModels;
 using IGift.Application.Responses.Notification;
 using IGift.Shared.Wrapper;
 using MediatR;

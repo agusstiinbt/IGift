@@ -2,7 +2,7 @@
 using IGift.Application.Interfaces.Communication.Chat;
 using IGift.Application.Interfaces.Files;
 using IGift.Application.Interfaces.Identity;
-using IGift.Application.Models.Chat;
+using IGift.Application.Models.MongoDBModels.Chat;
 using IGift.Infrastructure.Data;
 using IGift.Infrastructure.Models;
 using IGift.Shared.Wrapper;

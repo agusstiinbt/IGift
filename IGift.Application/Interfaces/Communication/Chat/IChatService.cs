@@ -1,5 +1,5 @@
 ﻿using IGift.Application.CQRS.Communication.Chat;
-using IGift.Application.Models.Chat;
+using IGift.Application.Models.MongoDBModels.Chat;
 using IGift.Shared.Wrapper;
 
 namespace IGift.Application.Interfaces.Communication.Chat

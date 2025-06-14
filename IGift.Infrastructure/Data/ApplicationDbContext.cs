@@ -1,6 +1,8 @@
-﻿using IGift.Application.Models;
-using IGift.Application.Models.Chat;
-using IGift.Application.Models.Titulos;
+﻿using IGift.Application.Models.MongoDBModels;
+using IGift.Application.Models.MongoDBModels.Chat;
+using IGift.Application.Models.MongoDBModels.Titulos;
+using IGift.Application.Models.SQL.MySQL;
+using IGift.Application.Models.SQL.PostgreSQL;
 using IGift.Domain.Entities;
 using IGift.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +17,7 @@ namespace IGift.Infrastructure.Data
 
         #region DBSets
 
-        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Category> Categorias { get; set; }
         public DbSet<ChatHistory<IGiftUser>> ChatHistories { get; set; }
         public DbSet<Contract> Contracts { get; set; }
 
@@ -25,9 +27,9 @@ namespace IGift.Infrastructure.Data
 
         public DbSet<Notification> Notification { get; set; }
 
-        public DbSet<OperacionesIntercambio> OperacionesIntercambio { get; set; }
+        public DbSet<ExchangeOperations> OperacionesIntercambio { get; set; }
 
-        public DbSet<Peticiones> Pedidos { get; set; }
+        public DbSet<Petitions> Pedidos { get; set; }
         public DbSet<ProfilePicture> ProfilePicture { get; set; }
 
         public DbSet<TitulosConectado> TitulosConectados { get; set; }
@@ -78,7 +80,7 @@ namespace IGift.Infrastructure.Data
            .WithMany(u => u.Notifications)
            .HasForeignKey(n => n.IdUser);
 
-            builder.Entity<Peticiones>()
+            builder.Entity<Petitions>()
            .HasOne<IGiftUser>()
            .WithMany(u => u.Pedidos)
            .HasForeignKey(p => p.IdUser);
@@ -89,13 +91,13 @@ namespace IGift.Infrastructure.Data
 
             #region OperacionesIntercambio
 
-            builder.Entity<OperacionesIntercambio>()
+            builder.Entity<ExchangeOperations>()
                 .HasOne<IGiftUser>()
                 .WithMany(x => x.OperacionesIntercambios)
                 .HasForeignKey(p => p.IdUser1)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<OperacionesIntercambio>()
+            builder.Entity<ExchangeOperations>()
               .HasOne<IGiftUser>()
               .WithMany(x => x.OperacionesIntercambios)
               .HasForeignKey(p => p.IdUser2)
@@ -143,7 +145,7 @@ namespace IGift.Infrastructure.Data
             #endregion
 
 
-            builder.Entity<Peticiones>(entity =>
+            builder.Entity<Petitions>(entity =>
             {
                 entity.ToTable(name: "Pedidos", "dbo");
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();

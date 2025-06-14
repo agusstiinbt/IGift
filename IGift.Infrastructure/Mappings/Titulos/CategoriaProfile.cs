@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IGift.Application.Models.Titulos;
+using IGift.Application.Models.SQL.MySQL;
 using IGift.Application.Responses.Titulos.Categoria;
 
 namespace IGift.Infrastructure.Mappings.Titulos
@@ -8,7 +8,7 @@ namespace IGift.Infrastructure.Mappings.Titulos
     {
         public CategoriaProfile()
         {
-            CreateMap<Categoria, CategoriaResponse>();
+            CreateMap<Category, CategoriaResponse>();
         }
     }
 }

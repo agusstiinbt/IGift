@@ -2,7 +2,7 @@
 
 namespace IGift.Application.Filtros.Pedidos
 {
-    public class PeticionesFilter : Specification<Peticiones>
+    public class PeticionesFilter : Specification<Petitions>
     {
         public PeticionesFilter(string filtroBusqueda)
         {
